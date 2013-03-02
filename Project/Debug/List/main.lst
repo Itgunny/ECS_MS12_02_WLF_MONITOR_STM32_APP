@@ -1,0 +1,248 @@
+###############################################################################
+#                                                                             #
+# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      02/Mar/2013  23:26:52 #
+# Copyright 1999-2012 IAR Systems AB.                                         #
+#                                                                             #
+#    Cpu mode     =  thumb                                                    #
+#    Endian       =  little                                                   #
+#    Source file  =  C:\Tools\IAR Systems\Embedded Workbench                  #
+#                    6.5\WorkSpace\WL9F_Monitor_APP\Platform\COMMON\SRC\main. #
+#                    c                                                        #
+#    Command line =  "C:\Tools\IAR Systems\Embedded Workbench                 #
+#                    6.5\WorkSpace\WL9F_Monitor_APP\Platform\COMMON\SRC\main. #
+#                    c" -D USE_STDPERIPH_DRIVER -D STM32F4XX -D               #
+#                    USE_STM324xG_EVAL -D USE_FULL_ASSERT -lcN "C:\Tools\IAR  #
+#                    Systems\Embedded Workbench 6.5\WorkSpace\WL9F_Monitor_AP #
+#                    P\Project\Debug\List\" -o "C:\Tools\IAR                  #
+#                    Systems\Embedded Workbench 6.5\WorkSpace\WL9F_Monitor_AP #
+#                    P\Project\Debug\Obj\" --debug --endian=little            #
+#                    --cpu=Cortex-M4 -e --fpu=VFPv4_sp --dlib_config          #
+#                    "C:\Tools\IAR Systems\Embedded Workbench                 #
+#                    6.5\arm\INC\c\DLib_Config_Full.h" -I "C:\Tools\IAR       #
+#                    Systems\Embedded Workbench 6.5\WorkSpace\WL9F_Monitor_AP #
+#                    P\Project\..\Platform\COMMON\INC\" -I "C:\Tools\IAR      #
+#                    Systems\Embedded Workbench 6.5\WorkSpace\WL9F_Monitor_AP #
+#                    P\Project\..\Platform\TaeHa - ECS\INC\" -I               #
+#                    "C:\Tools\IAR Systems\Embedded Workbench                 #
+#                    6.5\WorkSpace\WL9F_Monitor_APP\Project\..\Libraries\CMSI #
+#                    S\Device\ST\STM32F4xx\Include\" -I "C:\Tools\IAR         #
+#                    Systems\Embedded Workbench 6.5\WorkSpace\WL9F_Monitor_AP #
+#                    P\Project\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\"  #
+#                    -Oh --use_c++_inline -I "C:\Tools\IAR Systems\Embedded   #
+#                    Workbench 6.5\arm\CMSIS\Include\"                        #
+#    List file    =  C:\Tools\IAR Systems\Embedded Workbench                  #
+#                    6.5\WorkSpace\WL9F_Monitor_APP\Project\Debug\List\main.l #
+#                    st                                                       #
+#    Object file  =  C:\Tools\IAR Systems\Embedded Workbench                  #
+#                    6.5\WorkSpace\WL9F_Monitor_APP\Project\Debug\Obj\main.o  #
+#                                                                             #
+#                                                                             #
+###############################################################################
+
+C:\Tools\IAR Systems\Embedded Workbench 6.5\WorkSpace\WL9F_Monitor_APP\Platform\COMMON\SRC\main.c
+      1          /**
+      2            ******************************************************************************
+      3            * @file    Project/STM32F4xx_StdPeriph_Templates/main.c 
+      4            * @author  MCD Application Team
+      5            * @version V1.0.1
+      6            * @date    13-April-2012
+      7            * @brief   Main program body
+      8            ******************************************************************************
+      9            * @attention
+     10            *
+     11            * <h2><center>&copy; COPYRIGHT 2012 STMicroelectronics</center></h2>
+     12            *
+     13            * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
+     14            * You may not use this file except in compliance with the License.
+     15            * You may obtain a copy of the License at:
+     16            *
+     17            *        http://www.st.com/software_license_agreement_liberty_v2
+     18            *
+     19            * Unless required by applicable law or agreed to in writing, software 
+     20            * distributed under the License is distributed on an "AS IS" BASIS, 
+     21            * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     22            * See the License for the specific language governing permissions and
+     23            * limitations under the License.
+     24            *
+     25            ******************************************************************************
+     26            */
+     27          
+     28          /* Includes ------------------------------------------------------------------*/
+     29          #include "main.h"
+     30          
+     31          /** @addtogroup Template_Project
+     32            * @{
+     33            */
+     34          
+     35          /* Private typedef -----------------------------------------------------------*/
+     36          /* Private define ------------------------------------------------------------*/
+     37          #define MESSAGE1   "     STM32F4xx      " 
+     38          #define MESSAGE2   " Device running on  " 
+     39          #define MESSAGE3   " STM3240_41_G-EVAL  " 
+     40          
+     41          /* Private macro -------------------------------------------------------------*/
+     42          /* Private variables ---------------------------------------------------------*/
+     43          static __IO uint32_t TimingDelay;
+     44          
+     45          /* Private function prototypes -----------------------------------------------*/
+     46          /* Private functions ---------------------------------------------------------*/
+     47          
+     48          /**
+     49            * @brief  Main program.
+     50            * @param  None
+     51            * @retval None
+     52            */
+     53          int main(void)
+     54          {
+     55            RCC_ClocksTypeDef RCC_Clocks;
+     56          
+     57            /*!< At this stage the microcontroller clock setting is already configured, 
+     58                 this is done through SystemInit() function which is called from startup
+     59                 file (startup_stm32f4xx.s) before to branch to application main.
+     60                 To reconfigure the default setting of SystemInit() function, refer to
+     61                 system_stm32f4xx.c file
+     62               */  
+     63          
+     64            /* SysTick end of count event each 10ms */
+     65            RCC_GetClocksFreq(&RCC_Clocks);
+     66            SysTick_Config(RCC_Clocks.HCLK_Frequency / 100);
+     67          
+     68          //  ++, kutelf, 130222
+     69          #if 0
+     70            /* Initialize LEDs and LCD available on STM324xG-EVAL board *****************/
+     71            STM_EVAL_LEDInit(LED1);
+     72            STM_EVAL_LEDInit(LED2);
+     73            STM_EVAL_LEDInit(LED3);
+     74            STM_EVAL_LEDInit(LED4);
+     75          
+     76            /* Initialize the LCD */
+     77            STM324xG_LCD_Init();
+     78          
+     79            /* Display message on STM324xG-EVAL LCD *************************************/
+     80            /* Clear the LCD */ 
+     81            LCD_Clear(White);
+     82          
+     83            /* Set the LCD Back Color */
+     84            LCD_SetBackColor(Blue);
+     85            /* Set the LCD Text Color */
+     86            LCD_SetTextColor(White);
+     87            LCD_DisplayStringLine(LINE(0), (uint8_t *)MESSAGE1);
+     88            LCD_DisplayStringLine(LINE(1), (uint8_t *)MESSAGE2);
+     89            LCD_DisplayStringLine(LINE(2), (uint8_t *)MESSAGE3);
+     90          
+     91            /* Turn on LEDs available on STM324xG-EVAL **********************************/
+     92            STM_EVAL_LEDOn(LED1);
+     93            STM_EVAL_LEDOn(LED2);
+     94            STM_EVAL_LEDOn(LED3);
+     95            STM_EVAL_LEDOn(LED4);
+     96          #endif
+     97          //  --, kutelf, 130222
+     98            
+     99            /* Add your application code here
+    100               */
+    101          
+    102            /* Infinite loop */
+    103            while (1)
+    104            {
+    105              /* Toggle LD4 */
+    106              STM_EVAL_LEDToggle(LED4);
+    107          
+    108              /* Insert 50 ms delay */
+    109              Delay(5);
+    110          
+    111              /* Toggle LD2 */
+    112              STM_EVAL_LEDToggle(LED2);
+    113          
+    114              /* Insert 50 ms delay */
+    115              Delay(5);
+    116            }
+    117          }
+    118          
+    119          /**
+    120            * @brief  Inserts a delay time.
+    121            * @param  nTime: specifies the delay time length, in 10 ms.
+    122            * @retval None
+    123            */
+    124          void Delay(__IO uint32_t nTime)
+    125          {
+    126            TimingDelay = nTime;
+    127          
+    128            while(TimingDelay != 0);
+    129          }
+    130          
+    131          /**
+    132            * @brief  Decrements the TimingDelay variable.
+    133            * @param  None
+    134            * @retval None
+    135            */
+    136          void TimingDelay_Decrement(void)
+    137          {
+    138            if (TimingDelay != 0x00)
+    139            { 
+    140              TimingDelay--;
+    141            }
+    142          }
+    143          
+    144          #ifdef  USE_FULL_ASSERT
+    145          
+    146          /**
+    147            * @brief  Reports the name of the source file and the source line number
+    148            *   where the assert_param error has occurred.
+    149            * @param  file: pointer to the source file name
+    150            * @param  line: assert_param error line source number
+    151            * @retval None
+    152            */
+    153          void assert_failed(uint8_t* file, uint32_t line)
+    154          { 
+    155            /* User can add his own implementation to report the file name and line number,
+    156               ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+    157          
+    158            /* Infinite loop */
+    159            while (1)
+    160            {
+    161            }
+    162          }
+    163          #endif
+    164          
+    165          /**
+    166            * @}
+    167            */
+    168          
+    169          
+    170          /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       4   Delay
+       0   TimingDelay_Decrement
+       0   assert_failed
+      24   main
+        24   -> Delay
+        24   -> RCC_GetClocksFreq
+        24   -> STM_EVAL_LEDToggle
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable2
+       4  ??DataTable2_1
+       4  ??DataTable2_2
+      18  Delay
+       4  TimingDelay
+      14  TimingDelay_Decrement
+       2  assert_failed
+      84  main
+
+ 
+   4 bytes in section .bss
+ 130 bytes in section .text
+ 
+ 130 bytes of CODE memory
+   4 bytes of DATA memory
+
+Errors: none
+Warnings: none
