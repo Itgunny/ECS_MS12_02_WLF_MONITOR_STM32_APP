@@ -190,6 +190,23 @@ typedef enum
 /**
  * @brief Definition for COM port1, connected to USART3
  */ 
+//	++, kutelf, 130228
+//	DEBUG UART1 ¼³Á¤
+#if 1
+#define EVAL_COM1                        USART1
+#define EVAL_COM1_CLK                    RCC_APB2Periph_USART1
+#define EVAL_COM1_TX_PIN                 GPIO_Pin_9
+#define EVAL_COM1_TX_GPIO_PORT           GPIOA
+#define EVAL_COM1_TX_GPIO_CLK            RCC_AHB1Periph_GPIOA
+#define EVAL_COM1_TX_SOURCE              GPIO_PinSource9
+#define EVAL_COM1_TX_AF                  GPIO_AF_USART1
+#define EVAL_COM1_RX_PIN                 GPIO_Pin_10
+#define EVAL_COM1_RX_GPIO_PORT           GPIOA
+#define EVAL_COM1_RX_GPIO_CLK            RCC_AHB1Periph_GPIOA
+#define EVAL_COM1_RX_SOURCE              GPIO_PinSource10
+#define EVAL_COM1_RX_AF                  GPIO_AF_USART1
+#define EVAL_COM1_IRQn                   USART1_IRQn
+#else
 #define EVAL_COM1                        USART3
 #define EVAL_COM1_CLK                    RCC_APB1Periph_USART3
 #define EVAL_COM1_TX_PIN                 GPIO_Pin_10
@@ -203,6 +220,8 @@ typedef enum
 #define EVAL_COM1_RX_SOURCE              GPIO_PinSource11
 #define EVAL_COM1_RX_AF                  GPIO_AF_USART3
 #define EVAL_COM1_IRQn                   USART3_IRQn
+#endif
+//	--, kutelf, 130228
 
 /**
   * @}

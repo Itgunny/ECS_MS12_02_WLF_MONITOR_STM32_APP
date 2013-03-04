@@ -95,7 +95,10 @@
   */           
 
 #if !defined  (HSE_VALUE) 
-  #define HSE_VALUE    ((uint32_t)25000000) /*!< Value of the External oscillator in Hz */
+	//	++, kutelf, 130228
+	//	클럭 설정. -> 25MHz	
+    #define HSE_VALUE    ((uint32_t)25000000) /*!< Value of the External oscillator in Hz */
+  	//	--, kutelf, 130228
 #endif /* HSE_VALUE */
 
 /**

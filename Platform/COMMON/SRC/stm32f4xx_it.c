@@ -142,6 +142,31 @@ void PendSV_Handler(void)
 void SysTick_Handler(void)
 {
   TimingDelay_Decrement();
+
+//	++, kutelf, 130228
+    ++WL9F_TIME_DATA.Cnt_1mSec;
+
+	if (WL9F_TIME_DATA.Cnt_1mSec % 1 == 0)                   //  1msec
+	{
+        WL9F_TIME_DATA.Flag_1mSec = 1;
+
+		if (WL9F_TIME_DATA.Cnt_1mSec % 10 == 0)              //  10msec
+		{
+			WL9F_TIME_DATA.Flag_10mSec = 1;
+
+			if (WL9F_TIME_DATA.Cnt_1mSec % 100 == 0)         //  100msec
+			{
+				WL9F_TIME_DATA.Flag_100mSec = 1;
+
+				if (WL9F_TIME_DATA.Cnt_1mSec % 1000 == 0)    //  1000 msec
+				{
+					WL9F_TIME_DATA.Flag_1Sec = 1;
+					WL9F_TIME_DATA.Cnt_1mSec = 0;
+				}
+			}
+		}
+	}    
+//	--, kutelf, 130228	
 }
 
 /******************************************************************************/

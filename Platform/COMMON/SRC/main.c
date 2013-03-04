@@ -43,6 +43,14 @@
 static __IO uint32_t TimingDelay;
 
 /* Private function prototypes -----------------------------------------------*/
+#ifdef __GNUC__
+/* With GCC/RAISONANCE, small printf (option LD Linker->Libraries->Small printf
+   set to 'Yes') calls __io_putchar() */
+#define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+#else
+#define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
+#endif /* __GNUC__ */
+
 /* Private functions ---------------------------------------------------------*/
 
 /**
@@ -52,6 +60,8 @@ static __IO uint32_t TimingDelay;
   */
 int main(void)
 {
+//  ++, kutelf, 130228
+#if 0
   RCC_ClocksTypeDef RCC_Clocks;
 
   /*!< At this stage the microcontroller clock setting is already configured, 
@@ -65,8 +75,6 @@ int main(void)
   RCC_GetClocksFreq(&RCC_Clocks);
   SysTick_Config(RCC_Clocks.HCLK_Frequency / 100);
 
-//  ++, kutelf, 130222
-#if 0
   /* Initialize LEDs and LCD available on STM324xG-EVAL board *****************/
   STM_EVAL_LEDInit(LED1);
   STM_EVAL_LEDInit(LED2);
@@ -94,7 +102,7 @@ int main(void)
   STM_EVAL_LEDOn(LED3);
   STM_EVAL_LEDOn(LED4);
 #endif
-//  --, kutelf, 130222
+//  --, kutelf, 130228
   
   /* Add your application code here
      */
@@ -102,6 +110,8 @@ int main(void)
   /* Infinite loop */
   while (1)
   {
+	//	++, kutelf, 130228
+  	#if 0
     /* Toggle LD4 */
     STM_EVAL_LEDToggle(LED4);
 
@@ -113,6 +123,21 @@ int main(void)
 
     /* Insert 50 ms delay */
     Delay(5);
+
+	#else
+
+		//  Application Program은 아래의 함수부터 Start Point로 실행된다. 
+        //  SubMain... -> WL9F_Monitor_APP.c 
+        WL9F_Monitor_APP();
+        
+        //  WL9F_Monitor_APP()는 Infinite loop -> 만약 빠져나온다면, System은 Halt된 것이다. 
+        //  Halt가 된 후에는 메세지를 Debugging Message를 보낸 후에 break; 한다. 
+        //printf("\n\r WL9A_Monitor_APP() -> System halt");
+        
+        break;
+		
+	#endif
+	//	--, 130228, kutelf
   }
 }
 
@@ -140,6 +165,86 @@ void TimingDelay_Decrement(void)
     TimingDelay--;
   }
 }
+
+//  ++, kutelf, 130228
+/**
+  * @brief  Initialize the IAP: Configure USART.
+  * @param  None
+  * @retval None
+  */
+void DebugUART_Init(void)
+{
+ USART_InitTypeDef USART_InitStructure;
+
+  /* USART resources configuration (Clock, GPIO pins and USART registers) ----*/
+  /* USART configured as follow:
+        - BaudRate = 115200 baud  
+        - Word Length = 8 Bits
+        - One Stop Bit
+        - No parity
+        - Hardware flow control disabled (RTS and CTS signals)
+        - Receive and transmit enabled
+  */
+  USART_InitStructure.USART_BaudRate = 115200;
+  USART_InitStructure.USART_WordLength = USART_WordLength_8b;
+  USART_InitStructure.USART_StopBits = USART_StopBits_1;
+  USART_InitStructure.USART_Parity = USART_Parity_No;
+  USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+  USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
+
+  STM_EVAL_COMInit(COM1, &USART_InitStructure);
+}
+
+/**
+  * @brief  Inserts a usec delay time.
+  * @param  nCount: specifies the delay time length, in milliseconds.
+  * @retval None
+  */
+void TimeDelay_usec(uint32_t nCount)
+{
+    vu32 i, j;
+
+    for (i = 0; i < nCount; i++)
+        for (j = 0; j < 5; j++);
+}
+
+/**
+  * @brief  Inserts a msec delay time.
+  * @param  nCount: specifies the delay time length, in milliseconds.
+  * @retval None
+  */
+void TimeDelay_msec(uint32_t nCount)
+{
+    vu32 i, j;
+
+#if 0
+    for (i = 0; i < nCount; i++)
+        for (j = 0; j < 5000; j++);
+#else
+	for (i = 0; i < nCount; i++)
+        for (j = 0; j < 17000; j++);
+#endif
+}
+
+/**
+  * @brief  Retargets the C library printf function to the USART.
+  * @param  None
+  * @retval None
+  */
+PUTCHAR_PROTOTYPE
+{
+  /* Place your implementation of fputc here */
+  /* e.g. write a character to the USART */
+  USART_SendData(EVAL_COM1, (uint8_t) ch);
+
+  /* Loop until the end of transmission */
+  while (USART_GetFlagStatus(EVAL_COM1, USART_FLAG_TC) == RESET)
+  {}
+
+  return ch;
+}
+
+//  --, kutelf, 130228
 
 #ifdef  USE_FULL_ASSERT
 

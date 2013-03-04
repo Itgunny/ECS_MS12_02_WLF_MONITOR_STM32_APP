@@ -35,12 +35,15 @@
 #include "stm324xg_eval_lcd.h"
 #include <stdio.h>
 
+#include "WL9F_Display_Common.h"    //  ++, --, kutelf, 130228
+
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 void TimingDelay_Decrement(void);
 void Delay(__IO uint32_t nTime);
+void DebugUART_Init(void);
 
 #endif /* __MAIN_H */
 
