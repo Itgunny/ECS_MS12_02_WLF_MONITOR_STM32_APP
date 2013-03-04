@@ -61,7 +61,7 @@ extern struct TIME_DATA WL9F_TIME_DATA;
 
 /* Exported functions ------------------------------------------------------- */
 //  WL9F_Monitor_APP.c define
-extern void WL9F_Monitor_APP(void);
+extern void WL9F_Display_APP(void);
 extern void WL9F_1mSecOperationFunc(void);
 extern void WL9F_10mSecOperationFunc(void);
 extern void WL9F_100mSecOperationFunc(void);
