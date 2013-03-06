@@ -19,35 +19,26 @@
   */ 
 
 /* Includes ------------------------------------------------------------------*/
-#include "WL9F_Display_Common.h"	
+#include "WL9F_Display_APP.h"	
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-// EEPROM Clear Variables
-WL9FM_SaveE2PROM1		*SaveE2PROM1;
-WL9FM_SaveE2PROM2		*SaveE2PROM2;
-WL9FM_SaveE2PROM3		*SaveE2PROM3;
-
-WL9FM_SaveE2PROMoniInfo	*SaveE2PROMoniInfo;
-
-struct WL9FM_DATA_RTC   WL9FM_RTC_Write;
-
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
 void Init_RTC(void)
 {
-    WL9FM_RTC_Write.Year   = 0;
-	WL9FM_RTC_Write.Month  = 1;
-	WL9FM_RTC_Write.Date   = 1;
-	WL9FM_RTC_Write.Day    = 1;
-	WL9FM_RTC_Write.Hour   = 12;
-	WL9FM_RTC_Write.Minute = 0;
-	WL9FM_RTC_Write.Second = 0;
+    WL9FM_RTC.Year   = 0;
+	WL9FM_RTC.Month  = 1;
+	WL9FM_RTC.Date   = 1;
+	WL9FM_RTC.Day    = 1;
+	WL9FM_RTC.Hour   = 12;
+	WL9FM_RTC.Minute = 0;
+	WL9FM_RTC.Second = 0;
 
-	WRITE_RTC(WL9FM_RTC_Write);
+	WRITE_RTC(WL9FM_RTC);
 }
 
 void InitE2PROM(void)
@@ -358,8 +349,6 @@ void RCC_Configuration(void)
   */
 void NVIC_Configuration(void)
 {
-    NVIC_InitTypeDef NVIC_InitStructure;
-    
 	//	Set the Vector Table base location at 0x08004000
     NVIC_SetVectorTable(NVIC_VectTab_FLASH, 0x4000);   
 }
@@ -857,7 +846,8 @@ void System_Initialize(void)
 
 void System_Variable_Init(void)
 {
-
+	memset((void *)(&WL9FM_TIME),       	0x0, sizeof(WL9F_TIME_DATA));
+    memset((void *)(&WL9FM_RTC),            0x0, sizeof(WL9F_DATA_RTC));	
 }
 
 void WL9F_System_Init_Start(void)

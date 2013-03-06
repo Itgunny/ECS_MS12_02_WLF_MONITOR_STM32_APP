@@ -40,8 +40,6 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-static __IO uint32_t TimingDelay;
-
 /* Private function prototypes -----------------------------------------------*/
 #ifdef __GNUC__
 /* With GCC/RAISONANCE, small printf (option LD Linker->Libraries->Small printf
@@ -141,31 +139,6 @@ int main(void)
   }
 }
 
-/**
-  * @brief  Inserts a delay time.
-  * @param  nTime: specifies the delay time length, in 10 ms.
-  * @retval None
-  */
-void Delay(__IO uint32_t nTime)
-{
-  TimingDelay = nTime;
-
-  while(TimingDelay != 0);
-}
-
-/**
-  * @brief  Decrements the TimingDelay variable.
-  * @param  None
-  * @retval None
-  */
-void TimingDelay_Decrement(void)
-{
-  if (TimingDelay != 0x00)
-  { 
-    TimingDelay--;
-  }
-}
-
 //  ++, kutelf, 130228
 /**
   * @brief  Initialize the IAP: Configure USART.
@@ -193,37 +166,6 @@ void DebugUART_Init(void)
   USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
 
   STM_EVAL_COMInit(COM1, &USART_InitStructure);
-}
-
-/**
-  * @brief  Inserts a usec delay time.
-  * @param  nCount: specifies the delay time length, in milliseconds.
-  * @retval None
-  */
-void TimeDelay_usec(uint32_t nCount)
-{
-    vu32 i, j;
-
-    for (i = 0; i < nCount; i++)
-        for (j = 0; j < 5; j++);
-}
-
-/**
-  * @brief  Inserts a msec delay time.
-  * @param  nCount: specifies the delay time length, in milliseconds.
-  * @retval None
-  */
-void TimeDelay_msec(uint32_t nCount)
-{
-    vu32 i, j;
-
-#if 0
-    for (i = 0; i < nCount; i++)
-        for (j = 0; j < 5000; j++);
-#else
-	for (i = 0; i < nCount; i++)
-        for (j = 0; j < 17000; j++);
-#endif
 }
 
 /**

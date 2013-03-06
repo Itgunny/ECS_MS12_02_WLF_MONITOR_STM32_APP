@@ -19,7 +19,7 @@
   */ 
 
 /* Includes ------------------------------------------------------------------*/
-#include "WL9F_Display_Common.h" 
+#include "WL9F_Display_APP.h" 
 
 
 /* Private typedef -----------------------------------------------------------*/
@@ -686,7 +686,7 @@ unsigned char READ_RTC_Second(void)
     return temp;
 }
 
-void WRITE_RTC(struct WL9FM_DATA_RTC RTC_Data)
+void WRITE_RTC(WL9F_DATA_RTC RTC_Data)
 {    
     WRITE_FM31xx_RTC_Companion(0x00, 0x02);
     
@@ -703,7 +703,7 @@ void WRITE_RTC(struct WL9FM_DATA_RTC RTC_Data)
     WRITE_FM31xx_RTC_Companion(0x01, 0x00);
 }
 
-void READ_RTC(struct WL9FM_DATA_RTC *RTC_Data)
+void READ_RTC(WL9F_DATA_RTC *RTC_Data)
 {    
     WRITE_FM31xx_RTC_Companion(0x00, 0x01);
     
@@ -726,13 +726,13 @@ void InitEEPROM(void)
 	for(i = 0; i < 100; i++) EEPROM_Write(i, 0);	
 }
 
-void ReadAllData(struct WL9FM_DATA_EEPROM *ReadData)
+void ReadAllData(WL9FM_DATA_EEPROM *ReadData)
 {
 	uint8_t  i;
 	uint8_t  *buf;
 	uint16_t size;
 
-	size = sizeof(struct WL9FM_DATA_EEPROM); 
+	size = sizeof(WL9FM_DATA_EEPROM); 
 
 	buf = (uint8_t *)ReadData;
 
@@ -743,13 +743,13 @@ void ReadAllData(struct WL9FM_DATA_EEPROM *ReadData)
 	}
 }
 
-void SaveAllData(struct WL9FM_DATA_EEPROM SaveData)
+void SaveAllData(WL9FM_DATA_EEPROM SaveData)
 {
 	uint8_t  i;
 	uint8_t  *buf;
 	uint16_t size;
 
-	size = sizeof(struct WL9FM_DATA_EEPROM); 
+	size = sizeof(WL9FM_DATA_EEPROM); 
 
 	buf = (uint8_t *)&SaveData;
 	

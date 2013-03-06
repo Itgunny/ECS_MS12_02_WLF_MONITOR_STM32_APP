@@ -1,6 +1,6 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      04/Mar/2013  20:43:54 #
+# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      06/Mar/2013  19:54:02 #
 # Copyright 1999-2012 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
@@ -82,239 +82,181 @@ C:\Tools\IAR Systems\Embedded Workbench 6.5\WorkSpace\WL9F_Monitor_APP\Platform\
      40          
      41          /* Private macro -------------------------------------------------------------*/
      42          /* Private variables ---------------------------------------------------------*/
-     43          static __IO uint32_t TimingDelay;
-     44          
-     45          /* Private function prototypes -----------------------------------------------*/
-     46          #ifdef __GNUC__
-     47          /* With GCC/RAISONANCE, small printf (option LD Linker->Libraries->Small printf
-     48             set to 'Yes') calls __io_putchar() */
-     49          #define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
-     50          #else
-     51          #define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
-     52          #endif /* __GNUC__ */
+     43          /* Private function prototypes -----------------------------------------------*/
+     44          #ifdef __GNUC__
+     45          /* With GCC/RAISONANCE, small printf (option LD Linker->Libraries->Small printf
+     46             set to 'Yes') calls __io_putchar() */
+     47          #define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+     48          #else
+     49          #define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
+     50          #endif /* __GNUC__ */
+     51          
+     52          /* Private functions ---------------------------------------------------------*/
      53          
-     54          /* Private functions ---------------------------------------------------------*/
-     55          
-     56          /**
-     57            * @brief  Main program.
-     58            * @param  None
-     59            * @retval None
-     60            */
-     61          int main(void)
-     62          {
-     63          //  ++, kutelf, 130228
-     64          #if 0
-     65            RCC_ClocksTypeDef RCC_Clocks;
-     66          
-     67            /*!< At this stage the microcontroller clock setting is already configured, 
-     68                 this is done through SystemInit() function which is called from startup
-     69                 file (startup_stm32f4xx.s) before to branch to application main.
-     70                 To reconfigure the default setting of SystemInit() function, refer to
-     71                 system_stm32f4xx.c file
-     72               */  
-     73          
-     74            /* SysTick end of count event each 10ms */
-     75            RCC_GetClocksFreq(&RCC_Clocks);
-     76            SysTick_Config(RCC_Clocks.HCLK_Frequency / 100);
-     77          
-     78            /* Initialize LEDs and LCD available on STM324xG-EVAL board *****************/
-     79            STM_EVAL_LEDInit(LED1);
-     80            STM_EVAL_LEDInit(LED2);
-     81            STM_EVAL_LEDInit(LED3);
-     82            STM_EVAL_LEDInit(LED4);
-     83          
-     84            /* Initialize the LCD */
-     85            STM324xG_LCD_Init();
-     86          
-     87            /* Display message on STM324xG-EVAL LCD *************************************/
-     88            /* Clear the LCD */ 
-     89            LCD_Clear(White);
-     90          
-     91            /* Set the LCD Back Color */
-     92            LCD_SetBackColor(Blue);
-     93            /* Set the LCD Text Color */
-     94            LCD_SetTextColor(White);
-     95            LCD_DisplayStringLine(LINE(0), (uint8_t *)MESSAGE1);
-     96            LCD_DisplayStringLine(LINE(1), (uint8_t *)MESSAGE2);
-     97            LCD_DisplayStringLine(LINE(2), (uint8_t *)MESSAGE3);
-     98          
-     99            /* Turn on LEDs available on STM324xG-EVAL **********************************/
-    100            STM_EVAL_LEDOn(LED1);
-    101            STM_EVAL_LEDOn(LED2);
-    102            STM_EVAL_LEDOn(LED3);
-    103            STM_EVAL_LEDOn(LED4);
-    104          #endif
-    105          //  --, kutelf, 130228
-    106            
-    107            /* Add your application code here
-    108               */
-    109          
-    110            /* Infinite loop */
-    111            while (1)
-    112            {
-    113          	//	++, kutelf, 130228
-    114            	#if 0
-    115              /* Toggle LD4 */
-    116              STM_EVAL_LEDToggle(LED4);
-    117          
-    118              /* Insert 50 ms delay */
-    119              Delay(5);
-    120          
-    121              /* Toggle LD2 */
-    122              STM_EVAL_LEDToggle(LED2);
-    123          
-    124              /* Insert 50 ms delay */
-    125              Delay(5);
+     54          /**
+     55            * @brief  Main program.
+     56            * @param  None
+     57            * @retval None
+     58            */
+     59          int main(void)
+     60          {
+     61          //  ++, kutelf, 130228
+     62          #if 0
+     63            RCC_ClocksTypeDef RCC_Clocks;
+     64          
+     65            /*!< At this stage the microcontroller clock setting is already configured, 
+     66                 this is done through SystemInit() function which is called from startup
+     67                 file (startup_stm32f4xx.s) before to branch to application main.
+     68                 To reconfigure the default setting of SystemInit() function, refer to
+     69                 system_stm32f4xx.c file
+     70               */  
+     71          
+     72            /* SysTick end of count event each 10ms */
+     73            RCC_GetClocksFreq(&RCC_Clocks);
+     74            SysTick_Config(RCC_Clocks.HCLK_Frequency / 100);
+     75          
+     76            /* Initialize LEDs and LCD available on STM324xG-EVAL board *****************/
+     77            STM_EVAL_LEDInit(LED1);
+     78            STM_EVAL_LEDInit(LED2);
+     79            STM_EVAL_LEDInit(LED3);
+     80            STM_EVAL_LEDInit(LED4);
+     81          
+     82            /* Initialize the LCD */
+     83            STM324xG_LCD_Init();
+     84          
+     85            /* Display message on STM324xG-EVAL LCD *************************************/
+     86            /* Clear the LCD */ 
+     87            LCD_Clear(White);
+     88          
+     89            /* Set the LCD Back Color */
+     90            LCD_SetBackColor(Blue);
+     91            /* Set the LCD Text Color */
+     92            LCD_SetTextColor(White);
+     93            LCD_DisplayStringLine(LINE(0), (uint8_t *)MESSAGE1);
+     94            LCD_DisplayStringLine(LINE(1), (uint8_t *)MESSAGE2);
+     95            LCD_DisplayStringLine(LINE(2), (uint8_t *)MESSAGE3);
+     96          
+     97            /* Turn on LEDs available on STM324xG-EVAL **********************************/
+     98            STM_EVAL_LEDOn(LED1);
+     99            STM_EVAL_LEDOn(LED2);
+    100            STM_EVAL_LEDOn(LED3);
+    101            STM_EVAL_LEDOn(LED4);
+    102          #endif
+    103          //  --, kutelf, 130228
+    104            
+    105            /* Add your application code here
+    106               */
+    107          
+    108            /* Infinite loop */
+    109            while (1)
+    110            {
+    111          	//	++, kutelf, 130228
+    112            	#if 0
+    113              /* Toggle LD4 */
+    114              STM_EVAL_LEDToggle(LED4);
+    115          
+    116              /* Insert 50 ms delay */
+    117              Delay(5);
+    118          
+    119              /* Toggle LD2 */
+    120              STM_EVAL_LEDToggle(LED2);
+    121          
+    122              /* Insert 50 ms delay */
+    123              Delay(5);
+    124          
+    125          	#else
     126          
-    127          	#else
-    128          
-    129          		//  Application Program은 아래의 함수부터 Start Point로 실행된다. 
-    130                  //  SubMain... -> WL9F_Display_APP.c 
-    131                  WL9F_Display_APP();
-    132                  
-    133                  //  WL9F_Display_APP()는 Infinite loop -> 만약 빠져나온다면, System은 Halt된 것이다. 
-    134                  //  Halt가 된 후에는 메세지를 Debugging Message를 보낸 후에 break; 한다. 
-    135                  //printf("\n\r WL9F_Display_APP() -> System halt");
-    136                  
-    137                  break;
-    138          		
-    139          	#endif
-    140          	//	--, 130228, kutelf
-    141            }
-    142          }
-    143          
-    144          /**
-    145            * @brief  Inserts a delay time.
-    146            * @param  nTime: specifies the delay time length, in 10 ms.
-    147            * @retval None
-    148            */
-    149          void Delay(__IO uint32_t nTime)
-    150          {
-    151            TimingDelay = nTime;
-    152          
-    153            while(TimingDelay != 0);
-    154          }
-    155          
-    156          /**
-    157            * @brief  Decrements the TimingDelay variable.
-    158            * @param  None
-    159            * @retval None
+    127          		//  Application Program은 아래의 함수부터 Start Point로 실행된다. 
+    128                  //  SubMain... -> WL9F_Display_APP.c 
+    129                  WL9F_Display_APP();
+    130                  
+    131                  //  WL9F_Display_APP()는 Infinite loop -> 만약 빠져나온다면, System은 Halt된 것이다. 
+    132                  //  Halt가 된 후에는 메세지를 Debugging Message를 보낸 후에 break; 한다. 
+    133                  //printf("\n\r WL9F_Display_APP() -> System halt");
+    134                  
+    135                  break;
+    136          		
+    137          	#endif
+    138          	//	--, 130228, kutelf
+    139            }
+    140          }
+    141          
+    142          //  ++, kutelf, 130228
+    143          /**
+    144            * @brief  Initialize the IAP: Configure USART.
+    145            * @param  None
+    146            * @retval None
+    147            */
+    148          void DebugUART_Init(void)
+    149          {
+    150           USART_InitTypeDef USART_InitStructure;
+    151          
+    152            /* USART resources configuration (Clock, GPIO pins and USART registers) ----*/
+    153            /* USART configured as follow:
+    154                  - BaudRate = 115200 baud  
+    155                  - Word Length = 8 Bits
+    156                  - One Stop Bit
+    157                  - No parity
+    158                  - Hardware flow control disabled (RTS and CTS signals)
+    159                  - Receive and transmit enabled
     160            */
-    161          void TimingDelay_Decrement(void)
-    162          {
-    163            if (TimingDelay != 0x00)
-    164            { 
-    165              TimingDelay--;
-    166            }
-    167          }
-    168          
-    169          //  ++, kutelf, 130228
-    170          /**
-    171            * @brief  Initialize the IAP: Configure USART.
-    172            * @param  None
-    173            * @retval None
-    174            */
-    175          void DebugUART_Init(void)
-    176          {
-    177           USART_InitTypeDef USART_InitStructure;
-    178          
-    179            /* USART resources configuration (Clock, GPIO pins and USART registers) ----*/
-    180            /* USART configured as follow:
-    181                  - BaudRate = 115200 baud  
-    182                  - Word Length = 8 Bits
-    183                  - One Stop Bit
-    184                  - No parity
-    185                  - Hardware flow control disabled (RTS and CTS signals)
-    186                  - Receive and transmit enabled
-    187            */
-    188            USART_InitStructure.USART_BaudRate = 115200;
-    189            USART_InitStructure.USART_WordLength = USART_WordLength_8b;
-    190            USART_InitStructure.USART_StopBits = USART_StopBits_1;
-    191            USART_InitStructure.USART_Parity = USART_Parity_No;
-    192            USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
-    193            USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
-    194          
-    195            STM_EVAL_COMInit(COM1, &USART_InitStructure);
-    196          }
-    197          
-    198          /**
-    199            * @brief  Inserts a usec delay time.
-    200            * @param  nCount: specifies the delay time length, in milliseconds.
-    201            * @retval None
-    202            */
-    203          void TimeDelay_usec(uint32_t nCount)
-    204          {
-    205              vu32 i, j;
-    206          
-    207              for (i = 0; i < nCount; i++)
-    208                  for (j = 0; j < 5; j++);
+    161            USART_InitStructure.USART_BaudRate = 115200;
+    162            USART_InitStructure.USART_WordLength = USART_WordLength_8b;
+    163            USART_InitStructure.USART_StopBits = USART_StopBits_1;
+    164            USART_InitStructure.USART_Parity = USART_Parity_No;
+    165            USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+    166            USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
+    167          
+    168            STM_EVAL_COMInit(COM1, &USART_InitStructure);
+    169          }
+    170          
+    171          /**
+    172            * @brief  Retargets the C library printf function to the USART.
+    173            * @param  None
+    174            * @retval None
+    175            */
+    176          PUTCHAR_PROTOTYPE
+    177          {
+    178            /* Place your implementation of fputc here */
+    179            /* e.g. write a character to the USART */
+    180            USART_SendData(EVAL_COM1, (uint8_t) ch);
+    181          
+    182            /* Loop until the end of transmission */
+    183            while (USART_GetFlagStatus(EVAL_COM1, USART_FLAG_TC) == RESET)
+    184            {}
+    185          
+    186            return ch;
+    187          }
+    188          
+    189          //  --, kutelf, 130228
+    190          
+    191          #ifdef  USE_FULL_ASSERT
+    192          
+    193          /**
+    194            * @brief  Reports the name of the source file and the source line number
+    195            *   where the assert_param error has occurred.
+    196            * @param  file: pointer to the source file name
+    197            * @param  line: assert_param error line source number
+    198            * @retval None
+    199            */
+    200          void assert_failed(uint8_t* file, uint32_t line)
+    201          { 
+    202            /* User can add his own implementation to report the file name and line number,
+    203               ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+    204          
+    205            /* Infinite loop */
+    206            while (1)
+    207            {
+    208            }
     209          }
-    210          
-    211          /**
-    212            * @brief  Inserts a msec delay time.
-    213            * @param  nCount: specifies the delay time length, in milliseconds.
-    214            * @retval None
-    215            */
-    216          void TimeDelay_msec(uint32_t nCount)
-    217          {
-    218              vu32 i, j;
-    219          
-    220          #if 0
-    221              for (i = 0; i < nCount; i++)
-    222                  for (j = 0; j < 5000; j++);
-    223          #else
-    224          	for (i = 0; i < nCount; i++)
-    225                  for (j = 0; j < 17000; j++);
-    226          #endif
-    227          }
-    228          
-    229          /**
-    230            * @brief  Retargets the C library printf function to the USART.
-    231            * @param  None
-    232            * @retval None
-    233            */
-    234          PUTCHAR_PROTOTYPE
-    235          {
-    236            /* Place your implementation of fputc here */
-    237            /* e.g. write a character to the USART */
-    238            USART_SendData(EVAL_COM1, (uint8_t) ch);
-    239          
-    240            /* Loop until the end of transmission */
-    241            while (USART_GetFlagStatus(EVAL_COM1, USART_FLAG_TC) == RESET)
-    242            {}
-    243          
-    244            return ch;
-    245          }
-    246          
-    247          //  --, kutelf, 130228
-    248          
-    249          #ifdef  USE_FULL_ASSERT
-    250          
-    251          /**
-    252            * @brief  Reports the name of the source file and the source line number
-    253            *   where the assert_param error has occurred.
-    254            * @param  file: pointer to the source file name
-    255            * @param  line: assert_param error line source number
-    256            * @retval None
-    257            */
-    258          void assert_failed(uint8_t* file, uint32_t line)
-    259          { 
-    260            /* User can add his own implementation to report the file name and line number,
-    261               ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
-    262          
-    263            /* Infinite loop */
-    264            while (1)
-    265            {
-    266            }
-    267          }
-    268          #endif
-    269          
-    270          /**
-    271            * @}
-    272            */
-    273          
-    274          
-    275          /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+    210          #endif
+    211          
+    212          /**
+    213            * @}
+    214            */
+    215          
+    216          
+    217          /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
 
    Maximum stack usage in bytes:
 
@@ -322,10 +264,6 @@ C:\Tools\IAR Systems\Embedded Workbench 6.5\WorkSpace\WL9F_Monitor_APP\Platform\
    ------- --------
       24   DebugUART_Init
         24   -> STM_EVAL_COMInit
-       4   Delay
-       8   TimeDelay_msec
-       8   TimeDelay_usec
-       0   TimingDelay_Decrement
        0   assert_failed
       16   fputc
         16   -> USART_GetFlagStatus
@@ -338,24 +276,16 @@ C:\Tools\IAR Systems\Embedded Workbench 6.5\WorkSpace\WL9F_Monitor_APP\Platform\
 
    Bytes  Function/Label
    -----  --------------
-       4  ??DataTable2
-       4  ??DataTable2_1
+       4  ??DataTable0
       40  DebugUART_Init
-      18  Delay
-      44  TimeDelay_msec
-      38  TimeDelay_usec
-       4  TimingDelay
-      14  TimingDelay_Decrement
        2  assert_failed
       30  fputc
       10  main
 
  
-   4 bytes in section .bss
- 204 bytes in section .text
+ 86 bytes in section .text
  
- 204 bytes of CODE memory
-   4 bytes of DATA memory
+ 86 bytes of CODE memory
 
 Errors: none
 Warnings: none

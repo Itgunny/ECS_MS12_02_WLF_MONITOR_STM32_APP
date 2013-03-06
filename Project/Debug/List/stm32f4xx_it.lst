@@ -1,6 +1,6 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      04/Mar/2013  20:43:49 #
+# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      06/Mar/2013  19:54:15 #
 # Copyright 1999-2012 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
@@ -184,27 +184,27 @@ C:\Tools\IAR Systems\Embedded Workbench 6.5\WorkSpace\WL9F_Monitor_APP\Platform\
     141            */
     142          void SysTick_Handler(void)
     143          {
-    144            TimingDelay_Decrement();
-    145          
-    146          //	++, kutelf, 130228
-    147              ++WL9F_TIME_DATA.Cnt_1mSec;
+    144          //	++, kutelf, 130228
+    145            	TimeDelay_Decrement();
+    146          
+    147              ++WL9FM_TIME.Cnt_1mSec;
     148          
-    149          	if (WL9F_TIME_DATA.Cnt_1mSec % 1 == 0)                   //  1msec
+    149          	if (WL9FM_TIME.Cnt_1mSec % 1 == 0)                   //  1msec
     150          	{
-    151                  WL9F_TIME_DATA.Flag_1mSec = 1;
+    151                  WL9FM_TIME.Flag_1mSec = 1;
     152          
-    153          		if (WL9F_TIME_DATA.Cnt_1mSec % 10 == 0)              //  10msec
+    153          		if (WL9FM_TIME.Cnt_1mSec % 10 == 0)              //  10msec
     154          		{
-    155          			WL9F_TIME_DATA.Flag_10mSec = 1;
+    155          			WL9FM_TIME.Flag_10mSec = 1;
     156          
-    157          			if (WL9F_TIME_DATA.Cnt_1mSec % 100 == 0)         //  100msec
+    157          			if (WL9FM_TIME.Cnt_1mSec % 100 == 0)         //  100msec
     158          			{
-    159          				WL9F_TIME_DATA.Flag_100mSec = 1;
+    159          				WL9FM_TIME.Flag_100mSec = 1;
     160          
-    161          				if (WL9F_TIME_DATA.Cnt_1mSec % 1000 == 0)    //  1000 msec
+    161          				if (WL9FM_TIME.Cnt_1mSec % 1000 == 0)    //  1000 msec
     162          				{
-    163          					WL9F_TIME_DATA.Flag_1Sec = 1;
-    164          					WL9F_TIME_DATA.Cnt_1mSec = 0;
+    163          					WL9FM_TIME.Flag_1Sec = 1;
+    164          					WL9FM_TIME.Cnt_1mSec = 0;
     165          				}
     166          			}
     167          		}
@@ -247,7 +247,7 @@ C:\Tools\IAR Systems\Embedded Workbench 6.5\WorkSpace\WL9F_Monitor_APP\Platform\
        0   PendSV_Handler
        0   SVC_Handler
        8   SysTick_Handler
-         8   -> TimingDelay_Decrement
+         8   -> TimeDelay_Decrement
        0   UsageFault_Handler
 
 

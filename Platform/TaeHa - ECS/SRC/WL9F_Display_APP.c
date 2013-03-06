@@ -20,7 +20,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "WL9F_Display_Common.h"	
+#include "WL9F_Display_APP.h"	
 #include "WL9F_Display_Variable.h"
 
 /* Private typedef -----------------------------------------------------------*/
@@ -45,7 +45,6 @@ void WL9F_1mSecOperationFunc(void)
   * @param  None
   * @retval None
   */
-  uint8_t Test;
 void WL9F_10mSecOperationFunc(void)
 {
 
@@ -96,27 +95,27 @@ SYSTEM_RESET :
 	/* Infinite loop */
 	while (1)
 	{  
-		if (WL9F_TIME_DATA.Flag_1mSec == 1)     //  1msec
+		if (WL9FM_TIME.Flag_1mSec == 1)     //  1msec
 		{
-			WL9F_TIME_DATA.Flag_1mSec = 0;
+			WL9FM_TIME.Flag_1mSec = 0;
 
 			//  WL9F_1mSecOperationState -> Func 角青..
 			//  if (WL9F_1mSecOperationState != 0) WL9F_1mSecOperationFunc[WL9F_1mSecOperationState]();    
 			WL9F_1mSecOperationFunc();
 		}            
 		
-		if (WL9F_TIME_DATA.Flag_10mSec == 1)    //  10msec
+		if (WL9FM_TIME.Flag_10mSec == 1)    //  10msec
 		{
-			WL9F_TIME_DATA.Flag_10mSec = 0;
+			WL9FM_TIME.Flag_10mSec = 0;
 
 			//  WL9F_10mSecOperationState -> Func 角青..
 			//  if (WL9F_10mSecOperationState != 0) WL9F_10mSecOperationFunc[WL9F_10mSecOperationState]();    
 			WL9F_10mSecOperationFunc();
 		}
 		
-		if (WL9F_TIME_DATA.Flag_100mSec == 1)   //  100 msec
+		if (WL9FM_TIME.Flag_100mSec == 1)   //  100 msec
 		{
-			WL9F_TIME_DATA.Flag_100mSec = 0;
+			WL9FM_TIME.Flag_100mSec = 0;
 
 			//  WL9F_100mSecOperationState -> Func 角青..
 			//  if (WL9F_100mSecOperationState != 0) WL9F_100mSecOperationFunc[WL9F_100mSecOperationState]();    
@@ -131,9 +130,9 @@ SYSTEM_RESET :
 			#endif
 		}
 		
-		if (WL9F_TIME_DATA.Flag_1Sec == 1)      //  1000 msec
+		if (WL9FM_TIME.Flag_1Sec == 1)      //  1000 msec
 		{
-			WL9F_TIME_DATA.Flag_1Sec = 0;
+			WL9FM_TIME.Flag_1Sec = 0;
 
 			//  WL9F_1SecOperationState -> Func 角青..
 			//  if (WL9F_1SecOperationState != 0) WL9F_1SecOperationFunc[WL9F_1SecOperationState]();    
