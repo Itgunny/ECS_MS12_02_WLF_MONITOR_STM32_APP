@@ -141,7 +141,6 @@ void PendSV_Handler(void)
   */
 void SysTick_Handler(void)
 {
-//	++, kutelf, 130228
   	TimeDelay_Decrement();
 
     ++WL9FM_TIME.Cnt_1mSec;
@@ -166,7 +165,6 @@ void SysTick_Handler(void)
 			}
 		}
 	}    
-//	--, kutelf, 130228	
 }
 
 /******************************************************************************/
@@ -189,5 +187,47 @@ void SysTick_Handler(void)
   * @}
   */ 
 
+/**
+  * @brief  This function handles TIM4 global interrupt request.
+  * @param  None
+  * @retval None
+  */
+void TIM4_IRQHandler(void)  //  10msec Timer / TimeBase UP Counter
+{
+    TIM_ClearITPendingBit(TIM4, TIM_IT_Update);
+    
+    //  BUZZER Status가 "2" 일 경우 BUZZER OnTime 만큼 BUZZER On
+    if (WL9FM_BUZZER.Status == 2)
+    {
+        if (WL9FM_BUZZER.OnCnt++ < WL9FM_BUZZER.OnTime)
+        {
+            Buzzer_On();
+        }
+        else
+        {
+            WL9FM_BUZZER.Status = 0;               
+        }
+    }        
+    //  BUZZER Status가 "1" 일 경우 UnLimit BUZZER On
+    else if (WL9FM_BUZZER.Status == 1)
+    {
+        Buzzer_On();    
+    }    
+    else
+    {
+        Buzzer_Off();
+        
+        WL9FM_BUZZER.Status = 0;               
+        WL9FM_BUZZER.OnTime = 0;
+        WL9FM_BUZZER.OnCnt  = 0;
+    }
+
+	#if 0
+    CommErrCnt++;
+
+    if(CommErrCnt >= 1000)
+        CommErrCnt = 1001;
+	#endif
+}
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -30,6 +30,8 @@
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
+uint8_t Test;
+
 /**
   * @brief  1msec OperationFunc
   * @param  None
@@ -67,6 +69,16 @@ void WL9F_100mSecOperationFunc(void)
   */
 void WL9F_1SecOperationFunc(void)
 {
+	if (Test == 0) 
+	{
+		Buzzer_On();
+		Test = 1;
+	}
+	else
+	{
+		Buzzer_Off();
+		Test = 0;
+	}
 
 }
 
@@ -78,7 +90,7 @@ void WL9F_1SecOperationFunc(void)
 void WL9F_Display_APP(void)
 {
 	DebugUART_Init();			//	->	Main.c
-	//DebugMsg_printf("** DEBUG_MSG_LEVEL1 Defined..\r\n");
+    DebugMsg_printf("== START -> DebugMsg from Exynos-4412 \r\n");    
 
 	System_Configuration();		//  ->  System_Init.c
 	                            //      RCC, NVIC, GPIO Initialize

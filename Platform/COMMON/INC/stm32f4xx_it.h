@@ -51,6 +51,9 @@ void DebugMon_Handler(void);
 void PendSV_Handler(void);
 void SysTick_Handler(void);
 
+//  External Interrupts handler -> startup_stm32f4xx.s
+void TIM4_IRQHandler(void);
+
 #ifdef __cplusplus
 }
 #endif

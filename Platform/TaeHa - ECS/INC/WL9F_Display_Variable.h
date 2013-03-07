@@ -38,7 +38,8 @@ WL9FM_SaveE2PROMoniInfo		*SaveE2PROMoniInfo;
 
 WL9F_DATA_RTC   	   	    WL9FM_RTC;
 WL9F_TIME_DATA 		        WL9FM_TIME;
-
+WL9FM_BUZZER_DATA   		WL9FM_BUZZER;
+WL9FM_LCDBL_DATA   		    WL9FM_LCDBL;
 
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/

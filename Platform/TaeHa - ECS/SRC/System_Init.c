@@ -173,6 +173,64 @@ void InitE2PROM(void)
 	SerialPutString("Initialize : 100 %%\n\r\n\r");
 }
 
+void ReadE2PROM_ToSend()
+{
+#if 0
+	u8 i;
+
+	adc_value = (ADC1->DR & 0x0000FFFF);
+	
+	i = EepromRead(0);	
+	i = EepromRead(0);
+	i = EepromRead(0);
+    i = 0;
+    
+	adc_value = (ADC1->DR & 0x0000FFFF);
+
+	for(i = 0 ; i < 24 ; i++)
+		eepRomReadData1[i] = EepromRead(i+8);
+
+	for(i = 0 ; i < 8 ; i++)
+		Uart3_RxMsg_Save_Data1[i] = eepRomReadData1[i];
+
+	for(i = 0 ; i < 8 ; i++)
+		Uart3_RxMsg_Save_Data2[i] = eepRomReadData1[i+8];
+
+	for(i = 0 ; i < 8 ; i++)
+		Uart3_RxMsg_AS_Phone_Data[i] = eepRomReadData1[i+16];
+
+	for(i = 0 ; i < 21 ; i++)
+		MoniInfoData[i] = EepromRead(i+50);
+	
+	for(i = 0 ; i < 79 ; i++)
+		McuInfoData1[i] = EepromRead(i+100);
+
+	for(i = 0 ; i < 4 ; i++)
+		McuInfoData2[i] = EepromRead(i+200);
+
+	for(i = 0 ; i < 4 ; i++)
+		McuInfoData3[i] = EepromRead(i+210);
+
+	for(i = 0 ; i < 4 ; i++)
+		McuInfoData4[i] = EepromRead(i+220);
+
+	memset(&tmpMcuInfoData[1] , 0xff, 77);
+	memcpy((u8*)&tmpMcuInfoData[0], (u8*)&McuInfoData1[0], 5);
+	memcpy((u8*)&tmpMcuInfoData[5], (u8*)&McuInfoData2[0], 4);
+	memcpy((u8*)&tmpMcuInfoData[9], (u8*)&McuInfoData3[0], 4);
+	memcpy((u8*)&tmpMcuInfoData[13], (u8*)&McuInfoData4[0], 4);
+
+
+	adc_value = (ADC1->DR & 0x0000FFFF);
+	
+	eepRomReadData1[12] = (adc_value & 0xff);
+	eepRomReadData1[13] = (adc_value & 0xff00) >> 8;
+//	DebugMsg_printf("%2x %2x\r\n", eepRomReadData1[13], eepRomReadData1[12]);
+
+	System_PowerIG(PowerIG_ON);
+#endif
+}
+
 /**
   * @brief  Clock Setting.
   * @param  None
@@ -301,10 +359,11 @@ void RCC_Configuration(void)
   *          This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4  , ENABLE);
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI2  , ENABLE);
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_UART4 , ENABLE);
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C2  , ENABLE);
+	//RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C2, ENABLE);
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_CAN1  , ENABLE);
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_CAN2  , ENABLE);
 
@@ -332,12 +391,12 @@ void RCC_Configuration(void)
   *          This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM8, ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM8  , ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE);
 	//RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
 	//RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC2, ENABLE);
 	//RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC3, ENABLE);
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1  , ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_SYSCFG, ENABLE);
 }
 
@@ -456,7 +515,10 @@ void GPIO_Configuration(void)
     GPIO_Init(SFLASH_PORT, &GPIO_InitStructure);
 	
 	//	TW8832 -> I2C2
-    GPIO_InitStructure.GPIO_Pin   = TW8832_I2C2_SCL | TW8832_I2C2_SDA;
+	//  GPIO로 I2C2 사용
+    //  Alternate Function 사용안함
+	#if 0
+	GPIO_InitStructure.GPIO_Pin   = TW8832_I2C2_SCL | TW8832_I2C2_SDA;
     GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF;   
   	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
   	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
@@ -464,7 +526,15 @@ void GPIO_Configuration(void)
     GPIO_Init(TW8832_I2C2_PORT, &GPIO_InitStructure);
 	GPIO_PinAFConfig(TW8832_I2C2_PORT, TW8832_I2C2_SCL_PinSource, GPIO_AF_I2C2);
 	GPIO_PinAFConfig(TW8832_I2C2_PORT, TW8832_I2C2_SDA_PinSource, GPIO_AF_I2C2);
-
+	#else
+	GPIO_InitStructure.GPIO_Pin   = TW8832_I2C2_SCL | TW8832_I2C2_SDA;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+  	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(TW8832_I2C2_PORT, &GPIO_InitStructure);
+	#endif
+	
 	//	TW8832 SPI2 Control/Serial Flash(OSD)
     GPIO_InitStructure.GPIO_Pin   = TW8832_SFLASH_SPI2_CS | TW8832_SFLASH_SPI2_SCK | TW8832_SFLASH_SPI2_MISO | TW8832_SFLASH_SPI2_MOSI;
     GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF;   
@@ -804,17 +874,12 @@ void System_Initialize(void)
     GPIO_ResetBits(LCDPWR_PORT, LCDPWR_CTRL);  	//	LCD Power Enable 
                                                 //  Set   : LCD Power Enable 
                                                 //  Reset : LCD Power Disable	
-	// 	Exynos-4412에서 컨트롤 한다.
-	#if 0
-	//  BootLoader Bootting시에, BackLight는 All Off 상태로 만든다.
+
+	//  BootLoader Bootting시에, LCDBL는 Off 상태로 만든다.
     GPIO_ResetBits(LCDBL_PORT, LCDBL_CTRL);	    //	LCD BackLight Power On/Off (LCDBL_CTRL)
                                                	//  Set   : BackLight Power On
                                                	//  Reset : BackLight Power Off			
                                                	
-    GPIO_ResetBits(LCDBL_PORT, LCDBL_PWM);		//	LCD BackLight PWM, Brightness Adjust (LCDBL_PWM)
-                                                //  Default Set                                               	
-	#endif                                               	
-
     GPIO_ResetBits(BUZZER_PORT, BUZZER_CTRL);	//	BUZZER Off
                                                 //  Set   : BUZZER On
                                                 //  Reset : BUZZER Off
@@ -848,12 +913,45 @@ void System_Variable_Init(void)
 {
 	memset((void *)(&WL9FM_TIME),       	0x0, sizeof(WL9F_TIME_DATA));
     memset((void *)(&WL9FM_RTC),            0x0, sizeof(WL9F_DATA_RTC));	
+    memset((void *)(&WL9FM_BUZZER),         0x0, sizeof(WL9FM_BUZZER_DATA));	
+    memset((void *)(&WL9FM_LCDBL),          0x0, sizeof(WL9FM_LCDBL_DATA));	
+
+	
+}
+
+void WL9FM_EXYNOS_POWER_ONOFF(uint8_t BitData)
+{
+	GPIO_WriteBit(EXYNOS_PWR_CTRL_PORT, EXYNOS_PWR_CTRL, (BitAction) BitData);
+}
+
+void WL9FM_EXYNOS_PMIC_ONOFF(uint8_t BitData)
+{
+	
 }
 
 void WL9F_System_Init_Start(void)
 {
+	WL9FM_EXYNOS_POWER_ONOFF(EXYNOS_POWER_ON);	//	EXYNOS-4412 Power On..
 
+	Hardware_Version_Init();	//  ->  Hardware_Version.c (Hardware Version ADC Start)
+	Buzzer_Init();              //  ->  Buzzer.c (Buzzer Timer Start)
+	FM3164_Watchdog_Init(0x00);	//  ->  FM31X4.c (Integrated Processor Companion ON)
+
+	LED_POWER_ONOFF(LED_ON);	//	-> LCD_Control.c (LED On/Off)
+	LCD_POWER_ONOFF(LCDPWR_ON);	//	-> LCD_Control.c (LCD 12V Power On/Off)
+
+
+	LCD_CONTROL_Init();			//	-> LCD_Control.c (LCDBL, ON/OFF)
+	//TW8832_Control_Init();	//	-> TW8832_Control.c (LCD Interface)
+
+
+//    System_PowerIG(PowerIG_OFF);		//  PowerIG를 OFF로 만들어 놓고, EEPROM을 READ -> 거기서 ON으로 만든다.
+    
+	//InitE2PROM();
+	ReadE2PROM_ToSend();		//	-> EEPROM Data Read
 }
+
+
 /*********(C) COPYRIGHT 2013 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
 
 

@@ -205,6 +205,13 @@
 #define 	FSMC_nNE4_PinSource        		GPIO_PinSource12
 #define 	FSMC_nNE4_PORT           		GPIOG
 
+
+#define		EXYNOS_POWER_ON					1
+#define		EXYNOS_POWER_OFF				0
+
+#define		EXYNOS_PMIC_ON					1
+#define		EXYNOS_PMIC_OFF					0
+
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
@@ -222,5 +229,9 @@ extern void System_Configuration(void);
 extern void GPIO_Configuration_NotUsed(void);
 extern void System_Initialize(void);
 extern void InitE2PROM(void);
+extern void ReadE2PROM_ToSend(void);
+extern void WL9FM_EXYNOS_PMIC_ONOFF(uint8_t BitData);
+extern void WL9FM_EXYNOS_POWER_ONOFF(uint8_t BitData);
+
 #endif /* __SYSTEM_INIT_H */
 

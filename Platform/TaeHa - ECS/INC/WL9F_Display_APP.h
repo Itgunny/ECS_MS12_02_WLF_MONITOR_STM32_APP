@@ -33,6 +33,10 @@
 #include "System_Debug.h"
 #include "FM31X4.h"
 #include "TimeDelay.h"
+#include "Buzzer.h"
+#include "Hardware_Version.h"
+#include "LCD_Control.h"
+#include "TW8832_Control.h"
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/

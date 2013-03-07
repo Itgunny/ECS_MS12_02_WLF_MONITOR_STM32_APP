@@ -23,9 +23,7 @@
 #define __Buzzer_H
 
 /* Includes ------------------------------------------------------------------*/
-#include "main.h"
 #include "WL9F_Display_APP.h"	
-#include "WL9F_Display_Variable.h"
 
 /* Private typedef -----------------------------------------------------------*/
 #define 	BUZZERCMD    	  	0x42   	//	BUZZER - Ελ½Ε Command Data
@@ -35,13 +33,13 @@
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-struct BUZZER_DATA
+typedef struct 
 {	
 	uint16_t Status;
     uint16_t OnTime;
     uint16_t OnCnt;
 	uint16_t Current_Status;
-};
+} WL9FM_BUZZER_DATA;
 
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
@@ -50,7 +48,7 @@ struct BUZZER_DATA
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 /* Exported variables --------------------------------------------------------*/
-extern struct BUZZER_DATA   WL9F_BUZZER_DATA;
+extern WL9FM_BUZZER_DATA   WL9FM_BUZZER;
 
 /* Exported functions ------------------------------------------------------- */
 extern void Buzzer_Init(void);
@@ -59,7 +57,7 @@ extern void Buzzer_On(void);
 extern void Buzzer_UnLimitOn(void);
 extern void Buzzer_Off(void);
 extern void Buzzer_UnLimitOff(void);
-extern void Buzzer_SendToSPICA(uint8_t BuzzerValue);
+//extern void Buzzer_SendToSPICA(uint8_t BuzzerValue);
 
 #endif /* __Buzzer_H */
 
