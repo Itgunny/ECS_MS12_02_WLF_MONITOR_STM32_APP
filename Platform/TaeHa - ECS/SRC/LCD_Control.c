@@ -233,6 +233,7 @@ void LCD_CONTROL_Init(void)
 	LCDBL_ONOFF(LCDBL_ON);	//  PWM을 설정한 후에 -> BackLight On을 한다. 	
 	LCDBL_Init();
 	LCD_Display_Change(STM32F4_DISPLAY);
+//	LCD_Display_Change(EXYNOS_DISPLAY);
 		
 }
 

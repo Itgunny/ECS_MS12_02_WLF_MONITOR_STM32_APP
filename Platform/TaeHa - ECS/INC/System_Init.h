@@ -230,8 +230,9 @@ extern void GPIO_Configuration_NotUsed(void);
 extern void System_Initialize(void);
 extern void InitE2PROM(void);
 extern void ReadE2PROM_ToSend(void);
-extern void WL9FM_EXYNOS_PMIC_ONOFF(uint8_t BitData);
 extern void WL9FM_EXYNOS_POWER_ONOFF(uint8_t BitData);
+extern void WL9FM_EXYNOS_PMIC_ONOFF(void);
+extern void WL9FM_CAMERA_nRESET(void);
 
 #endif /* __SYSTEM_INIT_H */
 

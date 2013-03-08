@@ -769,7 +769,7 @@ void GPIO_Configuration(void)
 
 	GPIO_PinAFConfig(FSMC_PORT, FSMC_nOE_PinSource  , GPIO_AF_FSMC);
 	GPIO_PinAFConfig(FSMC_PORT, FSMC_nWE_PinSource  , GPIO_AF_FSMC);
-	GPIO_PinAFConfig(FSMC_PORT, FSMC_nWAIT_PinSource, GPIO_AF_FSMC);
+	GPIO_PinAFConfig(FSMC_PORT, FSMC_nWAIT_PinSource, GPIO_AF_FSMC);	 
 	GPIO_PinAFConfig(FSMC_PORT, FSMC_nCLK_PinSource , GPIO_AF_FSMC);
 
     //  nBL0, nBL1
@@ -924,28 +924,40 @@ void WL9FM_EXYNOS_POWER_ONOFF(uint8_t BitData)
 	GPIO_WriteBit(EXYNOS_PWR_CTRL_PORT, EXYNOS_PWR_CTRL, (BitAction) BitData);
 }
 
-void WL9FM_EXYNOS_PMIC_ONOFF(uint8_t BitData)
+void WL9FM_EXYNOS_PMIC_ONOFF(void)
 {
-	
+	GPIO_WriteBit(EXYNOS_PMIC_CTRL_PORT, EXYNOS_PMIC_CTRL, Bit_SET);
+	TimeDelay_msec(100);
+	GPIO_WriteBit(EXYNOS_PMIC_CTRL_PORT, EXYNOS_PMIC_CTRL, Bit_RESET);
+	TimeDelay_msec(100);
+}
+
+void WL9FM_CAMERA_nRESET(void)
+{
+	GPIO_WriteBit(CAMERA_nRESET_PORT, CAMERA_nRESET, Bit_RESET);
+	TimeDelay_msec(100);
+	GPIO_WriteBit(CAMERA_nRESET_PORT, CAMERA_nRESET, Bit_SET);
 }
 
 void WL9F_System_Init_Start(void)
 {
 	WL9FM_EXYNOS_POWER_ONOFF(EXYNOS_POWER_ON);	//	EXYNOS-4412 Power On..
-
+	//WL9FM_EXYNOS_PMIC_ONOFF();
+	
 	Hardware_Version_Init();	//  ->  Hardware_Version.c (Hardware Version ADC Start)
 	Buzzer_Init();              //  ->  Buzzer.c (Buzzer Timer Start)
 	FM3164_Watchdog_Init(0x00);	//  ->  FM31X4.c (Integrated Processor Companion ON)
+	KeySwitch_Init();           //  ->  KeySwitch.c
+	
+	LED_POWER_ONOFF(LED_ON);	//	->	LCD_Control.c (LED On/Off)
+	LCD_POWER_ONOFF(LCDPWR_ON);	//	-> 	LCD_Control.c (LCD 12V Power On/Off)
 
-	LED_POWER_ONOFF(LED_ON);	//	-> LCD_Control.c (LED On/Off)
-	LCD_POWER_ONOFF(LCDPWR_ON);	//	-> LCD_Control.c (LCD 12V Power On/Off)
+	WL9FM_CAMERA_nRESET();		//	-> 	TW2835, TW8832 Power On..
+	LCD_CONTROL_Init();			//	-> 	LCD_Control.c (LCDBL, ON/OFF)
+	TW2835_Control_Init();		//	-> 	TW2835_Control.c (CAMERA -> Decoder)
+	TW8832_Control_Init();		//	-> 	TW8832_Control.c (LCD Interface)
 
-
-	LCD_CONTROL_Init();			//	-> LCD_Control.c (LCDBL, ON/OFF)
-	//TW8832_Control_Init();	//	-> TW8832_Control.c (LCD Interface)
-
-
-//    System_PowerIG(PowerIG_OFF);		//  PowerIG를 OFF로 만들어 놓고, EEPROM을 READ -> 거기서 ON으로 만든다.
+//    System_PowerIG(PowerIG_OFF);	//  PowerIG를 OFF로 만들어 놓고, EEPROM을 READ -> 거기서 ON으로 만든다.
     
 	//InitE2PROM();
 	ReadE2PROM_ToSend();		//	-> EEPROM Data Read

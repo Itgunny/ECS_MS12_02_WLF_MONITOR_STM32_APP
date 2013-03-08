@@ -1,10 +1,10 @@
 /**
   ******************************************************************************
-  * @file    TW8832_Control.h
+  * @file    KeySwitch.h 
   * @author  kutelf (kutelf@taeha.co.kr)
   * @version V1.0.0
   * @date    02/22/2013
-  * @brief   Header for TW8832_Control.c module
+  * @brief   Header for KeySwitch.c module
   *
   * Project Name       : WL9F Display APP
   * Project Enviroment : IAREmbedded Workbench for ARM 6.5x 
@@ -19,32 +19,42 @@
   */ 
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __TW8832_Control_H
-#define __TW8832_Control_H
+#ifndef __KeySwitch_H
+#define __KeySwitch_H
 
 /* Includes ------------------------------------------------------------------*/
 #include "WL9F_Display_APP.h"	
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
-#define		TW8832_I2C_Addr			0x8A
 
-#define 	TW8832_SCL0				GPIO_ResetBits(TW8832_I2C2_PORT, TW8832_I2C2_SCL)
-#define 	TW8832_SCL1				GPIO_SetBits(TW8832_I2C2_PORT, TW8832_I2C2_SCL)
-#define 	TW8832_SDA_READ			GPIO_ReadInputDataBit(TW8832_I2C2_PORT, TW8832_I2C2_SDA)
+//  System_Init.c 에서 이미 설정하였지만, 다시 지정하기 위해서 아래의 define 선언.!!!
+//  System_Init.h 에서 선언한 것과 macro value만 다른 것이다. 
+//  KeySwitch
+#define KeySW0                  GPIO_Pin_6  //  Input   ->  MENU
+#define KeySW1                  GPIO_Pin_7  //  Input   ->  LEFT
+#define KeySW2                  GPIO_Pin_8  //  Input   ->  ESC
+#define KeySW3                  GPIO_Pin_9  //  Input   ->  RIGHT
+#define KeySW4                  GPIO_Pin_10 //  Input   ->  ENTER
+#define KeySWx_PORT             GPIOF
 
-#define 	TW8832_SDAIN   			TW8832_PortChange(0)
-#define 	TW8832_SDAOUT  			TW8832_PortChange(1) 
+//	첫번째   키를 눌렀을 때는 Key 값 +0x40
+//	연속으로 키를 눌렀을 때는 Key 값 +0x70
+#define Continuous_Key			0x30		//	연속키 값을 보내기 위해서 0x40 + 0x30을 할 것이다.
 
-#define		ContrastY				0x84
-#define		BrightnessY				0x8A
-#define		HueY					0x80
-#define		SaturationY				0x85
-#define		SharpnessY          	0x8B
+#define KEYSWITCH_MENU          0x10    	//	+0x70 : VK_F17(0x80), +0x40 : VK_P(0x50)
+#define KEYSWITCH_LEFT          0x08		//	+0x70 : VK_F9 (0x78), +0x40 : VK_H(0x48)	
+#define KEYSWITCH_ESC_CAM       0x04		//	+0x70 : VK_F5 (0x74), +0x40 : VK_D(0x44)
+#define KEYSWITCH_RIGHT         0x02		//	+0x70 :	VK_F3 (0x72), +0x40 : VK_B(0x42)
+#define KEYSWITCH_ENTER         0x01		//	+0x70 :	VK_F2 (0x71), +0x40 : VK_A(0x41)
 
-#define		ContrastR				0x81
-#define		BrightnessR				0x87
-#define		SharpnessR				0x8B
+//	기타 시스템 용도로 사용하는 키는 Key 값 +0x40으로 처리.
+#define KEYSWITCH_NONE		    0x20		//	+0x40 : VK_NUMPAD0(0x60) 
+#define KEYSWITCH_POWER_OFF     0x21		//	+0x40 : VK_NUMPAD1(0x61)
+											
+#define MAXSWITCH               5           //  Input Switch 
+
+#define KeyCMD  		  	  	0x4B   		//	KeyCMD - 통신 Command Data
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
@@ -55,32 +65,11 @@
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 /* Exported variables --------------------------------------------------------*/
-extern uc8 Sharpness[16];
-extern u8  InputMain;	
 
-extern u8  InitCVBSAll[];
 
 /* Exported functions ------------------------------------------------------- */
-extern void TW8832_Control_Init(void);
-extern u16 SetYCbCrContrast(u16 val);
-extern u16 SetYCbCrBright(u16 val);
-extern u16 SetYCbCrSaturation(u16 val);
-extern u8 ChangeCVBS(void);
-extern u8 CheckDecoderVDLOSS(u8 n);
-extern u8 CheckDecoderSTD(u8 n);
-extern u8 CheckAndSetDecoderScaler(void);
-extern u16 SetYCbCrSharp(u16 val);
-extern u16 SetYCbCrHUE(u16 val);
-extern void	InitCVBSRegister(void);
-extern void I2C2DeviceInitialize(u8 *RegSet);
+extern void KeySwitch_Init(void);
 
-extern void TW8832_PortChange(unsigned char dir);
-extern void I2C2_ByteWrite(u16 in_AddrVal, u8 in_DataVal);
-extern u8	I2C2_ByteRead(u16 in_AddrVal);
-extern void	WriteTW8832(u8 in_AddrVal, u8 in_DataVal);
-extern u8	ReadTW8832(u8 in_AddrVal);
-
-
-#endif /* __TW8832_Control_H */
+#endif /* __KeySwitch_H */
 
 /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
