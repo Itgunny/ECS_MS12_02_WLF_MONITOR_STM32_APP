@@ -36,10 +36,10 @@
 
 #if 1
 	#define nGCS3_TW2835_WRITE(Data)  			(*(__IO uint16_t *)(nGCS3_TW2835_ADDR) = (Data))
-	#define nGCS3_TW2835_READ  					((*(__IO uint16_t *)(nGCS3_TW2835_ADDR))
+	#define nGCS3_TW2835_READ  					(*(__IO uint16_t *)(nGCS3_TW2835_ADDR))
 
 	#define nGCS4_TW2835_WRITE(Data)  			(*(__IO uint16_t *)(nGCS4_TW2835_ADDR) = (Data))
-	#define nGCS4_TW2835_READ  					((*(__IO uint16_t *)(nGCS4_TW2835_ADDR))
+	#define nGCS4_TW2835_READ  					(*(__IO uint16_t *)(nGCS4_TW2835_ADDR))
 #else
 	#define nGCS3_TW2835_WRITE(Address, Data)  	(*(__IO uint16_t *)(Address) = (Data))
 	#define nGCS3_TW2835_READ  					((*(__IO uint16_t *)(nGCS3_TW2835_ADDR))

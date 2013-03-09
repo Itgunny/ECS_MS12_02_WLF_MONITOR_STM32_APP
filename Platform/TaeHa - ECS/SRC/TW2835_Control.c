@@ -926,23 +926,23 @@ void TW2835_Control_Init(void)
   	FSMC_NORSRAMInitTypeDef       FSMC_NORSRAMInitStructure;
   	FSMC_NORSRAMTimingInitTypeDef p;
 
-//  FSMC Configuration
-	p.FSMC_AddressSetupTime 		= 3;
+	//  FSMC Configuration
+	p.FSMC_AddressSetupTime 		= 5;
   	p.FSMC_AddressHoldTime 			= 0;
-  	p.FSMC_DataSetupTime 			= 6; 
-  	p.FSMC_BusTurnAroundDuration 	= 1;
+  	p.FSMC_DataSetupTime 			= 9; 
+  	p.FSMC_BusTurnAroundDuration 	= 0;
   	p.FSMC_CLKDivision 				= 0;
   	p.FSMC_DataLatency 				= 0;
   	p.FSMC_AccessMode 				= FSMC_AccessMode_A;
  
     /* 
-	TW2835 configuration  
+	nGCS3 - TW2835 configuration  
 	
 	TW2835 configured as follow : 
 
 			- Memory Bank       = SRAM3
 			- Data/Address MUX  = Disable 
-			- Memory Type       = NOR
+			- Memory Type       = SRAM
 			- Data Width        = 16bit 
 			- Write Operation   = Enable 
 			- Extended Mode     = Disable 
@@ -951,7 +951,7 @@ void TW2835_Control_Init(void)
     */   
 	FSMC_NORSRAMInitStructure.FSMC_Bank = FSMC_Bank1_NORSRAM3; 
 	FSMC_NORSRAMInitStructure.FSMC_DataAddressMux = FSMC_DataAddressMux_Disable; 
-  	FSMC_NORSRAMInitStructure.FSMC_MemoryType = FSMC_MemoryType_PSRAM;     
+  	FSMC_NORSRAMInitStructure.FSMC_MemoryType = FSMC_MemoryType_SRAM;     
 	FSMC_NORSRAMInitStructure.FSMC_MemoryDataWidth = FSMC_MemoryDataWidth_16b; 
 	FSMC_NORSRAMInitStructure.FSMC_BurstAccessMode = FSMC_BurstAccessMode_Disable; 
   	FSMC_NORSRAMInitStructure.FSMC_AsynchronousWait = FSMC_AsynchronousWait_Disable;  
@@ -961,7 +961,7 @@ void TW2835_Control_Init(void)
 	FSMC_NORSRAMInitStructure.FSMC_WriteOperation = FSMC_WriteOperation_Enable; 
     FSMC_NORSRAMInitStructure.FSMC_WaitSignal = FSMC_WaitSignal_Disable; 
 	FSMC_NORSRAMInitStructure.FSMC_ExtendedMode = FSMC_ExtendedMode_Disable; 
-    FSMC_NORSRAMInitStructure.FSMC_WriteBurst = FSMC_WriteBurst_Enable; 
+    FSMC_NORSRAMInitStructure.FSMC_WriteBurst = FSMC_WriteBurst_Disable; 
 	FSMC_NORSRAMInitStructure.FSMC_ReadWriteTimingStruct = &p; 
 	FSMC_NORSRAMInitStructure.FSMC_WriteTimingStruct = &p; 
 
@@ -971,6 +971,63 @@ void TW2835_Control_Init(void)
     /* Enable FSMC Bank1_NORSRAM3 Bank */
     FSMC_NORSRAMCmd(FSMC_Bank1_NORSRAM3, ENABLE);
 
+    /* 
+	nGCS4 - TW2835 configuration  
+	
+	TW2835 configured as follow : 
+
+			- Memory Bank       = SRAM4
+			- Data/Address MUX  = Disable 
+			- Memory Type       = SRAM
+			- Data Width        = 16bit 
+			- Write Operation   = Enable 
+			- Extended Mode     = Disable 
+			- Asynchronous Wait = Disable 
+ 			- WriteBurst        = Enable
+    */   
+	FSMC_NORSRAMInitStructure.FSMC_Bank = FSMC_Bank1_NORSRAM4; 
+	FSMC_NORSRAMInitStructure.FSMC_DataAddressMux = FSMC_DataAddressMux_Disable; 
+  	FSMC_NORSRAMInitStructure.FSMC_MemoryType = FSMC_MemoryType_SRAM;     
+	FSMC_NORSRAMInitStructure.FSMC_MemoryDataWidth = FSMC_MemoryDataWidth_16b; 
+	FSMC_NORSRAMInitStructure.FSMC_BurstAccessMode = FSMC_BurstAccessMode_Disable; 
+  	FSMC_NORSRAMInitStructure.FSMC_AsynchronousWait = FSMC_AsynchronousWait_Disable;  
+	FSMC_NORSRAMInitStructure.FSMC_WaitSignalPolarity = FSMC_WaitSignalPolarity_Low; 
+	FSMC_NORSRAMInitStructure.FSMC_WrapMode = FSMC_WrapMode_Disable; 
+    FSMC_NORSRAMInitStructure.FSMC_WaitSignalActive = FSMC_WaitSignalActive_BeforeWaitState;
+	FSMC_NORSRAMInitStructure.FSMC_WriteOperation = FSMC_WriteOperation_Enable; 
+    FSMC_NORSRAMInitStructure.FSMC_WaitSignal = FSMC_WaitSignal_Disable; 
+	FSMC_NORSRAMInitStructure.FSMC_ExtendedMode = FSMC_ExtendedMode_Disable; 
+    FSMC_NORSRAMInitStructure.FSMC_WriteBurst = FSMC_WriteBurst_Disable; 
+	FSMC_NORSRAMInitStructure.FSMC_ReadWriteTimingStruct = &p; 
+	FSMC_NORSRAMInitStructure.FSMC_WriteTimingStruct = &p; 
+
+	//	nGCS4 ¼³Á¤
+    FSMC_NORSRAMInit(&FSMC_NORSRAMInitStructure);
+
+    /* Enable FSMC Bank1_NORSRAM4 Bank */
+    FSMC_NORSRAMCmd(FSMC_Bank1_NORSRAM4, ENABLE);
+
+#if 0
+	GPIO_InitTypeDef GPIO_InitStructure;
+
+	GPIO_InitStructure.GPIO_Pin   = FSMC_nWE | FSMC_nOE;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;
+  	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(FSMC_PORT, &GPIO_InitStructure);
+	
+	GPIO_InitStructure.GPIO_Pin   = FSMC_nNE3;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;
+  	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(FSMC_nNE3_PORT, &GPIO_InitStructure);
+
+	GPIO_InitStructure.GPIO_Pin   = FSMC_nNE4;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;
+  	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(FSMC_nNE4_PORT, &GPIO_InitStructure);
+	
 	/*
 	#define nGCS3_TW2835_WRITE(Data)  			(*(__IO uint16_t *)(nGCS3_TW2835_ADDR) = (Data))
 	#define nGCS3_TW2835_READ  					((*(__IO uint16_t *)(nGCS3_TW2835_ADDR))
@@ -980,9 +1037,10 @@ void TW2835_Control_Init(void)
 	*/
 	while (1)
 	{
-		nGCS3_TW2835_WRITE(0x33);
-		TimeDelay_msec(100);
+		TimeDelay_msec(1000);
 	}
+#endif
+
     DebugMsg_printf("-- TW2835_Control_Init (nGCS3, nGCS4), Initialize END\r\n");
 }
 
