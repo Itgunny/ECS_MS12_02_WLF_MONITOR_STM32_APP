@@ -55,21 +55,11 @@ const uint16_t LCDBL_PWMLEVEL[MaxBackLightLEVEL] =
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
-/**
-  * @brief  LED Enable
-  * @param  None
-  * @retval None
-  */
 void LED_POWER_ONOFF(uint8_t BitData)
 {
     GPIO_WriteBit(LED_PORT, LED_CTRL, (BitAction) BitData);
 }
 
-/**
-  * @brief  LCD Power Enable
-  * @param  None
-  * @retval None
-  */
 void LCD_POWER_ONOFF(uint8_t BitData)
 {
     GPIO_WriteBit(LCDPWR_PORT, LCDPWR_CTRL, (BitAction) BitData);
@@ -228,10 +218,10 @@ void LCD_Display_Change(uint8_t BitData)
   * @param  None
   * @retval None
   */
-void LCD_CONTROL_Init(void)
+void LCD_Control_Init(void)
 {
-	LCDBL_ONOFF(LCDBL_ON);	//  PWM을 설정한 후에 -> BackLight On을 한다. 	
-	LCDBL_Init();
+	LCDBL_ONOFF(LCDBL_ON);	//  LCDBL Power On!!!
+	LCDBL_Init();			//	LCDBL PWM 설정 
 	LCD_Display_Change(STM32F4_DISPLAY);
 //	LCD_Display_Change(EXYNOS_DISPLAY);
 		

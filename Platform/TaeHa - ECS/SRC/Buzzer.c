@@ -58,7 +58,7 @@ void Buzzer_Init(void)
 	
     #endif
     
-    TIM_TimeBaseStructure.TIM_Period        = 0x2710;   //  (1 / 1MHz) * 10000 -> 10msec
+    TIM_TimeBaseStructure.TIM_Period        = 0x1388;   //  (1 / 1MHz) * 10000 -> 10msec
     TIM_TimeBaseStructure.TIM_Prescaler     = 0xA8;     //  168 MHz / 168 = 1MHz
     TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
     TIM_TimeBaseStructure.TIM_CounterMode   = TIM_CounterMode_Up;

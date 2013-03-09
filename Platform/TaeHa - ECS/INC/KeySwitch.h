@@ -66,9 +66,11 @@
 /* Exported macro ------------------------------------------------------------*/
 /* Exported variables --------------------------------------------------------*/
 
+extern uint8_t                  KeySwitch_Value;
 
 /* Exported functions ------------------------------------------------------- */
 extern void KeySwitch_Init(void);
+extern void KeySwitch_Process(void);
 
 #endif /* __KeySwitch_H */
 

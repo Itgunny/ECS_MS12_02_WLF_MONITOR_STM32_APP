@@ -41,6 +41,12 @@ WL9F_TIME_DATA 		        WL9FM_TIME;
 WL9FM_BUZZER_DATA   		WL9FM_BUZZER;
 WL9FM_LCDBL_DATA   		    WL9FM_LCDBL;
 
+USARTx_DATA  				WL9FM_USART_DATA;
+USARTx_INDEX 				WL9FM_USART_INDEX;
+
+
+uint8_t                     KeySwitch_Value;            //  GPIO Key Value
+
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 

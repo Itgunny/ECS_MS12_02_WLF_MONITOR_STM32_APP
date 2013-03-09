@@ -48,4 +48,16 @@ void WL9FM_CAMERA_nRESET(void)
 	GPIO_WriteBit(CAMERA_nRESET_PORT, CAMERA_nRESET, Bit_SET);
 }
 
+void WL9FM_PowerIG(uint8_t BitData)
+{
+    GPIO_WriteBit(PWR_CTRL_PORT, PWR_CTRL, (BitAction) BitData);
+}
+
+uint8_t WL9FM_GetPowerIG(void)
+{
+    return GPIO_ReadInputDataBit(PWR_IGMON_PORT, PWR_IGMON);
+}
+
+
+
 /*********(C) COPYRIGHT 2013 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/

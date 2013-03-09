@@ -27,6 +27,17 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
+
+//  System PowerIG On/Off
+#define     PowerIG_ON              		1           //  PowerIG On
+#define     PowerIG_OFF             		0           //  PowerIG Off
+
+#define		EXYNOS_POWER_ON					1			//	Exynos-4412 Power On
+#define		EXYNOS_POWER_OFF				0			//	Exynos-4412 Power Off
+
+#define		EXYNOS_PMIC_ON					1			//	Exynos-4412 RESET On
+#define		EXYNOS_PMIC_OFF					0			//	Exynos-4412 RESET Off
+
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
@@ -40,6 +51,8 @@
 extern void WL9FM_EXYNOS_POWER_ONOFF(uint8_t BitData);
 extern void WL9FM_EXYNOS_PMIC_ONOFF(void);
 extern void WL9FM_CAMERA_nRESET(void);
+extern void WL9FM_PowerIG(uint8_t BitData);
+extern uint8_t WL9FM_GetPowerIG(void);
 
 #endif /* __GPIO_Control_H */
 

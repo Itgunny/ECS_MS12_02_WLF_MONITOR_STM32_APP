@@ -30,8 +30,6 @@
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
-uint8_t Test;
-
 void Init_RTC(void)
 {
     WL9FM_RTC.Year   = 0;
@@ -230,7 +228,6 @@ void ReadE2PROM_ToSend()
 	eepRomReadData1[13] = (adc_value & 0xff00) >> 8;
 //	DebugMsg_printf("%2x %2x\r\n", eepRomReadData1[13], eepRomReadData1[12]);
 
-	System_PowerIG(PowerIG_ON);
 #endif
 }
 
@@ -271,41 +268,38 @@ void WL9F_100mSecOperationFunc(void)
   */
 void WL9F_1SecOperationFunc(void)
 {
-	if (Test == 0) 
-	{
-		Buzzer_On();
-		Test = 1;
-	}
-	else
-	{
-		Buzzer_Off();
-		Test = 0;
-	}
 
 }
 
 void WL9F_System_Init_Start(void)
 {
-	WL9FM_EXYNOS_POWER_ONOFF(EXYNOS_POWER_ON);	//	EXYNOS-4412 Power On..
+    WL9FM_PowerIG(PowerIG_OFF);					//  ->	GPIO_Control.c PowerIG를 OFF로 만들어 놓고, 
+	WL9FM_EXYNOS_POWER_ONOFF(EXYNOS_POWER_ON);	//	->	GPIO_Control.c EXYNOS-4412 Power On..
 	//WL9FM_EXYNOS_PMIC_ONOFF();
 	
-	Hardware_Version_Init();	//  ->  Hardware_Version.c (Hardware Version ADC Start)
-	Buzzer_Init();              //  ->  Buzzer.c (Buzzer Timer Start)
-	FM3164_Watchdog_Init(0x00);	//  ->  FM31X4.c (Integrated Processor Companion ON)
-	KeySwitch_Init();           //  ->  KeySwitch.c
+	Hardware_Version_Init();					//  ->  Hardware_Version.c (Hardware Version ADC Start)
+	Buzzer_Init();              				//  ->  Buzzer.c (Buzzer Timer Start)
+	FM3164_Watchdog_Init(0x00);					//  ->  FM31X4.c (Integrated Processor Companion ON)
+	KeySwitch_Init();           				//  ->  KeySwitch.c
 	
-	LED_POWER_ONOFF(LED_ON);	//	->	LCD_Control.c (LED On/Off)
-	LCD_POWER_ONOFF(LCDPWR_ON);	//	-> 	LCD_Control.c (LCD 12V Power On/Off)
+	LED_POWER_ONOFF(LED_ON);					//	->	LCD_Control.c (LED On/Off)
+	LCD_POWER_ONOFF(LCDPWR_ON);					//	-> 	LCD_Control.c (LCD 12V Power On/Off)
 
-	WL9FM_CAMERA_nRESET();		//	-> 	TW2835, TW8832 Power On..
-	LCD_CONTROL_Init();			//	-> 	LCD_Control.c (LCDBL, ON/OFF)
-	TW2835_Control_Init();		//	-> 	TW2835_Control.c (CAMERA -> Decoder)
-	TW8832_Control_Init();		//	-> 	TW8832_Control.c (LCD Interface)
+	WL9FM_CAMERA_nRESET();						//	-> 	TW2835, TW8832 Power On..
+	LCD_Control_Init();							//	-> 	LCD_Control.c (LCDBL, ON/OFF)
+	TW2835_Control_Init();						//	-> 	TW2835_Control.c (CAMERA -> Decoder)
+	TW8832_Control_Init();						//	-> 	TW8832_Control.c (LCD Interface)
 
-//    System_PowerIG(PowerIG_OFF);	//  PowerIG를 OFF로 만들어 놓고, EEPROM을 READ -> 거기서 ON으로 만든다.
+    
+    USART_COMInit(COMPORT2);       				//  ->	UART_Control.c
+    USART_COMInit(COMPORT4);       				//      COM2 : CAN Data
+    											//		COM4 : CMD Data
     
 	//InitE2PROM();
-	ReadE2PROM_ToSend();		//	-> EEPROM Data Read
+	ReadE2PROM_ToSend();						//	->	EEPROM Data Read
+
+	//WL9FM_PowerIG(PowerIG_ON);				//	->	GPIO_Control.c 초기화가 끝나면, PowerIG를 ON 한다.!!
+
 }
 
 /**

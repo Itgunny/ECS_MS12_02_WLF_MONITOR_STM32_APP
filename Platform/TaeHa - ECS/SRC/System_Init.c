@@ -157,6 +157,7 @@ void RCC_Configuration(void)
   * @retval None
   */
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4  , ENABLE);
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM5  , ENABLE);
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI2  , ENABLE);
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_UART4 , ENABLE);

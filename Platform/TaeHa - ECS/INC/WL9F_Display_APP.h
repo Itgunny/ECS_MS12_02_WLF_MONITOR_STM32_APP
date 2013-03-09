@@ -25,6 +25,9 @@
 /* Includes ------------------------------------------------------------------*/
 #include <stdio.h>
 #include <string.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <ctype.h>
 
 #include "stm32f4xx.h"
 #include "stm324xg_eval.h"
@@ -42,16 +45,13 @@
 #include "TW2835_OSD.h"
 #include "TW8832_Control.h"
 #include "TW8832_OSD.h"
+#include "UART_Control.h"
 
 /* Private typedef -----------------------------------------------------------*/
-
-#define		EXYNOS_POWER_ON					1
-#define		EXYNOS_POWER_OFF				0
-
-#define		EXYNOS_PMIC_ON					1
-#define		EXYNOS_PMIC_OFF					0
-
 /* Private define ------------------------------------------------------------*/
+
+//#define     STM32_BUZZER      //  STM32 BUZZER
+
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/

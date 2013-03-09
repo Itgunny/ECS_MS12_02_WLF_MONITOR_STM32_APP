@@ -63,7 +63,7 @@ typedef struct
 extern WL9FM_LCDBL_DATA	WL9FM_LCDBL;
 
 /* Exported functions ------------------------------------------------------- */
-extern void LCD_CONTROL_Init(void);
+extern void LCD_Control_Init(void);
 extern void LCD_POWER_ONOFF(uint8_t BitData);
 extern void LED_POWER_ONOFF(uint8_t BitData);
 extern void LCDBL_Init(void);
