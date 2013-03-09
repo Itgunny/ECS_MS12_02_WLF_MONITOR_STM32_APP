@@ -43,7 +43,7 @@ void Buzzer_Init(void)
     
     DebugMsg_printf("++ BUZZER (TIM4 : 10msec), TIM4_IRQn Initialize START\r\n");
 
-    //  GPIO Function은 System_Configuration.c 에서 설정
+    //  Buzzer GPIO는 System_Init.c 에서 설정
     #if 0
 
     GPIO_InitTypeDef    GPIO_InitStructure;

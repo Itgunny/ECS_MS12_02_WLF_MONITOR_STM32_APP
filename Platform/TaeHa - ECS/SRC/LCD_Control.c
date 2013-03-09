@@ -161,6 +161,29 @@ void LCDBL_Init(void)
 	ChannelPulse = (uint16_t) (((uint32_t) 85 * (TimerPeriod - 1)) / 100);	//	 85% : 14142  
 	ChannelPulse = (uint16_t) (((uint32_t) 10 * (TimerPeriod - 1)) / 10);  //	100% : 16638
 #endif
+
+    //  LCDBL GPIO는 System_Init.c 에서 설정
+    #if 0
+	GPIO_InitTypeDef GPIO_InitStructure;
+	
+	//	LCDBL_PWM -> PWM
+    GPIO_InitStructure.GPIO_Pin   = LCDBL_PWM;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF;   
+  	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
+    GPIO_Init(LCDBL_PORT, &GPIO_InitStructure);
+	GPIO_PinAFConfig(LCDBL_PORT, LCDBL_PWM_PinSource, GPIO_AF_TIM8);
+
+	//  LCDBL_CTRL -> GPIO Output
+    GPIO_InitStructure.GPIO_Pin   = LCDBL_CTRL;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+  	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(LCDBL_PORT, &GPIO_InitStructure);
+
+	#endif
 	
   	TIM_TimeBaseStructure.TIM_Prescaler         = 16;
   	TIM_TimeBaseStructure.TIM_CounterMode 	    = TIM_CounterMode_Up;
@@ -222,9 +245,8 @@ void LCD_Control_Init(void)
 {
 	LCDBL_ONOFF(LCDBL_ON);	//  LCDBL Power On!!!
 	LCDBL_Init();			//	LCDBL PWM 설정 
-	LCD_Display_Change(STM32F4_DISPLAY);
-//	LCD_Display_Change(EXYNOS_DISPLAY);
-		
+//	LCD_Display_Change(STM32F4_DISPLAY);
+	LCD_Display_Change(EXYNOS_DISPLAY);
 }
 
 /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/

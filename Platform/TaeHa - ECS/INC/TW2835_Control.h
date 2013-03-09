@@ -138,20 +138,28 @@
 #define	HALE_SET				GPIO_SetBits(TW2835_PORT, TW2835_HALE)
 #define	HALE_RESET				GPIO_ResetBits(TW2835_PORT, TW2835_HALE)
 
-//#if 0
 #define	HWRB_SET				GPIO_SetBits(GPIOD, GPIO_Pin_5)
 #define	HWRB_RESET				GPIO_ResetBits(GPIOD, GPIO_Pin_5)
 
 #define	HRDB_SET				GPIO_SetBits(GPIOD, GPIO_Pin_4)
 #define	HRDB_RESET				GPIO_ResetBits(GPIOD, GPIO_Pin_4)
 
-
+#if 0
 #define	HCSB1_SET				GPIO_SetBits(GPIOG, GPIO_Pin_12)
 #define	HCSB1_RESET				GPIO_ResetBits(GPIOG, GPIO_Pin_12)
 
 #define	HCSB0_SET				GPIO_SetBits(GPIOG, GPIO_Pin_10)
 #define	HCSB0_RESET				GPIO_ResetBits(GPIOG, GPIO_Pin_10)
-//#endif
+
+#else
+
+#define	HCSB1_SET				GPIO_SetBits(FSMC_nNE4_PORT, FSMC_nNE4)
+#define	HCSB1_RESET				GPIO_ResetBits(FSMC_nNE4_PORT, FSMC_nNE4)
+
+#define	HCSB0_SET				GPIO_SetBits(FSMC_nNE3_PORT, FSMC_nNE3)
+#define	HCSB0_RESET				GPIO_ResetBits(FSMC_nNE3_PORT, FSMC_nNE3)
+
+#endif
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/

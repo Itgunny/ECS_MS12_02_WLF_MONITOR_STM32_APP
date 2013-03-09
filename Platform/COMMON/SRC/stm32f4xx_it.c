@@ -36,6 +36,12 @@
   */
 
 /* Private typedef -----------------------------------------------------------*/
+
+//#define		DEBUG_CMD_RX
+//#define		DEBUG_CMD_TX
+//#define		DEBUG_CAN_RX
+//#define		DEBUG_CAN_TX
+
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
@@ -283,7 +289,7 @@ void UART4_IRQHandler(void)
 					}						
 					break;
 			case 1:
-					if (WL9FM_USART_DATA.COM4_RxBuf[1] == KeyCMD)			WL9FM_USART_INDEX.COM4_RxCnt++;
+					if (WL9FM_USART_DATA.COM4_RxBuf[1]      == KeyCMD)		WL9FM_USART_INDEX.COM4_RxCnt++;
 					else if (WL9FM_USART_DATA.COM4_RxBuf[1] == LCDBLCMD)	WL9FM_USART_INDEX.COM4_RxCnt++;
 					else if (WL9FM_USART_DATA.COM4_RxBuf[1] == BUZZERCMD)	WL9FM_USART_INDEX.COM4_RxCnt++;
 					

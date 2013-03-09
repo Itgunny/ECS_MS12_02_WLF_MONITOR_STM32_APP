@@ -921,8 +921,9 @@ u8 Read_TW2835()
   */
 void TW2835_Control_Init(void)
 {
-    DebugMsg_printf("++ TW2835_Control_Init (nGCS3, nGCS4), Initialize START\r\n");
+    DebugMsg_printf("++ TW2835_Control_Init (GPIO Mode), Initialize START\r\n");
 
+#if 0
   	FSMC_NORSRAMInitTypeDef       FSMC_NORSRAMInitStructure;
   	FSMC_NORSRAMTimingInitTypeDef p;
 
@@ -947,7 +948,7 @@ void TW2835_Control_Init(void)
 			- Write Operation   = Enable 
 			- Extended Mode     = Disable 
 			- Asynchronous Wait = Disable 
- 			- WriteBurst        = Enable
+ 			- WriteBurst        = Disable
     */   
 	FSMC_NORSRAMInitStructure.FSMC_Bank = FSMC_Bank1_NORSRAM3; 
 	FSMC_NORSRAMInitStructure.FSMC_DataAddressMux = FSMC_DataAddressMux_Disable; 
@@ -983,7 +984,7 @@ void TW2835_Control_Init(void)
 			- Write Operation   = Enable 
 			- Extended Mode     = Disable 
 			- Asynchronous Wait = Disable 
- 			- WriteBurst        = Enable
+ 			- WriteBurst        = Disable
     */   
 	FSMC_NORSRAMInitStructure.FSMC_Bank = FSMC_Bank1_NORSRAM4; 
 	FSMC_NORSRAMInitStructure.FSMC_DataAddressMux = FSMC_DataAddressMux_Disable; 
@@ -1006,16 +1007,17 @@ void TW2835_Control_Init(void)
 
     /* Enable FSMC Bank1_NORSRAM4 Bank */
     FSMC_NORSRAMCmd(FSMC_Bank1_NORSRAM4, ENABLE);
-
+#endif
 #if 0
-	GPIO_InitTypeDef GPIO_InitStructure;
 
+	GPIO_InitTypeDef GPIO_InitStructure;
+/*
 	GPIO_InitStructure.GPIO_Pin   = FSMC_nWE | FSMC_nOE;
     GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;
   	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_Init(FSMC_PORT, &GPIO_InitStructure);
-	
+*/	
 	GPIO_InitStructure.GPIO_Pin   = FSMC_nNE3;
     GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;
   	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
@@ -1027,6 +1029,21 @@ void TW2835_Control_Init(void)
   	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_Init(FSMC_nNE4_PORT, &GPIO_InitStructure);
+
+    //  FSMC Address Line
+    //  A25 ~ A10 : A25  A24   A23  A22  A21  A20  A19  A18  A17  A16  A15 A14 A13 A12 A11 A10
+    //              PG14 PG13  PE2  PE6  PE5  PE4  PE3  PD13 PD12 PD11 PG5 PG4 PG3 PG2 PG1 PG0           
+    //  A9  ~ A0  : A9   A8   A7   A6   A5  A4  A3  A2  A1  A0
+    //              PF15 PF14 PF13 PF12 PF5 PF4 PF3 PF2 PF1 PF0
+
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_5  | GPIO_Pin_4  | GPIO_Pin_3  | GPIO_Pin_2  |
+                                    GPIO_Pin_1  | GPIO_Pin_0;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;
+  	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+  	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+
+    GPIO_Init(GPIOF, &GPIO_InitStructure);
 	
 	/*
 	#define nGCS3_TW2835_WRITE(Data)  			(*(__IO uint16_t *)(nGCS3_TW2835_ADDR) = (Data))
@@ -1038,10 +1055,15 @@ void TW2835_Control_Init(void)
 	while (1)
 	{
 		TimeDelay_msec(1000);
+	    GPIO_WriteBit(GPIOF, GPIO_Pin_0, Bit_SET);
+		TimeDelay_msec(1000);
+		GPIO_WriteBit(GPIOF, GPIO_Pin_0, Bit_RESET);
+		TimeDelay_msec(1000);			
+		nGCS3_TW2835_WRITE(0x33);
 	}
 #endif
 
-    DebugMsg_printf("-- TW2835_Control_Init (nGCS3, nGCS4), Initialize END\r\n");
+    DebugMsg_printf("-- TW2835_Control_Init (GPIO Mode), Initialize END\r\n");
 }
 
 /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/

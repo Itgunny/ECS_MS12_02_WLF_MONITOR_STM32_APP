@@ -183,7 +183,7 @@ void KeySwitch_Init(void)
 
     DebugMsg_printf("++ KeySwitch (TIM5 : 5msec), TIM5_IRQn Initialize START\r\n");
 
-    //  GPIO Function은 System_Configuration.c 에서 설정
+    //  KeySwitch GPIO는 System_Init.c 에서 설정
     #if 0
 
     GPIO_InitTypeDef    GPIO_InitStructure;

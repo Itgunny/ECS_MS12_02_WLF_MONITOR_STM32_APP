@@ -276,7 +276,8 @@ void WL9F_System_Init_Start(void)
     WL9FM_PowerIG(PowerIG_OFF);					//  ->	GPIO_Control.c PowerIG를 OFF로 만들어 놓고, 
 	WL9FM_EXYNOS_POWER_ONOFF(EXYNOS_POWER_ON);	//	->	GPIO_Control.c EXYNOS-4412 Power On..
 	//WL9FM_EXYNOS_PMIC_ONOFF();
-	
+
+	DPRAM_Init();								//	-> 	DPRAM_Control.c (Dual Port RAM Init)
 	Hardware_Version_Init();					//  ->  Hardware_Version.c (Hardware Version ADC Start)
 	Buzzer_Init();              				//  ->  Buzzer.c (Buzzer Timer Start)
 	FM3164_Watchdog_Init(0x00);					//  ->  FM31X4.c (Integrated Processor Companion ON)
@@ -290,11 +291,11 @@ void WL9F_System_Init_Start(void)
 	TW2835_Control_Init();						//	-> 	TW2835_Control.c (CAMERA -> Decoder)
 	TW8832_Control_Init();						//	-> 	TW8832_Control.c (LCD Interface)
 
-    
     USART_COMInit(COMPORT2);       				//  ->	UART_Control.c
     USART_COMInit(COMPORT4);       				//      COM2 : CAN Data
     											//		COM4 : CMD Data
-    
+    CAN_COMInit();
+												//	-> 	CAN_Control.c
 	//InitE2PROM();
 	ReadE2PROM_ToSend();						//	->	EEPROM Data Read
 

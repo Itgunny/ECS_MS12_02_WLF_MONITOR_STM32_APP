@@ -95,7 +95,7 @@ void USART_COMInit(uint8_t COM)
 	
     DebugMsg_printf("++ USART %d Initialize START\r\n", COM);
 
-    //  GPIO Function은 System_Init.c 에서 설정
+    //  UART GPIO는 System_Init.c 에서 설정
     #if 0
 
     GPIO_InitTypeDef    GPIO_InitStructure;
@@ -290,7 +290,6 @@ void USARTx_printf(uint8_t COM, char *fmt,...)
   */
 void USARTx_printk(uint8_t COM, char *fmt,...)
 {
-#if 0
     va_list ap;
     
     char string[255];
@@ -301,15 +300,16 @@ void USARTx_printk(uint8_t COM, char *fmt,...)
     
     switch (COM)
     {
-        case COM2 : 
+        case COMPORT2 : 
                     strcpy((char *)WL9FM_USART_DATA.COM2_TxBuf, string);
                     
 			        WL9FM_USART_INDEX.COM2_TxCnt = 0;
 			        WL9FM_USART_INDEX.COM2_TxIdx = strlen((char *)WL9FM_USART_DATA.COM2_TxBuf);
                             
                     break;
-        case COM4 :
-                    strcpy((char *)WL9FM_USART_INDEX.COM4_TxBuf, string);
+
+        case COMPORT4 :
+                    strcpy((char *)WL9FM_USART_DATA.COM4_TxBuf, string);
                     
 			        WL9FM_USART_INDEX.COM4_TxCnt = 0;
 			        WL9FM_USART_INDEX.COM4_TxIdx = strlen((char *)WL9FM_USART_DATA.COM4_TxBuf);
@@ -320,7 +320,6 @@ void USARTx_printk(uint8_t COM, char *fmt,...)
     }                    
         
     USART_ITConfig(Serial_USART[COM], USART_IT_TXE, ENABLE);
-#endif	
 }  
 
 /**
@@ -331,14 +330,12 @@ void USARTx_printk(uint8_t COM, char *fmt,...)
 //  
 void USARTx_EXYNOS(uint8_t COM, char *TmpBuffer)
 {
-#if 0
-	memcpy((char *)WL9FM_USART_DATA.COM2_TxBuf, TmpBuffer, Serial_COM2_TxSize);
+	memcpy((char *)WL9FM_USART_DATA.COM4_TxBuf, TmpBuffer, Serial_COM4_TxSize);
 						
-    WL9FM_USART_INDEX.COM2_TxCnt = 0;
-    WL9FM_USART_INDEX.COM2_TxIdx = Serial_COM2_TxSize;
+    WL9FM_USART_INDEX.COM4_TxCnt = 0;
+    WL9FM_USART_INDEX.COM4_TxIdx = Serial_COM4_TxSize;
         
     USART_ITConfig(Serial_USART[COM], USART_IT_TXE, ENABLE);
-#endif	
 }
 
 /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/

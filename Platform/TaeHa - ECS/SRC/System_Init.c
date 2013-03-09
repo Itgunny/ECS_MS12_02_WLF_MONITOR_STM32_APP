@@ -458,9 +458,17 @@ void GPIO_Configuration(void)
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_Init(TW2835_PORT, &GPIO_InitStructure);
 
-	//  DPRAM -> GPIO Output
-    GPIO_InitStructure.GPIO_Pin   = DPRAM_INT | DPRAM_ADVL;
+	//  DPRAM ADVL -> GPIO Output
+    GPIO_InitStructure.GPIO_Pin   = DPRAM_ADVL;
     GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+  	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(DPRAM_PORT, &GPIO_InitStructure);
+
+	//  DPRAM INT -> GPIO Output
+    GPIO_InitStructure.GPIO_Pin   = DPRAM_INT;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_IN;   
   	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
   	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
