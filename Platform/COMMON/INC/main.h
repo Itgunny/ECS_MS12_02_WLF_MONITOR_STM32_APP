@@ -35,7 +35,7 @@
 #include "stm324xg_eval_lcd.h"
 #include <stdio.h>
 
-#include "WL9F_Display_APP.h"    //  ++, --, kutelf, 130228
+#include "WL9F_Monitor_APP.h"    //  ++, --, kutelf, 130228
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/

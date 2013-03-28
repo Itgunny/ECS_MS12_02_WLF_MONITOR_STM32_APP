@@ -6,10 +6,10 @@
   * @date    02/22/2013
   * @brief   Buzzer Header
   *
-  * Project Name       : WL9F Display APP
+  * Project Name       : WL9F Monitor APP
   * Project Enviroment : IAREmbedded Workbench for ARM 6.5x 
   *                      STM32F407ZGT6 Firmware Library
-  * Project Workspace  : WL9F_Display_APP
+  * Project Workspace  : WL9F_Monitor_APP
   * MCU Type           : STM32F407ZGT6
   *
   * TAEHA MECHATRONICS Co., Ltd (http://www.taeha.co.kr)				
@@ -23,7 +23,7 @@
 #define __Buzzer_H
 
 /* Includes ------------------------------------------------------------------*/
-#include "WL9F_Display_APP.h"	
+#include "WL9F_Monitor_APP.h"	
 
 /* Private typedef -----------------------------------------------------------*/
 #define 	BUZZERCMD    	  	0x42   	//	BUZZER - Ελ½Ε Command Data

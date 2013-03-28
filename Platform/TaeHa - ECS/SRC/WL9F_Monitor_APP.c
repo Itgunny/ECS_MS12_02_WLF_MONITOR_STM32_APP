@@ -6,10 +6,10 @@
   * @date    02/22/2013
   * @brief   WL9F_Monitor_APP.c module
   *
-  * Project Name       : WL9F Display APP
+  * Project Name       : WL9F Monitor APP
   * Project Enviroment : IAREmbedded Workbench for ARM 6.5x 
   *                      STM32F407ZGT6 Firmware Library
-  * Project Workspace  : WL9F_Display_APP
+  * Project Workspace  : WL9F_Monitor_APP
   * MCU Type           : STM32F407ZGT6
   *
   * TAEHA MECHATRONICS Co., Ltd (http://www.taeha.co.kr)				
@@ -20,8 +20,8 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "WL9F_Display_APP.h"	
-#include "WL9F_Display_Variable.h"
+#include "WL9F_Monitor_APP.h"	
+#include "WL9F_Monitor_Variable.h"
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -236,7 +236,7 @@ void ReadE2PROM_ToSend()
   * @param  None
   * @retval None
   */
-void WL9F_1mSecOperationFunc(void)
+void WL9FM_1mSecOperationFunc(void)
 {
 
 }
@@ -246,7 +246,7 @@ void WL9F_1mSecOperationFunc(void)
   * @param  None
   * @retval None
   */
-void WL9F_10mSecOperationFunc(void)
+void WL9FM_10mSecOperationFunc(void)
 {
 
 }
@@ -256,7 +256,7 @@ void WL9F_10mSecOperationFunc(void)
   * @param  None
   * @retval None
   */
-void WL9F_100mSecOperationFunc(void)
+void WL9FM_100mSecOperationFunc(void)
 {
 
 }
@@ -266,12 +266,12 @@ void WL9F_100mSecOperationFunc(void)
   * @param  None
   * @retval None
   */
-void WL9F_1SecOperationFunc(void)
+void WL9FM_1SecOperationFunc(void)
 {
 
 }
 
-void WL9F_System_Init_Start(void)
+void WL9FM_System_Init_Start(void)
 {
     WL9FM_PowerIG(PowerIG_OFF);					//  ->	GPIO_Control.c PowerIG를 OFF로 만들어 놓고, 
 	WL9FM_EXYNOS_POWER_ONOFF(EXYNOS_POWER_ON);	//	->	GPIO_Control.c EXYNOS-4412 Power On..
@@ -308,7 +308,7 @@ void WL9F_System_Init_Start(void)
   * @param  None
   * @retval None
   */
-void WL9F_Display_APP(void)
+void WL9FM_Monitor_APP(void)
 {
 	DebugUART_Init();			//	->	Main.c
     DebugMsg_printf("== START -> DebugMsg from Exynos-4412 \r\n");    
@@ -323,7 +323,7 @@ void WL9F_Display_APP(void)
 SYSTEM_RESET :
 
 	System_Variable_Init();
-	WL9F_System_Init_Start();
+	WL9FM_System_Init_Start();
 	
 	/* Infinite loop */
 	while (1)
@@ -334,7 +334,7 @@ SYSTEM_RESET :
 
 			//  WL9F_1mSecOperationState -> Func 실행..
 			//  if (WL9F_1mSecOperationState != 0) WL9F_1mSecOperationFunc[WL9F_1mSecOperationState]();    
-			WL9F_1mSecOperationFunc();
+			WL9FM_1mSecOperationFunc();
 		}            
 		
 		if (WL9FM_TIME.Flag_10mSec == 1)    //  10msec
@@ -343,7 +343,7 @@ SYSTEM_RESET :
 
 			//  WL9F_10mSecOperationState -> Func 실행..
 			//  if (WL9F_10mSecOperationState != 0) WL9F_10mSecOperationFunc[WL9F_10mSecOperationState]();    
-			WL9F_10mSecOperationFunc();
+			WL9FM_10mSecOperationFunc();
 		}
 		
 		if (WL9FM_TIME.Flag_100mSec == 1)   //  100 msec
@@ -352,7 +352,7 @@ SYSTEM_RESET :
 
 			//  WL9F_100mSecOperationState -> Func 실행..
 			//  if (WL9F_100mSecOperationState != 0) WL9F_100mSecOperationFunc[WL9F_100mSecOperationState]();    
-			WL9F_100mSecOperationFunc();
+			WL9FM_100mSecOperationFunc();
 
 			#if 0
 			//	WL9F Monitor RESET Code
@@ -369,7 +369,7 @@ SYSTEM_RESET :
 
 			//  WL9F_1SecOperationState -> Func 실행..
 			//  if (WL9F_1SecOperationState != 0) WL9F_1SecOperationFunc[WL9F_1SecOperationState]();    
-			WL9F_1SecOperationFunc();
+			WL9FM_1SecOperationFunc();
 		}
 	}
 }

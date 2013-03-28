@@ -6,10 +6,10 @@
   * @date    02/28/2013
   * @brief   
   *
-  * Project Name       : WL9F Display APP
+  * Project Name       : WL9F Monitor APP
   * Project Enviroment : IAREmbedded Workbench for ARM 6.5x 
   *                      STM32F407ZGT6 Firmware Library
-  * Project Workspace  : WL9F_Display_APP
+  * Project Workspace  : WL9F_Monitor_APP
   * MCU Type           : STM32F407ZGT6
   *
   * TAEHA MECHATRONICS Co., Ltd (http://www.taeha.co.kr)				
@@ -24,7 +24,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include <stdio.h>
-#include "WL9F_Display_APP.h"	
+#include "WL9F_Monitor_APP.h"	
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/

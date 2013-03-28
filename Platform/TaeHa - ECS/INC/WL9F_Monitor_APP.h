@@ -1,15 +1,15 @@
 /**
   ******************************************************************************
-  * @file    WL9F_Display_APP.h
+  * @file    WL9F_Monitor_APP.h
   * @author  kutelf (kutelf@taeha.co.kr)
   * @version V1.0.0
   * @date    02/22/2013
   * @brief   Main Header
   *
-  * Project Name       : WL9F Display Common
+  * Project Name       : WL9F Monitor Common
   * Project Enviroment : IAREmbedded Workbench for ARM 6.5x 
   *                      STM32F407ZGT6 Firmware Library
-  * Project Workspace  : WL9F_Display_APP
+  * Project Workspace  : WL9F_Monitor_APP
   * MCU Type           : STM32F407ZGT6
   *
   * TAEHA MECHATRONICS Co., Ltd (http://www.taeha.co.kr)				
@@ -19,8 +19,8 @@
   */ 
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __WL9F_Display_APP_H
-#define __WL9F_Display_APP_H
+#ifndef __WL9F_Monitor_APP_H
+#define __WL9F_Monitor_APP_H
 
 /* Includes ------------------------------------------------------------------*/
 #include <stdio.h>
@@ -70,11 +70,11 @@ extern void Init_RTC(void);
 extern void InitE2PROM(void);
 extern void ReadE2PROM_ToSend(void);
 
-extern void WL9F_Display_APP(void);
-extern void WL9F_1mSecOperationFunc(void);
-extern void WL9F_10mSecOperationFunc(void);
-extern void WL9F_100mSecOperationFunc(void);
-extern void WL9F_1SecOperationFunc(void);
-extern void WL9F_System_Init_Start(void);
+extern void WL9FM_Monitor_APP(void);
+extern void WL9FM_1mSecOperationFunc(void);
+extern void WL9FM_10mSecOperationFunc(void);
+extern void WL9FM_100mSecOperationFunc(void);
+extern void WL9FM_1SecOperationFunc(void);
+extern void WL9FM_System_Init_Start(void);
 
-#endif /* __WL9F_Display_APP_H */
+#endif /* __WL9F_Monitor_APP_H */

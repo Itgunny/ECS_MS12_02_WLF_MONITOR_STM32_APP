@@ -6,10 +6,10 @@
   * @date    02/22/2013
   * @brief   FM31X4.c module
   *
-  * Project Name       : WL9F Display APP
+  * Project Name       : WL9F Monitor APP
   * Project Enviroment : IAREmbedded Workbench for ARM 6.5x 
   *                      STM32F407ZGT6 Firmware Library
-  * Project Workspace  : WL9F_Display_APP
+  * Project Workspace  : WL9F_Monitor_APP
   * MCU Type           : STM32F407ZGT6
   *
   * TAEHA MECHATRONICS Co., Ltd (http://www.taeha.co.kr)				
@@ -19,7 +19,7 @@
   */ 
 
 /* Includes ------------------------------------------------------------------*/
-#include "WL9F_Display_APP.h" 
+#include "WL9F_Monitor_APP.h" 
 
 
 /* Private typedef -----------------------------------------------------------*/
@@ -686,7 +686,7 @@ unsigned char READ_RTC_Second(void)
     return temp;
 }
 
-void WRITE_RTC(WL9F_DATA_RTC RTC_Data)
+void WRITE_RTC(WL9FM_DATA_RTC RTC_Data)
 {    
     WRITE_FM31xx_RTC_Companion(0x00, 0x02);
     
@@ -703,7 +703,7 @@ void WRITE_RTC(WL9F_DATA_RTC RTC_Data)
     WRITE_FM31xx_RTC_Companion(0x01, 0x00);
 }
 
-void READ_RTC(WL9F_DATA_RTC *RTC_Data)
+void READ_RTC(WL9FM_DATA_RTC *RTC_Data)
 {    
     WRITE_FM31xx_RTC_Companion(0x00, 0x01);
     

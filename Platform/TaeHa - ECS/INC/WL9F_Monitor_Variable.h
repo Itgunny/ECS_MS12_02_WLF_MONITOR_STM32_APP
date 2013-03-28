@@ -1,15 +1,15 @@
 /**
   ******************************************************************************
-  * @file    WL9F_Display_Variable.h
+  * @file    WL9F_Monitor_Variable.h
   * @author  kutelf (kutelf@taeha.co.kr)
   * @version V1.0.0
   * @date    02/22/2013
   * @brief   Main Header
   *
-  * Project Name       : WL9F Display Common
+  * Project Name       : WL9F Monitor Common
   * Project Enviroment : IAREmbedded Workbench for ARM 6.5x 
   *                      STM32F407ZGT6 Firmware Library
-  * Project Workspace  : WL9F_Display_APP
+  * Project Workspace  : WL9F_Monitor_APP
   * MCU Type           : STM32F407ZGT6
   *
   * TAEHA MECHATRONICS Co., Ltd (http://www.taeha.co.kr)				
@@ -19,11 +19,11 @@
   */ 
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __WL9F_Display_Variable_H
-#define __WL9F_Display_Variable_H
+#ifndef __WL9F_Monitor_Variable_H
+#define __WL9F_Monitor_Variable_H
 
 /* Includes ------------------------------------------------------------------*/
-#include "WL9F_Display_APP.h"	
+#include "WL9F_Monitor_APP.h"	
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -36,8 +36,8 @@ WL9FM_SaveE2PROM3			*SaveE2PROM3;
 
 WL9FM_SaveE2PROMoniInfo		*SaveE2PROMoniInfo;
 
-WL9F_DATA_RTC   	   	    WL9FM_RTC;
-WL9F_TIME_DATA 		        WL9FM_TIME;
+WL9FM_DATA_RTC   	   	    WL9FM_RTC;
+WL9FM_TIME_DATA 		    WL9FM_TIME;
 WL9FM_BUZZER_DATA   		WL9FM_BUZZER;
 WL9FM_LCDBL_DATA   		    WL9FM_LCDBL;
 
@@ -56,4 +56,4 @@ uint8_t                     KeySwitch_Value;            //  GPIO Key Value
 /* Exported variables --------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 
-#endif /* __WL9F_Display_Variable_H */
+#endif /* __WL9F_Monitor_Variable_H */

@@ -125,12 +125,12 @@ int main(void)
 	#else
 
 		//  Application Program은 아래의 함수부터 Start Point로 실행된다. 
-        //  SubMain... -> WL9F_Display_APP.c 
-        WL9F_Display_APP();
+        //  SubMain... -> WL9F_Monitor_APP.c 
+        WL9FM_Monitor_APP();
         
-        //  WL9F_Display_APP()는 Infinite loop -> 만약 빠져나온다면, System은 Halt된 것이다. 
+        //  WL9F_Monitor_APP()는 Infinite loop -> 만약 빠져나온다면, System은 Halt된 것이다. 
         //  Halt가 된 후에는 메세지를 Debugging Message를 보낸 후에 break; 한다. 
-        //printf("\n\r WL9F_Display_APP() -> System halt");
+        //printf("\n\r WL9FM_Monitor_APP() -> System halt");
         
         break;
 		
