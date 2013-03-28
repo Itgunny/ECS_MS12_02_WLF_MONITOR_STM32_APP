@@ -53,6 +53,9 @@ void SysTick_Handler(void);
 
 //  External Interrupts handler -> startup_stm32f4xx.s
 void TIM4_IRQHandler(void);
+void TIM5_IRQHandler(void);
+void USART2_IRQHandler(void);
+void UART4_IRQHandler(void);
 
 #ifdef __cplusplus
 }
