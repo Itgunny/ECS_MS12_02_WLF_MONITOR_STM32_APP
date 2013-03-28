@@ -51,7 +51,6 @@ const uint8_t KEYSWITCH_VALUE[MAXSWITCH]   =   {
                                                 KEYSWITCH_RIGHT,    
                                                 KEYSWITCH_ENTER,    
                                             };                                                
-
 uint8_t     KeySwitchScan;
 uint8_t     Temp_Value1, Temp_Value2, Temp_Value3, Temp_Cnt;
 
@@ -95,7 +94,8 @@ void KeyTest(uint8_t Test)
 //  5msec 마다 실행.. -> stm32f10x_it.c -> TIM5_IRQHandler
 void KeySwitch_Process(void)
 {
-    uint8_t i, j, k;
+/*
+	uint8_t i, j, k;
     uint8_t New_Value;
     
 
@@ -174,6 +174,7 @@ void KeySwitch_Process(void)
     }        
 
     if (++KeySwitchScan > 5) KeySwitchScan = 0;        
+*/    
 }
 
 void KeySwitch_Init(void)

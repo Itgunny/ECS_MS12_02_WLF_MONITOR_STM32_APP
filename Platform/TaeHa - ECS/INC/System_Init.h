@@ -94,31 +94,29 @@
 #define		TW8832_I2C2_SDA_PinSource		GPIO_PinSource11
 #define		TW8832_I2C2_PORT				GPIOB
 
-//	TW8832 SPI2 Control/Serial Flash(OSD)
-#define		TW8832_SFLASH_SPI2_CS			GPIO_Pin_12
-#define		TW8832_SFLASH_SPI2_CS_PinSource	GPIO_PinSource12
-#define		TW8832_SFLASH_SPI2_SCK			GPIO_Pin_13
-#define		TW8832_SFLASH_SPI2_SCK_PinSource	GPIO_PinSource13
-#define		TW8832_SFLASH_SPI2_MISO			GPIO_Pin_14
-#define		TW8832_SFLASH_SPI2_MISO_PinSource	GPIO_PinSource14
-#define		TW8832_SFLASH_SPI2_MOSI			GPIO_Pin_15
-#define		TW8832_SFLASH_SPI2_MOSI_PinSource	GPIO_PinSource15
-//#define	TW8832_SFLASH_SPI2_D2		    GPIO_Pin_0
-//#define	TW8832_SFLASH_SPI2_D3		    GPIO_Pin_1
-#define		TW8832_SFLASH_SPI2_PORT 		GPIOB
-//#define	TW8832_SFLASH_SPI2_PORT2	    GPIOC
+//	LAMP GPIO (Serial Data -> Parallel Data
+//	74HC595
+#define		LAMP_CLR						GPIO_Pin_12
+#define		LAMP_SLCLK						GPIO_Pin_13
+#define		LAMP_SCLK						GPIO_Pin_14
+#define		LAMP_SDATA						GPIO_Pin_15
+#define		LAMP_PORT 						GPIOB
 
 //	Hardware Version -> ADC
 #define		HW_VERSION						GPIO_Pin_3
 #define		HW_VERSION_PORT					GPIOC
 
-//  KeySwitch -> GPIO 
-#define 	KeySW0                 	 		GPIO_Pin_6  //  Input   ->  MENU
-#define 	KeySW1                  		GPIO_Pin_7  //  Input   ->  LEFT
-#define 	KeySW2                  		GPIO_Pin_8  //  Input   ->  ESC
-#define 	KeySW3                  		GPIO_Pin_9  //  Input   ->  RIGHT
-#define 	KeySW4                  		GPIO_Pin_10 //  Input   ->  ENTER
-#define 	KeySWx_PORT             		GPIOF
+//  KeySwitch Matrix -> GPIO 
+#define 	KeySW00                  		GPIO_Pin_0	//	Key Matrix 00
+#define 	KeySW01                  		GPIO_Pin_1  //	Key Matrix 01
+#define 	KeySW02                  		GPIO_Pin_2 	//	Key Matrix 02
+#define 	KeySW10                  		GPIO_Pin_10 //	Key Matrix 10
+#define 	KeySW11                  		GPIO_Pin_11 //	Key Matrix 11
+#define 	KeySW12                  		GPIO_Pin_12 //	Key Matrix 12
+#define 	KeySW13                  		GPIO_Pin_13 //	Key Matrix 13
+#define 	KeySW14                  		GPIO_Pin_14 //	Key Matrix 14
+#define 	KeySW15                  		GPIO_Pin_15 //	Key Matrix 15
+#define 	KeySWXX_PORT             		GPIOF
 
 //  POWER_IGMON -> GPIO, Input
 #define 	PWR_IGMON               		GPIO_Pin_0  //  KeyIG Monitoring
@@ -162,18 +160,31 @@
 #define 	FM31X4_I2C1_PORT				GPIOB
 
 //	TW2835 -> GPIO
-#define 	TW2835_IRQ						GPIO_Pin_6
-#define		TW2835_HALE						GPIO_Pin_7
-#define		TW2835_HSPB						GPIO_Pin_8
-#define		TW2835_PORT						GPIOG
+#define 	TW2835_D0						GPIO_Pin_0
+#define 	TW2835_D1						GPIO_Pin_1
+#define 	TW2835_D2						GPIO_Pin_2
+#define 	TW2835_D3						GPIO_Pin_3
+#define 	TW2835_D4						GPIO_Pin_4
+#define 	TW2835_D5						GPIO_Pin_5
+#define 	TW2835_D6						GPIO_Pin_6
+#define 	TW2835_D7						GPIO_Pin_7
+#define		TW2835_CSB0						GPIO_Pin_10
+#define		TW2835_CSB1						GPIO_Pin_12
+#define		TW2835_nWE						GPIO_Pin_13
+#define		TW2835_nOE						GPIO_Pin_14
+#define		TW2835_DATAPORT					GPIOG
+
+#define 	TW2835_IRQ						GPIO_Pin_11
+#define		TW2835_HALE						GPIO_Pin_12
+#define		TW2835_HSPB						GPIO_Pin_13
+#define		TW2835_CTRLPORT					GPIOD
 
 //	DPRAM -> GPIO
 #define		DPRAM_INT						GPIO_Pin_13
-#define		DPRAM_ADVL						GPIO_Pin_14
 #define		DPRAM_PORT						GPIOC
 
-#define		CAMERA_nRESET					GPIO_Pin_11
-#define		CAMERA_nRESET_PORT				GPIOF
+#define		CAMERA_nRESET					GPIO_Pin_15
+#define		CAMERA_nRESET_PORT				GPIOC
 
 //  FSMC
 #define		FSMC_nCLK						GPIO_Pin_3
@@ -186,6 +197,10 @@
 #define 	FSMC_nWAIT_PinSource       		GPIO_PinSource6
 #define 	FSMC_PORT               		GPIOD
 
+#define 	FSMC_nADV	              		GPIO_Pin_7
+#define 	FSMC_nADV_PinSource       		GPIO_PinSource7
+#define 	FSMC_ADVPORT               		GPIOB
+
 #define		FSMC_nBL0						GPIO_Pin_0
 #define		FSMC_nBL0_PinSource				GPIO_PinSource0
 #define		FSMC_nBL1						GPIO_Pin_1
@@ -195,15 +210,6 @@
 #define 	FSMC_nNE1                		GPIO_Pin_7
 #define 	FSMC_nNE1_PinSource        		GPIO_PinSource7
 #define 	FSMC_nNE1_PORT           		GPIOD
-#define 	FSMC_nNE2                		GPIO_Pin_9
-#define 	FSMC_nNE2_PinSource        		GPIO_PinSource9
-#define 	FSMC_nNE2_PORT           		GPIOG
-#define 	FSMC_nNE3                		GPIO_Pin_10
-#define 	FSMC_nNE3_PinSource        		GPIO_PinSource10
-#define 	FSMC_nNE3_PORT           		GPIOG
-#define 	FSMC_nNE4                		GPIO_Pin_12
-#define 	FSMC_nNE4_PinSource        		GPIO_PinSource12
-#define 	FSMC_nNE4_PORT           		GPIOG
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/

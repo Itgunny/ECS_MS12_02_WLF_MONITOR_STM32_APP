@@ -245,8 +245,8 @@ void LCD_Control_Init(void)
 {
 	LCDBL_ONOFF(LCDBL_ON);	//  LCDBL Power On!!!
 	LCDBL_Init();			//	LCDBL PWM ¼³Á¤ 
-//	LCD_Display_Change(STM32F4_DISPLAY);
-	LCD_Display_Change(EXYNOS_DISPLAY);
+	LCD_Display_Change(STM32F4_DISPLAY);
+//	LCD_Display_Change(EXYNOS_DISPLAY);
 }
 
 /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/

@@ -28,26 +28,6 @@
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 
-#define nGCS3_TW2835_ADDR       			((uint32_t)0x68000000)
-#define nGCS4_TW2835_ADDR       			((uint32_t)0x6C000000)
-
-#define nGCS3_TW2835_ADDR_SHIFT(A) 			(nGCS3_TW2835_ADDR + (2 * (A)))
-#define nGCS4_TW2835_ADDR_SHIFT(A) 			(nGCS4_TW2835_ADDR + (2 * (A)))
-
-#if 1
-	#define nGCS3_TW2835_WRITE(Data)  			(*(__IO uint16_t *)(nGCS3_TW2835_ADDR) = (Data))
-	#define nGCS3_TW2835_READ  					(*(__IO uint16_t *)(nGCS3_TW2835_ADDR))
-
-	#define nGCS4_TW2835_WRITE(Data)  			(*(__IO uint16_t *)(nGCS4_TW2835_ADDR) = (Data))
-	#define nGCS4_TW2835_READ  					(*(__IO uint16_t *)(nGCS4_TW2835_ADDR))
-#else
-	#define nGCS3_TW2835_WRITE(Address, Data)  	(*(__IO uint16_t *)(Address) = (Data))
-	#define nGCS3_TW2835_READ  					((*(__IO uint16_t *)(nGCS3_TW2835_ADDR))
-
-	#define nGCS4_TW2835_WRITE(Address, Data)  	(*(__IO uint16_t *)(Address) = (Data))
-	#define nGCS4_TW2835_READ  					((*(__IO uint16_t *)(nGCS4_TW2835_ADDR))
-#endif
-
 #define	BIT0					(0x0001)
 #define	BIT1					(0x0002)
 #define	BIT2					(0x0004)
@@ -132,11 +112,11 @@
 //						Host definition & variable description
 //==================================================================================
 
-#define	HSPB_SET				GPIO_SetBits(TW2835_PORT, TW2835_HSPB)
-#define	HSPB_RESET				GPIO_ResetBits(TW2835_PORT, TW2835_HSPB)
+#define	HSPB_SET				GPIO_SetBits(GPIOD, TW2835_HSPB)
+#define	HSPB_RESET				GPIO_ResetBits(GPIOD, TW2835_HSPB)
 
-#define	HALE_SET				GPIO_SetBits(TW2835_PORT, TW2835_HALE)
-#define	HALE_RESET				GPIO_ResetBits(TW2835_PORT, TW2835_HALE)
+#define	HALE_SET				GPIO_SetBits(GPIOD, TW2835_HALE)
+#define	HALE_RESET				GPIO_ResetBits(GPIOD, TW2835_HALE)
 
 #define	HWRB_SET				GPIO_SetBits(GPIOD, GPIO_Pin_5)
 #define	HWRB_RESET				GPIO_ResetBits(GPIOD, GPIO_Pin_5)
@@ -144,22 +124,12 @@
 #define	HRDB_SET				GPIO_SetBits(GPIOD, GPIO_Pin_4)
 #define	HRDB_RESET				GPIO_ResetBits(GPIOD, GPIO_Pin_4)
 
-#if 0
-#define	HCSB1_SET				GPIO_SetBits(GPIOG, GPIO_Pin_12)
-#define	HCSB1_RESET				GPIO_ResetBits(GPIOG, GPIO_Pin_12)
+#define	HCSB1_SET				GPIO_SetBits(GPIOD, GPIO_Pin_4)
+#define	HCSB1_RESET				GPIO_ResetBits(GPIOD, GPIO_Pin_4)
 
-#define	HCSB0_SET				GPIO_SetBits(GPIOG, GPIO_Pin_10)
-#define	HCSB0_RESET				GPIO_ResetBits(GPIOG, GPIO_Pin_10)
+#define	HCSB0_SET				GPIO_SetBits(GPIOD, GPIO_Pin_4)
+#define	HCSB0_RESET				GPIO_ResetBits(GPIOD, GPIO_Pin_4)
 
-#else
-
-#define	HCSB1_SET				GPIO_SetBits(FSMC_nNE4_PORT, FSMC_nNE4)
-#define	HCSB1_RESET				GPIO_ResetBits(FSMC_nNE4_PORT, FSMC_nNE4)
-
-#define	HCSB0_SET				GPIO_SetBits(FSMC_nNE3_PORT, FSMC_nNE3)
-#define	HCSB0_RESET				GPIO_ResetBits(FSMC_nNE3_PORT, FSMC_nNE3)
-
-#endif
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/

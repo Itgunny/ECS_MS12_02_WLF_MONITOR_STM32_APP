@@ -267,6 +267,27 @@ void GPIO_Configuration(void)
 	GPIO_PinAFConfig(UART2_EXYNOS1_PORT, UART2TX_EXYNOS1_PinSource, GPIO_AF_USART2);
 	GPIO_PinAFConfig(UART2_EXYNOS1_PORT, UART2RX_EXYNOS1_PinSource, GPIO_AF_USART2);
 
+	//	TW8832 -> I2C2
+	//  GPIO로 I2C2 사용
+    //  Alternate Function 사용안함
+	#if 0
+	GPIO_InitStructure.GPIO_Pin   = TW8832_I2C2_SCL | TW8832_I2C2_SDA;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF;   
+  	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(TW8832_I2C2_PORT, &GPIO_InitStructure);
+	GPIO_PinAFConfig(TW8832_I2C2_PORT, TW8832_I2C2_SCL_PinSource, GPIO_AF_I2C2);
+	GPIO_PinAFConfig(TW8832_I2C2_PORT, TW8832_I2C2_SDA_PinSource, GPIO_AF_I2C2);
+	#else
+	GPIO_InitStructure.GPIO_Pin   = TW8832_I2C2_SCL | TW8832_I2C2_SDA;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+  	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(TW8832_I2C2_PORT, &GPIO_InitStructure);
+	#endif
+
 	//	STM32 UART4 <-> EXYNOS UART3
     GPIO_InitStructure.GPIO_Pin   = UART4TX_EXYNOS3 | UART4RX_EXYNOS3;
     GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF;   
@@ -311,53 +332,38 @@ void GPIO_Configuration(void)
   	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_Init(SFLASH_PORT, &GPIO_InitStructure);
-	
-	//	TW8832 -> I2C2
-	//  GPIO로 I2C2 사용
-    //  Alternate Function 사용안함
-	#if 0
-	GPIO_InitStructure.GPIO_Pin   = TW8832_I2C2_SCL | TW8832_I2C2_SDA;
-    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF;   
-  	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(TW8832_I2C2_PORT, &GPIO_InitStructure);
-	GPIO_PinAFConfig(TW8832_I2C2_PORT, TW8832_I2C2_SCL_PinSource, GPIO_AF_I2C2);
-	GPIO_PinAFConfig(TW8832_I2C2_PORT, TW8832_I2C2_SDA_PinSource, GPIO_AF_I2C2);
-	#else
-	GPIO_InitStructure.GPIO_Pin   = TW8832_I2C2_SCL | TW8832_I2C2_SDA;
+
+	//	LAMP GPIO (Serial Data -> Parallel Data
+    GPIO_InitStructure.GPIO_Pin   = LAMP_CLR | LAMP_SLCLK | LAMP_SCLK | LAMP_SDATA;
     GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
   	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
   	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(TW8832_I2C2_PORT, &GPIO_InitStructure);
-	#endif
-	
-	//	TW8832 SPI2 Control/Serial Flash(OSD)
-    GPIO_InitStructure.GPIO_Pin   = TW8832_SFLASH_SPI2_CS | TW8832_SFLASH_SPI2_SCK | TW8832_SFLASH_SPI2_MISO | TW8832_SFLASH_SPI2_MOSI;
-    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF;   
-  	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(TW8832_SFLASH_SPI2_PORT, &GPIO_InitStructure);
-	GPIO_PinAFConfig(TW8832_SFLASH_SPI2_PORT, TW8832_SFLASH_SPI2_CS_PinSource, GPIO_AF_SPI2);
-	GPIO_PinAFConfig(TW8832_SFLASH_SPI2_PORT, TW8832_SFLASH_SPI2_SCK_PinSource, GPIO_AF_SPI2);
-	GPIO_PinAFConfig(TW8832_SFLASH_SPI2_PORT, TW8832_SFLASH_SPI2_MISO_PinSource, GPIO_AF_SPI2);
-	GPIO_PinAFConfig(TW8832_SFLASH_SPI2_PORT, TW8832_SFLASH_SPI2_MOSI_PinSource, GPIO_AF_SPI2);
+    GPIO_Init(LAMP_PORT, &GPIO_InitStructure);
 
 	//	Hardware Version -> ADC
     GPIO_InitStructure.GPIO_Pin   = HW_VERSION;
     GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AN;   
-  	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_NOPULL;
-    GPIO_Init(HW_VERSION_PORT, &GPIO_InitStructure);
+  	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_NOPULL;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_Init(HW_VERSION_PORT, &GPIO_InitStructure);
 
-	//	KeySwitch -> GPIO Input
-    GPIO_InitStructure.GPIO_Pin   = KeySW0 | KeySW1 | KeySW2 | KeySW3 | KeySW4;
+	//	KeySwitch Matrix -> GPIO Output
+	GPIO_InitStructure.GPIO_Pin   = KeySW00 | KeySW01 | KeySW02;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+  	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(KeySWXX_PORT, &GPIO_InitStructure);
+
+	//	KeySwitch Matrix -> GPIO Input
+	GPIO_InitStructure.GPIO_Pin   = KeySW10 | KeySW11 | KeySW12 | KeySW13 | KeySW14 | KeySW15;
     GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_IN;   
   	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
   	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(KeySWx_PORT, &GPIO_InitStructure);
+    GPIO_Init(KeySWXX_PORT, &GPIO_InitStructure);
 
 	//  POWER_IGMON -> GPIO Input
     GPIO_InitStructure.GPIO_Pin   = PWR_IGMON;
@@ -456,15 +462,21 @@ void GPIO_Configuration(void)
   	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
   	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(TW2835_PORT, &GPIO_InitStructure);
+    GPIO_Init(TW2835_CTRLPORT, &GPIO_InitStructure);
 
-	//  DPRAM ADVL -> GPIO Output
-    GPIO_InitStructure.GPIO_Pin   = DPRAM_ADVL;
+    GPIO_InitStructure.GPIO_Pin   = TW2835_D0 | TW2835_D1 | TW2835_D2 | TW2835_D3 | TW2835_D4 | TW2835_D5 | TW2835_D6 | TW2835_D7;
     GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
   	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
   	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(DPRAM_PORT, &GPIO_InitStructure);
+    GPIO_Init(TW2835_DATAPORT, &GPIO_InitStructure);	
+
+    GPIO_InitStructure.GPIO_Pin   = TW2835_CSB0 | TW2835_CSB1 | TW2835_nWE | TW2835_nOE;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+  	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(TW2835_DATAPORT, &GPIO_InitStructure);
 
 	//  DPRAM INT -> GPIO Output
     GPIO_InitStructure.GPIO_Pin   = DPRAM_INT;
@@ -516,58 +528,6 @@ void GPIO_Configuration(void)
 	GPIO_PinAFConfig(GPIOE, GPIO_PinSource9 , GPIO_AF_FSMC);	
 	GPIO_PinAFConfig(GPIOE, GPIO_PinSource8 , GPIO_AF_FSMC);	
 	GPIO_PinAFConfig(GPIOE, GPIO_PinSource7 , GPIO_AF_FSMC);	
-	
-    //  FSMC Address Line
-    //  A25 ~ A10 : A25  A24   A23  A22  A21  A20  A19  A18  A17  A16  A15 A14 A13 A12 A11 A10
-    //              PG14 PG13  PE2  PE6  PE5  PE4  PE3  PD13 PD12 PD11 PG5 PG4 PG3 PG2 PG1 PG0           
-    //  A9  ~ A0  : A9   A8   A7   A6   A5  A4  A3  A2  A1  A0
-    //              PF15 PF14 PF13 PF12 PF5 PF4 PF3 PF2 PF1 PF0
-
-    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_15 | GPIO_Pin_14 | GPIO_Pin_13 | GPIO_Pin_12 |
-                                    GPIO_Pin_5  | GPIO_Pin_4  | GPIO_Pin_3  | GPIO_Pin_2  |
-                                    GPIO_Pin_1  | GPIO_Pin_0;
-    GPIO_Init(GPIOF, &GPIO_InitStructure);
-
-	GPIO_PinAFConfig(GPIOF, GPIO_PinSource15, GPIO_AF_FSMC);
-	GPIO_PinAFConfig(GPIOF, GPIO_PinSource14, GPIO_AF_FSMC);
-	GPIO_PinAFConfig(GPIOF, GPIO_PinSource13, GPIO_AF_FSMC);
-	GPIO_PinAFConfig(GPIOF, GPIO_PinSource12, GPIO_AF_FSMC);
-	GPIO_PinAFConfig(GPIOF, GPIO_PinSource5 , GPIO_AF_FSMC);
-	GPIO_PinAFConfig(GPIOF, GPIO_PinSource4 , GPIO_AF_FSMC);
-	GPIO_PinAFConfig(GPIOF, GPIO_PinSource3 , GPIO_AF_FSMC);	
-	GPIO_PinAFConfig(GPIOF, GPIO_PinSource2 , GPIO_AF_FSMC);	
-	GPIO_PinAFConfig(GPIOF, GPIO_PinSource1 , GPIO_AF_FSMC);	
-	GPIO_PinAFConfig(GPIOF, GPIO_PinSource0 , GPIO_AF_FSMC);
-	
-    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_14 | GPIO_Pin_13 | GPIO_Pin_5 |
-                                    GPIO_Pin_4  | GPIO_Pin_3  | GPIO_Pin_2 |
-    	                            GPIO_Pin_1  | GPIO_Pin_0;
-    GPIO_Init(GPIOG, &GPIO_InitStructure);
-
-	GPIO_PinAFConfig(GPIOG, GPIO_PinSource14, GPIO_AF_FSMC);
-	GPIO_PinAFConfig(GPIOG, GPIO_PinSource13, GPIO_AF_FSMC);
-	GPIO_PinAFConfig(GPIOG, GPIO_PinSource5 , GPIO_AF_FSMC);
-	GPIO_PinAFConfig(GPIOG, GPIO_PinSource4 , GPIO_AF_FSMC);
-	GPIO_PinAFConfig(GPIOG, GPIO_PinSource3 , GPIO_AF_FSMC);	
-	GPIO_PinAFConfig(GPIOG, GPIO_PinSource2 , GPIO_AF_FSMC);	
-	GPIO_PinAFConfig(GPIOG, GPIO_PinSource1 , GPIO_AF_FSMC);	
-	GPIO_PinAFConfig(GPIOG, GPIO_PinSource0 , GPIO_AF_FSMC);
-    
-    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_13 | GPIO_Pin_12 | GPIO_Pin_11;
-    GPIO_Init(GPIOD, &GPIO_InitStructure);
-
-	GPIO_PinAFConfig(GPIOD, GPIO_PinSource13, GPIO_AF_FSMC);	
-	GPIO_PinAFConfig(GPIOD, GPIO_PinSource12, GPIO_AF_FSMC);	
-	GPIO_PinAFConfig(GPIOD, GPIO_PinSource11, GPIO_AF_FSMC);
-
-    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_2 | GPIO_Pin_6 | GPIO_Pin_5 | GPIO_Pin_4 | GPIO_Pin_3;
-    GPIO_Init(GPIOE, &GPIO_InitStructure);
-
-	GPIO_PinAFConfig(GPIOE, GPIO_PinSource2, GPIO_AF_FSMC);
-	GPIO_PinAFConfig(GPIOE, GPIO_PinSource6, GPIO_AF_FSMC);
-	GPIO_PinAFConfig(GPIOE, GPIO_PinSource5, GPIO_AF_FSMC);
-	GPIO_PinAFConfig(GPIOE, GPIO_PinSource4, GPIO_AF_FSMC);
-	GPIO_PinAFConfig(GPIOE, GPIO_PinSource3, GPIO_AF_FSMC);	
 
     //  nCLK, nOE, nWE, nWait
     GPIO_InitStructure.GPIO_Pin = FSMC_nOE | FSMC_nWE | FSMC_nWAIT | FSMC_nCLK;
@@ -575,7 +535,7 @@ void GPIO_Configuration(void)
 
 	GPIO_PinAFConfig(FSMC_PORT, FSMC_nOE_PinSource  , GPIO_AF_FSMC);
 	GPIO_PinAFConfig(FSMC_PORT, FSMC_nWE_PinSource  , GPIO_AF_FSMC);
-	GPIO_PinAFConfig(FSMC_PORT, FSMC_nWAIT_PinSource, GPIO_AF_FSMC);	 
+	GPIO_PinAFConfig(FSMC_PORT, FSMC_nWAIT_PinSource, GPIO_AF_FSMC);
 	GPIO_PinAFConfig(FSMC_PORT, FSMC_nCLK_PinSource , GPIO_AF_FSMC);
 
     //  nBL0, nBL1
@@ -584,27 +544,17 @@ void GPIO_Configuration(void)
 
 	GPIO_PinAFConfig(FSMC_nBL_PORT, FSMC_nBL0_PinSource  , GPIO_AF_FSMC);
 	GPIO_PinAFConfig(FSMC_nBL_PORT, FSMC_nBL1_PinSource  , GPIO_AF_FSMC);
-    
-    // NE1, NE2, NE3, NE4 configuration
+   
+	//	nADV
+    GPIO_InitStructure.GPIO_Pin = FSMC_nADV;
+	GPIO_PinAFConfig(FSMC_ADVPORT, FSMC_nADV_PinSource  , GPIO_AF_FSMC);
+    GPIO_Init(FSMC_ADVPORT, &GPIO_InitStructure);
+
+    // NE1 configuration
     GPIO_InitStructure.GPIO_Pin = FSMC_nNE1;
     GPIO_Init(FSMC_nNE1_PORT, &GPIO_InitStructure);
 
 	GPIO_PinAFConfig(FSMC_nNE1_PORT, FSMC_nNE1_PinSource  , GPIO_AF_FSMC);
-	
-    GPIO_InitStructure.GPIO_Pin = FSMC_nNE2;
-    GPIO_Init(FSMC_nNE2_PORT, &GPIO_InitStructure);    
-
-	GPIO_PinAFConfig(FSMC_nNE2_PORT, FSMC_nNE2_PinSource  , GPIO_AF_FSMC);
-    
-    GPIO_InitStructure.GPIO_Pin = FSMC_nNE3;
-    GPIO_Init(FSMC_nNE3_PORT, &GPIO_InitStructure);
-
-	GPIO_PinAFConfig(FSMC_nNE3_PORT, FSMC_nNE3_PinSource  , GPIO_AF_FSMC);
-    
-    GPIO_InitStructure.GPIO_Pin = FSMC_nNE4;
-    GPIO_Init(FSMC_nNE4_PORT, &GPIO_InitStructure);    
-
-	GPIO_PinAFConfig(FSMC_nNE4_PORT, FSMC_nNE4_PinSource  , GPIO_AF_FSMC);
 
     //  사용하지 않는 GPIO Pin은 Output -> Low 상태로 만들어 놓는다.
     GPIO_Configuration_NotUsed();
@@ -619,42 +569,59 @@ void GPIO_Configuration_NotUsed(void)
 {
     GPIO_InitTypeDef GPIO_InitStructure;
 
-	//  PC2
-    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_2;
+	//  PC0, PC1, PC2, PC8, PC14
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_8 | GPIO_Pin_14;
     GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
   	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
   	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_Init(GPIOC, &GPIO_InitStructure);
 
-	//  PC8
-    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_8;
+	//  PF3, PF4, PF5, PF6, PF7, PF8, PF9
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9;
     GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
   	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
   	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOC, &GPIO_InitStructure);
+    GPIO_Init(GPIOF, &GPIO_InitStructure);
 
-	//  PB7
-    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_7;
+	//  PG8, PG9
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_8 | GPIO_Pin_9;
     GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
   	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
   	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOB, &GPIO_InitStructure);
-
-	//  PC15
-    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_15;
-    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
-  	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOC, &GPIO_InitStructure);
+    GPIO_Init(GPIOG, &GPIO_InitStructure);
 	
+	//  PE2, PE3, PE4, PE5
+    GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+  	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOG, &GPIO_InitStructure);
+
+    GPIO_ResetBits(GPIOC, GPIO_Pin_0);
+    GPIO_ResetBits(GPIOC, GPIO_Pin_1);
     GPIO_ResetBits(GPIOC, GPIO_Pin_2);
     GPIO_ResetBits(GPIOC, GPIO_Pin_8);
-    GPIO_ResetBits(GPIOC, GPIO_Pin_15);
-    GPIO_ResetBits(GPIOB, GPIO_Pin_7);	
+    GPIO_ResetBits(GPIOC, GPIO_Pin_14);
+	
+    GPIO_ResetBits(GPIOF, GPIO_Pin_3);
+    GPIO_ResetBits(GPIOF, GPIO_Pin_4);
+    GPIO_ResetBits(GPIOF, GPIO_Pin_5);
+    GPIO_ResetBits(GPIOF, GPIO_Pin_6);
+    GPIO_ResetBits(GPIOF, GPIO_Pin_7);
+    GPIO_ResetBits(GPIOF, GPIO_Pin_8);
+    GPIO_ResetBits(GPIOF, GPIO_Pin_9);
+
+    GPIO_ResetBits(GPIOG, GPIO_Pin_8);
+    GPIO_ResetBits(GPIOG, GPIO_Pin_9);	
+	
+    GPIO_ResetBits(GPIOG, GPIO_Pin_2);	
+    GPIO_ResetBits(GPIOG, GPIO_Pin_3);	
+    GPIO_ResetBits(GPIOG, GPIO_Pin_4);	
+    GPIO_ResetBits(GPIOG, GPIO_Pin_5);	
 }
 
 /**

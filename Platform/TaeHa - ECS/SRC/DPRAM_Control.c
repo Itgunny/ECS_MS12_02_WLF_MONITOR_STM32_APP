@@ -41,8 +41,6 @@ void DPRAM_Init(void)
 
 	#endif
 
-	GPIO_WriteBit(DPRAM_PORT, DPRAM_ADVL, Bit_SET);
-	
     DebugMsg_printf("++ DPRAM Initialize END\r\n");
 }
 
