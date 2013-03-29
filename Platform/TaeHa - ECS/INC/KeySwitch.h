@@ -31,12 +31,16 @@
 //  System_Init.c 에서 이미 설정하였지만, 다시 지정하기 위해서 아래의 define 선언.!!!
 //  System_Init.h 에서 선언한 것과 macro value만 다른 것이다. 
 //  KeySwitch
-#define KeySW0                  GPIO_Pin_6  //  Input   ->  MENU
-#define KeySW1                  GPIO_Pin_7  //  Input   ->  LEFT
-#define KeySW2                  GPIO_Pin_8  //  Input   ->  ESC
-#define KeySW3                  GPIO_Pin_9  //  Input   ->  RIGHT
-#define KeySW4                  GPIO_Pin_10 //  Input   ->  ENTER
-#define KeySWx_PORT             GPIOF
+#define KeySCAN0          		GPIO_Pin_0	//	Key Matrix 00
+#define KeySCAN1          		GPIO_Pin_1  //	Key Matrix 01
+#define KeySCAN2          		GPIO_Pin_2 	//	Key Matrix 02
+#define KeyInput0          		GPIO_Pin_10 //	Key Matrix 10
+#define KeyInput1          		GPIO_Pin_11 //	Key Matrix 11
+#define KeyInput2          		GPIO_Pin_12 //	Key Matrix 12
+#define KeyInput3          		GPIO_Pin_13 //	Key Matrix 13
+#define KeyInput4         		GPIO_Pin_14 //	Key Matrix 14
+#define KeyInput5          		GPIO_Pin_15 //	Key Matrix 15
+#define KeySWXX_PORT       		GPIOF
 
 //	첫번째   키를 눌렀을 때는 Key 값 +0x40
 //	연속으로 키를 눌렀을 때는 Key 값 +0x70
@@ -52,6 +56,9 @@
 #define KEYSWITCH_NONE		    0x20		//	+0x40 : VK_NUMPAD0(0x60) 
 #define KEYSWITCH_POWER_OFF     0x21		//	+0x40 : VK_NUMPAD1(0x61)
 											
+#define MAXSCAN 	            3           //  Scan Switch 
+#define MAXINPUT               	6           //  Input Switch 
+
 #define MAXSWITCH               5           //  Input Switch 
 
 #define KeyCMD  		  	  	0x4B   		//	KeyCMD - 통신 Command Data
@@ -71,6 +78,7 @@ extern uint8_t                  KeySwitch_Value;
 /* Exported functions ------------------------------------------------------- */
 extern void KeySwitch_Init(void);
 extern void KeySwitch_Process(void);
+extern void KeyTest_TEST(uint8_t value);
 
 #endif /* __KeySwitch_H */
 

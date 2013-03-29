@@ -350,7 +350,7 @@ void GPIO_Configuration(void)
 	GPIO_Init(HW_VERSION_PORT, &GPIO_InitStructure);
 
 	//	KeySwitch Matrix -> GPIO Output
-	GPIO_InitStructure.GPIO_Pin   = KeySW00 | KeySW01 | KeySW02;
+	GPIO_InitStructure.GPIO_Pin   = KeySCAN0 | KeySCAN1 | KeySCAN2;
     GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
   	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
   	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
@@ -358,7 +358,7 @@ void GPIO_Configuration(void)
     GPIO_Init(KeySWXX_PORT, &GPIO_InitStructure);
 
 	//	KeySwitch Matrix -> GPIO Input
-	GPIO_InitStructure.GPIO_Pin   = KeySW10 | KeySW11 | KeySW12 | KeySW13 | KeySW14 | KeySW15;
+	GPIO_InitStructure.GPIO_Pin   = KeyInput0 | KeyInput1 | KeyInput2 | KeyInput3 | KeyInput4 | KeyInput5;
     GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_IN;   
   	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
   	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
@@ -599,7 +599,7 @@ void GPIO_Configuration_NotUsed(void)
   	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
   	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOG, &GPIO_InitStructure);
+    GPIO_Init(GPIOE, &GPIO_InitStructure);
 
     GPIO_ResetBits(GPIOC, GPIO_Pin_0);
     GPIO_ResetBits(GPIOC, GPIO_Pin_1);
@@ -618,10 +618,10 @@ void GPIO_Configuration_NotUsed(void)
     GPIO_ResetBits(GPIOG, GPIO_Pin_8);
     GPIO_ResetBits(GPIOG, GPIO_Pin_9);	
 	
-    GPIO_ResetBits(GPIOG, GPIO_Pin_2);	
-    GPIO_ResetBits(GPIOG, GPIO_Pin_3);	
-    GPIO_ResetBits(GPIOG, GPIO_Pin_4);	
-    GPIO_ResetBits(GPIOG, GPIO_Pin_5);	
+    GPIO_ResetBits(GPIOE, GPIO_Pin_2);	
+    GPIO_ResetBits(GPIOE, GPIO_Pin_3);	
+    GPIO_ResetBits(GPIOE, GPIO_Pin_4);	
+    GPIO_ResetBits(GPIOE, GPIO_Pin_5);	
 }
 
 /**

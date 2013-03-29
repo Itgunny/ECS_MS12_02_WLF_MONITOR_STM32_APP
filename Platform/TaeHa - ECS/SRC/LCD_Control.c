@@ -227,12 +227,14 @@ void LCD_Display_Change(uint8_t BitData)
 	if (BitData == STM32F4_DISPLAY)
 	{
 	    GPIO_WriteBit(LCD_EXYNOS_PORT, LCD_EXYNOS, Bit_RESET);
+		TimeDelay_msec(10); 
 	    GPIO_WriteBit(LCD_STM32_PORT , LCD_STM32 , Bit_SET);
 	}
 	else
 	{
 	    GPIO_WriteBit(LCD_STM32_PORT , LCD_STM32 , Bit_RESET);
-	    GPIO_WriteBit(LCD_EXYNOS_PORT, LCD_EXYNOS, Bit_SET);
+		TimeDelay_msec(10); 
+		GPIO_WriteBit(LCD_EXYNOS_PORT, LCD_EXYNOS, Bit_SET);
 	}
 }
 
@@ -245,8 +247,10 @@ void LCD_Control_Init(void)
 {
 	LCDBL_ONOFF(LCDBL_ON);	//  LCDBL Power On!!!
 	LCDBL_Init();			//	LCDBL PWM ¼³Á¤ 
-	LCD_Display_Change(STM32F4_DISPLAY);
-//	LCD_Display_Change(EXYNOS_DISPLAY);
+
+//	LCD_Display_Change(STM32F4_DISPLAY);
+	LCD_Display_Change(EXYNOS_DISPLAY);
+
 }
 
 /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/

@@ -221,16 +221,7 @@ u8 InitCVBSAll[] =
 
 void NOP_TW8832(void)
 {
-	__NOP; __NOP; __NOP; __NOP; __NOP; __NOP; __NOP; 
-	__NOP; __NOP; __NOP; __NOP; __NOP; __NOP; __NOP; 
-	__NOP; __NOP; __NOP; __NOP; __NOP; __NOP; __NOP; 
-	__NOP; __NOP; __NOP; __NOP; __NOP; __NOP; __NOP; 
-	__NOP; __NOP; __NOP; __NOP; __NOP; __NOP; __NOP; 
-	__NOP; __NOP; __NOP; __NOP; __NOP; __NOP; __NOP; 
-	__NOP; __NOP; __NOP; __NOP; __NOP; __NOP; __NOP; 
-	__NOP; __NOP; __NOP; __NOP; __NOP; __NOP; __NOP; 
-	__NOP; __NOP; __NOP; __NOP; __NOP; __NOP; __NOP; 
-	__NOP; __NOP; __NOP; __NOP; __NOP; __NOP; __NOP; 
+	TimeDelay_usec(1);	
 }
 
 void TW8832_PortChange(unsigned char dir)
@@ -652,6 +643,7 @@ void I2C2DeviceInitialize(u8 *RegSet)
 
 	WriteTW8832(0xff, 0x00);	// Set page 0
 }
+
 
 void InitCVBSRegister( void )
 {

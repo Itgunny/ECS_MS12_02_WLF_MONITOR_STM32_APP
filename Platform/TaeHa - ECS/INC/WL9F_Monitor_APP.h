@@ -41,6 +41,7 @@
 #include "Buzzer.h"
 #include "Hardware_Version.h"
 #include "KeySwitch.h"
+#include "LAMP_Control.h"
 #include "LCD_Control.h"
 #include "TW2835_Control.h"
 #include "TW2835_OSD.h"

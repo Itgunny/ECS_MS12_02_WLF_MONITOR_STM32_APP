@@ -285,7 +285,7 @@ void SetAsicFlgType(u8 _dvc, u8 _pg, u8 _addr, u8 _flg, u8 _data)
 
 void InitPg0(void)
 {
-	WriteAsicTable(MASTER,DVC_PG0,0x00,Register_Table_Page0,0xff);
+    	WriteAsicTable(MASTER,DVC_PG0,0x00,Register_Table_Page0,0xff);
 }
 
 void InitPg1(void)
@@ -330,44 +330,32 @@ void WriteAsicByteOSD(u8 _dvc, u8 _addr, u8 _wdat)
 	Temp = _dvc;
 
 	cmn_flg.ST.BIT.b_cmn_prtcl_bsy=1;
-	//  	P1 = 0xf6;					//... initial state
+
 	HALE_RESET;
 	HRDB_SET;
 	HWRB_SET;
 	HSPB_RESET;
-
-	//... P[7:4]:INT[5:2], P1_3:HALE, P1_2:HRDB, P1_1:HWRB, P1_0:HSPB
-
 
 	_dvc = 0;							//... temporal
 	HCSB0_RESET;
 	HCSB1_SET;
 
-	//MDATA =	_addr;
 	Write_TW2835(_addr);
-
 	HALE_SET;
 	HALE_RESET;
 
-	//MDATA =	_wdat;
 	Write_TW2835(_wdat);
-
 	HWRB_RESET;
 	HWRB_SET;
 
-
-
-	//  	P1 = 0xf6;					//... initial state
 	HALE_RESET;
 	HRDB_SET;
 	HWRB_SET;
 	HSPB_RESET;
 
-	//		P2 = 0x03;					//... chip select all off
 	HCSB0_SET;
 	HCSB1_SET;
 
-	//MDATA =	0xff;
 	Write_TW2835(0xFF);
 
 	cmn_flg.ST.BIT.b_cmn_prtcl_bsy=0;
@@ -386,20 +374,16 @@ void WriteAsicTableOSD(u8 _dvc, u8 _addr, u8 *_tbl_ptr)
    	Temp = _dvc;
 
 	cmn_flg.ST.BIT.b_cmn_prtcl_bsy=1;
-	//  	P1 = 0xf6;					//... initial state
+
 	HALE_RESET;
 	HRDB_SET;
 	HWRB_SET;
 	HSPB_RESET;
 
-	//... P[7:4]:INT[5:2], P1_3:HALE, P1_2:HRDB, P1_1:HWRB, P1_0:HSPB
-
-
 	_dvc = 0;							//... temporal
 	HCSB0_RESET;
 	HCSB1_SET;
 
-	//MDATA =	_addr;
 	Write_TW2835(_addr);
 
 	HALE_SET;
@@ -408,14 +392,11 @@ void WriteAsicTableOSD(u8 _dvc, u8 _addr, u8 *_tbl_ptr)
 
 	for(_t1_=0;_t1_<5;_t1_++)
 	{
-		//MDATA =	_tbl_ptr[_t1_];
 		Write_TW2835(_tbl_ptr[_t1_]);
-
 		HWRB_RESET;
 		HWRB_SET;
 	}
 
-	//  	P1 = 0xf6;					//... initial state
 	HALE_RESET;
 	HRDB_SET;
 	HWRB_SET;
@@ -425,7 +406,6 @@ void WriteAsicTableOSD(u8 _dvc, u8 _addr, u8 *_tbl_ptr)
 	HCSB0_SET;
 	HCSB1_SET;
 
-	//MDATA =	0xff;
 	Write_TW2835(0xFF);
 
 
@@ -438,21 +418,18 @@ void WriteAsicTableOSD(u8 _dvc, u8 _addr, u8 *_tbl_ptr)
 
 void WriteAsicByte(u8 _dvc, u8 _pg, u8 _addr, u8 _wdat)
 {
-//	u16 temp_16;
+
 #if	defined(__EN_ISR__)
 	EA = 0;
 #endif
    	Temp = _dvc;
         
 	cmn_flg.ST.BIT.b_cmn_prtcl_bsy=1;
-	//  	P1 = 0xf6;					//... initial state
+
 	HALE_RESET;
 	HRDB_SET;
 	HWRB_SET;
 	HSPB_RESET;
-
-	//... P[7:4]:INT[5:2], P1_3:HALE, P1_2:HRDB, P1_1:HWRB, P1_0:HSPB
-
 
 	_dvc = 0;							//... temporal
 	if(_pg == DVC_PG0)
@@ -470,21 +447,14 @@ void WriteAsicByte(u8 _dvc, u8 _pg, u8 _addr, u8 _wdat)
 		HCSB0_RESET;
 	}
 
-	//MDATA =	_addr;
 	Write_TW2835(_addr);
-
 	HALE_SET;
 	HALE_RESET;
 
-	//MDATA =	_wdat;
 	Write_TW2835(_wdat);
-
 	HWRB_RESET;
 	HWRB_SET;
 
-
-
-	//P1 = 0xf6;						//... initial state
 	HALE_RESET;
 	HRDB_SET;
 	HWRB_SET;
@@ -493,7 +463,6 @@ void WriteAsicByte(u8 _dvc, u8 _pg, u8 _addr, u8 _wdat)
 	HCSB0_SET;
 	HCSB1_SET;
 
-	//MDATA =	0xff;
 	Write_TW2835(0xFF);
 
 	cmn_flg.ST.BIT.b_cmn_prtcl_bsy=0;
@@ -505,7 +474,7 @@ void WriteAsicByte(u8 _dvc, u8 _pg, u8 _addr, u8 _wdat)
 void WriteAsicTable(u8 _dvc, u8 _pg, u8 _addr, u8 *_tbl_ptr, u16 _tbl_cnt)
 {
 	u16 _t1_;
-//	u16 temp_16;
+
 
 #if	defined(__EN_ISR__)
 	EA = 0;
@@ -513,12 +482,11 @@ void WriteAsicTable(u8 _dvc, u8 _pg, u8 _addr, u8 *_tbl_ptr, u16 _tbl_cnt)
    	Temp = _dvc;
 
 	cmn_flg.ST.BIT.b_cmn_prtcl_bsy=1;
-	//  	P1 = 0xf6;					//... initial state
+
 	HALE_RESET;
 	HRDB_SET;
 	HWRB_SET;
 	HSPB_RESET;
-	//... P[7:4]:INT[5:2], P1_3:HALE, P1_2:HRDB, P1_1:HWRB, P1_0:HSPB
 
 
 	_dvc = 0;							//... temporal
@@ -538,9 +506,8 @@ void WriteAsicTable(u8 _dvc, u8 _pg, u8 _addr, u8 *_tbl_ptr, u16 _tbl_cnt)
 		HCSB0_RESET;
 	}
 
-	//MDATA =	_addr+_t1_;
-	Write_TW2835(_addr);
 
+	Write_TW2835(_addr);
 	HALE_SET;
 	HALE_RESET;
 
@@ -548,12 +515,10 @@ void WriteAsicTable(u8 _dvc, u8 _pg, u8 _addr, u8 *_tbl_ptr, u16 _tbl_cnt)
 	for(_t1_=0;_t1_<_tbl_cnt;_t1_++)
 	{
 		Write_TW2835(_tbl_ptr[_t1_]);
-
 		HWRB_RESET;
 		HWRB_SET;   
 	}	
 
-	//  	P1 = 0xf6;					//... initial state
 	HALE_RESET;
 	HRDB_SET;
 	HWRB_SET;
@@ -562,9 +527,7 @@ void WriteAsicTable(u8 _dvc, u8 _pg, u8 _addr, u8 *_tbl_ptr, u16 _tbl_cnt)
 	HCSB0_SET;
 	HCSB1_SET;
 
-	//MDATA =	0xff;
 	Write_TW2835(0xFF);
-
 
 	cmn_flg.ST.BIT.b_cmn_prtcl_bsy=0;
 
@@ -577,21 +540,17 @@ void ReadAsicTable(u8 _dvc, u8 _pg, u8 _addr, u16 _data_cnt)
 {
 	u16 _t1_;
 
-//	u16 temp_16;
-
 #if	defined(__EN_ISR__)
 	EA = 0;
 #endif
    	Temp = _dvc;
     
 	cmn_flg.ST.BIT.b_cmn_prtcl_bsy=1;
-	//	    P1 = 0xf6;					//... initial state
+
 	HALE_RESET;
 	HRDB_SET;
 	HWRB_SET;
 	HSPB_RESET;
-	//... P[7:4]:INT[5:2], P1_3:HALE, P1_2:HRDB, P1_1:HWRB, P1_0:HSPB
-
 
 	_dvc = 0;							//... temporal
 	if(_pg == DVC_PG0)     
@@ -610,25 +569,18 @@ void ReadAsicTable(u8 _dvc, u8 _pg, u8 _addr, u16 _data_cnt)
 		HCSB0_RESET;
 	}
 
-	//MDATA =	_addr;
 	Write_TW2835(_addr);
 	HALE_SET;
 	HALE_RESET;
 
 	for(_t1_=0;_t1_<_data_cnt;_t1_++)
 	{
-		Write_TW2835(0xFF);
-		HRDB_RESET;
-		//_rdat_ =	MDATA;
-		
+		//Write_TW2835(0xFF);
+		HRDB_RESET;		
 		read_data[_t1_]= Read_TW2835();
-		//DLY_FOR(30);
 		HRDB_SET;
-		//delay(30);
-
 	}
 
-	// 	P1 = 0xf6;					//... initial state
 	HALE_RESET;
 	HRDB_SET;
 	HWRB_SET;
@@ -643,13 +595,11 @@ void ReadAsicTable(u8 _dvc, u8 _pg, u8 _addr, u16 _data_cnt)
 	EA = 1;
 #endif
 
-	//return _rdat_;
 }
 
 u8 ReadAsicByte(u8 _dvc, u8 _pg, u8 _addr)
 {
 	u8 _rdat_;
-//	u16 temp_16;
 
 #if	defined(__EN_ISR__)
 	EA = 0;
@@ -657,15 +607,12 @@ u8 ReadAsicByte(u8 _dvc, u8 _pg, u8 _addr)
    	Temp = _dvc;
     
 	cmn_flg.ST.BIT.b_cmn_prtcl_bsy=1;
-	//	    P1 = 0xf6;					//... initial state
+
 	HALE_RESET;
 	HRDB_SET;
 	HWRB_SET;
 	HSPB_RESET;
-	//... P[7:4]:INT[5:2], P1_3:HALE, P1_2:HRDB, P1_1:HWRB, P1_0:HSPB
 
-
-	_dvc = 0;							//... temporal
 	if(_pg == DVC_PG0)      
 	{	
 		HCSB1_RESET;	
@@ -682,22 +629,17 @@ u8 ReadAsicByte(u8 _dvc, u8 _pg, u8 _addr)
 		HCSB0_RESET;
 	}
 
-	//MDATA =	_addr;
 	Write_TW2835(_addr);
 	HALE_SET;
 	HALE_RESET;
 
-	//MDATA =	0xff;					// port0(MDATA) input mode
-	Write_TW2835(0xFF);
+	//Write_TW2835(0xFF);
 
 	HRDB_RESET;
-	//_rdat_ =	MDATA;
-	//PortC_Change(0);
 	_rdat_ = Read_TW2835();
-	//DLY_FOR(30);
 	HRDB_SET;
 
-	// 	P1 = 0xf6;						//... initial state
+
 	HALE_RESET;
 	HRDB_SET;
 	HWRB_SET;
@@ -724,35 +666,32 @@ u8	ReadAsicOSDMemWr(u8 _dvc)
 	EA = 0;
 #endif
    	Temp = _dvc;
-    
 	cmn_flg.ST.BIT.b_cmn_prtcl_bsy=1;
-	//  	P1 = 0xf6;					//... initial state
+
 	HALE_RESET;
 	HRDB_SET;
 	HWRB_SET;
 	HSPB_RESET;
-
-	//... P[7:4]:INT[5:2], P1_3:HALE, P1_2:HRDB, P1_1:HWRB, P1_0:HSPB
 
 
 	_dvc = 0;							//... temporal
 	HCSB0_RESET;
 	HCSB1_SET;
 
-	//MDATA =	0x0a;
+
 	Write_TW2835(0x0A);
 	HALE_SET;
 	HALE_RESET;
 
-	//MDATA =	0xff;					// port0(MDATA) input mode
+
 	Write_TW2835(0xFF);
 	HRDB_RESET;
 
-	//_rdat_ =	MDATA;
+
 	_rdat_ = Read_TW2835();
 	HRDB_SET;
 
-	// 	P1 = 0xf6;						//... initial state
+
 	HALE_RESET;	
 	HRDB_SET;
 	HWRB_SET;
@@ -777,142 +716,338 @@ void	InitVdo(void)
 	cmn_cnt_vs_sub = 54;
 }
 
-#if 0
-void Port_Change(u8 in_Dir)
-{
-	if(in_Dir)	// Write
-	{
-		GPIO_InitStructure.GPIO_Pin |= GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_14 | GPIO_Pin_15;
-
-		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-		GPIO_Init(GPIOD, &GPIO_InitStructure);
-
-		GPIO_InitStructure.GPIO_Pin |= GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10;
-
-		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-		GPIO_Init(GPIOE, &GPIO_InitStructure);
-	}
-	else	// Read
-	{
-		GPIO_InitStructure.GPIO_Pin |= GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_14 | GPIO_Pin_15;
-
-		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
-		GPIO_Init(GPIOD, &GPIO_InitStructure);
-
-		GPIO_InitStructure.GPIO_Pin |= GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10;
-
-		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
-		GPIO_Init(GPIOE, &GPIO_InitStructure);
-	}
-}
-#endif
 
 void Write_TW2835(u8 Data)
 {
-	u16 Read_Port_D = 0;
-	u16 Read_Port_E = 0;
-	u16 Write_Port_D = 0;
-	u16 Write_Port_E = 0;
+	u16 TempData;
 
-//	Port_Change(1);
+	Port_Change(TW2835_WRITE);
 
-	Read_Port_D = GPIO_ReadOutputData(GPIOD);
-	Read_Port_E = GPIO_ReadOutputData(GPIOE);
-
-	Write_Port_D = Read_Port_D & 0x3FFC; // 0,1,14,15 Pin 제외
-	Write_Port_E = Read_Port_E & 0xF87F; // 7,8,9,10 Pin 제외
-	if(Data & 0x01)
-	{
-		Write_Port_D |= GPIO_Pin_14;
-	}
-	if(Data & 0x02)
-	{
-		Write_Port_D |= GPIO_Pin_15;
-	}
-	if(Data & 0x04)
-	{
-		Write_Port_D |= GPIO_Pin_0;
-	}
-	if(Data & 0x08)
-	{
-		Write_Port_D |= GPIO_Pin_1;
-	}
-
-	if(Data & 0x10)
-	{
-		Write_Port_E |= GPIO_Pin_7;
-	}
-	if(Data & 0x20)
-	{
-		Write_Port_E |= GPIO_Pin_8;
-	}
-
-	if(Data & 0x40)
-	{
-		Write_Port_E |= GPIO_Pin_9;
-	}
-
-	if(Data & 0x80)
-	{
-		Write_Port_E |= GPIO_Pin_10;
-	}
-
-
-	GPIO_Write(GPIOD, Write_Port_D);
-	GPIO_Write(GPIOE, Write_Port_E);
-
+	TempData = GPIO_ReadOutputData(TW2835_DATAPORT) & 0xFF00;
+	TempData |= ((u16)Data & 0x00FF);
+	
+	GPIO_Write(TW2835_DATAPORT,TempData);
 }
 
 u8 Read_TW2835()
 {
-//	Port_Change(0);
+	u8 Result;
+	Port_Change(TW2835_READ);
 
-	u16 Read_Port_D = 0;
-	u16 Read_Port_E = 0;
-
-	u8 Result = 0;
-
-	Read_Port_D = GPIO_ReadInputData(GPIOD);
-	Read_Port_E = GPIO_ReadInputData(GPIOE);
-
-	if (Read_Port_D & GPIO_Pin_14)
-	{
-		Result |= 0x01;
-	}
-	if (Read_Port_D & GPIO_Pin_15)
-	{
-		Result |= 0x02;
-	}
-	if (Read_Port_D & GPIO_Pin_1)
-	{
-		Result |= 0x04;
-	}
-	if (Read_Port_D & GPIO_Pin_2)
-	{
-		Result |= 0x08;
-	}
-
-	if (Read_Port_E & GPIO_Pin_7)
-	{
-		Result |= 0x10;
-	}
-	if (Read_Port_E & GPIO_Pin_8)
-	{
-		Result |= 0x20;
-	}
-	if (Read_Port_E & GPIO_Pin_9)
-	{
-		Result |= 0x40;
-	}
-	if (Read_Port_E & GPIO_Pin_10)
-	{
-		Result |= 0x80;
-	}
+	Result = (u8)(GPIO_ReadInputData(TW2835_DATAPORT) & 0x00FF);
+	
 
 	return Result;
 }
+
+void Port_Change(u8 in_Dir)
+{
+	GPIO_InitTypeDef GPIO_InitStructure;
+
+
+	if(in_Dir == TW2835_WRITE)
+	{
+		GPIO_InitStructure.GPIO_Pin = TW2835_D0 | TW2835_D1 | TW2835_D2 | TW2835_D3 | TW2835_D4 | 
+										TW2835_D5 | TW2835_D6 | TW2835_D7;
+		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+                GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+                GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;    
+		GPIO_Init(TW2835_DATAPORT, &GPIO_InitStructure);
+	}
+	else if(in_Dir == TW2835_READ)
+	{
+		GPIO_InitStructure.GPIO_Pin = TW2835_D0 | TW2835_D1 | TW2835_D2 | TW2835_D3 | TW2835_D4 | 
+										TW2835_D5 | TW2835_D6 | TW2835_D7;
+		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+                GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+                GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;    
+		GPIO_Init(TW2835_DATAPORT, &GPIO_InitStructure);
+	}
+}
+
+void CameraMode(u8 Mode, u8 OSD)
+{
+
+	if(Mode == 0)
+	{
+		
+		if(OSD)
+		{
+			WriteOSDClrX(MASTER, 0, 0, 0, 45, 31);
+			WriteOSDBmpX(MASTER,76,5,0x00,0x00,gt_CHANNEL_CH1_O);
+		        WriteOSDBmpX(MASTER,162,5,0x00,0x00,gt_CHANNEL_CH2_O);
+		        WriteOSDBmpX(MASTER,76,125,0x00,0x00,gt_CHANNEL_CH3_O);
+		        WriteOSDBmpX(MASTER,162,125,0x00,0x00,gt_CHANNEL_CH4_O);
+		}
+
+		
+		
+		
+		// Scale CAM_0 // Select CAM
+		WriteAsicByte(MASTER,DVC_PG0,0x80,0x01);    
+		WriteAsicByte(MASTER,DVC_PG0,0x81,0x7f);
+		WriteAsicByte(MASTER,DVC_PG0,0x82,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0x83,0x7f);
+		WriteAsicByte(MASTER,DVC_PG0,0x84,0xff);
+		// Scale CAM_1 // Select CAM
+		WriteAsicByte(MASTER,DVC_PG0,0x90,0x41);
+		WriteAsicByte(MASTER,DVC_PG0,0x91,0x7f);
+		WriteAsicByte(MASTER,DVC_PG0,0x92,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0x93,0x7f);
+		WriteAsicByte(MASTER,DVC_PG0,0x94,0xff);
+		// Scale CAM_2 // Select CAM
+		WriteAsicByte(MASTER,DVC_PG0,0xa0,0x81);
+		WriteAsicByte(MASTER,DVC_PG0,0xa1,0x7f);
+		WriteAsicByte(MASTER,DVC_PG0,0xa2,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0xa3,0x7f);
+		WriteAsicByte(MASTER,DVC_PG0,0xa4,0xff);
+		// Scale CAM_3 // Select CAM
+		WriteAsicByte(MASTER,DVC_PG0,0xb0,0xc1);
+		WriteAsicByte(MASTER,DVC_PG0,0xb1,0x7f);
+		WriteAsicByte(MASTER,DVC_PG0,0xb2,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0xb3,0x7f);
+		WriteAsicByte(MASTER,DVC_PG0,0xb4,0xff);
+
+		// ON/OFF CAMERA
+		WriteAsicByte(MASTER,DVC_PG1,0x10,0x80);   
+		WriteAsicByte(MASTER,DVC_PG1,0x18,0x81);
+		WriteAsicByte(MASTER,DVC_PG1,0x20,0x82);   
+		WriteAsicByte(MASTER,DVC_PG1,0x28,0x83); 
+
+		WriteAsicByte(MASTER,DVC_PG1,0x30,0x00);    // Position CAM_0
+		WriteAsicByte(MASTER,DVC_PG1,0x31,0x58);
+		WriteAsicByte(MASTER,DVC_PG1,0x32,0x00);
+		WriteAsicByte(MASTER,DVC_PG1,0x33,0x3C);
+
+		WriteAsicByte(MASTER,DVC_PG1,0x34,0x58);    // Position CAM_1
+		WriteAsicByte(MASTER,DVC_PG1,0x35,0xb0);
+		WriteAsicByte(MASTER,DVC_PG1,0x36,0x00);
+		WriteAsicByte(MASTER,DVC_PG1,0x37,0x3C);
+
+		WriteAsicByte(MASTER,DVC_PG1,0x38,0x00);    // Position CAM_2
+		WriteAsicByte(MASTER,DVC_PG1,0x39,0x58);
+		WriteAsicByte(MASTER,DVC_PG1,0x3a,0x3C);
+		WriteAsicByte(MASTER,DVC_PG1,0x3b,0x78);
+
+		WriteAsicByte(MASTER,DVC_PG1,0x3c,0x58);    // Position CAM_3
+		WriteAsicByte(MASTER,DVC_PG1,0x3d,0xb0);
+		WriteAsicByte(MASTER,DVC_PG1,0x3e,0x3C);
+		WriteAsicByte(MASTER,DVC_PG1,0x3f,0x78); 
+
+	}
+	else if(Mode == 1)
+	{
+		
+		if(OSD)
+		{
+			WriteOSDClrX(MASTER, 0, 0, 0, 45, 31);
+			WriteOSDBmpX(MASTER,76,5,0x00,0x00,gt_CHANNEL_CH1_O);
+        		WriteOSDBmpX(MASTER,162,5,0x00,0x00,gt_CHANNEL_CH2_O);
+		}
+		
+		// Scale CAM_0 // Select CAM
+		WriteAsicByte(MASTER,DVC_PG0,0x80,0x01);    
+		WriteAsicByte(MASTER,DVC_PG0,0x81,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0x82,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0x83,0x7f);
+		WriteAsicByte(MASTER,DVC_PG0,0x84,0xff);
+		// Scale CAM_1 // Select CAM
+		WriteAsicByte(MASTER,DVC_PG0,0x90,0x41);
+		WriteAsicByte(MASTER,DVC_PG0,0x91,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0x92,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0x93,0x7f);
+		WriteAsicByte(MASTER,DVC_PG0,0x94,0xff);
+
+
+		// ON/OFF CAMERA
+		WriteAsicByte(MASTER,DVC_PG1,0x10,0x80);  
+		WriteAsicByte(MASTER,DVC_PG1,0x18,0x81);
+		WriteAsicByte(MASTER,DVC_PG1,0x20,0x02);   
+		WriteAsicByte(MASTER,DVC_PG1,0x28,0x03);   
+
+		WriteAsicByte(MASTER,DVC_PG1,0x30,0x00);    // Position CAM_0
+		WriteAsicByte(MASTER,DVC_PG1,0x31,0x58);
+		WriteAsicByte(MASTER,DVC_PG1,0x32,0x00);    //0x00);
+		WriteAsicByte(MASTER,DVC_PG1,0x33,0x78);
+
+		WriteAsicByte(MASTER,DVC_PG1,0x34,0x58);    // Position CAM_1
+		WriteAsicByte(MASTER,DVC_PG1,0x35,0xb0);
+		WriteAsicByte(MASTER,DVC_PG1,0x36,0x00);    //0x00);
+		WriteAsicByte(MASTER,DVC_PG1,0x37,0x78);
+
+		
+		
+
+	}
+	else if(Mode == 2)
+	{
+		if(OSD)
+		{
+			WriteOSDClrX(MASTER, 0, 0, 0, 45, 31);
+			WriteOSDBmpX(MASTER,76,5,0x00,0x00,gt_CHANNEL_CH3_O);
+       	 	WriteOSDBmpX(MASTER,162,5,0x00,0x00,gt_CHANNEL_CH4_O);
+		}
+		
+
+		// Scale CAM_2 // Select CAM
+		WriteAsicByte(MASTER,DVC_PG0,0xa0,0x81);
+		WriteAsicByte(MASTER,DVC_PG0,0xa1,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0xa2,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0xa3,0x7f);
+		WriteAsicByte(MASTER,DVC_PG0,0xa4,0xff);
+		// Scale CAM_3 // Select CAM
+		WriteAsicByte(MASTER,DVC_PG0,0xb0,0xc1);
+		WriteAsicByte(MASTER,DVC_PG0,0xb1,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0xb2,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0xb3,0x7f);
+		WriteAsicByte(MASTER,DVC_PG0,0xb4,0xff);
+		    
+		// ON/OFF CAMERA
+		WriteAsicByte(MASTER,DVC_PG1,0x10,0x00);  
+		WriteAsicByte(MASTER,DVC_PG1,0x18,0x01);
+		WriteAsicByte(MASTER,DVC_PG1,0x20,0x82);   
+		WriteAsicByte(MASTER,DVC_PG1,0x28,0x83);    
+
+		WriteAsicByte(MASTER,DVC_PG1,0x38,0x00);    // Position CAM_2
+		WriteAsicByte(MASTER,DVC_PG1,0x39,0x58);
+		WriteAsicByte(MASTER,DVC_PG1,0x3a,0x00);
+		WriteAsicByte(MASTER,DVC_PG1,0x3b,0x78);
+
+		WriteAsicByte(MASTER,DVC_PG1,0x3c,0x58);    // Position CAM_3
+		WriteAsicByte(MASTER,DVC_PG1,0x3d,0xb0);
+		WriteAsicByte(MASTER,DVC_PG1,0x3e,0x00);
+		WriteAsicByte(MASTER,DVC_PG1,0x3f,0x78); 
+
+
+
+
+	}
+
+	else if(Mode == 3)
+	{
+		if(OSD)
+		{
+			WriteOSDClrX(MASTER, 0, 0, 0, 45, 31);
+			WriteOSDBmpX(MASTER,162,5,0x00,0x00,gt_CHANNEL_CH1_O);
+		}
+		
+		// Scale CAM_0 // Select CAM
+		WriteAsicByte(MASTER,DVC_PG0,0x80,0x01);    
+		WriteAsicByte(MASTER,DVC_PG0,0x81,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0x82,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0x83,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0x84,0xff);
+		    
+		// ON/OFF CAMERA
+		WriteAsicByte(MASTER,DVC_PG1,0x10,0x80);    // ON CAM_0
+		WriteAsicByte(MASTER,DVC_PG1,0x18,0x01);	// OFF CAM_1
+		WriteAsicByte(MASTER,DVC_PG1,0x20,0x02);    // OFF CAM_2
+		WriteAsicByte(MASTER,DVC_PG1,0x28,0x03);    // OFF CAM_3
+
+		WriteAsicByte(MASTER,DVC_PG1,0x30,0x00);    // Position CAM_0
+		WriteAsicByte(MASTER,DVC_PG1,0x31,0xb0);
+		WriteAsicByte(MASTER,DVC_PG1,0x32,0x00);
+		WriteAsicByte(MASTER,DVC_PG1,0x33,0x78);
+
+
+		
+	}
+
+	else if(Mode == 4)
+	{
+		if(OSD)
+		{
+			WriteOSDClrX(MASTER, 0, 0, 0, 45, 31);	
+			WriteOSDBmpX(MASTER,162,5,0x00,0x00,gt_CHANNEL_CH2_O);
+		}
+		
+
+		// Scale CAM_1 // Select CAM
+		WriteAsicByte(MASTER,DVC_PG0,0x90,0x41);
+		WriteAsicByte(MASTER,DVC_PG0,0x91,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0x92,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0x93,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0x94,0xff);
+		    
+		// ON/OFF CAMERA
+		WriteAsicByte(MASTER,DVC_PG1,0x10,0x00);    // ON/OFF CAM
+		WriteAsicByte(MASTER,DVC_PG1,0x18,0x81);
+		WriteAsicByte(MASTER,DVC_PG1,0x20,0x02);    // OFF CAM_3
+		WriteAsicByte(MASTER,DVC_PG1,0x28,0x03);    // OFF CAM_4
+
+
+		WriteAsicByte(MASTER,DVC_PG1,0x34,0x00);    // Position CAM_1
+		WriteAsicByte(MASTER,DVC_PG1,0x35,0xb0);
+		WriteAsicByte(MASTER,DVC_PG1,0x36,0x00);
+		WriteAsicByte(MASTER,DVC_PG1,0x37,0x78);
+
+
+
+	}
+
+	else if(Mode == 5)
+	{
+		if(OSD)
+		{
+			WriteOSDClrX(MASTER, 0, 0, 0, 45, 31);
+			WriteOSDBmpX(MASTER,162,5,0x00,0x00,gt_CHANNEL_CH3_O);
+		}
+		
+
+		// Scale CAM_2 // Select CAM
+		WriteAsicByte(MASTER,DVC_PG0,0xa0,0x81);
+		WriteAsicByte(MASTER,DVC_PG0,0xa1,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0xa2,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0xa3,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0xa4,0xff);
+		    
+		// ON/OFF CAMERA
+		WriteAsicByte(MASTER,DVC_PG1,0x10,0x00);    // ON/OFF CAM
+		WriteAsicByte(MASTER,DVC_PG1,0x18,0x01);
+		WriteAsicByte(MASTER,DVC_PG1,0x20,0x82);    // OFF CAM_3
+		WriteAsicByte(MASTER,DVC_PG1,0x28,0x03);    // OFF CAM_4
+
+
+
+		WriteAsicByte(MASTER,DVC_PG1,0x38,0x00);    // Position CAM_2
+		WriteAsicByte(MASTER,DVC_PG1,0x39,0xb0);
+		WriteAsicByte(MASTER,DVC_PG1,0x3a,0x00);
+		WriteAsicByte(MASTER,DVC_PG1,0x3b,0x78);
+
+	}
+
+	else if(Mode == 6)
+	{
+		if(OSD)
+		{
+			WriteOSDClrX(MASTER, 0, 0, 0, 45, 31);
+			WriteOSDBmpX(MASTER,162,5,0x00,0x00,gt_CHANNEL_CH4_O);
+		}
+		
+		// Scale CAM_3 // Select CAM
+		WriteAsicByte(MASTER,DVC_PG0,0xb0,0xc1);
+		WriteAsicByte(MASTER,DVC_PG0,0xb1,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0xb2,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0xb3,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0xb4,0xff);
+		    
+		// ON/OFF CAMERA
+		WriteAsicByte(MASTER,DVC_PG1,0x10,0x00);    // ON/OFF CAM
+		WriteAsicByte(MASTER,DVC_PG1,0x18,0x01);
+		WriteAsicByte(MASTER,DVC_PG1,0x20,0x02);    // OFF CAM_3
+		WriteAsicByte(MASTER,DVC_PG1,0x28,0x83);    // OFF CAM_4
+
+		WriteAsicByte(MASTER,DVC_PG1,0x3c,0x00);    // Position CAM_3
+		WriteAsicByte(MASTER,DVC_PG1,0x3d,0xb0);
+		WriteAsicByte(MASTER,DVC_PG1,0x3e,0x00);
+		WriteAsicByte(MASTER,DVC_PG1,0x3f,0x78); 
+
+
+  	}
+}
+
 
 /**\
   * @brief  None
@@ -922,8 +1057,12 @@ u8 Read_TW2835()
 void TW2835_Control_Init(void)
 {
     DebugMsg_printf("++ TW2835_Control_Init (GPIO Mode), Initialize START\r\n");
+	
+	InitPg0();
+	InitPg1();
+	InitPg2();
 
-
+	CameraMode(3,1);
 
     DebugMsg_printf("-- TW2835_Control_Init (GPIO Mode), Initialize END\r\n");
 }

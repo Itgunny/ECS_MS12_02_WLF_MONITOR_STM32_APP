@@ -1,12 +1,12 @@
 /**
   ******************************************************************************
-  * @file    WL9F_Monitor_Variable.h
+  * @file    LAMP_Control.h 
   * @author  kutelf (kutelf@taeha.co.kr)
   * @version V1.0.0
   * @date    02/22/2013
-  * @brief   Main Header
+  * @brief   Header for LAMP_Control.c module
   *
-  * Project Name       : WL9F Monitor Common
+  * Project Name       : WL9F Monitor APP
   * Project Enviroment : IAREmbedded Workbench for ARM 6.5x 
   *                      STM32F407ZGT6 Firmware Library
   * Project Workspace  : WL9F_Monitor_APP
@@ -19,35 +19,38 @@
   */ 
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __WL9F_Monitor_Variable_H
-#define __WL9F_Monitor_Variable_H
+#ifndef __LAMP_Control_H
+#define __LAMP_Control_H
 
 /* Includes ------------------------------------------------------------------*/
 #include "WL9F_Monitor_APP.h"	
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
+
+#define 	C_LAMP_SCLK_HIGH()     	GPIO_WriteBit(LAMP_PORT, LAMP_SCLK, Bit_SET)
+#define 	C_LAMP_SCLK_LOW()     	GPIO_WriteBit(LAMP_PORT, LAMP_SCLK, Bit_RESET)
+
+#define 	C_LAMP_SLCLK_HIGH()     GPIO_WriteBit(LAMP_PORT, LAMP_SLCLK, Bit_SET)
+#define 	C_LAMP_SLCLK_LOW()     	GPIO_WriteBit(LAMP_PORT, LAMP_SLCLK, Bit_RESET)
+
+#define 	C_LAMP_SDATA_HIGH()    	GPIO_WriteBit(LAMP_PORT, LAMP_SDATA, Bit_SET)
+#define 	C_LAMP_SDATA_LOW()     	GPIO_WriteBit(LAMP_PORT, LAMP_SDATA, Bit_RESET)
+
+#define 	C_LAMP_CLR_ENABLE()    	GPIO_WriteBit(LAMP_PORT, LAMP_CLR, Bit_SET)
+#define 	C_LAMP_CLR_DISABLE() 	GPIO_WriteBit(LAMP_PORT, LAMP_CLR, Bit_RESET)
+
+
+#define 	LAMP_ALL_ON 			0x7FFFFFFF
+#define 	LAMP_ALL_OFF 			0x00000000
+
+#define		BGLED0					0x00100000
+#define		BGLED1					0x00200000
+#define		BGLED2					0x00400000
+
+
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-// EEPROM Clear Variables
-WL9FM_SaveE2PROM1			*SaveE2PROM1;
-WL9FM_SaveE2PROM2			*SaveE2PROM2;
-WL9FM_SaveE2PROM3			*SaveE2PROM3;
-
-WL9FM_SaveE2PROMoniInfo		*SaveE2PROMoniInfo;
-
-WL9FM_DATA_RTC   	   	    WL9FM_RTC;
-WL9FM_TIME_DATA 		    WL9FM_TIME;
-WL9FM_BUZZER_DATA   		WL9FM_BUZZER;
-WL9FM_LCDBL_DATA   		    WL9FM_LCDBL;
-
-USARTx_DATA  				WL9FM_USART_DATA;
-USARTx_INDEX 				WL9FM_USART_INDEX;
-
-
-uint8_t                    	KeySwitch_Value;            //  GPIO Key Value
-uint32_t 					LAMP_Update_Data;			//	LAMP Value
-
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
@@ -55,6 +58,12 @@ uint32_t 					LAMP_Update_Data;			//	LAMP Value
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 /* Exported variables --------------------------------------------------------*/
+extern uint32_t LAMP_Update_Data;
 /* Exported functions ------------------------------------------------------- */
+extern void Lamp_Update_State(void);
+extern void Lamp_Update_System(void);
+extern void LAMP_Control_Init(void);
 
-#endif /* __WL9F_Monitor_Variable_H */
+#endif /* __LAMP_Control_H */
+
+/*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/

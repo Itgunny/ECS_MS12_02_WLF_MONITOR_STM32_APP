@@ -25,22 +25,36 @@
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-//  KeySwitch.h -> KeySwitch Input GPIO Port array
-GPIO_TypeDef*  KEYSWITCH_PORT[MAXSWITCH]   =   {  
-                                                KeySWx_PORT, 
-                                                KeySWx_PORT, 
-                                                KeySWx_PORT, 
-                                                KeySWx_PORT, 
-                                                KeySWx_PORT,
+//  KeySwitch.h -> KeySwitch Scan, Input GPIO Port array
+GPIO_TypeDef*  KEYSWITCH_SCANPORT[MAXSCAN]	=   {  
+                                                KeySWXX_PORT, 
+                                                KeySWXX_PORT, 
+                                                KeySWXX_PORT, 
                                             };
 
-//  KeySwitch.h -> KeySwitch Input GPIO Pin array
-const uint16_t KEYSWITCH_PIN[MAXSWITCH]    =   { 
-                                                KeySW0, 
-                                                KeySW1, 
-                                                KeySW2, 
-                                                KeySW3,
-                                                KeySW4,
+GPIO_TypeDef*  KEYSWITCH_INPUTPORT[MAXINPUT]	=   {  
+                                                KeySWXX_PORT, 
+                                                KeySWXX_PORT, 
+                                                KeySWXX_PORT, 
+                                                KeySWXX_PORT, 
+                                                KeySWXX_PORT,
+                                                KeySWXX_PORT,                                                
+                                            };
+
+//  KeySwitch.h -> KeySwitch Scan, Input GPIO Pin array
+const uint16_t KEYSWITCH_SCAN[MAXSCAN]  =   { 
+                                                KeySCAN0, 
+                                                KeySCAN1, 
+                                                KeySCAN2, 
+                                            };
+
+const uint16_t KEYSWITCH_INPUT[MAXINPUT]  =   { 
+                                                KeyInput0, 
+                                                KeyInput1, 
+                                                KeyInput2, 
+                                                KeyInput3,
+                                                KeyInput4,
+                                                KeyInput5,
                                             };
 
 //  KeySwitch.h -> Press Input KeySwitch Value array
@@ -52,38 +66,54 @@ const uint8_t KEYSWITCH_VALUE[MAXSWITCH]   =   {
                                                 KEYSWITCH_ENTER,    
                                             };                                                
 uint8_t     KeySwitchScan;
-uint8_t     Temp_Value1, Temp_Value2, Temp_Value3, Temp_Cnt;
+uint32_t    Temp_Value1, Temp_Value2, Temp_Value3, Temp_Cnt;
+uint32_t	New_Value;
+
+uint8_t		Test1 = 0, Test2 = 0;	
 
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
-void KeyTest(uint8_t Test)
+void KeyTest_TEST(uint8_t value)
 {
-	Buzzer_Set(10);
-	
-	switch (Test)
-	{
-		case KEYSWITCH_MENU :
-				
-				break;
+		switch (value)
+		{
+			case 0x01 :
 
-		case KEYSWITCH_LEFT :
+					Buzzer_Set(10);					
+					
+					CameraMode(Test1 , 1);
 
-				break;
+					if (Test1++ > 6)
+					{
+						Test1 = 0;
+					}	
 
-		case KEYSWITCH_ESC_CAM :
+					break;
 
-				break;
+			case 0x02 :
+					Buzzer_Set(10);					
 
-		case KEYSWITCH_RIGHT :
+					if (Test2 != 0)
+					{
+						Test2 = 0;
+						LCD_Display_Change(EXYNOS_DISPLAY);
+					}
+					else
+					{
+						Test2 = 1;
+						LCD_Display_Change(STM32F4_DISPLAY);
+					}
 
-				break;
+					break;
 
-		case KEYSWITCH_ENTER :
+			case 0x04 :
 
-				break;
+					//Buzzer_Set(25);					
 
-	}	
+					break;
+
+		}
 }
 
 /**
@@ -94,20 +124,26 @@ void KeyTest(uint8_t Test)
 //  5msec 마다 실행.. -> stm32f10x_it.c -> TIM5_IRQHandler
 void KeySwitch_Process(void)
 {
-/*
 	uint8_t i, j, k;
     uint8_t New_Value;
     
 
-    if (KeySwitchScan == 0) Temp_Value1 = 0;
-    
-    New_Value = 0;
-    
+    if (KeySwitchScan == 0) 
+	{
+		Temp_Value1 = 0;
+
+		GPIO_WriteBit(KEYSWITCH_SCANPORT[0], KEYSWITCH_SCAN[0], Bit_RESET);
+		GPIO_WriteBit(KEYSWITCH_SCANPORT[1], KEYSWITCH_SCAN[1], Bit_SET);
+		GPIO_WriteBit(KEYSWITCH_SCANPORT[2], KEYSWITCH_SCAN[2], Bit_SET);					
+    }	
+
+	New_Value = 0;
+	
     //  KeySwitch Press Check
     for (i = 0; i < MAXSWITCH; i++)
     {
         k = 0;    
-        k = GPIO_ReadInputDataBit(KEYSWITCH_PORT[i], KEYSWITCH_PIN[i]); //  Read KeySwitch Input 
+        k = GPIO_ReadInputDataBit(KEYSWITCH_INPUTPORT[i], KEYSWITCH_INPUT[i]); //  Read KeySwitch Input 
         
         if (k == 0) j = 1;    
         else        j = 0;
@@ -141,7 +177,7 @@ void KeySwitch_Process(void)
                     #endif
 
 					//KeySwitch_SendToSPICA(KeySwitch_Value);
-					KeyTest(KeySwitch_Value);
+					KeyTest_TEST(KeySwitch_Value);
 					
                     //  디버깅할 때만 사용할 것
                     //DebugMsg_printf("KEYSWITCH %x\r\n", KeySwitch_Value);
@@ -159,7 +195,7 @@ void KeySwitch_Process(void)
 
 					//	연속키 일 경우, 0x40 + 0x30을 해서 0x70의 값을 만들어 내기 위해서..
 					//KeySwitch_SendToSPICA(KeySwitch_Value + Continuous_Key);
-					KeyTest(KeySwitch_Value);
+					//KeyTest_TEST(KeySwitch_Value);
 					
                     //  디버깅할 때만 사용할 것
                     //DebugMsg_printf("KEYSWITCH %x\r\n", KeySwitch_Value);
@@ -174,7 +210,6 @@ void KeySwitch_Process(void)
     }        
 
     if (++KeySwitchScan > 5) KeySwitchScan = 0;        
-*/    
 }
 
 void KeySwitch_Init(void)
@@ -189,14 +224,22 @@ void KeySwitch_Init(void)
 
     GPIO_InitTypeDef    GPIO_InitStructure;
     
-	//	KeySwitch -> GPIO Input
-    GPIO_InitStructure.GPIO_Pin   = KeySW0 | KeySW1 | KeySW2 | KeySW3 | KeySW4;
+	//	KeySwitch Matrix -> GPIO Output
+	GPIO_InitStructure.GPIO_Pin   = KeySCAN0 | KeySCAN1 | KeySCAN2;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+  	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(KeySWXX_PORT, &GPIO_InitStructure);
+
+	//	KeySwitch Matrix -> GPIO Input
+	GPIO_InitStructure.GPIO_Pin   = KeyInput0 | KeyInput1 | KeyInput2 | KeyInput3 | KeyInput4 | KeyInput5;
     GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_IN;   
   	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
   	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(KeySWx_PORT, &GPIO_InitStructure);
-    
+    GPIO_Init(KeySWXX_PORT, &GPIO_InitStructure);
+	
     #endif
 
     TIM_TimeBaseStructure.TIM_Period        = 0x9C4;   	//  (1 / 1MHz) * 5000 -> 5msec

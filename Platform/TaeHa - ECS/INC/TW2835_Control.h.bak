@@ -24,8 +24,6 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "WL9F_Monitor_APP.h"	
-#include "Stm32f4xx_gpio.h"
-#include "System_Init.h"
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -111,38 +109,26 @@
 #define I2C_PUBLICS
 
 //==================================================================================
-
-#define	HSPB_SET	GPIO_SetBits(TW2835_CTRLPORT, TW2835_HSPB)
-#define	HSPB_RESET	GPIO_ResetBits(TW2835_CTRLPORT, TW2835_HSPB)
-
-#define	HWRB_SET	GPIO_SetBits(TW2835_DATAPORT, TW2835_nWE)
-#define	HWRB_RESET	GPIO_ResetBits(TW2835_DATAPORT, TW2835_nWE)
-
-#define	HRDB_SET	GPIO_SetBits(TW2835_DATAPORT, TW2835_nOE)
-#define	HRDB_RESET	GPIO_ResetBits(TW2835_DATAPORT, TW2835_nOE)
-
-#define	HALE_SET	GPIO_SetBits(TW2835_CTRLPORT, TW2835_HALE)
-#define	HALE_RESET	GPIO_ResetBits(TW2835_CTRLPORT, TW2835_HALE)
-
-#define	HCSB1_SET	GPIO_SetBits(TW2835_DATAPORT, TW2835_CSB1)
-#define	HCSB1_RESET	GPIO_ResetBits(TW2835_DATAPORT, TW2835_CSB1)
-
-#define	HCSB0_SET	GPIO_SetBits(TW2835_DATAPORT, TW2835_CSB0)
-#define	HCSB0_RESET	GPIO_ResetBits(TW2835_DATAPORT, TW2835_CSB0)
-
-//==================================================================================
-
-#define TW2835_WRITE			0
-#define TW2835_READ				1
-
-
-
-//==================================================================================
 //						Host definition & variable description
 //==================================================================================
 
+#define	HSPB_SET				GPIO_SetBits(GPIOD, TW2835_HSPB)
+#define	HSPB_RESET				GPIO_ResetBits(GPIOD, TW2835_HSPB)
 
+#define	HALE_SET				GPIO_SetBits(GPIOD, TW2835_HALE)
+#define	HALE_RESET				GPIO_ResetBits(GPIOD, TW2835_HALE)
 
+#define	HWRB_SET				GPIO_SetBits(GPIOD, GPIO_Pin_5)
+#define	HWRB_RESET				GPIO_ResetBits(GPIOD, GPIO_Pin_5)
+
+#define	HRDB_SET				GPIO_SetBits(GPIOD, GPIO_Pin_4)
+#define	HRDB_RESET				GPIO_ResetBits(GPIOD, GPIO_Pin_4)
+
+#define	HCSB1_SET				GPIO_SetBits(GPIOD, GPIO_Pin_4)
+#define	HCSB1_RESET				GPIO_ResetBits(GPIOD, GPIO_Pin_4)
+
+#define	HCSB0_SET				GPIO_SetBits(GPIOD, GPIO_Pin_4)
+#define	HCSB0_RESET				GPIO_ResetBits(GPIOD, GPIO_Pin_4)
 
 
 /* Private macro -------------------------------------------------------------*/
@@ -252,7 +238,6 @@ extern void InitVdo(void);
 extern void Port_Change(u8 in_Dir);
 extern void Write_TW2835(u8 Data);
 extern u8 Read_TW2835();
-extern void CameraMode(u8 Mode, u8 OSD);
 
 
 extern unsigned char	tbl_ntsc_pg0_cmn[];
