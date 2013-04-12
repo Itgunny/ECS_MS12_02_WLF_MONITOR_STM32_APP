@@ -28,6 +28,7 @@
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
+
 /**
   * @brief  Clock Setting.
   * @param  None
@@ -685,11 +686,11 @@ void System_Initialize(void)
 void System_Variable_Init(void)
 {
 	memset((void *)(&WL9FM_TIME),       	0x0, sizeof(WL9FM_TIME_DATA));
-    memset((void *)(&WL9FM_RTC),            0x0, sizeof(WL9FM_DATA_RTC));	
-    memset((void *)(&WL9FM_BUZZER),         0x0, sizeof(WL9FM_BUZZER_DATA));	
-    memset((void *)(&WL9FM_LCDBL),          0x0, sizeof(WL9FM_LCDBL_DATA));	
+	memset((void *)(&WL9FM_RTC),            0x0, sizeof(WL9FM_DATA_RTC));	
+	memset((void *)(&WL9FM_BUZZER),         0x0, sizeof(WL9FM_BUZZER_DATA));	
+	memset((void *)(&WL9FM_LCDBL),          0x0, sizeof(WL9FM_LCDBL_DATA));	
 
-	
+	WL9F_CAN_Buffer_Init();
 }
 
 /*********(C) COPYRIGHT 2013 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/

@@ -41,12 +41,78 @@
 //#define		DEBUG_CMD_TX
 //#define		DEBUG_CAN_RX
 //#define		DEBUG_CAN_TX
+#pragma pack(1)
+struct st_CAN_Msg
+{	
+	unsigned char Priority;
+	unsigned char Data_Page;
+	unsigned char PDU_Format;	
+	unsigned char PDU_Specific;		// 50
+	unsigned char Source_Address;	// 52
+};
+#pragma pack()
+
+CanRxMsg RxMsg;
+struct st_CAN_Msg Iden; 
+
+/* Private define ------------------------------------------------------------*/
+
+#define RING_BUF_SIZE			1024*10
+#define UART2_Tx_BUF_SIZE		21
+
+
+#define UART2_RX_BUF_SIZE		26			// Max Multi Packet Data -> 3°³
+#define UART2_Tx_BUF_SIZE		21
 
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
+u8 ring_buf[RING_BUF_SIZE];		
+u16 pWriteBufPos = 0;
+u16 pReadBufPos = 0;
+u8 CanRecvCnt = 0;
+u16 TotPacketNum = 0;
+u32 pgn = 0;
+u16 TotMsgSize = 0;
+u8 Uart2_SerialTxMsg[UART2_Tx_BUF_SIZE];
+
+u8 Uart2_SerialTxCnt = 0;
+u16 CommErrCnt = 0;
+
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
+void WL9F_CAN_Buffer_Init(void)
+{
+	Uart2_SerialTxMsg[0]  = 0x02;	// STX
+	Uart2_SerialTxMsg[1]  = 0xF5;	// ID
+	Uart2_SerialTxMsg[2]  = 8;		// Data Length
+	Uart2_SerialTxMsg[19] = 0;		// CRC
+	Uart2_SerialTxMsg[20] = 0x03;	// ETX
+
+	pWriteBufPos = 0;
+	
+	TotPacketNum = 0;
+	pgn = 0;
+	
+	Uart2_SerialTxCnt = 0;
+	CommErrCnt = 0;
+}
+
+void OperateRingBuffer(void)
+{
+	if(pWriteBufPos >= (RING_BUF_SIZE-1))	// End of Ring Buffer
+		pWriteBufPos = 0;
+
+	memcpy(&ring_buf[pWriteBufPos], (u8*)&RxMsg.ExtId, 4);
+
+	pWriteBufPos += 4;
+
+	memcpy(&ring_buf[pWriteBufPos], (u8*)&RxMsg.Data, 8);
+
+	pWriteBufPos += 8;
+	
+	USART_ITConfig(USART2, USART_IT_TXE, ENABLE);
+}
 
 /******************************************************************************/
 /*            Cortex-M4 Processor Exceptions Handlers                         */
@@ -194,6 +260,84 @@ void SysTick_Handler(void)
   */ 
 
 /**
+  * @brief  This function handles CAN1 global interrupt request.
+  * @param  None
+  * @retval None
+  */
+void CAN1_RX0_IRQHandler(void)
+{
+	u32 PF; 
+
+	CAN_Receive(CAN1,CAN_FIFO0,&RxMsg);
+				
+	Iden.Source_Address = (RxMsg.ExtId & 0x000000ff)  >> 0;
+	Iden.PDU_Specific = (RxMsg.ExtId  & 0x0000ff00) >> 8;
+	
+			
+	// Iden.Source_Address == 0x29	 -->>	Smart Key Source Address
+	// Iden.Source_Address == 0x2E	 -->>	EHCU Source Address
+	if((Iden.Source_Address == 71) || (Iden.Source_Address == 23) || (Iden.Source_Address == 77) || 
+		(Iden.Source_Address == 0x29) || (Iden.Source_Address == 0x2E))
+		{
+			if(++CanRecvCnt >= 50)
+			{
+				CanRecvCnt = 0;
+	
+				if(pWriteBufPos >= (1024*10-1)) // End of Ring Buffer
+					pWriteBufPos = 0;
+	
+				//memcpy(&ring_buf[pWriteBufPos], (u8*)&SerialMsgRTC[0], 16);
+				
+				//pWriteBufPos += 16;
+			}
+	
+	
+			PF = (RxMsg.ExtId  & 0x00ff0000) >> 16;
+	
+			if((PF == 254) || (PF == 255))
+			{			
+				OperateRingBuffer();		
+			}
+			else if((PF == 235) || (PF == 236))
+			{
+				if(Iden.PDU_Specific == 255)
+				{
+					if(PF == 236)		// TP.CM_BAM
+					{
+						if(RxMsg.Data[0] == 32) 	// Control Byte
+						{
+							pgn = (RxMsg.Data[6] << 8) | (RxMsg.Data[5]);
+							if(pgn == 65340)
+							{
+								TotPacketNum = RxMsg.Data[3];		// Total number of packets
+								TotMsgSize = (RxMsg.Data[2] << 8) | RxMsg.Data[1];
+							}
+							else
+							{
+								Uart2_SerialTxMsg[19] = 0;
+								OperateRingBuffer();
+							}
+							return;
+						}
+					}
+	
+					if(pgn != 0)
+					{
+						if(PF == 235)
+						{
+							Uart2_SerialTxMsg[19] = 0;
+							OperateRingBuffer();
+						}
+					}
+				}
+			}
+	
+			CommErrCnt = 0;
+		}
+
+}
+
+/**
   * @brief  This function handles TIM4 global interrupt request.
   * @param  None
   * @retval None
@@ -260,10 +404,27 @@ void USART2_IRQHandler(void)
 
 	}
 
-	if(USART_GetITStatus(USART3, USART_IT_TXE) != RESET)
+	if(USART_GetITStatus(USART2, USART_IT_TXE) != RESET)
 	{   
-		if((USART3->SR & 0x80) == RESET)
+		if((USART2->SR & 0x80) == RESET)
 			return;
+
+		if(pReadBufPos >= (RING_BUF_SIZE-1))
+			pReadBufPos = 0;
+
+
+		if((pWriteBufPos != pReadBufPos) && (Uart2_SerialTxCnt == 0))
+			memcpy(&Uart2_SerialTxMsg[3] , &ring_buf[pReadBufPos], 12);
+
+	
+		USART_SendData(USART2, (u16)(Uart2_SerialTxMsg[Uart2_SerialTxCnt++]));    
+
+		if (Uart2_SerialTxCnt >= UART2_Tx_BUF_SIZE)
+		{
+			Uart2_SerialTxCnt = 0;
+			pReadBufPos += 12;
+		}
+        
 	}
 }
 

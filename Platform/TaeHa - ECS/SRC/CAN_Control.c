@@ -36,6 +36,7 @@ void CAN_COMInit(void)
 {
 	CAN_InitTypeDef        CAN_InitStructure;
 	CAN_FilterInitTypeDef  CAN_FilterInitStructure;
+	NVIC_InitTypeDef        NVIC_InitStructure;
 
     DebugMsg_printf("++ CAN1, CAN2 Initialize START\r\n");
 
@@ -79,14 +80,14 @@ void CAN_COMInit(void)
 	CAN_InitStructure.CAN_TXFP = DISABLE;
 	CAN_InitStructure.CAN_Mode = CAN_Mode_Normal;
 	CAN_InitStructure.CAN_SJW = CAN_SJW_1tq;
-	CAN_InitStructure.CAN_BS1 = CAN_BS1_6tq;
-	CAN_InitStructure.CAN_BS2 = CAN_BS2_7tq;
-	CAN_InitStructure.CAN_Prescaler = 10;
+	CAN_InitStructure.CAN_BS1 = CAN_BS1_14tq;
+	CAN_InitStructure.CAN_BS2 = CAN_BS2_6tq;  
+	CAN_InitStructure.CAN_Prescaler = 8;   // 2:1M, 4:500k, 8:250k. 16:125k
 	CAN_Init(CAN1, &CAN_InitStructure);
 	CAN_Init(CAN2, &CAN_InitStructure);
 
 	//CAN_FilterInitStructure.CAN_FilterNumber = 0;
-	CAN_FilterInitStructure.CAN_FilterNumber = 1;
+	CAN_FilterInitStructure.CAN_FilterNumber = 0;
 	CAN_FilterInitStructure.CAN_FilterMode = CAN_FilterMode_IdMask;
 	CAN_FilterInitStructure.CAN_FilterScale = CAN_FilterScale_32bit;
 	CAN_FilterInitStructure.CAN_FilterIdHigh = 0x0000;
@@ -100,6 +101,17 @@ void CAN_COMInit(void)
 
 	// 부팅시 EEPROM Data를 Main CPU에 올리고 나서 ENABLE시킨다.
 	//CAN_ITConfig(CAN_IT_FMP0, ENABLE);		
+
+	//  Enable the CAN1_RX0_IRQn  Interrupt
+	NVIC_InitStructure.NVIC_IRQChannel                   = CAN1_RX0_IRQn;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority        = 0;
+	NVIC_InitStructure.NVIC_IRQChannelCmd                = ENABLE;
+	NVIC_Init(&NVIC_InitStructure);
+
+
+	
+	CAN_ITConfig(CAN1, CAN_IT_FMP0,ENABLE);		
 	
     DebugMsg_printf("++ CAN1, CAN2 Initialize END\r\n");
 }

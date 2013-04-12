@@ -94,18 +94,18 @@ void LCDBL_PWM_CONTROL(uint16_t PWM_VALUE)
 {
 	TIM_OCInitTypeDef  TIM_OCInitStructure;
 
-   	TIM_OCInitStructure.TIM_OCMode 			= TIM_OCMode_PWM2;
-    TIM_OCInitStructure.TIM_OutputState 	= TIM_OutputState_Enable;
-   	TIM_OCInitStructure.TIM_OutputNState 	= TIM_OutputNState_Enable;
-   	TIM_OCInitStructure.TIM_OCPolarity 		= TIM_OCPolarity_Low;
-    TIM_OCInitStructure.TIM_OCNPolarity 	= TIM_OCNPolarity_High;
-   	TIM_OCInitStructure.TIM_OCIdleState 	= TIM_OCIdleState_Set;
-    TIM_OCInitStructure.TIM_OCNIdleState 	= TIM_OCIdleState_Reset;
+	TIM_OCInitStructure.TIM_OCMode 			= TIM_OCMode_PWM2;
+	TIM_OCInitStructure.TIM_OutputState 	= TIM_OutputState_Enable;
+	TIM_OCInitStructure.TIM_OutputNState 	= TIM_OutputNState_Enable;
+	TIM_OCInitStructure.TIM_OCPolarity 		= TIM_OCPolarity_Low;
+	TIM_OCInitStructure.TIM_OCNPolarity 	= TIM_OCNPolarity_High;
+	TIM_OCInitStructure.TIM_OCIdleState 	= TIM_OCIdleState_Set;
+	TIM_OCInitStructure.TIM_OCNIdleState 	= TIM_OCIdleState_Reset;
 
-    //	Channel 1 Configuration in PWM mode
-    TIM_OCInitStructure.TIM_Pulse = PWM_VALUE;
-    TIM_OC1Init(TIM8, &TIM_OCInitStructure);					
-    
+	//	Channel 1 Configuration in PWM mode
+	TIM_OCInitStructure.TIM_Pulse = PWM_VALUE;
+	TIM_OC1Init(TIM8, &TIM_OCInitStructure);					
+
 	// 	TIM8 counter enable
 	TIM_Cmd(TIM8, ENABLE);			
 

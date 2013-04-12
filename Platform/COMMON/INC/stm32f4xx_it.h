@@ -57,6 +57,10 @@ void TIM5_IRQHandler(void);
 void USART2_IRQHandler(void);
 void UART4_IRQHandler(void);
 
+extern void OperateRingBuffer(void);
+extern void WL9F_CAN_Buffer_Init(void);
+
+
 #ifdef __cplusplus
 }
 #endif

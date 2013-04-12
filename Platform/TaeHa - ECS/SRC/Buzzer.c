@@ -77,12 +77,12 @@ void Buzzer_Init(void)
     NVIC_InitStructure.NVIC_IRQChannelCmd                = ENABLE;
     NVIC_Init(&NVIC_InitStructure);
 
-    WL9FM_BUZZER.Status = 0;
-    WL9FM_BUZZER.OnTime = 0;
-    WL9FM_BUZZER.OnCnt  = 0;
+	WL9FM_BUZZER.Status = 0;
+	WL9FM_BUZZER.OnTime = 0;
+	WL9FM_BUZZER.OnCnt  = 0;
 	WL9FM_BUZZER.Current_Status = 0;
 
-    DebugMsg_printf("-- BUZZER (TIM4 : 10msec), TIM4_IRQn Initialize END\r\n");
+	DebugMsg_printf("-- BUZZER (TIM4 : 10msec), TIM4_IRQn Initialize END\r\n");
 
 	//	Buzzer SendtoEXYNOS º¯¼ö
 	Buzzer_SendCnt = Buzzer_SendFlag = 0;

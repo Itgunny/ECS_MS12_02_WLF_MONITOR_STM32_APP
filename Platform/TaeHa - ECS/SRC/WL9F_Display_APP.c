@@ -6,10 +6,10 @@
   * @date    02/22/2013
   * @brief   WL9F_Monitor_APP.c module
   *
-  * Project Name       : WL9F Monitor APP
+  * Project Name       : WL9F Display APP
   * Project Enviroment : IAREmbedded Workbench for ARM 6.5x 
   *                      STM32F407ZGT6 Firmware Library
-  * Project Workspace  : WL9F_Monitor_APP
+  * Project Workspace  : WL9F_Display_APP
   * MCU Type           : STM32F407ZGT6
   *
   * TAEHA MECHATRONICS Co., Ltd (http://www.taeha.co.kr)				
@@ -20,8 +20,8 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "WL9F_Monitor_APP.h"	
-#include "WL9F_Monitor_Variable.h"
+#include "WL9F_Display_APP.h"	
+#include "WL9F_Display_Variable.h"
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -236,7 +236,7 @@ void ReadE2PROM_ToSend()
   * @param  None
   * @retval None
   */
-void WL9FM_1mSecOperationFunc(void)
+void WL9F_1mSecOperationFunc(void)
 {
 
 }
@@ -246,9 +246,9 @@ void WL9FM_1mSecOperationFunc(void)
   * @param  None
   * @retval None
   */
-void WL9FM_10mSecOperationFunc(void)
+void WL9F_10mSecOperationFunc(void)
 {
-	Lamp_Update_State();	//	LAMP Update 상태를 체크한다.
+
 }
 
 /**
@@ -256,9 +256,9 @@ void WL9FM_10mSecOperationFunc(void)
   * @param  None
   * @retval None
   */
-void WL9FM_100mSecOperationFunc(void)
+void WL9F_100mSecOperationFunc(void)
 {
-	Lamp_Update_System();	//	체크된 LAMP 상태를 업데이트 한다.
+
 }
 
 /**
@@ -266,12 +266,12 @@ void WL9FM_100mSecOperationFunc(void)
   * @param  None
   * @retval None
   */
-void WL9FM_1SecOperationFunc(void)
+void WL9F_1SecOperationFunc(void)
 {
 
 }
 
-void WL9FM_System_Init_Start(void)
+void WL9F_System_Init_Start(void)
 {
 	WL9FM_PowerIG(PowerIG_OFF);					//  ->	GPIO_Control.c PowerIG를 OFF로 만들어 놓고, 
 	WL9FM_EXYNOS_POWER_ONOFF(EXYNOS_POWER_ON);	//	->	GPIO_Control.c EXYNOS-4412 Power On..
@@ -282,27 +282,25 @@ void WL9FM_System_Init_Start(void)
 	Buzzer_Init();              				//  ->  Buzzer.c (Buzzer Timer Start)
 	FM3164_Watchdog_Init(0x00);					//  ->  FM31X4.c (Integrated Processor Companion ON)
 	KeySwitch_Init();           				//  ->  KeySwitch.c
-	LAMP_Control_Init();						//	-> 	LAMP_Control.c
-	//		LAMP ALL ON
+
 	LED_POWER_ONOFF(LED_ON);					//	->	LCD_Control.c (LED On/Off)
 	LCD_POWER_ONOFF(LCDPWR_ON);					//	-> 	LCD_Control.c (LCD 12V Power On/Off)
 
 	WL9FM_CAMERA_nRESET();						//	-> 	TW2835, TW8832 Power On..
+	LCD_Control_Init();							//	-> 	LCD_Control.c (LCDBL, ON/OFF)
 	TW2835_Control_Init();						//	-> 	TW2835_Control.c (CAMERA -> Decoder)
 	TW8832_Control_Init();						//	-> 	TW8832_Control.c (LCD Interface)
 
-	TimeDelay_msec(3000);						//	->	3초는 대기해줘야 화면이 정상적으로 Exynos에서 표시한다.
-	LAMP_Update_Data = LAMP_ALL_OFF;			//	-> 	LAMP ALL OFF
-	LCD_Control_Init();							//	-> 	LCD_Control.c (LCDBL, ON/OFF)
 	USART_COMInit(COMPORT2);       				//  ->	UART_Control.c
-	//  USART_COMInit(COMPORT4);       				//      COM2 : CAN Data
-	//		COM4 : CMD Data
+	USART_COMInit(COMPORT4);       				//      COM2 : CAN Data
+						//		COM4 : CMD Data
 	CAN_COMInit();
-	//	-> 	CAN_Control.c
+						//	-> 	CAN_Control.c
 	//InitE2PROM();
 	ReadE2PROM_ToSend();						//	->	EEPROM Data Read
 
 	//WL9FM_PowerIG(PowerIG_ON);				//	->	GPIO_Control.c 초기화가 끝나면, PowerIG를 ON 한다.!!
+
 }
 
 /**
@@ -310,13 +308,13 @@ void WL9FM_System_Init_Start(void)
   * @param  None
   * @retval None
   */
-void WL9FM_Monitor_APP(void)
+void WL9F_Display_APP(void)
 {
 	DebugUART_Init();			//	->	Main.c
 	DebugMsg_printf("== START -> DebugMsg from Exynos-4412 \r\n");    
 
 	System_Configuration();		//  ->  System_Init.c
-	                    //      RCC, NVIC, GPIO Initialize
+	            //      RCC, NVIC, GPIO Initialize
 
 	System_Initialize();		//	-> 	System_Init.c
 								//		IAP와 동일한 초기화를 한다. -> 상태 변경 없음.
@@ -325,7 +323,7 @@ void WL9FM_Monitor_APP(void)
 SYSTEM_RESET :
 
 	System_Variable_Init();
-	WL9FM_System_Init_Start();
+	WL9F_System_Init_Start();
 	
 	/* Infinite loop */
 	while (1)
@@ -336,7 +334,7 @@ SYSTEM_RESET :
 
 			//  WL9F_1mSecOperationState -> Func 실행..
 			//  if (WL9F_1mSecOperationState != 0) WL9F_1mSecOperationFunc[WL9F_1mSecOperationState]();    
-			WL9FM_1mSecOperationFunc();
+			WL9F_1mSecOperationFunc();
 		}            
 		
 		if (WL9FM_TIME.Flag_10mSec == 1)    //  10msec
@@ -345,7 +343,7 @@ SYSTEM_RESET :
 
 			//  WL9F_10mSecOperationState -> Func 실행..
 			//  if (WL9F_10mSecOperationState != 0) WL9F_10mSecOperationFunc[WL9F_10mSecOperationState]();    
-			WL9FM_10mSecOperationFunc();
+			WL9F_10mSecOperationFunc();
 		}
 		
 		if (WL9FM_TIME.Flag_100mSec == 1)   //  100 msec
@@ -354,7 +352,7 @@ SYSTEM_RESET :
 
 			//  WL9F_100mSecOperationState -> Func 실행..
 			//  if (WL9F_100mSecOperationState != 0) WL9F_100mSecOperationFunc[WL9F_100mSecOperationState]();    
-			WL9FM_100mSecOperationFunc();
+			WL9F_100mSecOperationFunc();
 
 			#if 0
 			//	WL9F Monitor RESET Code
@@ -371,7 +369,7 @@ SYSTEM_RESET :
 
 			//  WL9F_1SecOperationState -> Func 실행..
 			//  if (WL9F_1SecOperationState != 0) WL9F_1SecOperationFunc[WL9F_1SecOperationState]();    
-			WL9FM_1SecOperationFunc();
+			WL9F_1SecOperationFunc();
 		}
 	}
 }
