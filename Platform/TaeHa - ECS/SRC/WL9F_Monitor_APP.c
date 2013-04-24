@@ -248,7 +248,9 @@ void WL9FM_1mSecOperationFunc(void)
   */
 void WL9FM_10mSecOperationFunc(void)
 {
-	Lamp_Update_State();	//	LAMP Update 상태를 체크한다.
+	//Lamp_Update_State();	//	LAMP Update 상태를 체크한다.
+
+	//OperateRingBuffer();
 }
 
 /**
@@ -258,7 +260,9 @@ void WL9FM_10mSecOperationFunc(void)
   */
 void WL9FM_100mSecOperationFunc(void)
 {
-	Lamp_Update_System();	//	체크된 LAMP 상태를 업데이트 한다.
+	//Lamp_Update_System();	//	체크된 LAMP 상태를 업데이트 한다.
+
+	KeySwitch_SendToEXYNOS(KeySwitch_Value);
 }
 
 /**
@@ -288,14 +292,14 @@ void WL9FM_System_Init_Start(void)
 	LCD_POWER_ONOFF(LCDPWR_ON);					//	-> 	LCD_Control.c (LCD 12V Power On/Off)
 
 	WL9FM_CAMERA_nRESET();						//	-> 	TW2835, TW8832 Power On..
-	TW2835_Control_Init();						//	-> 	TW2835_Control.c (CAMERA -> Decoder)
-	TW8832_Control_Init();						//	-> 	TW8832_Control.c (LCD Interface)
+	//TW2835_Control_Init();						//	-> 	TW2835_Control.c (CAMERA -> Decoder)
+	//TW8832_Control_Init();						//	-> 	TW8832_Control.c (LCD Interface)
 
 	TimeDelay_msec(3000);						//	->	3초는 대기해줘야 화면이 정상적으로 Exynos에서 표시한다.
 	LAMP_Update_Data = LAMP_ALL_OFF;			//	-> 	LAMP ALL OFF
 	LCD_Control_Init();							//	-> 	LCD_Control.c (LCDBL, ON/OFF)
 	USART_COMInit(COMPORT2);       				//  ->	UART_Control.c
-	//  USART_COMInit(COMPORT4);       				//      COM2 : CAN Data
+	USART_COMInit(COMPORT4);       				//      COM2 : CAN Data
 	//		COM4 : CMD Data
 	CAN_COMInit();
 	//	-> 	CAN_Control.c

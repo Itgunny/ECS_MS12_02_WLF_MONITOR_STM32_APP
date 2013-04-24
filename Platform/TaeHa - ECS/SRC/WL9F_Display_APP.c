@@ -248,7 +248,7 @@ void WL9F_1mSecOperationFunc(void)
   */
 void WL9F_10mSecOperationFunc(void)
 {
-
+	OperateRingBuffer();
 }
 
 /**
@@ -288,8 +288,8 @@ void WL9F_System_Init_Start(void)
 
 	WL9FM_CAMERA_nRESET();						//	-> 	TW2835, TW8832 Power On..
 	LCD_Control_Init();							//	-> 	LCD_Control.c (LCDBL, ON/OFF)
-	TW2835_Control_Init();						//	-> 	TW2835_Control.c (CAMERA -> Decoder)
-	TW8832_Control_Init();						//	-> 	TW8832_Control.c (LCD Interface)
+	//TW2835_Control_Init();						//	-> 	TW2835_Control.c (CAMERA -> Decoder)
+	//TW8832_Control_Init();						//	-> 	TW8832_Control.c (LCD Interface)
 
 	USART_COMInit(COMPORT2);       				//  ->	UART_Control.c
 	USART_COMInit(COMPORT4);       				//      COM2 : CAN Data

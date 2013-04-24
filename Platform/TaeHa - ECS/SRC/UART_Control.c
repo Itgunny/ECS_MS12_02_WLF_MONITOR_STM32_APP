@@ -70,8 +70,8 @@ const uint16_t Serial_RX_PIN[5]    = {  0,
 const uint32_t Serial_BaudRate[5]  = {  0,
                                         0, 
                                         115200,	//  USART2
-                                        0,
-                                        38400,  //  USART4
+                                        57600,
+                                        115200,  //  USART4
                                         };
 
 const uint16_t Serial_IRQ_Channel[5]= { 0, 
@@ -90,81 +90,59 @@ const uint16_t Serial_IRQ_Channel[5]= { 0,
   */
 void USART_COMInit(uint8_t COM)
 {
-    USART_InitTypeDef   	USART_InitStructure;
-    NVIC_InitTypeDef    	NVIC_InitStructure;
-	
-    DebugMsg_printf("++ USART %d Initialize START\r\n", COM);
+	USART_InitTypeDef   	USART_InitStructure;
+	NVIC_InitTypeDef    	NVIC_InitStructure;
 
-    //  UART GPIO는 System_Init.c 에서 설정
-    #if 0
+	DebugMsg_printf("++ USART %d Initialize START\r\n", COM);
 
-    GPIO_InitTypeDef    GPIO_InitStructure;
-
-	//	STM32 UART2 <-> EXYNOS UART1
-    GPIO_InitStructure.GPIO_Pin   = UART2TX_EXYNOS1 | UART2RX_EXYNOS1;
-    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF;   
-  	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(UART2_EXYNOS1_PORT, &GPIO_InitStructure);
-	GPIO_PinAFConfig(UART2_EXYNOS1_PORT, UART2TX_EXYNOS1_PinSource, GPIO_AF_USART2);
-	GPIO_PinAFConfig(UART2_EXYNOS1_PORT, UART2RX_EXYNOS1_PinSource, GPIO_AF_USART2);
-
-	//	STM32 UART4 <-> EXYNOS UART3
-    GPIO_InitStructure.GPIO_Pin   = UART4TX_EXYNOS3 | UART4RX_EXYNOS3;
-    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF;   
-  	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(UART4_EXYNOS3_PORT, &GPIO_InitStructure);
-	GPIO_PinAFConfig(UART4_EXYNOS3_PORT, UART4TX_EXYNOS3_PinSource, GPIO_AF_USART2);
-	GPIO_PinAFConfig(UART4_EXYNOS3_PORT, UART4RX_EXYNOS3_PinSource, GPIO_AF_USART2);
-	
-    #endif    
 
 	USART_ClockInitTypeDef 	USART_ClockInitStructure;
-	
+
+#if 0
 	USART_ClockInitStructure.USART_Clock   = USART_Clock_Disable;
 	USART_ClockInitStructure.USART_CPOL    = USART_CPOL_Low;
 	USART_ClockInitStructure.USART_CPHA    = USART_CPHA_2Edge;
 	USART_ClockInitStructure.USART_LastBit = USART_LastBit_Disable;
-	USART_ClockInit(Serial_USART[COM], &USART_ClockInitStructure);
-    
+
+	if (COM != 4) USART_ClockInit(Serial_USART[COM], &USART_ClockInitStructure);
+#endif
+
 	/* 
-        USARTx configuration
-    
-		- BaudRate = xxxx baudrate
-		- Word Length = 8 Bits
-		- One Stop Bit
-		- No parity
-		- Hardware flow control disabled (RTS and CTS signals)
-		- Receive and transmit enabled/Disabled
-    */
-    
-    USART_InitStructure.USART_WordLength          = USART_WordLength_8b;
-    USART_InitStructure.USART_StopBits            = USART_StopBits_1;
-    USART_InitStructure.USART_Parity              = USART_Parity_No;
-    USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
-    USART_InitStructure.USART_Mode                = USART_Mode_Rx | USART_Mode_Tx;
-    USART_InitStructure.USART_BaudRate            = Serial_BaudRate[COM];
-     
-    //  USART configuration
-    USART_Init(Serial_USART[COM], &USART_InitStructure);
+	USARTx configuration
 
-    //  Enable USART
-    USART_Cmd(Serial_USART[COM], ENABLE);
-    
-    //  Enable USART2 ~ UART5 Receive interrupt
-    USART_ITConfig(Serial_USART[COM], USART_IT_RXNE, ENABLE);    
-   	USART_ITConfig(Serial_USART[COM], USART_IT_TXE, DISABLE);
+	- BaudRate = xxxx baudrate
+	- Word Length = 8 Bits
+	- One Stop Bit
+	- No parity
+	- Hardware flow control disabled (RTS and CTS signals)
+	- Receive and transmit enabled/Disabled
+	*/
 
-    NVIC_InitStructure.NVIC_IRQChannel                   = Serial_IRQ_Channel[COM];
-    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
-    NVIC_InitStructure.NVIC_IRQChannelSubPriority        = 0;
-    NVIC_InitStructure.NVIC_IRQChannelCmd                = ENABLE;
-    NVIC_Init(&NVIC_InitStructure);
+	USART_InitStructure.USART_WordLength          = USART_WordLength_8b;
+	USART_InitStructure.USART_StopBits            = USART_StopBits_1;
+	USART_InitStructure.USART_Parity              = USART_Parity_No;
+	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+	USART_InitStructure.USART_Mode                = USART_Mode_Rx | USART_Mode_Tx;
+	USART_InitStructure.USART_BaudRate            = Serial_BaudRate[COM];
+	// USART_InitStructure.USART_BaudRate            = 57600;
+	
+	//  USART configuration
+	USART_Init(Serial_USART[COM], &USART_InitStructure);
 
-    DebugMsg_printf("-- USART %d Initialize END\r\n", COM);
+	//  Enable USART
+	USART_Cmd(Serial_USART[COM], ENABLE);
+
+	//  Enable USART2 ~ UART5 Receive interrupt
+	USART_ITConfig(Serial_USART[COM], USART_IT_RXNE, ENABLE);    
+	USART_ITConfig(Serial_USART[COM], USART_IT_TXE, DISABLE);
+
+	NVIC_InitStructure.NVIC_IRQChannel                   = Serial_IRQ_Channel[COM];
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority        = 0;
+	NVIC_InitStructure.NVIC_IRQChannelCmd                = ENABLE;
+	NVIC_Init(&NVIC_InitStructure);
+
+	DebugMsg_printf("-- USART %d Initialize END\r\n", COM);
 }
 
 /**

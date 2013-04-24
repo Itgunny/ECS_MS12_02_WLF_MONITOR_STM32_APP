@@ -259,12 +259,12 @@ void GPIO_Configuration(void)
 	GPIO_PinAFConfig(CAN2_PORT, CAN2_RX_PinSource, GPIO_AF_CAN2);
 
 	//	STM32 UART2 <-> EXYNOS UART1
-    GPIO_InitStructure.GPIO_Pin   = UART2TX_EXYNOS1 | UART2RX_EXYNOS1;
-    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF;   
-  	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(UART2_EXYNOS1_PORT, &GPIO_InitStructure);
+	GPIO_InitStructure.GPIO_Pin   = UART2TX_EXYNOS1 | UART2RX_EXYNOS1;
+	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF;   
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_Init(UART2_EXYNOS1_PORT, &GPIO_InitStructure);
 	GPIO_PinAFConfig(UART2_EXYNOS1_PORT, UART2TX_EXYNOS1_PinSource, GPIO_AF_USART2);
 	GPIO_PinAFConfig(UART2_EXYNOS1_PORT, UART2RX_EXYNOS1_PinSource, GPIO_AF_USART2);
 
@@ -290,14 +290,14 @@ void GPIO_Configuration(void)
 	#endif
 
 	//	STM32 UART4 <-> EXYNOS UART3
-    GPIO_InitStructure.GPIO_Pin   = UART4TX_EXYNOS3 | UART4RX_EXYNOS3;
-    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF;   
-  	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(UART4_EXYNOS3_PORT, &GPIO_InitStructure);
-	GPIO_PinAFConfig(UART4_EXYNOS3_PORT, UART4TX_EXYNOS3_PinSource, GPIO_AF_USART2);
-	GPIO_PinAFConfig(UART4_EXYNOS3_PORT, UART4RX_EXYNOS3_PinSource, GPIO_AF_USART2);
+	GPIO_InitStructure.GPIO_Pin   = UART4TX_EXYNOS3 | UART4RX_EXYNOS3;
+	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF;   
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_Init(UART4_EXYNOS3_PORT, &GPIO_InitStructure);
+	GPIO_PinAFConfig(UART4_EXYNOS3_PORT, UART4TX_EXYNOS3_PinSource, GPIO_AF_UART4);
+	GPIO_PinAFConfig(UART4_EXYNOS3_PORT, UART4RX_EXYNOS3_PinSource, GPIO_AF_UART4);
 	
 	//  EXYNOS PWR_CTRL -> GPIO Output
     GPIO_InitStructure.GPIO_Pin   = EXYNOS_PWR_CTRL;
@@ -352,19 +352,19 @@ void GPIO_Configuration(void)
 
 	//	KeySwitch Matrix -> GPIO Output
 	GPIO_InitStructure.GPIO_Pin   = KeySCAN0 | KeySCAN1 | KeySCAN2;
-    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
-  	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(KeySWXX_PORT, &GPIO_InitStructure);
+	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_Init(KeySWXX_PORT, &GPIO_InitStructure);
 
 	//	KeySwitch Matrix -> GPIO Input
 	GPIO_InitStructure.GPIO_Pin   = KeyInput0 | KeyInput1 | KeyInput2 | KeyInput3 | KeyInput4 | KeyInput5;
-    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_IN;   
-  	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(KeySWXX_PORT, &GPIO_InitStructure);
+	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_IN;   
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_Init(KeySWXX_PORT, &GPIO_InitStructure);
 
 	//  POWER_IGMON -> GPIO Input
     GPIO_InitStructure.GPIO_Pin   = PWR_IGMON;

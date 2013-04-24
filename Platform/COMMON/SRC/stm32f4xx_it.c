@@ -57,7 +57,7 @@ struct st_CAN_Msg Iden;
 
 /* Private define ------------------------------------------------------------*/
 
-#define RING_BUF_SIZE			1024*10
+#define RING_BUF_SIZE			768*10
 #define UART2_Tx_BUF_SIZE		21
 
 
@@ -98,6 +98,8 @@ void WL9F_CAN_Buffer_Init(void)
 	CommErrCnt = 0;
 }
 
+uint64_t test,old_test;
+
 void OperateRingBuffer(void)
 {
 	if(pWriteBufPos >= (RING_BUF_SIZE-1))	// End of Ring Buffer
@@ -108,6 +110,9 @@ void OperateRingBuffer(void)
 	pWriteBufPos += 4;
 
 	memcpy(&ring_buf[pWriteBufPos], (u8*)&RxMsg.Data, 8);
+	//memcpy(&ring_buf[pWriteBufPos], (uint64_t*)&test, 8);
+
+	//test++;
 
 	pWriteBufPos += 8;
 	
@@ -283,7 +288,7 @@ void CAN1_RX0_IRQHandler(void)
 			{
 				CanRecvCnt = 0;
 	
-				if(pWriteBufPos >= (1024*10-1)) // End of Ring Buffer
+				if(pWriteBufPos >= (768*10-1)) // End of Ring Buffer
 					pWriteBufPos = 0;
 	
 				//memcpy(&ring_buf[pWriteBufPos], (u8*)&SerialMsgRTC[0], 16);
@@ -413,17 +418,26 @@ void USART2_IRQHandler(void)
 			pReadBufPos = 0;
 
 
-		if((pWriteBufPos != pReadBufPos) && (Uart2_SerialTxCnt == 0))
+		if(Uart2_SerialTxCnt == 0)
+		{
 			memcpy(&Uart2_SerialTxMsg[3] , &ring_buf[pReadBufPos], 12);
-
-	
+			//memcpy(&Uart2_SerialTxMsg[7], (uint64_t*)&test, 8);
+		}
+		
 		USART_SendData(USART2, (u16)(Uart2_SerialTxMsg[Uart2_SerialTxCnt++]));    
 
+		//old_test=test;
+		
 		if (Uart2_SerialTxCnt >= UART2_Tx_BUF_SIZE)
 		{
+			//test=test+2;
+			
 			Uart2_SerialTxCnt = 0;
 			pReadBufPos += 12;
+			//USART_ITConfig(USART2, USART_IT_TXE, DISABLE);
 		}
+
+		
         
 	}
 }

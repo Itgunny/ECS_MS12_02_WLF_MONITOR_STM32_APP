@@ -59,7 +59,7 @@
 #define MAXSCAN 	            3           //  Scan Switch 
 #define MAXINPUT               	6           //  Input Switch 
 
-#define MAXSWITCH               5           //  Input Switch 
+#define MAXSWITCH               6           //  Input Switch 
 
 #define KeyCMD  		  	  	0x4B   		//	KeyCMD - Ελ½Ε Command Data
 
@@ -79,6 +79,8 @@ extern uint8_t                  KeySwitch_Value;
 extern void KeySwitch_Init(void);
 extern void KeySwitch_Process(void);
 extern void KeyTest_TEST(uint8_t value);
+
+extern void KeySwitch_SendToEXYNOS(uint8_t KeyValue);
 
 #endif /* __KeySwitch_H */
 

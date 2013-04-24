@@ -97,7 +97,8 @@ typedef enum
 typedef enum 
 {
   COM1 = 0,
-  COM2 = 1
+  COM2 = 2,
+  COM4 = 4
 } COM_TypeDef;
 /**
   * @}
