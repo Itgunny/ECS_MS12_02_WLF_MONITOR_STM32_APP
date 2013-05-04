@@ -287,22 +287,24 @@ void WL9FM_System_Init_Start(void)
 	FM3164_Watchdog_Init(0x00);					//  ->  FM31X4.c (Integrated Processor Companion ON)
 	KeySwitch_Init();           				//  ->  KeySwitch.c
 	LAMP_Control_Init();						//	-> 	LAMP_Control.c
-	//		LAMP ALL ON
+												//		LAMP ALL ON
 	LED_POWER_ONOFF(LED_ON);					//	->	LCD_Control.c (LED On/Off)
 	LCD_POWER_ONOFF(LCDPWR_ON);					//	-> 	LCD_Control.c (LCD 12V Power On/Off)
 
 	WL9FM_CAMERA_nRESET();						//	-> 	TW2835, TW8832 Power On..
-	//TW2835_Control_Init();						//	-> 	TW2835_Control.c (CAMERA -> Decoder)
-	//TW8832_Control_Init();						//	-> 	TW8832_Control.c (LCD Interface)
+	TW2835_Control_Init();						//	-> 	TW2835_Control.c (CAMERA -> Decoder)
+	TW8832_Control_Init();						//	-> 	TW8832_Control.c (LCD Interface)
 
 	TimeDelay_msec(3000);						//	->	3초는 대기해줘야 화면이 정상적으로 Exynos에서 표시한다.
 	LAMP_Update_Data = LAMP_ALL_OFF;			//	-> 	LAMP ALL OFF
 	LCD_Control_Init();							//	-> 	LCD_Control.c (LCDBL, ON/OFF)
+
 	USART_COMInit(COMPORT2);       				//  ->	UART_Control.c
 	USART_COMInit(COMPORT4);       				//      COM2 : CAN Data
-	//		COM4 : CMD Data
-	CAN_COMInit();
-	//	-> 	CAN_Control.c
+												//		COM4 : CMD Data
+
+	CAN_COMInit();								//	-> 	CAN_Control.c
+												
 	//InitE2PROM();
 	ReadE2PROM_ToSend();						//	->	EEPROM Data Read
 
