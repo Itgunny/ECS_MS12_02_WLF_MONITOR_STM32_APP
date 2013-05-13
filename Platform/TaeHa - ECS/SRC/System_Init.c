@@ -635,6 +635,7 @@ void System_Configuration(void)
 	RCC_Configuration();		    // 	Configure the system clocks
 	NVIC_Configuration();		    //	NVIC Configuration
 	GPIO_Configuration();		    // 	Configure the GPIO ports
+
 }
 
 void System_Initialize(void)
@@ -691,6 +692,7 @@ void System_Variable_Init(void)
 	memset((void *)(&WL9FM_LCDBL),          0x0, sizeof(WL9FM_LCDBL_DATA));	
 
 	WL9F_CAN_Buffer_Init();
+	WL9F_CAN_Variables_Init();
 }
 
 /*********(C) COPYRIGHT 2013 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/

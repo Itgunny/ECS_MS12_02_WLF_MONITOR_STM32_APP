@@ -52,6 +52,7 @@ const uint16_t LCDBL_PWMLEVEL[MaxBackLightLEVEL] =
 	0, 		//  8 Step : 100%
 }; 
 
+unsigned char CAM_Mode=0;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
@@ -115,26 +116,26 @@ void LCDBL_PWM_CONTROL(uint16_t PWM_VALUE)
 
 void LCDBL_Init(void)
 {
-    DebugMsg_printf("++ LCD_Control_Init, LCDBL(TIM8 : PWM), ONOFF Initialize START\r\n");
+	DebugMsg_printf("++ LCD_Control_Init, LCDBL(TIM8 : PWM), ONOFF Initialize START\r\n");
 
-  /* TIM8 Configuration ---------------------------------------------------
-   Generate 7 PWM signals with 4 different duty cycles:
-   TIM8 input clock (TIM8CLK) is set to 2 * APB2 clock (PCLK2), since APB2 
-    prescaler is different from 1.   
-    TIM8CLK = 2 * PCLK2  
-    PCLK2 = HCLK / 2 
-    => TIM8CLK = 2 * (HCLK / 2) = HCLK = SystemCoreClock
-   TIM8CLK = SystemCoreClock, Prescaler = 0, TIM8 counter clock = SystemCoreClock
-   SystemCoreClock is set to 168 MHz for STM32F4xx devices
-   
-   The objective is to generate 7 PWM signal at 17.57 KHz:
-     - TIM8_Period = (SystemCoreClock / 17570) - 1
-   The channel 1 and channel 1N duty cycle is set to 50%
-   The channel 2 and channel 2N duty cycle is set to 37.5%
-   The channel 3 and channel 3N duty cycle is set to 25%
-   The channel 4 duty cycle is set to 12.5%
-   The Timer pulse is calculated as follows:
-     - ChannelxPulse = DutyCycle * (TIM8_Period - 1) / 100
+	/* TIM8 Configuration ---------------------------------------------------
+	Generate 7 PWM signals with 4 different duty cycles:
+	TIM8 input clock (TIM8CLK) is set to 2 * APB2 clock (PCLK2), since APB2 
+	prescaler is different from 1.   
+	TIM8CLK = 2 * PCLK2  
+	PCLK2 = HCLK / 2 
+	=> TIM8CLK = 2 * (HCLK / 2) = HCLK = SystemCoreClock
+	TIM8CLK = SystemCoreClock, Prescaler = 0, TIM8 counter clock = SystemCoreClock
+	SystemCoreClock is set to 168 MHz for STM32F4xx devices
+
+	The objective is to generate 7 PWM signal at 17.57 KHz:
+	- TIM8_Period = (SystemCoreClock / 17570) - 1
+	The channel 1 and channel 1N duty cycle is set to 50%
+	The channel 2 and channel 2N duty cycle is set to 37.5%
+	The channel 3 and channel 3N duty cycle is set to 25%
+	The channel 4 duty cycle is set to 12.5%
+	The Timer pulse is calculated as follows:
+	- ChannelxPulse = DutyCycle * (TIM8_Period - 1) / 100
    
    Note: 
     SystemCoreClock variable holds HCLK frequency and is defined in system_stm32f4xx.c file.
@@ -163,56 +164,56 @@ void LCDBL_Init(void)
 #endif
 
     //  LCDBL GPIO는 System_Init.c 에서 설정
-    #if 0
+#if 0
 	GPIO_InitTypeDef GPIO_InitStructure;
-	
+
 	//	LCDBL_PWM -> PWM
-    GPIO_InitStructure.GPIO_Pin   = LCDBL_PWM;
-    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF;   
-  	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
-    GPIO_Init(LCDBL_PORT, &GPIO_InitStructure);
+	GPIO_InitStructure.GPIO_Pin   = LCDBL_PWM;
+	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF;   
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
+	GPIO_Init(LCDBL_PORT, &GPIO_InitStructure);
 	GPIO_PinAFConfig(LCDBL_PORT, LCDBL_PWM_PinSource, GPIO_AF_TIM8);
 
 	//  LCDBL_CTRL -> GPIO Output
-    GPIO_InitStructure.GPIO_Pin   = LCDBL_CTRL;
-    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
-  	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(LCDBL_PORT, &GPIO_InitStructure);
+	GPIO_InitStructure.GPIO_Pin   = LCDBL_CTRL;
+	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_Init(LCDBL_PORT, &GPIO_InitStructure);
 
-	#endif
+#endif
 	
-  	TIM_TimeBaseStructure.TIM_Prescaler         = 16;
-  	TIM_TimeBaseStructure.TIM_CounterMode 	    = TIM_CounterMode_Up;
-  	TIM_TimeBaseStructure.TIM_Period 			= TimerPeriod;
-  	TIM_TimeBaseStructure.TIM_ClockDivision     = 0;
-  	TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;
+	TIM_TimeBaseStructure.TIM_Prescaler         = 16;
+	TIM_TimeBaseStructure.TIM_CounterMode 	    = TIM_CounterMode_Up;
+	TIM_TimeBaseStructure.TIM_Period 			= TimerPeriod;
+	TIM_TimeBaseStructure.TIM_ClockDivision     = 0;
+	TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;
 
-  	TIM_TimeBaseInit(TIM8, &TIM_TimeBaseStructure);
+	TIM_TimeBaseInit(TIM8, &TIM_TimeBaseStructure);
 
-   	TIM_OCInitStructure.TIM_OCMode 			= TIM_OCMode_PWM2;
-    TIM_OCInitStructure.TIM_OutputState 	= TIM_OutputState_Enable;
-   	TIM_OCInitStructure.TIM_OutputNState 	= TIM_OutputNState_Enable;
-   	TIM_OCInitStructure.TIM_OCPolarity 		= TIM_OCPolarity_Low;
-    TIM_OCInitStructure.TIM_OCNPolarity 	= TIM_OCNPolarity_High;
-   	TIM_OCInitStructure.TIM_OCIdleState 	= TIM_OCIdleState_Set;
-    TIM_OCInitStructure.TIM_OCNIdleState 	= TIM_OCIdleState_Reset;
+	TIM_OCInitStructure.TIM_OCMode 			= TIM_OCMode_PWM2;
+	TIM_OCInitStructure.TIM_OutputState 	= TIM_OutputState_Enable;
+	TIM_OCInitStructure.TIM_OutputNState 	= TIM_OutputNState_Enable;
+	TIM_OCInitStructure.TIM_OCPolarity 		= TIM_OCPolarity_Low;
+	TIM_OCInitStructure.TIM_OCNPolarity 	= TIM_OCNPolarity_High;
+	TIM_OCInitStructure.TIM_OCIdleState 	= TIM_OCIdleState_Set;
+	TIM_OCInitStructure.TIM_OCNIdleState 	= TIM_OCIdleState_Reset;
 
-    //	Channel 1 Configuration in PWM mode
-    TIM_OCInitStructure.TIM_Pulse = LCDBL_PWMLEVEL[DefaultLCDBLLEVEL];
-	
-   	TIM_OC1Init(TIM8, &TIM_OCInitStructure);
+	//	Channel 1 Configuration in PWM mode
+	TIM_OCInitStructure.TIM_Pulse = LCDBL_PWMLEVEL[DefaultLCDBLLEVEL];
 
-  	// 	TIM8 counter enable
-  	TIM_Cmd(TIM8, ENABLE);
+	TIM_OC1Init(TIM8, &TIM_OCInitStructure);
 
-  	// 	TIM8 Main Output Enable
-  	TIM_CtrlPWMOutputs(TIM8, ENABLE);		
-	
-    DebugMsg_printf("-- LCD_Control_Init, LCDBL(TIM8 : PWM), ONOFF Initialize END\r\n");
+	// 	TIM8 counter enable
+	TIM_Cmd(TIM8, ENABLE);
+
+	// 	TIM8 Main Output Enable
+	TIM_CtrlPWMOutputs(TIM8, ENABLE);		
+
+	DebugMsg_printf("-- LCD_Control_Init, LCDBL(TIM8 : PWM), ONOFF Initialize END\r\n");
 
 	TimeDelay_msec(1000); 
 
@@ -238,6 +239,21 @@ void LCD_Display_Change(uint8_t BitData)
 	}
 }
 
+void cam_mode_change(void)
+{
+	if(CAM_Mode<7)
+	{
+		CameraMode(CAM_Mode++,0);
+		LCD_Display_Change(STM32F4_DISPLAY);
+	}
+	else
+	{
+		CAM_Mode=0;
+		LCD_Display_Change(EXYNOS_DISPLAY);
+	}
+	
+}
+
 /**\
   * @brief  None
   * @param  None
@@ -245,12 +261,13 @@ void LCD_Display_Change(uint8_t BitData)
   */
 void LCD_Control_Init(void)
 {
-	LCDBL_ONOFF(LCDBL_ON);	//  LCDBL Power On!!!
-	LCDBL_Init();			//	LCDBL PWM 설정 
-
-//	LCD_Display_Change(STM32F4_DISPLAY);
+	TimeDelay_msec(1500); 
 	LCD_Display_Change(EXYNOS_DISPLAY);
-
+	LCDBL_Init();	
+	LCDBL_ONOFF(LCDBL_ON);	//  LCDBL Power On!!!
+			//	LCDBL PWM 설정 
+	
+	//LCD_Display_Change(STM32F4_DISPLAY);
 }
 
 /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/

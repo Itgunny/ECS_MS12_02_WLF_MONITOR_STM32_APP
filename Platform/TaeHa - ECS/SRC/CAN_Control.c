@@ -22,9 +22,100 @@
 #include "WL9F_Monitor_APP.h"	
 
 /* Private typedef -----------------------------------------------------------*/
+#pragma pack(1)
+struct st_CAN_Message
+{	
+	unsigned char Priority;
+	unsigned char Data_Page;
+	unsigned char PDU_Format;	
+	unsigned char PDU_Specific;		// 50
+	unsigned char Source_Address;	// 52
+};
+#pragma pack()
+
+
+#pragma pack(1)
+typedef struct
+{
+	u8 Control;
+	u16 TotMsgSize;
+	u8 TotPacketNum;
+	u8 Reserved;
+	u16 pgn_low;
+	u8 pgn_high;
+} TP_CM;
+#pragma pack()
+
+
+
+struct st_CAN_Message Identifier;
+TP_CM* tp_cm_bam;
+
 /* Private define ------------------------------------------------------------*/
+
+#define RX_MSG69		0x01
+#define RX_MSG69_M		0x02
+#define RX_MSG145		0x04
+#define RX_MSG161		0x08
+#define RX_MSG162		0x10
+#define RX_MSG163		0x20
+#define RX_MSG251		0x40
+#define RX_MSG252		0x80
+#define RX_MSG202		0x100
+#define RX_MSG253		0x200
+
+#define RX_MSG46		0x400
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
+u8 tmpBuf[8];
+
+u8 as_data_len;
+u8 tmpbuf_AS[13];
+u8 check_as_data_len = 0;
+
+
+u8 Uart2_RxMsg_Save_Data1[8];
+u8 Uart2_RxMsg_Save_Data2[8];
+u8 Uart2_RxMsg_AS_Phone_Data[8];
+u8 Uart2_RxMsg_Smk_Reg_Eli[8];
+
+u8 Uart2_RxMsg_Single_46[8];
+u8 Uart2_RxMsg_Single_69[8];
+u8 Uart2_RxMsg_Multi_69[21];
+u8 Uart2_RxMsg_Single_160[8];
+u8 Uart2_RxMsg_Multi_161[16];
+u8 Uart2_RxMsg_Single_162[8];
+u8 Uart2_RxMsg_Single_163[8];
+u8 Uart2_RxMsg_Single_251[8];
+u8 Uart2_RxMsg_Single_252[8];
+u8 Uart2_RxMsg_Single_253[8];
+
+u8 McuInfoData1[79];
+u8 MachineBasicInformation[78];
+u8 tmpMcuInfoData[78];
+
+
+u8 T_Packet_No = 0;
+u8 flag_skip_multi_packet = 0;
+u8 RecvMachInfo = 0;
+u8 TotalRequestCnt = 0;
+u8 CompareAsterisk = 0;
+
+u32 Flag_SerialRxMsg = 0;
+u8 tp_cm_bam_TotPacketNum = 0;
+
+extern u8 CanRecvCnt;
+extern u16 TotMsgSize;
+
+extern u16 Flag_1Sec_MachInfo;
+extern u16 Flag_1Sec_MoniInfo;
+extern u8 MachInfoTotalPacketNum;
+extern u8 MoniInfoTotalPacketNum;
+extern u8 MachInfoSendCnt;
+extern u8 MoniInfoSendCnt;
+extern u8 MultiPacketSendOrder;
+extern u8 MoniInfoData[21];
+extern u8 DiffMachInfo;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 /**
@@ -38,35 +129,8 @@ void CAN_COMInit(void)
 	CAN_FilterInitTypeDef  CAN_FilterInitStructure;
 	NVIC_InitTypeDef        NVIC_InitStructure;
 
-    DebugMsg_printf("++ CAN1, CAN2 Initialize START\r\n");
+	DebugMsg_printf("++ CAN1, CAN2 Initialize START\r\n");
 
-	//  CAN GPIO는 System_Init.c 에서 설정
-    #if 0
-
-    GPIO_InitTypeDef    GPIO_InitStructure;
-	
-    //  CAN1_TX, CAN1_RX
-    GPIO_InitStructure.GPIO_Pin   = CAN1_TX | CAN1_RX;
-    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF;   
-  	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(CAN1_PORT, &GPIO_InitStructure);
-	GPIO_PinAFConfig(CAN1_PORT, CAN1_TX_PinSource, GPIO_AF_CAN1);
-	GPIO_PinAFConfig(CAN1_PORT, CAN1_RX_PinSource, GPIO_AF_CAN1);
-
-    //  CAN2_TX, CAN2_RX
-    GPIO_InitStructure.GPIO_Pin   = CAN2_TX | CAN2_RX;
-    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF;   
-  	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(CAN2_PORT, &GPIO_InitStructure);
-	GPIO_PinAFConfig(CAN2_PORT, CAN2_TX_PinSource, GPIO_AF_CAN2);
-	GPIO_PinAFConfig(CAN2_PORT, CAN2_RX_PinSource, GPIO_AF_CAN2);
-
-	#endif
-	
 	CAN_DeInit(CAN1);
 	CAN_DeInit(CAN2);
 	CAN_StructInit(&CAN_InitStructure);
@@ -111,9 +175,431 @@ void CAN_COMInit(void)
 
 
 	
-	CAN_ITConfig(CAN1, CAN_IT_FMP0,ENABLE);		
+	//CAN_ITConfig(CAN1, CAN_IT_FMP0,ENABLE);		
 	
     DebugMsg_printf("++ CAN1, CAN2 Initialize END\r\n");
 }
+
+
+
+
+void WL9F_CAN_Variables_Init(void)
+{
+	check_as_data_len = 0;
+	Flag_SerialRxMsg = 0;
+
+	Identifier.Priority = 6;
+	Identifier.Data_Page = 0;
+	Identifier.PDU_Format = 255;	
+	Identifier.Source_Address = 40;		
+
+	flag_skip_multi_packet = 0;
+	TotMsgSize = 0;
+	RecvMachInfo = 0;
+	TotalRequestCnt = 0;
+	CompareAsterisk = 0;
+	CanRecvCnt = 0;
+
+
+
+	tp_cm_bam = (TP_CM*)&tmpBuf[0];
+	
+	memset((u8*)&Uart2_RxMsg_Save_Data1[0], 0xff, sizeof(Uart2_RxMsg_Save_Data1));
+	memset((u8*)&Uart2_RxMsg_Save_Data2[0], 0xff, sizeof(Uart2_RxMsg_Save_Data2));
+	memset((u8*)&Uart2_RxMsg_AS_Phone_Data[0], 0xff, sizeof(Uart2_RxMsg_AS_Phone_Data));
+	memset((u8*)&Uart2_RxMsg_Smk_Reg_Eli[0], 0xff, sizeof(Uart2_RxMsg_Smk_Reg_Eli));	
+	memset((u8*)&Uart2_RxMsg_Single_46[0], 0xff, sizeof(Uart2_RxMsg_Single_46));
+	memset((u8*)&Uart2_RxMsg_Single_69[0], 0xff, sizeof(Uart2_RxMsg_Single_69));
+	memset((u8*)&Uart2_RxMsg_Single_160[0], 0xff, sizeof(Uart2_RxMsg_Single_160));
+	memset((u8*)&Uart2_RxMsg_Single_162[0], 0xff, sizeof(Uart2_RxMsg_Single_162));
+	Uart2_RxMsg_Single_162[4] = 0;		// Monitor Switch Status
+	memset((u8*)&Uart2_RxMsg_Single_163[0], 0xff, sizeof(Uart2_RxMsg_Single_163));
+	memset((u8*)&Uart2_RxMsg_Single_251[0], 0xff, sizeof(Uart2_RxMsg_Single_251));
+	memset((u8*)&Uart2_RxMsg_Single_252[0], 0xff, sizeof(Uart2_RxMsg_Single_252));
+	memset((u8*)&Uart2_RxMsg_Single_253[0], 0xff, sizeof(Uart2_RxMsg_Single_253));
+	
+	memset((u8*)&Uart2_RxMsg_Multi_161[0], 0xff, sizeof(Uart2_RxMsg_Multi_161));
+	memset((u8*)&Uart2_RxMsg_Multi_69[0], 0xff, sizeof(Uart2_RxMsg_Multi_69));
+}
+
+void SetCanID(u8 PF, u8 PS, u8 Priority)
+{
+	if(PF != 0)
+		Identifier.PDU_Format = PF;	
+
+	if(PS != 0)
+		Identifier.PDU_Specific = PS;	
+
+	if(Priority != 0)
+		Identifier.Priority = Priority;	
+}
+
+void CAN_TX_Data(u8* Data)
+{
+	//u8 TransmitMailbox;
+	CanTxMsg TxMessage;
+	
+	TxMessage.ExtId=((unsigned long)(Identifier.Priority) << 26)+((unsigned long)(Identifier.Data_Page) << 24)+((unsigned long)(Identifier.PDU_Format) << 16)
+				                      + ((unsigned long)(Identifier.PDU_Specific) << 8) + ((unsigned long)(Identifier.Source_Address) << 0) ;
+			
+	TxMessage.IDE = CAN_ID_EXT;
+	TxMessage.RTR = CAN_RTR_DATA;
+	TxMessage.DLC = 8;
+
+	memcpy((u8*)&TxMessage.Data[0], (u8*)&Data[0], 8);
+
+	
+	CAN_Transmit(CAN1,&TxMessage);
+}
+
+void SendTP_CM_BAM_MultiPacket_MachInfo(void)
+{
+	// TP.CM_BAM
+	SetCanID(236, 255, 7);
+
+	tp_cm_bam->Control = 32;	// Control Byte
+	
+	tp_cm_bam->TotMsgSize = TotMsgSize+1;	// Password Info - 4 Bytes + Asterisk (3 EA)
+
+	tp_cm_bam->TotPacketNum = tp_cm_bam->TotMsgSize / 7;
+	tp_cm_bam_TotPacketNum = tp_cm_bam->TotPacketNum;
+	if((tp_cm_bam->TotMsgSize % 7) != 0)
+	{
+		tp_cm_bam->TotPacketNum++;
+		tp_cm_bam_TotPacketNum = tp_cm_bam->TotPacketNum;
+	}
+
+	tp_cm_bam->Reserved = 0xff;
+
+	tp_cm_bam->pgn_low = 0xFF0B;
+	tp_cm_bam->pgn_high = 0;
+
+	CAN_TX_Data(&tmpBuf[0]);
+}
+
+
+void SendMultiPacket_MachInfo(void)
+{
+	u8 tmpBuf1[8];
+	
+	SetCanID(235, 255, 7);
+
+	tmpBuf1[0] = MachInfoTotalPacketNum;
+	
+	memcpy(&tmpBuf1[1], &tmpMcuInfoData[(MachInfoTotalPacketNum-1)*7], 7);
+	CAN_TX_Data(&tmpBuf1[0]);
+	MachInfoTotalPacketNum++;
+
+	if(MachInfoTotalPacketNum > 3)	// HCESPN 1490+1491 = 17Bytes
+	{
+		MachInfoSendCnt++;
+		Flag_1Sec_MachInfo = 0;
+		MachInfoTotalPacketNum = 0;
+		if((Flag_SerialRxMsg & RX_MSG69_M) != 0)	// 69 - Multi Packet
+			MultiPacketSendOrder = 0;
+		else if(MoniInfoSendCnt <= 60)
+			MultiPacketSendOrder = 2;
+	}		
+}
+
+void SendTP_CM_BAM_MultiPacket_MoniInfo(void)
+{
+	// TP.CM_BAM
+	SetCanID(236, 255, 7);
+
+	tp_cm_bam->Control = 32;	// Control Byte
+	
+	tp_cm_bam->TotMsgSize = 21;	// Password Info - 4 Bytes + Asterisk (3 EA)
+
+	tp_cm_bam->TotPacketNum = 3;
+	
+	tp_cm_bam->Reserved = 0xff;
+
+	tp_cm_bam->pgn_low = 0xFFC8;
+	tp_cm_bam->pgn_high = 0;
+
+	CAN_TX_Data(&tmpBuf[0]);
+}
+
+
+void SendMultiPacket_MoniInfo(void)
+{
+	u8 tmpBuf1[8];
+	
+	SetCanID(235, 255, 7);
+
+	tmpBuf1[0] = MoniInfoTotalPacketNum;
+	
+	memcpy(&tmpBuf1[1], &MoniInfoData[(MoniInfoTotalPacketNum-1)*7], 7);
+	CAN_TX_Data(&tmpBuf1[0]);
+	MoniInfoTotalPacketNum++;
+
+	if(MoniInfoTotalPacketNum > tp_cm_bam->TotPacketNum)
+	{
+		MoniInfoSendCnt++;
+		Flag_1Sec_MoniInfo = 0;
+		MoniInfoTotalPacketNum = 0;
+		if((Flag_SerialRxMsg & RX_MSG69_M) != 0)	// 69 - Multi Packet
+			MultiPacketSendOrder = 0;
+		else if(MachInfoSendCnt <= 60)
+			MultiPacketSendOrder = 1;
+	}		
+}
+
+void SendTP_CM_BAM_MultiPacket_69(void)
+{
+	static u8 AsteriskCnt = 0;
+	u8 i;
+	
+	// TP.CM_BAM
+	SetCanID(236, 255, 7);
+
+	tp_cm_bam->Control = 32;	// Control Byte
+	
+	tp_cm_bam->TotMsgSize = 7;	// Password Info - 4 Bytes + Asterisk (3 EA)
+
+	for(i = 0 ; i < 13 ; i++)
+	{
+		if(Uart2_RxMsg_Multi_69[i+4] != 0x2A)
+			tp_cm_bam->TotMsgSize++;
+		else
+			AsteriskCnt++;
+
+		if(AsteriskCnt >= 3)
+		{
+			AsteriskCnt = 0;
+			break;
+		}
+	}
+
+	tp_cm_bam->TotPacketNum = (tp_cm_bam->TotMsgSize > 14) ? 3 : 2;
+	tp_cm_bam_TotPacketNum = T_Packet_No = tp_cm_bam->TotPacketNum;
+
+	tp_cm_bam->Reserved = 0xff;
+
+	//tp_cm_bam->pgn_low = 0xEC00;
+	tp_cm_bam->pgn_low = 0xFF45;
+	tp_cm_bam->pgn_high = 0;
+
+	CAN_TX_Data(&tmpBuf[0]);
+}
+
+void SendFirstMultiPacket_69(void)
+{
+	u8 tmpBuf1[8];
+	
+	SetCanID(235, 255, 7);
+
+	tmpBuf1[0] = 1;
+	memcpy(&tmpBuf1[1], &Uart2_RxMsg_Multi_69[0], 7);
+	CAN_TX_Data(&tmpBuf1[0]);
+}
+
+void SendSecondMultiPacket_69(void)
+{
+	u8 tmpBuf2[8];
+	
+	SetCanID(235, 255, 7);
+
+	tmpBuf2[0] = 2;
+	memcpy(&tmpBuf2[1], &Uart2_RxMsg_Multi_69[7], 7);
+	CAN_TX_Data(&tmpBuf2[0]);
+}
+
+void SendThirdMultiPacket_69(void)
+{
+	u8 tmpBuf3[8];
+
+	SetCanID(235, 255, 7);
+	
+	Flag_SerialRxMsg &= ~(RX_MSG69_M);
+	tmpBuf3[0] = 3;
+	Identifier.Priority = 7;
+	Identifier.PDU_Format = 235;	
+	Identifier.PDU_Specific = 255;	
+	
+	memcpy(&tmpBuf3[1], &Uart2_RxMsg_Multi_69[14], 7);
+	CAN_TX_Data(&tmpBuf3[0]);
+}
+
+void SendTP_CM_BAM_MultiPacket_161(void)
+{
+	// TP.CM_BAM
+	SetCanID(236, 255, 7);
+
+	tp_cm_bam->Control = 32;	// Control Byte
+	
+	tp_cm_bam->TotMsgSize = 10;
+
+	tp_cm_bam->TotPacketNum = 2;
+	tp_cm_bam_TotPacketNum = tp_cm_bam->TotPacketNum;
+
+	tp_cm_bam->Reserved = 0xff;
+
+	tp_cm_bam->pgn_low = 0xFFA1;
+	tp_cm_bam->pgn_high = 0;
+
+	CAN_TX_Data(&tmpBuf[0]);
+}
+
+void SendMultiPacketData_161(u8 packet_no)
+{
+	u8 tmpBuf1[8];
+	
+	SetCanID(235, 255, 7);
+
+	tmpBuf1[0] = packet_no;
+	memcpy(&tmpBuf1[1], &Uart2_RxMsg_Multi_161[(packet_no-1)*7], 7);
+	CAN_TX_Data(&tmpBuf1[0]);
+}
+
+void CheckASDataLen(void)
+{
+	u8 i;
+
+	as_data_len = 0;
+	memset((u8*)&tmpbuf_AS[0], 0x2A, 13);
+
+	for(i = 0 ; i < 12 ; i+=2)
+	{
+		tmpbuf_AS[i] = Uart2_RxMsg_AS_Phone_Data[i/2] & 0x0F;
+		tmpbuf_AS[i+1] = (Uart2_RxMsg_AS_Phone_Data[i/2] & 0xF0) >> 4;
+	}
+
+
+	for(i = 0 ; i < 12 ; i++)
+	{
+		if(tmpbuf_AS[i] != 0x0F)
+			as_data_len++;
+		else
+		{
+			tmpbuf_AS[i] = 0x2A;
+			break;
+		}
+	}
+
+	check_as_data_len = 1;
+}
+
+void SendTP_CM_BAM_MultiPacket_202_AS(void)
+{
+	// TP.CM_BAM
+	SetCanID(236, 255, 7);
+
+	tp_cm_bam->Control = 32;	// Control Byte
+	
+	tp_cm_bam->TotMsgSize = as_data_len;
+
+	tp_cm_bam->TotPacketNum = 2;
+	tp_cm_bam_TotPacketNum = tp_cm_bam->TotPacketNum;
+
+	tp_cm_bam->Reserved = 0xff;
+
+	//tp_cm_bam->pgn_low = 0xEC00;
+	tp_cm_bam->pgn_low = 0xFF91;
+	tp_cm_bam->pgn_high = 0;
+
+	CAN_TX_Data(&tmpBuf[0]);
+}
+
+void SendMultiPacketData_202_AS(u8 packet_no)
+{
+	u8 tmpBuf1[8];
+	
+	SetCanID(235, 255, 7);
+
+	tmpBuf1[0] = packet_no;
+	memcpy(&tmpBuf1[1], &tmpbuf_AS[(packet_no-1)*7], 7);
+	CAN_TX_Data(&tmpBuf1[0]);
+}
+
+void RequestMachBasicInfo(void)
+{
+	u8 Request[8];
+
+	SetCanID(255, 251, 6);
+	
+	if(RecvMachInfo != 1)
+	{
+		if(++TotalRequestCnt <= 10)
+		{
+			Request[0] = 60;		// PS
+			Request[1] = 255;		// PF
+			CAN_TX_Data(&Request[0]);
+		}
+	}
+}
+
+void CompareMachBasicInfo(void)
+{
+	u8 i;
+
+	if((RecvMachInfo == 1) && (DiffMachInfo == 0))
+	{
+		for(i = 0 ; i < TotMsgSize ; i++)
+		{
+			if(McuInfoData1[i+1] != MachineBasicInformation[i])
+			{
+				memcpy(&McuInfoData1[1] , &MachineBasicInformation[0], TotMsgSize);
+
+				
+				if(McuInfoData1[0] == 0xff)
+					McuInfoData1[0] = 0;
+				else
+					McuInfoData1[0] += 1;
+
+				tmpMcuInfoData[0] = McuInfoData1[0];
+				
+				switch(tmpMcuInfoData[0])
+				{
+					case 0 :
+						memcpy(&tmpMcuInfoData[1] , &McuInfoData1[1], 4);	
+						memset(&tmpMcuInfoData[5] , 0xff, 12);
+						break;
+					case 1 :
+						memcpy(&tmpMcuInfoData[5] , &tmpMcuInfoData[1], 4);		
+						memcpy(&tmpMcuInfoData[1] , &McuInfoData1[1], 4);	
+						memset(&tmpMcuInfoData[9] , 0xff, 8);
+						break;
+					case 2 :
+						memcpy(&tmpMcuInfoData[9] , &tmpMcuInfoData[5], 4);		
+						memcpy(&tmpMcuInfoData[5] , &tmpMcuInfoData[1], 4);		
+						memcpy(&tmpMcuInfoData[1] , &McuInfoData1[1], 4);	
+						memset(&tmpMcuInfoData[13] , 0xff, 4);
+						break;
+					case 3 :
+						memcpy(&tmpMcuInfoData[13] , &tmpMcuInfoData[9], 4);		
+						memcpy(&tmpMcuInfoData[9] , &tmpMcuInfoData[5], 4);		
+						memcpy(&tmpMcuInfoData[5] , &tmpMcuInfoData[1], 4);		
+						memcpy(&tmpMcuInfoData[1] , &McuInfoData1[1], 4);	
+						break;
+					default :
+						memcpy(&tmpMcuInfoData[13] , &tmpMcuInfoData[9], 4);		
+						memcpy(&tmpMcuInfoData[9] , &tmpMcuInfoData[5], 4);		
+						memcpy(&tmpMcuInfoData[5] , &tmpMcuInfoData[1], 4);		
+						memcpy(&tmpMcuInfoData[1] , &McuInfoData1[1], 4);	
+						break;							
+				}
+
+				
+				if(tmpMcuInfoData[0] > 250)
+					tmpMcuInfoData[0] = 250;
+				DiffMachInfo = 1;
+				
+				return;
+			}
+
+			if(MachineBasicInformation[i] == 0x2A)		//Asterisk
+			{
+				if(++CompareAsterisk >= 3)
+				{	
+					DiffMachInfo = 0;
+					return;
+				}
+			}
+		}
+	}
+}
+
 
 /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/

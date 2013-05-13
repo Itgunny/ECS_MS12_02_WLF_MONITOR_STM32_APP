@@ -95,9 +95,6 @@ void USART_COMInit(uint8_t COM)
 
 	DebugMsg_printf("++ USART %d Initialize START\r\n", COM);
 
-
-	USART_ClockInitTypeDef 	USART_ClockInitStructure;
-
 #if 0
 	USART_ClockInitStructure.USART_Clock   = USART_Clock_Disable;
 	USART_ClockInitStructure.USART_CPOL    = USART_CPOL_Low;
@@ -310,10 +307,10 @@ void USARTx_EXYNOS(uint8_t COM, char *TmpBuffer)
 {
 	memcpy((char *)WL9FM_USART_DATA.COM4_TxBuf, TmpBuffer, Serial_COM4_TxSize);
 						
-    WL9FM_USART_INDEX.COM4_TxCnt = 0;
-    WL9FM_USART_INDEX.COM4_TxIdx = Serial_COM4_TxSize;
-        
-    USART_ITConfig(Serial_USART[COM], USART_IT_TXE, ENABLE);
+	WL9FM_USART_INDEX.COM4_TxCnt = 0;
+	WL9FM_USART_INDEX.COM4_TxIdx = Serial_COM4_TxSize;
+	    
+	USART_ITConfig(Serial_USART[COM], USART_IT_TXE, ENABLE);
 }
 
 /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/

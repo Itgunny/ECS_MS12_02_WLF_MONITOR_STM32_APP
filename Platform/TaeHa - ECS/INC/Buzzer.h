@@ -36,8 +36,8 @@
 typedef struct 
 {	
 	uint16_t Status;
-    uint16_t OnTime;
-    uint16_t OnCnt;
+	uint16_t OnTime;
+	uint16_t OnCnt;
 	uint16_t Current_Status;
 } WL9FM_BUZZER_DATA;
 
@@ -57,6 +57,7 @@ extern void Buzzer_On(void);
 extern void Buzzer_UnLimitOn(void);
 extern void Buzzer_Off(void);
 extern void Buzzer_UnLimitOff(void);
+extern void Buzzer_SendToEXYNOS(uint8_t BuzzerValue);
 //extern void Buzzer_SendToSPICA(uint8_t BuzzerValue);
 
 #endif /* __Buzzer_H */

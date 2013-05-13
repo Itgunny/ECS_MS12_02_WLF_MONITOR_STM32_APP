@@ -140,5 +140,54 @@ void Buzzer_UnLimitOff(void)
     WL9FM_BUZZER.Status = 0;	
 }
 
+void Buzzer_SendToEXYNOS(uint8_t BuzzerValue)
+{
+	uint8_t BuzzerValueBuffer[Serial_COM2_TxSize];
+
+
+	//	현재 BUZZER 상태와, 변경하고자 하는 상태가 같으면.. 처음 2번은 무조건 보낸다.
+	//	현재 상태와 다르면, 무조건 보낸다. 
+	if (WL9FM_BUZZER.Status != BuzzerValue)
+	{
+		Buzzer_SendFlag = 1;
+		Buzzer_SendCnt  = 0;
+	}
+	else
+	{
+		//	항상 그 값으로 고정시켜서, 보내지 못하도록 한다. 
+		if (Buzzer_SendCnt++ >= 1) 
+		{
+			Buzzer_SendFlag = 0;
+			Buzzer_SendCnt  = 3;
+		}		
+		//	Buzzer_SendCnt < 2 => 이전 상태와 같은 값일 때는 무조건 2번은 보낸다.
+		else
+		{
+			Buzzer_SendFlag = 1;
+		}
+	}
+	
+	if ((Buzzer_SendFlag == 1) || (Buzzer_SendCnt < 1))
+	{
+		Buzzer_SendFlag = 0;
+		
+		BuzzerValueBuffer[0] = 0x02;				//	STX
+		BuzzerValueBuffer[1] = BUZZERCMD;			//	BUZZER Command, 0x42
+		BuzzerValueBuffer[2] = BuzzerValue +0x10;	//	Buzzer Value HexCode, 
+		BuzzerValueBuffer[3] = 0x03;				//	ETX
+		USARTx_EXYNOS(COM4, (char *)BuzzerValueBuffer);	
+
+	    DebugMsg_printf("BuzzerValueBuffer %x\r\n", BuzzerValueBuffer[2]);
+	}	
+	
+	if (BuzzerValue == 0)	//	Buzzer Off
+	{
+		Buzzer_UnLimitOff();
+	}
+	else 					//	Buzzer On
+	{
+		Buzzer_UnLimitOn();
+	}
+}
 
 /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/

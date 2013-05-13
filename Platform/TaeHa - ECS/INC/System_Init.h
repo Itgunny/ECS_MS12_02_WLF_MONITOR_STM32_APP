@@ -228,6 +228,8 @@ extern void System_Configuration(void);
 extern void GPIO_Configuration_NotUsed(void);
 extern void System_Initialize(void);
 extern void System_Variable_Init(void);
+extern void WL9F_CAN_Buffer_Init(void);
+
 
 #endif /* __SYSTEM_INIT_H */
 

@@ -22,7 +22,29 @@
 #include "WL9F_Monitor_APP.h"	
 
 /* Private typedef -----------------------------------------------------------*/
+#define STM32_BUZZER
 /* Private define ------------------------------------------------------------*/
+#define	Key_Menu			0x41
+#define	Key_Left			0x42
+#define	Key_Enter			0x44
+#define	Key_Right			0x48
+#define	Key_ESC			0x50
+#define	Key_Info			0x60
+
+#define	Key_CAM			0x81
+#define	Key_Work_Load		0x82
+#define	Key_EH_MODE		0x84
+#define	Key_Ride_Control	0x88
+#define	Key_Quick_Coupler	0x90
+#define	Key_Auto_Grease	0xa0
+
+#define	Key_Beacon			0xc1
+#define	Key_Mirror_Heat		0xc2
+#define	Key_Rear_Wiper		0xc4
+#define	Key_USER			0xc8
+#define	Key_Reserved1		0xd0
+#define	Key_Reserved2		0xe0
+
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 //  KeySwitch.h -> KeySwitch Scan, Input GPIO Port array
@@ -61,7 +83,7 @@ const uint16_t KEYSWITCH_INPUT[MAXINPUT]  =   {
 const uint8_t KEYSWITCH_VALUE[MAXSWITCH]   =   {
                                                 KEYSWITCH_MENU,    
                                                 KEYSWITCH_LEFT,    
-                                                KEYSWITCH_ESC_CAM,    
+                                                KEYSWITCH_ESC,    
                                                 KEYSWITCH_RIGHT,    
                                                 KEYSWITCH_ENTER,    
                                             };                                                
@@ -74,37 +96,88 @@ uint8_t		Test1 = 0, Test2 = 0;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
-void KeySwitch_SendToEXYNOS(uint8_t KeyValue)
+void KeySwitch_SendToEXYNOS(uint8_t KeyValue, uint8_t ShortKey)
 {
 	uint8_t KeyValueBuffer[Serial_COM4_TxSize];
+	uint8_t KeyValue_temp;
 
 	//	KeyValue에 + 0x40을 한다. 
 	//	윈도우에서 VK_A에서부터 순서대로 부여하기 위해서 더한다.
+	//	연속키 일 경우, 0x40 + 0x30을 해서 0x70의 값을 만들어 내기 위해서..
+	if(ShortKey)
+	{
+		if((KeyValue & 0xc0)==0x00)		KeyValue_temp = KeyValue+ 0x40;    // first line    
+		else if((KeyValue & 0x40)==0x40)	KeyValue_temp = KeyValue+ 0x40;    // second line
+		else if((KeyValue & 0x80)==0x80)	KeyValue_temp = KeyValue+ 0x40;    // third line
+	}
+	else
+	{
+		KeyValue_temp = KeyValue+ 0x40 + 0x20;    // first line    
+	}
 	KeyValueBuffer[0] = 0x02;				//	STX
 	KeyValueBuffer[1] = KeyCMD;				//	KeyValue Command, 0x4B
-	KeyValueBuffer[2] = KeyValue + 0x40;	//	Key Value HexCode, 
+	KeyValueBuffer[2] = KeyValue_temp ;	//	Key Value HexCode, 
 	KeyValueBuffer[3] = 0x03;				//	ETX
 	
     //  STM32에서 KeySwitch에 따른 BUZZER에 관한 명령을 MCU로 보내기 위해서 추가~
-    /*
-	if( KeyValue == KEYSWITCH_RIGHT )
+    
+	if( KeyValue_temp == KEYSWITCH_RIGHT )
 	{
-		if( WL9A_BUZZER_DATA.Status == 1 )
+		if( WL9FM_BUZZER.Status == 1 )
 		{
-			Uart3_RxMsg_Single_160[0] |= 0x10;
+			Uart2_RxMsg_Single_160[0] |= 0x10;
 			Buzzer_Off();
 		}
-	}*/
-
+	}
+	else if(KeyValue_temp == KEYSWITCH_CAM )
+	{
+		cam_mode_change();	
+	}
 	
 	USARTx_EXYNOS(COM4, (char *)KeyValueBuffer);	
 
     DebugMsg_printf("KEYSWITCH %x\r\n", KeyValueBuffer[2]);
 }
 
+
+void RTC_SendToExynos(uint8_t Rtc_Hour, uint8_t Rtc_Min)
+{
+	uint8_t KeyValueBuffer[Serial_COM2_TxSize];
+
+	KeyValueBuffer[0] = 0x02;				//	STX
+	KeyValueBuffer[1] = (Rtc_Hour|0x80);				//	KeyValue Command, 0x4B
+	KeyValueBuffer[2] = Rtc_Min;	//	Key Value HexCode, 
+	KeyValueBuffer[3] = 0x03;				//	ETX
+	
+	USARTx_EXYNOS(COM4, (char *)KeyValueBuffer);	
+}
+
 void KeyTest_TEST(uint8_t value)
 {
-	Buzzer_Set(10);					
+#if 1
+	switch (value)
+	{
+
+		case 0x01:
+			CameraMode(0,1);
+			break;
+		case 0x02:
+			CameraMode(1,1);
+			break;
+		case 0x04:
+			CameraMode(2,1);
+			break;
+		case 0x08:
+			CameraMode(3,1);
+			break;
+		case 0x10:
+			CameraMode(4,1);
+			break;
+		case 0x20:
+			CameraMode(5,1);
+			break;	
+	}
+#endif
 }
 
 /**
@@ -130,7 +203,6 @@ void KeySwitch_Process(void)
 	}
 	else if (KeySwitchScan == 1) 
 	{
-		//Temp_Value1 = 0;
 
 		GPIO_WriteBit(KEYSWITCH_SCANPORT[0], KEYSWITCH_SCAN[0], Bit_SET);
 		GPIO_WriteBit(KEYSWITCH_SCANPORT[1], KEYSWITCH_SCAN[1], Bit_RESET);
@@ -138,7 +210,6 @@ void KeySwitch_Process(void)
 	}	
 	else if (KeySwitchScan == 2) 
 	{
-		//Temp_Value1 = 0;
 
 		GPIO_WriteBit(KEYSWITCH_SCANPORT[0], KEYSWITCH_SCAN[0], Bit_SET);
 		GPIO_WriteBit(KEYSWITCH_SCANPORT[1], KEYSWITCH_SCAN[1], Bit_SET);
@@ -181,7 +252,7 @@ void KeySwitch_Process(void)
 	            {
                 		Temp_Cnt++;                 //  계속 눌려 있는가?
                 
-				if (Temp_Cnt == 3)          //  2번 연속 체크 되었을 때, 75msec
+				if (Temp_Cnt == 4)          //  2번 연속 체크 되었을 때, 100msec
 				{
 					KeySwitch_Value = Temp_Value1;   
 
@@ -190,21 +261,24 @@ void KeySwitch_Process(void)
 					Buzzer_Set(10);
 					#endif
 
-					KeySwitch_SendToEXYNOS(KeySwitch_Value);
-					KeyTest_TEST(KeySwitch_Value);
+					KeySwitch_SendToEXYNOS(KeySwitch_Value,1);
+					//KeyTest_TEST(KeySwitch_Value);
 					//  디버깅할 때만 사용할 것
 					//DebugMsg_printf("KEYSWITCH %x\r\n", KeySwitch_Value);
 				}
-				if (Temp_Cnt == 10)         //  10번 연속 체크 되었을 때
+				if (Temp_Cnt == 100)         //  10번 연속 체크 되었을 때
 				{
 					//  연속 스위치 루틴..                              
 					KeySwitch_Value = Temp_Value1;   
 					Temp_Cnt -= 5;
 					
-		                   KeyTest_TEST(KeySwitch_Value);
-
-				//	연속키 일 경우, 0x40 + 0x30을 해서 0x70의 값을 만들어 내기 위해서..
-				//KeySwitch_SendToSPICA(KeySwitch_Value + Continuous_Key);
+					if(KeySwitch_Value<0x20)
+					{
+						#ifdef STM32_BUZZER
+							Buzzer_Set(10);
+						#endif
+						KeySwitch_SendToEXYNOS(KeySwitch_Value,0);
+					}
 				//KeyTest_TEST(KeySwitch_Value);
 
 				//  디버깅할 때만 사용할 것
