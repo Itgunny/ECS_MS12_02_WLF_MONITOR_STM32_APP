@@ -1235,38 +1235,17 @@ void WL9FM_System_Init_Start(void)
 												//		LAMP ALL ON
 	LED_POWER_ONOFF(LED_ON);					//	->	LCD_Control.c (LED On/Off)
 	LCD_POWER_ONOFF(LCDPWR_ON);					//	-> 	LCD_Control.c (LCD 12V Power On/Off)
-<<<<<<< .mine
+
 	
-=======
 
-	WL9FM_CAMERA_nRESET();						//	-> 	TW2835, TW8832 Power On..
-	TW2835_Control_Init();						//	-> 	TW2835_Control.c (CAMERA -> Decoder)
-	TW8832_Control_Init();						//	-> 	TW8832_Control.c (LCD Interface)
-
-	TimeDelay_msec(3000);						//	->	3초는 대기해줘야 화면이 정상적으로 Exynos에서 표시한다.
-	LAMP_Update_Data = LAMP_ALL_OFF;			//	-> 	LAMP ALL OFF
->>>>>>> .r22
 	LCD_Control_Init();							//	-> 	LCD_Control.c (LCDBL, ON/OFF)
-<<<<<<< .mine
-						//	-> 	TW2835_Control.c (CAMERA -> Decoder)
-	
-=======
 
->>>>>>> .r22
 	USART_COMInit(COMPORT2);       				//  ->	UART_Control.c
 	USART_COMInit(COMPORT4);       				//      COM2 : CAN Data
-<<<<<<< .mine
-	//		COM4 : CMD Data
-	CAN_COMInit();
 
-	
-	//	-> 	CAN_Control.c
-=======
 												//		COM4 : CMD Data
 
 	CAN_COMInit();								//	-> 	CAN_Control.c
-												
->>>>>>> .r22
 	//InitE2PROM();
 	ReadE2PROM_ToSend();						//	->	EEPROM Data Read
 
