@@ -261,7 +261,7 @@ void cam_mode_change(void)
   */
 void LCD_Control_Init(void)
 {
-	TimeDelay_msec(1500); 
+	TimeDelay_msec(2500); 
 	LCD_Display_Change(EXYNOS_DISPLAY);
 	LCDBL_Init();	
 	LCDBL_ONOFF(LCDBL_ON);	//  LCDBL Power On!!!

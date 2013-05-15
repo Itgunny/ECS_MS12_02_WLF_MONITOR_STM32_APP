@@ -55,7 +55,7 @@
 
 //	기타 시스템 용도로 사용하는 키는 Key 값 +0x40으로 처리.
 #define KEYSWITCH_NONE		    0x20		//	+0x40 : VK_NUMPAD0(0x60) 
-#define KEYSWITCH_POWER_OFF     0x21		//	+0x40 : VK_NUMPAD1(0x61)
+#define KEYSWITCH_POWER_OFF     0x22		//	+0x40 : VK_NUMPAD1(0x61)
 											
 #define MAXSCAN 	            3           //  Scan Switch 
 #define MAXINPUT               	6           //  Input Switch 
