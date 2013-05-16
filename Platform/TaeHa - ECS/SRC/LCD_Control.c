@@ -265,7 +265,7 @@ void LCD_Control_Init(void)
 	LCD_Display_Change(EXYNOS_DISPLAY);
 	LCDBL_Init();	
 	LCDBL_ONOFF(LCDBL_ON);	//  LCDBL Power On!!!
-			//	LCDBL PWM 설정 
+							//	LCDBL PWM 설정 
 	
 	//LCD_Display_Change(STM32F4_DISPLAY);
 }

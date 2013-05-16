@@ -1236,8 +1236,6 @@ void WL9FM_System_Init_Start(void)
 	LED_POWER_ONOFF(LED_ON);					//	->	LCD_Control.c (LED On/Off)
 	LCD_POWER_ONOFF(LCDPWR_ON);					//	-> 	LCD_Control.c (LCD 12V Power On/Off)
 
-	
-
 	LCD_Control_Init();							//	-> 	LCD_Control.c (LCDBL, ON/OFF)
 
 	USART_COMInit(COMPORT2);       				//  ->	UART_Control.c
