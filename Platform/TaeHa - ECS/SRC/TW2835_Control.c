@@ -157,7 +157,7 @@ unsigned char Register_Table_Page0[] = {
     0x80,0xC8,0x20,0xD0,0x06,0xF0,0x08,0x80,   0x80,0x80,0x80,0x00,0x00,0x00,0x11,0x00, //  0x10
     0x80,0xC8,0x20,0xD0,0x06,0xF0,0x08,0x80,   0x80,0x80,0x80,0x00,0x00,0x00,0x11,0x00, //  0x20
     0x80,0xC8,0x20,0xD0,0x06,0xF0,0x08,0x80,   0x80,0x80,0x80,0x00,0x00,0x00,0x11,0x00, //  0x30
-    0x00,0x77,0x77,0x45,0xA0,0xD0,0x2F,0x64,   0x80,0x80,0x82,0x82,0x00,0x0F,0x05,0x00, //  0x40
+    0x00,0x77,0x77,0x45,0xA0,0xD0,0x2F,0x64,   0x80,0x80,0x82,0x82,0x30,0x0F,0x05,0x00, //  0x40
     0x00,0x80,0x06,0x00,0x40,0xFF,0x00,0x00,   0x90,0x00,0x00,0x00,0x00,0x00,0x00,0x00, //  0x50
     0xFF,0xFF,0x00,0x00,0x10,0x32,0x54,0x76,   0x00,0xBA,0xDC,0xFE,0x00,0x00,0x88,0x88, //  0x60
     0x08,0x54,0x00,0x00,0x00,0x00,0x00,0x00,   0xFF,0x00,0x00,0x00,0x00,0x00,0x00,0x00, //  0x70
@@ -184,7 +184,7 @@ unsigned char Register_Table_Page1[] = {
     0x00,0x03,0x00,0x00,0x00,0x00,0x02,0x00,   0xff,0xff,0xff,0xff,0xf0,0x00,0x89,0x84, //  0x70 
     0xdf,0x00,0x91,0x07,0xeb,0x10,0xa8,0x00,   0x91,0xe7,0x80,0x00,0x00,0x00,0x00,0x00, //  0x80 
     0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,   0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, //  0x90 
-    0x77,0x91,0x90,0x00,0x80,0x20,0x00,0x0c,   0x20,0x09,0xaa,0x00,0x40,0x40,0x00,0x00, //  0xa0 
+    0x77,0x88,0x88,0x00,0x80,0x20,0x00,0x0c,   0x20,0x09,0xaa,0x00,0x40,0x40,0x00,0x00, //  0xa0 
     0x00,0x00,0xFF,0x00,0xFF,0x00,0xFF,0x0F,   0x0F,0x00,0x00,0x00,0x00,0x00,0x00,0x00, //  0xb0 
     0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,   0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, //  0xc0 
     0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,   0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, //  0xd0 
@@ -767,23 +767,600 @@ void Port_Change(u8 in_Dir)
 	}
 }
 
+
+
+//  ++, kutelf, 131007
+//u8 Temp0, Temp1, Temp2, Temp3;
+void CheckCamera_Input(u8 Mode)
+{
+
+	//	입력이 없으면, return 0x80
+	//	입력이 있으면, return 0x9f
+	u8 Signal1 = ReadAsicByte(MASTER,DVC_PG0,0x00); 	//  ch1
+	u8 Signal2 = ReadAsicByte(MASTER,DVC_PG0,0x10);	//	ch2
+	u8 Signal3 = ReadAsicByte(MASTER,DVC_PG0,0x20);	//	ch3
+	u8 Signal4 = ReadAsicByte(MASTER,DVC_PG0,0x30);	//	ch4
+
+	
+
+	
+
+	
+
+	if(Mode == 0x00)
+	{
+		if(Signal1 != 0x80)
+		{
+			WriteOSDBmpX(MASTER,65,100,0x00,0x00,gt_CHANNEL_blank);
+		}
+		else
+		{
+			WriteOSDBmpX(MASTER,65,100,0x00,0x00,gt_CHANNEL_x);
+		}
+
+		
+	}
+
+	else if(Mode == 0x01)
+	{
+		if(Signal2 != 0x80)
+		{
+			WriteOSDBmpX(MASTER,65,100,0x00,0x00,gt_CHANNEL_blank);
+		}
+		else
+		{
+			WriteOSDBmpX(MASTER,65,100,0x00,0x00,gt_CHANNEL_x);
+		}
+
+		
+	}
+
+	else if(Mode == 0x02)
+	{
+		if(Signal3 != 0x80)
+		{
+			WriteOSDBmpX(MASTER,65,100,0x00,0x00,gt_CHANNEL_blank);
+		}
+		else
+		{
+			WriteOSDBmpX(MASTER,65,100,0x00,0x00,gt_CHANNEL_x);
+		}
+
+		
+	}
+
+	else if(Mode == 0x03)
+	{
+		if(Signal4 != 0x80)
+		{
+			WriteOSDBmpX(MASTER,65,100,0x00,0x00,gt_CHANNEL_blank);
+		}
+		else
+		{
+			WriteOSDBmpX(MASTER,65,100,0x00,0x00,gt_CHANNEL_x);
+		}
+
+		
+	}
+	else if(Mode == 0x04)
+	{
+		if(Signal1 != 0x80)
+		{
+			WriteOSDBmpX(MASTER,20,100,0x00,0x00,gt_CHANNEL_blank);
+		}
+		else
+		{
+			WriteOSDBmpX(MASTER,20,100,0x00,0x00,gt_CHANNEL_x);
+		}
+
+		if(Signal2 != 0x80)
+		{
+			WriteOSDBmpX(MASTER,110,100,0x00,0x00,gt_CHANNEL_blank);
+		}
+		else
+		{
+			WriteOSDBmpX(MASTER,110,100,0x00,0x00,gt_CHANNEL_x);
+		}
+	}
+
+	else if(Mode == 0x05)
+	{
+		if(Signal1 != 0x80)
+		{
+			WriteOSDBmpX(MASTER,20,100,0x00,0x00,gt_CHANNEL_blank);
+		}
+		else
+		{
+			WriteOSDBmpX(MASTER,20,100,0x00,0x00,gt_CHANNEL_x);
+		}
+
+		if(Signal3 != 0x80)
+		{
+			WriteOSDBmpX(MASTER,110,100,0x00,0x00,gt_CHANNEL_blank);
+		}
+		else
+		{
+			WriteOSDBmpX(MASTER,110,100,0x00,0x00,gt_CHANNEL_x);
+		}
+	}
+	else if(Mode == 0x06)
+	{
+		if(Signal1 != 0x80)
+		{
+			WriteOSDBmpX(MASTER,20,100,0x00,0x00,gt_CHANNEL_blank);
+		}
+		else
+		{
+			WriteOSDBmpX(MASTER,20,100,0x00,0x00,gt_CHANNEL_x);
+		}
+
+		if(Signal4 != 0x80)
+		{
+			WriteOSDBmpX(MASTER,110,100,0x00,0x00,gt_CHANNEL_blank);
+		}
+		else
+		{
+			WriteOSDBmpX(MASTER,110,100,0x00,0x00,gt_CHANNEL_x);
+		}
+	}
+	else if(Mode == 0x07)
+	{
+		if(Signal2 != 0x80)
+		{
+			WriteOSDBmpX(MASTER,20,100,0x00,0x00,gt_CHANNEL_blank);
+		}
+		else
+		{
+			WriteOSDBmpX(MASTER,20,100,0x00,0x00,gt_CHANNEL_x);
+		}
+
+		if(Signal3 != 0x80)
+		{
+			WriteOSDBmpX(MASTER,110,100,0x00,0x00,gt_CHANNEL_blank);
+		}
+		else
+		{
+			WriteOSDBmpX(MASTER,110,100,0x00,0x00,gt_CHANNEL_x);
+		}
+	}
+	else if(Mode == 0x08)
+	{
+		if(Signal2 != 0x80)
+		{
+			WriteOSDBmpX(MASTER,20,100,0x00,0x00,gt_CHANNEL_blank);
+		}
+		else
+		{
+			WriteOSDBmpX(MASTER,20,100,0x00,0x00,gt_CHANNEL_x);
+		}
+
+		if(Signal4 != 0x80)
+		{
+			WriteOSDBmpX(MASTER,110,100,0x00,0x00,gt_CHANNEL_blank);
+		}
+		else
+		{
+			WriteOSDBmpX(MASTER,110,100,0x00,0x00,gt_CHANNEL_x);
+		}
+	}
+
+	else if(Mode == 0x09)
+	{
+		if(Signal3 != 0x80)
+		{
+			WriteOSDBmpX(MASTER,20,100,0x00,0x00,gt_CHANNEL_blank);
+		}
+		else
+		{
+			WriteOSDBmpX(MASTER,20,100,0x00,0x00,gt_CHANNEL_x);
+		}
+
+		if(Signal4 != 0x80)
+		{
+			WriteOSDBmpX(MASTER,110,100,0x00,0x00,gt_CHANNEL_blank);
+		}
+		else
+		{
+			WriteOSDBmpX(MASTER,110,100,0x00,0x00,gt_CHANNEL_x);
+		}
+	}
+
+	else if(Mode == 0x0A)
+	{
+		if(Signal1 != 0x80)
+		{
+			WriteOSDBmpX(MASTER,20,45,0x00,0x00,gt_CHANNEL_blank);
+		}
+		else
+		{
+			WriteOSDBmpX(MASTER,20,45,0x00,0x00,gt_CHANNEL_x);
+		}
+
+		if(Signal2 != 0x80)
+		{
+			WriteOSDBmpX(MASTER,110,45,0x00,0x00,gt_CHANNEL_blank);
+		}
+		else
+		{
+			WriteOSDBmpX(MASTER,110,45,0x00,0x00,gt_CHANNEL_x);
+		}
+
+		if(Signal3 != 0x80)
+		{
+			WriteOSDBmpX(MASTER,20,165,0x00,0x00,gt_CHANNEL_blank);
+		}
+		else
+		{
+			WriteOSDBmpX(MASTER,20,165,0x00,0x00,gt_CHANNEL_x);
+		}
+
+		if(Signal4 != 0x80)
+		{
+			WriteOSDBmpX(MASTER,110,165,0x00,0x00,gt_CHANNEL_blank);
+		}
+		else
+		{
+			WriteOSDBmpX(MASTER,110,165,0x00,0x00,gt_CHANNEL_x);
+		}
+		
+	}
+
+}
+//  --, kutelf, 131007
+	
+//  ++, kutelf, 131007
 void CameraMode(u8 Mode, u8 OSD)
 {
 
-	if(Mode == 0)
+	if(Mode == 0x00)
+	{
+		if(OSD)
+		{
+			WriteOSDClrX(MASTER, 0, 0, 0, 45, 31);
+			WriteOSDBmpX(MASTER,162,5,0x00,0x00,gt_CHANNEL_CH1_O);
+		}
+		
+		// Scale CAM_0 // Select CAM
+		WriteAsicByte(MASTER,DVC_PG0,0x80,0x01);    
+		WriteAsicByte(MASTER,DVC_PG0,0x81,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0x82,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0x83,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0x84,0xff);
+		    
+		// ON/OFF CAMERA
+		WriteAsicByte(MASTER,DVC_PG1,0x10,0x80);    // ON CAM_0
+		WriteAsicByte(MASTER,DVC_PG1,0x18,0x01);	// OFF CAM_1
+		WriteAsicByte(MASTER,DVC_PG1,0x20,0x02);    // OFF CAM_2
+		WriteAsicByte(MASTER,DVC_PG1,0x28,0x03);    // OFF CAM_3
+
+		WriteAsicByte(MASTER,DVC_PG1,0x30,0x00);    // Position CAM_0
+		WriteAsicByte(MASTER,DVC_PG1,0x31,0xb0);
+		WriteAsicByte(MASTER,DVC_PG1,0x32,0x00);
+		WriteAsicByte(MASTER,DVC_PG1,0x33,0x78);
+	}
+	else if(Mode == 0x01)
+	{
+		if(OSD)
+		{
+			WriteOSDClrX(MASTER, 0, 0, 0, 45, 31);	
+			WriteOSDBmpX(MASTER,162,5,0x00,0x00,gt_CHANNEL_CH2_O);
+		}
+
+		// Scale CAM_1 // Select CAM
+		WriteAsicByte(MASTER,DVC_PG0,0x90,0x41);
+		WriteAsicByte(MASTER,DVC_PG0,0x91,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0x92,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0x93,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0x94,0xff);
+		    
+		// ON/OFF CAMERA
+		WriteAsicByte(MASTER,DVC_PG1,0x10,0x00);    // ON/OFF CAM
+		WriteAsicByte(MASTER,DVC_PG1,0x18,0x81);
+		WriteAsicByte(MASTER,DVC_PG1,0x20,0x02);    // OFF CAM_3
+		WriteAsicByte(MASTER,DVC_PG1,0x28,0x03);    // OFF CAM_4
+
+		WriteAsicByte(MASTER,DVC_PG1,0x34,0x00);    // Position CAM_1
+		WriteAsicByte(MASTER,DVC_PG1,0x35,0xb0);
+		WriteAsicByte(MASTER,DVC_PG1,0x36,0x00);
+		WriteAsicByte(MASTER,DVC_PG1,0x37,0x78);
+	}
+	else if(Mode == 0x02)
+	{
+		if(OSD)
+		{
+			WriteOSDClrX(MASTER, 0, 0, 0, 45, 31);
+			WriteOSDBmpX(MASTER,162,5,0x00,0x00,gt_CHANNEL_CH3_O);
+		}
+
+		// Scale CAM_2 // Select CAM
+		WriteAsicByte(MASTER,DVC_PG0,0xa0,0x81);
+		WriteAsicByte(MASTER,DVC_PG0,0xa1,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0xa2,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0xa3,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0xa4,0xff);
+		    
+		// ON/OFF CAMERA
+		WriteAsicByte(MASTER,DVC_PG1,0x10,0x00);    // ON/OFF CAM
+		WriteAsicByte(MASTER,DVC_PG1,0x18,0x01);
+		WriteAsicByte(MASTER,DVC_PG1,0x20,0x82);    // OFF CAM_3
+		WriteAsicByte(MASTER,DVC_PG1,0x28,0x03);    // OFF CAM_4
+
+		WriteAsicByte(MASTER,DVC_PG1,0x38,0x00);    // Position CAM_2
+		WriteAsicByte(MASTER,DVC_PG1,0x39,0xb0);
+		WriteAsicByte(MASTER,DVC_PG1,0x3a,0x00);
+		WriteAsicByte(MASTER,DVC_PG1,0x3b,0x78);
+	}
+	else if(Mode == 0x03)
+	{
+		if(OSD)
+		{
+			WriteOSDClrX(MASTER, 0, 0, 0, 45, 31);
+			WriteOSDBmpX(MASTER,162,5,0x00,0x00,gt_CHANNEL_CH4_O);
+		}
+		
+		// Scale CAM_3 // Select CAM
+		WriteAsicByte(MASTER,DVC_PG0,0xb0,0xc1);
+		WriteAsicByte(MASTER,DVC_PG0,0xb1,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0xb2,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0xb3,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0xb4,0xff);
+		    
+		// ON/OFF CAMERA
+		WriteAsicByte(MASTER,DVC_PG1,0x10,0x00);    // ON/OFF CAM
+		WriteAsicByte(MASTER,DVC_PG1,0x18,0x01);
+		WriteAsicByte(MASTER,DVC_PG1,0x20,0x02);    // OFF CAM_3
+		WriteAsicByte(MASTER,DVC_PG1,0x28,0x83);    // OFF CAM_4
+
+		WriteAsicByte(MASTER,DVC_PG1,0x3c,0x00);    // Position CAM_3
+		WriteAsicByte(MASTER,DVC_PG1,0x3d,0xb0);
+		WriteAsicByte(MASTER,DVC_PG1,0x3e,0x00);
+		WriteAsicByte(MASTER,DVC_PG1,0x3f,0x78); 
+  	}
+	else if(Mode == 0x04)
 	{
 		
 		if(OSD)
 		{
 			WriteOSDClrX(MASTER, 0, 0, 0, 45, 31);
 			WriteOSDBmpX(MASTER,76,5,0x00,0x00,gt_CHANNEL_CH1_O);
-		        WriteOSDBmpX(MASTER,162,5,0x00,0x00,gt_CHANNEL_CH2_O);
-		        WriteOSDBmpX(MASTER,76,125,0x00,0x00,gt_CHANNEL_CH3_O);
-		        WriteOSDBmpX(MASTER,162,125,0x00,0x00,gt_CHANNEL_CH4_O);
+       		WriteOSDBmpX(MASTER,162,5,0x00,0x00,gt_CHANNEL_CH2_O);
+		}
+		
+		// Scale CAM_0 // Select CAM
+		WriteAsicByte(MASTER,DVC_PG0,0x80,0x01);    
+		WriteAsicByte(MASTER,DVC_PG0,0x81,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0x82,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0x83,0x7f);
+		WriteAsicByte(MASTER,DVC_PG0,0x84,0xff);
+		// Scale CAM_1 // Select CAM
+		WriteAsicByte(MASTER,DVC_PG0,0x90,0x41);
+		WriteAsicByte(MASTER,DVC_PG0,0x91,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0x92,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0x93,0x7f);
+		WriteAsicByte(MASTER,DVC_PG0,0x94,0xff);
+
+
+		// ON/OFF CAMERA
+		WriteAsicByte(MASTER,DVC_PG1,0x10,0x80);  
+		WriteAsicByte(MASTER,DVC_PG1,0x18,0x81);
+		WriteAsicByte(MASTER,DVC_PG1,0x20,0x02);   
+		WriteAsicByte(MASTER,DVC_PG1,0x28,0x03);   
+
+		WriteAsicByte(MASTER,DVC_PG1,0x30,0x00);    // Position CAM_0
+		WriteAsicByte(MASTER,DVC_PG1,0x31,0x58);
+		WriteAsicByte(MASTER,DVC_PG1,0x32,0x00);    //0x00);
+		WriteAsicByte(MASTER,DVC_PG1,0x33,0x78);
+
+		WriteAsicByte(MASTER,DVC_PG1,0x34,0x58);    // Position CAM_1
+		WriteAsicByte(MASTER,DVC_PG1,0x35,0xb0);
+		WriteAsicByte(MASTER,DVC_PG1,0x36,0x00);    //0x00);
+		WriteAsicByte(MASTER,DVC_PG1,0x37,0x78);
+	}
+	else if(Mode == 0x05)
+	{
+		if(OSD)
+		{
+			WriteOSDClrX(MASTER, 0, 0, 0, 45, 31);
+			WriteOSDBmpX(MASTER,76,5,0x00,0x00,gt_CHANNEL_CH1_O);
+       	 	WriteOSDBmpX(MASTER,162,5,0x00,0x00,gt_CHANNEL_CH3_O);
 		}
 
-		
-		
+		// Scale CAM_0 // Select CAM
+		WriteAsicByte(MASTER,DVC_PG0,0x80,0x01);    
+		WriteAsicByte(MASTER,DVC_PG0,0x81,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0x82,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0x83,0x7f);
+		WriteAsicByte(MASTER,DVC_PG0,0x84,0xff);
+
+		// Scale CAM_2 // Select CAM
+		WriteAsicByte(MASTER,DVC_PG0,0xa0,0x81);
+		WriteAsicByte(MASTER,DVC_PG0,0xa1,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0xa2,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0xa3,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0xa4,0xff);
+		    
+		// ON/OFF CAMERA
+		WriteAsicByte(MASTER,DVC_PG1,0x10,0x80);  
+		WriteAsicByte(MASTER,DVC_PG1,0x18,0x01);
+		WriteAsicByte(MASTER,DVC_PG1,0x20,0x82);   
+		WriteAsicByte(MASTER,DVC_PG1,0x28,0x03);    
+
+		WriteAsicByte(MASTER,DVC_PG1,0x30,0x00);    // Position CAM_0
+		WriteAsicByte(MASTER,DVC_PG1,0x31,0x58);
+		WriteAsicByte(MASTER,DVC_PG1,0x32,0x00);
+		WriteAsicByte(MASTER,DVC_PG1,0x33,0x78);
+
+		WriteAsicByte(MASTER,DVC_PG1,0x38,0x58);    // Position CAM_2
+		WriteAsicByte(MASTER,DVC_PG1,0x39,0xb0);
+		WriteAsicByte(MASTER,DVC_PG1,0x3a,0x00);
+		WriteAsicByte(MASTER,DVC_PG1,0x3b,0x78); 
+	}
+	else if(Mode == 0x06)
+	{
+		if(OSD)
+		{
+			WriteOSDClrX(MASTER, 0, 0, 0, 45, 31);
+			WriteOSDBmpX(MASTER,76,5,0x00,0x00,gt_CHANNEL_CH1_O);
+       	 	WriteOSDBmpX(MASTER,162,5,0x00,0x00,gt_CHANNEL_CH4_O);
+		}
+
+		// Scale CAM_0 // Select CAM
+		WriteAsicByte(MASTER,DVC_PG0,0x80,0x01);    
+		WriteAsicByte(MASTER,DVC_PG0,0x81,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0x82,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0x83,0x7f);
+		WriteAsicByte(MASTER,DVC_PG0,0x84,0xff);
+
+		// Scale CAM_3 // Select CAM
+		WriteAsicByte(MASTER,DVC_PG0,0xb0,0xc1);
+		WriteAsicByte(MASTER,DVC_PG0,0xb1,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0xb2,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0xb3,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0xb4,0xff);
+		    
+		// ON/OFF CAMERA
+		WriteAsicByte(MASTER,DVC_PG1,0x10,0x80);  
+		WriteAsicByte(MASTER,DVC_PG1,0x18,0x01);
+		WriteAsicByte(MASTER,DVC_PG1,0x20,0x02);   
+		WriteAsicByte(MASTER,DVC_PG1,0x28,0x83);    
+
+		WriteAsicByte(MASTER,DVC_PG1,0x30,0x00);    // Position CAM_0
+		WriteAsicByte(MASTER,DVC_PG1,0x31,0x58);
+		WriteAsicByte(MASTER,DVC_PG1,0x32,0x00);
+		WriteAsicByte(MASTER,DVC_PG1,0x33,0x78);
+
+		WriteAsicByte(MASTER,DVC_PG1,0x3c,0x58);    // Position CAM_3
+		WriteAsicByte(MASTER,DVC_PG1,0x3d,0xb0);
+		WriteAsicByte(MASTER,DVC_PG1,0x3e,0x00);
+		WriteAsicByte(MASTER,DVC_PG1,0x3f,0x78); 
+	}
+	else if(Mode == 0x07)
+	{
+		if(OSD)
+		{
+			WriteOSDClrX(MASTER, 0, 0, 0, 45, 31);
+			WriteOSDBmpX(MASTER,76,5,0x00,0x00,gt_CHANNEL_CH2_O);
+       	 	WriteOSDBmpX(MASTER,162,5,0x00,0x00,gt_CHANNEL_CH3_O);
+		}
+
+		// Scale CAM_1 // Select CAM
+		WriteAsicByte(MASTER,DVC_PG0,0x90,0x41);
+		WriteAsicByte(MASTER,DVC_PG0,0x91,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0x92,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0x93,0x7f);
+		WriteAsicByte(MASTER,DVC_PG0,0x94,0xff);
+
+		// Scale CAM_2 // Select CAM
+		WriteAsicByte(MASTER,DVC_PG0,0xa0,0x81);
+		WriteAsicByte(MASTER,DVC_PG0,0xa1,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0xa2,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0xa3,0x7f);
+		WriteAsicByte(MASTER,DVC_PG0,0xa4,0xff);
+		    
+		// ON/OFF CAMERA
+		WriteAsicByte(MASTER,DVC_PG1,0x10,0x00);  
+		WriteAsicByte(MASTER,DVC_PG1,0x18,0x81);
+		WriteAsicByte(MASTER,DVC_PG1,0x20,0x82);   
+		WriteAsicByte(MASTER,DVC_PG1,0x28,0x03);    
+
+		WriteAsicByte(MASTER,DVC_PG1,0x34,0x00);    // Position CAM_1
+		WriteAsicByte(MASTER,DVC_PG1,0x35,0x58);
+		WriteAsicByte(MASTER,DVC_PG1,0x36,0x00);
+		WriteAsicByte(MASTER,DVC_PG1,0x37,0x78);
+
+		WriteAsicByte(MASTER,DVC_PG1,0x38,0x58);    // Position CAM_2
+		WriteAsicByte(MASTER,DVC_PG1,0x39,0xb0);
+		WriteAsicByte(MASTER,DVC_PG1,0x3a,0x00);
+		WriteAsicByte(MASTER,DVC_PG1,0x3b,0x78); 
+	}
+	else if(Mode == 0x08)
+	{
+		if(OSD)
+		{
+			WriteOSDClrX(MASTER, 0, 0, 0, 45, 31);
+			WriteOSDBmpX(MASTER,76,5,0x00,0x00,gt_CHANNEL_CH2_O);
+       	 	WriteOSDBmpX(MASTER,162,5,0x00,0x00,gt_CHANNEL_CH4_O);
+		}
+
+		// Scale CAM_1 // Select CAM
+		WriteAsicByte(MASTER,DVC_PG0,0x90,0x41);
+		WriteAsicByte(MASTER,DVC_PG0,0x91,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0x92,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0x93,0x7f);
+		WriteAsicByte(MASTER,DVC_PG0,0x94,0xff);
+
+		// Scale CAM_3 // Select CAM
+		WriteAsicByte(MASTER,DVC_PG0,0xb0,0xc1);
+		WriteAsicByte(MASTER,DVC_PG0,0xb1,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0xb2,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0xb3,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0xb4,0xff);
+		    
+		// ON/OFF CAMERA
+		WriteAsicByte(MASTER,DVC_PG1,0x10,0x00);  
+		WriteAsicByte(MASTER,DVC_PG1,0x18,0x81);
+		WriteAsicByte(MASTER,DVC_PG1,0x20,0x02);   
+		WriteAsicByte(MASTER,DVC_PG1,0x28,0x83);    
+
+		WriteAsicByte(MASTER,DVC_PG1,0x34,0x00);    // Position CAM_1
+		WriteAsicByte(MASTER,DVC_PG1,0x35,0x58);
+		WriteAsicByte(MASTER,DVC_PG1,0x36,0x00);
+		WriteAsicByte(MASTER,DVC_PG1,0x37,0x78);
+
+		WriteAsicByte(MASTER,DVC_PG1,0x3c,0x58);    // Position CAM_3
+		WriteAsicByte(MASTER,DVC_PG1,0x3d,0xb0);
+		WriteAsicByte(MASTER,DVC_PG1,0x3e,0x00);
+		WriteAsicByte(MASTER,DVC_PG1,0x3f,0x78); 
+	}
+	else if(Mode == 0x09)
+	{
+		if(OSD)
+		{
+			WriteOSDClrX(MASTER, 0, 0, 0, 45, 31);
+			WriteOSDBmpX(MASTER,76,5,0x00,0x00,gt_CHANNEL_CH3_O);
+       	 	WriteOSDBmpX(MASTER,162,5,0x00,0x00,gt_CHANNEL_CH4_O);
+		}
+
+		// Scale CAM_2 // Select CAM
+		WriteAsicByte(MASTER,DVC_PG0,0xa0,0x81);
+		WriteAsicByte(MASTER,DVC_PG0,0xa1,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0xa2,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0xa3,0x7f);
+		WriteAsicByte(MASTER,DVC_PG0,0xa4,0xff);
+
+		// Scale CAM_3 // Select CAM
+		WriteAsicByte(MASTER,DVC_PG0,0xb0,0xc1);
+		WriteAsicByte(MASTER,DVC_PG0,0xb1,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0xb2,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0xb3,0xff);
+		WriteAsicByte(MASTER,DVC_PG0,0xb4,0xff);
+		    
+		// ON/OFF CAMERA
+		WriteAsicByte(MASTER,DVC_PG1,0x10,0x00);  
+		WriteAsicByte(MASTER,DVC_PG1,0x18,0x01);
+		WriteAsicByte(MASTER,DVC_PG1,0x20,0x82);   
+		WriteAsicByte(MASTER,DVC_PG1,0x28,0x83);    
+
+		WriteAsicByte(MASTER,DVC_PG1,0x38,0x00);    // Position CAM_2
+		WriteAsicByte(MASTER,DVC_PG1,0x39,0x58);
+		WriteAsicByte(MASTER,DVC_PG1,0x3a,0x00);
+		WriteAsicByte(MASTER,DVC_PG1,0x3b,0x78);
+
+		WriteAsicByte(MASTER,DVC_PG1,0x3c,0x58);    // Position CAM_3
+		WriteAsicByte(MASTER,DVC_PG1,0x3d,0xb0);
+		WriteAsicByte(MASTER,DVC_PG1,0x3e,0x00);
+		WriteAsicByte(MASTER,DVC_PG1,0x3f,0x78); 
+	}
+	else if (Mode == 0x0A)
+	{
+		if(OSD)
+		{
+			WriteOSDClrX(MASTER, 0, 0, 0, 45, 31);
+			WriteOSDBmpX(MASTER,76,5,0x00,0x00,gt_CHANNEL_CH1_O);
+		    WriteOSDBmpX(MASTER,162,5,0x00,0x00,gt_CHANNEL_CH2_O);
+		    WriteOSDBmpX(MASTER,76,125,0x00,0x00,gt_CHANNEL_CH3_O);
+		    WriteOSDBmpX(MASTER,162,125,0x00,0x00,gt_CHANNEL_CH4_O);
+		}
 		
 		// Scale CAM_0 // Select CAM
 		WriteAsicByte(MASTER,DVC_PG0,0x80,0x01);    
@@ -835,219 +1412,9 @@ void CameraMode(u8 Mode, u8 OSD)
 		WriteAsicByte(MASTER,DVC_PG1,0x3d,0xb0);
 		WriteAsicByte(MASTER,DVC_PG1,0x3e,0x3C);
 		WriteAsicByte(MASTER,DVC_PG1,0x3f,0x78); 
-
 	}
-	else if(Mode == 1)
-	{
-		
-		if(OSD)
-		{
-			WriteOSDClrX(MASTER, 0, 0, 0, 45, 31);
-			WriteOSDBmpX(MASTER,76,5,0x00,0x00,gt_CHANNEL_CH1_O);
-        		WriteOSDBmpX(MASTER,162,5,0x00,0x00,gt_CHANNEL_CH2_O);
-		}
-		
-		// Scale CAM_0 // Select CAM
-		WriteAsicByte(MASTER,DVC_PG0,0x80,0x01);    
-		WriteAsicByte(MASTER,DVC_PG0,0x81,0xff);
-		WriteAsicByte(MASTER,DVC_PG0,0x82,0xff);
-		WriteAsicByte(MASTER,DVC_PG0,0x83,0x7f);
-		WriteAsicByte(MASTER,DVC_PG0,0x84,0xff);
-		// Scale CAM_1 // Select CAM
-		WriteAsicByte(MASTER,DVC_PG0,0x90,0x41);
-		WriteAsicByte(MASTER,DVC_PG0,0x91,0xff);
-		WriteAsicByte(MASTER,DVC_PG0,0x92,0xff);
-		WriteAsicByte(MASTER,DVC_PG0,0x93,0x7f);
-		WriteAsicByte(MASTER,DVC_PG0,0x94,0xff);
-
-
-		// ON/OFF CAMERA
-		WriteAsicByte(MASTER,DVC_PG1,0x10,0x80);  
-		WriteAsicByte(MASTER,DVC_PG1,0x18,0x81);
-		WriteAsicByte(MASTER,DVC_PG1,0x20,0x02);   
-		WriteAsicByte(MASTER,DVC_PG1,0x28,0x03);   
-
-		WriteAsicByte(MASTER,DVC_PG1,0x30,0x00);    // Position CAM_0
-		WriteAsicByte(MASTER,DVC_PG1,0x31,0x58);
-		WriteAsicByte(MASTER,DVC_PG1,0x32,0x00);    //0x00);
-		WriteAsicByte(MASTER,DVC_PG1,0x33,0x78);
-
-		WriteAsicByte(MASTER,DVC_PG1,0x34,0x58);    // Position CAM_1
-		WriteAsicByte(MASTER,DVC_PG1,0x35,0xb0);
-		WriteAsicByte(MASTER,DVC_PG1,0x36,0x00);    //0x00);
-		WriteAsicByte(MASTER,DVC_PG1,0x37,0x78);
-
-		
-		
-
-	}
-	else if(Mode == 2)
-	{
-		if(OSD)
-		{
-			WriteOSDClrX(MASTER, 0, 0, 0, 45, 31);
-			WriteOSDBmpX(MASTER,76,5,0x00,0x00,gt_CHANNEL_CH3_O);
-       	 	WriteOSDBmpX(MASTER,162,5,0x00,0x00,gt_CHANNEL_CH4_O);
-		}
-		
-
-		// Scale CAM_2 // Select CAM
-		WriteAsicByte(MASTER,DVC_PG0,0xa0,0x81);
-		WriteAsicByte(MASTER,DVC_PG0,0xa1,0xff);
-		WriteAsicByte(MASTER,DVC_PG0,0xa2,0xff);
-		WriteAsicByte(MASTER,DVC_PG0,0xa3,0x7f);
-		WriteAsicByte(MASTER,DVC_PG0,0xa4,0xff);
-		// Scale CAM_3 // Select CAM
-		WriteAsicByte(MASTER,DVC_PG0,0xb0,0xc1);
-		WriteAsicByte(MASTER,DVC_PG0,0xb1,0xff);
-		WriteAsicByte(MASTER,DVC_PG0,0xb2,0xff);
-		WriteAsicByte(MASTER,DVC_PG0,0xb3,0x7f);
-		WriteAsicByte(MASTER,DVC_PG0,0xb4,0xff);
-		    
-		// ON/OFF CAMERA
-		WriteAsicByte(MASTER,DVC_PG1,0x10,0x00);  
-		WriteAsicByte(MASTER,DVC_PG1,0x18,0x01);
-		WriteAsicByte(MASTER,DVC_PG1,0x20,0x82);   
-		WriteAsicByte(MASTER,DVC_PG1,0x28,0x83);    
-
-		WriteAsicByte(MASTER,DVC_PG1,0x38,0x00);    // Position CAM_2
-		WriteAsicByte(MASTER,DVC_PG1,0x39,0x58);
-		WriteAsicByte(MASTER,DVC_PG1,0x3a,0x00);
-		WriteAsicByte(MASTER,DVC_PG1,0x3b,0x78);
-
-		WriteAsicByte(MASTER,DVC_PG1,0x3c,0x58);    // Position CAM_3
-		WriteAsicByte(MASTER,DVC_PG1,0x3d,0xb0);
-		WriteAsicByte(MASTER,DVC_PG1,0x3e,0x00);
-		WriteAsicByte(MASTER,DVC_PG1,0x3f,0x78); 
-
-
-
-
-	}
-
-	else if(Mode == 3)
-	{
-		if(OSD)
-		{
-			WriteOSDClrX(MASTER, 0, 0, 0, 45, 31);
-			WriteOSDBmpX(MASTER,162,5,0x00,0x00,gt_CHANNEL_CH1_O);
-		}
-		
-		// Scale CAM_0 // Select CAM
-		WriteAsicByte(MASTER,DVC_PG0,0x80,0x01);    
-		WriteAsicByte(MASTER,DVC_PG0,0x81,0xff);
-		WriteAsicByte(MASTER,DVC_PG0,0x82,0xff);
-		WriteAsicByte(MASTER,DVC_PG0,0x83,0xff);
-		WriteAsicByte(MASTER,DVC_PG0,0x84,0xff);
-		    
-		// ON/OFF CAMERA
-		WriteAsicByte(MASTER,DVC_PG1,0x10,0x80);    // ON CAM_0
-		WriteAsicByte(MASTER,DVC_PG1,0x18,0x01);	// OFF CAM_1
-		WriteAsicByte(MASTER,DVC_PG1,0x20,0x02);    // OFF CAM_2
-		WriteAsicByte(MASTER,DVC_PG1,0x28,0x03);    // OFF CAM_3
-
-		WriteAsicByte(MASTER,DVC_PG1,0x30,0x00);    // Position CAM_0
-		WriteAsicByte(MASTER,DVC_PG1,0x31,0xb0);
-		WriteAsicByte(MASTER,DVC_PG1,0x32,0x00);
-		WriteAsicByte(MASTER,DVC_PG1,0x33,0x78);
-
-
-		
-	}
-
-	else if(Mode == 4)
-	{
-		if(OSD)
-		{
-			WriteOSDClrX(MASTER, 0, 0, 0, 45, 31);	
-			WriteOSDBmpX(MASTER,162,5,0x00,0x00,gt_CHANNEL_CH2_O);
-		}
-		
-
-		// Scale CAM_1 // Select CAM
-		WriteAsicByte(MASTER,DVC_PG0,0x90,0x41);
-		WriteAsicByte(MASTER,DVC_PG0,0x91,0xff);
-		WriteAsicByte(MASTER,DVC_PG0,0x92,0xff);
-		WriteAsicByte(MASTER,DVC_PG0,0x93,0xff);
-		WriteAsicByte(MASTER,DVC_PG0,0x94,0xff);
-		    
-		// ON/OFF CAMERA
-		WriteAsicByte(MASTER,DVC_PG1,0x10,0x00);    // ON/OFF CAM
-		WriteAsicByte(MASTER,DVC_PG1,0x18,0x81);
-		WriteAsicByte(MASTER,DVC_PG1,0x20,0x02);    // OFF CAM_3
-		WriteAsicByte(MASTER,DVC_PG1,0x28,0x03);    // OFF CAM_4
-
-
-		WriteAsicByte(MASTER,DVC_PG1,0x34,0x00);    // Position CAM_1
-		WriteAsicByte(MASTER,DVC_PG1,0x35,0xb0);
-		WriteAsicByte(MASTER,DVC_PG1,0x36,0x00);
-		WriteAsicByte(MASTER,DVC_PG1,0x37,0x78);
-
-
-
-	}
-
-	else if(Mode == 5)
-	{
-		if(OSD)
-		{
-			WriteOSDClrX(MASTER, 0, 0, 0, 45, 31);
-			WriteOSDBmpX(MASTER,162,5,0x00,0x00,gt_CHANNEL_CH3_O);
-		}
-		
-
-		// Scale CAM_2 // Select CAM
-		WriteAsicByte(MASTER,DVC_PG0,0xa0,0x81);
-		WriteAsicByte(MASTER,DVC_PG0,0xa1,0xff);
-		WriteAsicByte(MASTER,DVC_PG0,0xa2,0xff);
-		WriteAsicByte(MASTER,DVC_PG0,0xa3,0xff);
-		WriteAsicByte(MASTER,DVC_PG0,0xa4,0xff);
-		    
-		// ON/OFF CAMERA
-		WriteAsicByte(MASTER,DVC_PG1,0x10,0x00);    // ON/OFF CAM
-		WriteAsicByte(MASTER,DVC_PG1,0x18,0x01);
-		WriteAsicByte(MASTER,DVC_PG1,0x20,0x82);    // OFF CAM_3
-		WriteAsicByte(MASTER,DVC_PG1,0x28,0x03);    // OFF CAM_4
-
-
-
-		WriteAsicByte(MASTER,DVC_PG1,0x38,0x00);    // Position CAM_2
-		WriteAsicByte(MASTER,DVC_PG1,0x39,0xb0);
-		WriteAsicByte(MASTER,DVC_PG1,0x3a,0x00);
-		WriteAsicByte(MASTER,DVC_PG1,0x3b,0x78);
-
-	}
-
-	else if(Mode == 6)
-	{
-		if(OSD)
-		{
-			WriteOSDClrX(MASTER, 0, 0, 0, 45, 31);
-			WriteOSDBmpX(MASTER,162,5,0x00,0x00,gt_CHANNEL_CH4_O);
-		}
-		
-		// Scale CAM_3 // Select CAM
-		WriteAsicByte(MASTER,DVC_PG0,0xb0,0xc1);
-		WriteAsicByte(MASTER,DVC_PG0,0xb1,0xff);
-		WriteAsicByte(MASTER,DVC_PG0,0xb2,0xff);
-		WriteAsicByte(MASTER,DVC_PG0,0xb3,0xff);
-		WriteAsicByte(MASTER,DVC_PG0,0xb4,0xff);
-		    
-		// ON/OFF CAMERA
-		WriteAsicByte(MASTER,DVC_PG1,0x10,0x00);    // ON/OFF CAM
-		WriteAsicByte(MASTER,DVC_PG1,0x18,0x01);
-		WriteAsicByte(MASTER,DVC_PG1,0x20,0x02);    // OFF CAM_3
-		WriteAsicByte(MASTER,DVC_PG1,0x28,0x83);    // OFF CAM_4
-
-		WriteAsicByte(MASTER,DVC_PG1,0x3c,0x00);    // Position CAM_3
-		WriteAsicByte(MASTER,DVC_PG1,0x3d,0xb0);
-		WriteAsicByte(MASTER,DVC_PG1,0x3e,0x00);
-		WriteAsicByte(MASTER,DVC_PG1,0x3f,0x78); 
-
-
-  	}
 }
-
+//  --, kutelf, 131007
 
 /**\
   * @brief  None
@@ -1061,8 +1428,6 @@ void TW2835_Control_Init(void)
 	InitPg0();
 	InitPg1();
 	InitPg2();
-
-	//CameraMode(3,1);
 
 	DebugMsg_printf("-- TW2835_Control_Init (GPIO Mode), Initialize END\r\n");
 }

@@ -63,8 +63,10 @@ TP_CM* tp_cm_bam;
 #define RX_MSG252		0x80
 #define RX_MSG202		0x100
 #define RX_MSG253		0x200
+#define RX_MSG203		0x400
 
-#define RX_MSG46		0x400
+#define RX_MSG239		0x800
+#define RX_MSG247		0x1000
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 u8 tmpBuf[8];
@@ -89,6 +91,8 @@ u8 Uart2_RxMsg_Single_163[8];
 u8 Uart2_RxMsg_Single_251[8];
 u8 Uart2_RxMsg_Single_252[8];
 u8 Uart2_RxMsg_Single_253[8];
+u8 Uart2_RxMsg_Single_239[8];
+u8 Uart2_RxMsg_Single_247[8];
 
 u8 McuInfoData1[79];
 u8 MachineBasicInformation[78];
@@ -116,6 +120,10 @@ extern u8 MoniInfoSendCnt;
 extern u8 MultiPacketSendOrder;
 extern u8 MoniInfoData[21];
 extern u8 DiffMachInfo;
+extern u8 SerialMsgRTC[16];
+
+extern Realy_Control rx_Realy_Control;
+extern EHCU_Status rx_EHCU_Status;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 /**
@@ -217,9 +225,19 @@ void WL9F_CAN_Variables_Init(void)
 	memset((u8*)&Uart2_RxMsg_Single_251[0], 0xff, sizeof(Uart2_RxMsg_Single_251));
 	memset((u8*)&Uart2_RxMsg_Single_252[0], 0xff, sizeof(Uart2_RxMsg_Single_252));
 	memset((u8*)&Uart2_RxMsg_Single_253[0], 0xff, sizeof(Uart2_RxMsg_Single_253));
+
+	memset((u8*)&Uart2_RxMsg_Single_239[0], 0xff, sizeof(Uart2_RxMsg_Single_239));
+	memset((u8*)&Uart2_RxMsg_Single_247[0], 0xff, sizeof(Uart2_RxMsg_Single_247));
+
 	
 	memset((u8*)&Uart2_RxMsg_Multi_161[0], 0xff, sizeof(Uart2_RxMsg_Multi_161));
 	memset((u8*)&Uart2_RxMsg_Multi_69[0], 0xff, sizeof(Uart2_RxMsg_Multi_69));
+
+	memset((u8*)&rx_Realy_Control, 0xff, sizeof(rx_Realy_Control));
+
+
+	memset((u8*)&SerialMsgRTC[0], 0xA5, 2);
+	memset((u8*)&SerialMsgRTC[2], 0xF0, 2);
 }
 
 void SetCanID(u8 PF, u8 PS, u8 Priority)
@@ -470,12 +488,16 @@ void CheckASDataLen(void)
 	for(i = 0 ; i < 12 ; i++)
 	{
 		if(tmpbuf_AS[i] != 0x0F)
+		{
+			tmpbuf_AS[i] += 0x30;
 			as_data_len++;
+		}
 		else
 		{
 			tmpbuf_AS[i] = 0x2A;
 			break;
 		}
+		
 	}
 
 	check_as_data_len = 1;

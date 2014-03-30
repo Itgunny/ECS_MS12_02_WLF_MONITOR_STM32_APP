@@ -143,6 +143,8 @@ extern u8 ct_ALPHA_NUM_32x40_4c[];
 extern u8 gt_ALPHA_NUM_32x40_4c_Alpha_Num_32x40[];
 
 extern u8 ct_CHANNEL[];
+extern u8 gt_CHANNEL_x[];
+extern u8 gt_CHANNEL_blank[]; 
 extern u8 gt_CHANNEL_CH1_O[];
 extern u8 gt_CHANNEL_CH2_O[];
 extern u8 gt_CHANNEL_CH3_O[];

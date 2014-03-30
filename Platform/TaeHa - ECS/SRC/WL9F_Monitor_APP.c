@@ -34,8 +34,9 @@
 #define RX_MSG252		0x80
 #define RX_MSG202		0x100
 #define RX_MSG253		0x200
-
-#define RX_MSG46		0x400
+#define RX_MSG203		0x400
+#define RX_MSG239		0x800
+#define RX_MSG247		0x1000
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 WL9FM_send_smartkey send_smartkey;
@@ -81,8 +82,15 @@ u8 E2PROM_Save = 0;
 u8 PwrOffCnt = 0;
 u8 gRebootCmd = 0;
 
+
+u8 send_mcu_data=0;
+
+u8 ST_Update=0;
+
 extern u8 Uart2_RxMsg_Single_252[8];
 extern u8 Uart2_RxMsg_Single_253[8];
+extern u8 Uart2_RxMsg_Single_239[8];
+extern u8 Uart2_RxMsg_Single_247[8];
 extern u8 Uart2_RxMsg_Save_Data1[8];
 extern u8 Uart2_RxMsg_Save_Data2[8];
 extern u8 Uart2_RxMsg_AS_Phone_Data[8];
@@ -94,6 +102,8 @@ extern u8 stop_send_as_phone_data;
 extern u8 Flag_TxE2pRomData;
 
 extern u8 Buz1, Buz2;
+
+extern u8 Stm32_Update_CMD;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
@@ -487,7 +497,8 @@ void Send_Multipacket_Info(void)
 void read_clock(void)
 {
 	READ_RTC(&WL9FM_RTC);
-	RTC_SendToExynos( WL9FM_RTC.Hour, WL9FM_RTC.Minute );
+	SerialMsgRTC[8] = WL9FM_RTC.Hour;
+	SerialMsgRTC[9] = WL9FM_RTC.Minute;
 }
 
 void SaveDataToEEPROM(void)
@@ -616,7 +627,7 @@ void System_CheckPowerIG()
 				return;
 			}
 	        
-			LCD_POWER_ONOFF(LCDPWR_OFF);                        	//  LCD Power Off
+			LCD_POWER_ONOFF(LCDPWR_OFF);                        //  LCD Power Off
 			LED_POWER_ONOFF(LED_OFF);                        	//  LED Off
 			WL9FM_EXYNOS_POWER_ONOFF(EXYNOS_POWER_OFF);	
 			WL9FM_PowerIG(PowerIG_OFF);                    //  24v Main Power Off	        
@@ -1009,10 +1020,11 @@ void WL9FM_1mSecOperationFunc(void)
 #if 1
 	if( Flag_UartTxStart == 1 )
 	{
-		if (SendTime_E2PROM++ > 25) //	25msec
+		if (SendTime_E2PROM++ > 3) //	25msec
 		{
 			SendTime_E2PROM = 0;
 			SendTo_E2PROM();
+			KeySwitch_SendToEXYNOS(KEYSWITCH_NONE,0);
 		}			
 	}
 #endif
@@ -1026,10 +1038,17 @@ void WL9FM_1mSecOperationFunc(void)
 void WL9FM_10mSecOperationFunc(void)
 {
 	Lamp_Update_State();	//	LAMP Update 상태를 체크한다.
-	Lamp_Update_System();  
+	//Lamp_Update_System();  
 	
 	if(Flag_SerialRxMsg != 0)
 	{
+		if((Flag_SerialRxMsg & RX_MSG247) != 0)
+		{
+			Flag_SerialRxMsg &= ~(RX_MSG247);
+			SetCanID(255, 247, 6);
+			CAN_TX_Data(&Uart2_RxMsg_Single_247[0]);
+		}
+		
 		if((Flag_SerialRxMsg & RX_MSG253) != 0)
 		{
 			Flag_SerialRxMsg &= ~(RX_MSG253);
@@ -1037,10 +1056,10 @@ void WL9FM_10mSecOperationFunc(void)
 			CAN_TX_Data(&Uart2_RxMsg_Single_253[0]);
 		}
 		
-		if((Flag_SerialRxMsg & RX_MSG46) != 0)	    // 69 - Single Packet
+		if((Flag_SerialRxMsg & RX_MSG203) != 0)	    // 61184 -203 
 		{
-			Flag_SerialRxMsg &= ~(RX_MSG46);
-			SetCanID(239, 46, 6);
+			Flag_SerialRxMsg &= ~(RX_MSG203);
+			SetCanID(239, 228, 6);
 			CAN_TX_Data(&Uart2_RxMsg_Single_46[0]);
 		}
 
@@ -1113,9 +1132,10 @@ void WL9FM_10mSecOperationFunc(void)
   */
 void WL9FM_100mSecOperationFunc(void)
 {
-	//Lamp_Update_System();	//	체크된 LAMP 상태를 업데이트 한다.
+	Lamp_Update_System();	//	체크된 LAMP 상태를 업데이트 한다.
 
 	SetCanID(255, 160, 6);
+	
 	CAN_TX_Data(&Uart2_RxMsg_Single_160[0]);
 
 	if(((Uart2_RxMsg_Single_160[0] & 0xc0) == 0x00) || ((Uart2_RxMsg_Single_160[0] & 0xc0) == 0x40))		// Speed Up/Down
@@ -1133,6 +1153,17 @@ void WL9FM_100mSecOperationFunc(void)
 		Flag_SerialRxMsg &= ~(RX_MSG251);
 		SetCanID(255, 251, 6);
 		CAN_TX_Data(&Uart2_RxMsg_Single_251[0]);
+	}
+
+	if((Flag_SerialRxMsg & RX_MSG239) != 0) // send 61184 to mcu
+	{
+		SetCanID(239, 71, 6);
+		CAN_TX_Data(&Uart2_RxMsg_Single_239[0]);
+		if(++send_mcu_data>2)
+		{
+			send_mcu_data=0;
+			Flag_SerialRxMsg &= ~(RX_MSG239);
+		}
 	}
 
    	if(++Flag_200mSec >= 2)
@@ -1153,10 +1184,12 @@ void WL9FM_100mSecOperationFunc(void)
 	{
 		Flag_SerialRxMsg &= ~(RX_MSG252);
 
-		WL9FM_RTC.Hour = Uart2_RxMsg_Single_252[0];
-		WL9FM_RTC.Minute = Uart2_RxMsg_Single_252[1];
+		WL9FM_RTC.Hour = Uart2_RxMsg_Single_252[4];
+		WL9FM_RTC.Minute = Uart2_RxMsg_Single_252[5];
 		WRITE_RTC(WL9FM_RTC);
 	}
+
+	
 	if(CommErrCnt > 1000)
    	{
    		if( Flag_TxE2pRomData == 1 )
@@ -1172,9 +1205,17 @@ void WL9FM_100mSecOperationFunc(void)
 
 				RTC_SendToExynos( WL9FM_RTC.Hour, WL9FM_RTC.Minute );
 			}
+			//Buzzer_SendToEXYNOS(1);
 	   	}
 	}	
+	
 	System_CheckPowerIG();
+
+	if(ST_Update)
+	{
+		STM32_Update(Stm32_Update_CMD);	
+		ST_Update=0;
+	}
 		
 	//	WL9A Monitor RESET Code
 	if((SystemReset == 1) || (gRebootCmd == 1))
@@ -1214,8 +1255,27 @@ void WL9FM_1SecOperationFunc(void)
 		}
 	}
 	read_clock();
-	
+
+
+	//  ++, kutelf, 131007
+	//	카메라 동작 모드 일 경우, 3초 마다 한번씩 각 채널의
+	//	상태를 체크하여, Video가 없으면 No Video 띄워준다.
+	if (Camera_CheckFlag == 1)
+	{
+		if (++Camera_CheckCnt == 6) Camera_CheckCnt = 0;
+			
+		if ((Camera_CheckCnt % 3) == 0)
+		{
+			cam_mode_check();
+		}
+	}
+	else
+	{
+		Camera_CheckCnt = 0;
+	}
+	//  --, kutelf, 131007
 }
+
 
 void WL9FM_System_Init_Start(void)
 {
@@ -1226,7 +1286,7 @@ void WL9FM_System_Init_Start(void)
 	TW8832_Control_Init();						//	-> 	TW8832_Control.c (LCD Interface)
 	TW2835_Control_Init();	
 	
-	//DPRAM_Init();								//	-> 	DPRAM_Control.c (Dual Port RAM Init)
+	DPRAM_Init();								//	-> 	DPRAM_Control.c (Dual Port RAM Init)
 	Hardware_Version_Init();					//  ->  Hardware_Version.c (Hardware Version ADC Start)
 	Buzzer_Init();              				//  ->  Buzzer.c (Buzzer Timer Start)
 	FM3164_Watchdog_Init(0x00);					//  ->  FM31X4.c (Integrated Processor Companion ON)
@@ -1238,17 +1298,23 @@ void WL9FM_System_Init_Start(void)
 
 	LCD_Control_Init();							//	-> 	LCD_Control.c (LCDBL, ON/OFF)
 
-	USART_COMInit(COMPORT2);       				//  ->	UART_Control.c
-	USART_COMInit(COMPORT4);       				//      COM2 : CAN Data
+	USART_COMInit(COMPORT2);       				//      COM2 : CAN
+	USART_COMInit(COMPORT4);       				//      COM4 : CMDData
 
-												//		COM4 : CMD Data
-
+												
 	CAN_COMInit();								//	-> 	CAN_Control.c
 	//InitE2PROM();
 	ReadE2PROM_ToSend();						//	->	EEPROM Data Read
 
+	M25P32_Init();
+
 	//WL9FM_PowerIG(PowerIG_ON);				//	->	GPIO_Control.c 초기화가 끝나면, PowerIG를 ON 한다.!!
 	LAMP_Update_Data = LAMP_ALL_OFF;			//	-> 	LAMP ALL OFF
+	
+
+
+
+	
 }
 
 /**
@@ -1318,6 +1384,7 @@ SYSTEM_RESET :
 			//  WL9F_1SecOperationState -> Func 실행..
 			//  if (WL9F_1SecOperationState != 0) WL9F_1SecOperationFunc[WL9F_1SecOperationState]();    
 			WL9FM_1SecOperationFunc();
+                        
 		}
 	}
 }

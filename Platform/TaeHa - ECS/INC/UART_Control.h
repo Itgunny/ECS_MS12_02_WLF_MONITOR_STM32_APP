@@ -36,6 +36,7 @@ typedef enum
 //  Protocol Control Code                                               
 #define STX                         0x02                //  Start of Text(Start of Data)
 #define ETX                         0x03                //  End of Test(End of Data)
+#define EOT					0x04
 #define ENQ                         0x05                //  Enquiry(Communication request)
 #define ACK                         0x06                //  Acknowledge(No data error detected)
 #define LF                          0x0a                //  Line Feed
@@ -76,28 +77,52 @@ typedef enum
 #define Serial_COM2_RxSize            255
 #define Serial_COM4_RxSize            4   
 
+#define Serial_file_RxSize            1030
+
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 typedef struct 
 {
-    uint8_t COM2_TxBuf[Serial_COM2_TxSize];
-    uint8_t COM4_TxBuf[Serial_COM4_TxSize];
+	uint8_t COM2_TxBuf[Serial_COM2_TxSize];
+	uint8_t COM4_TxBuf[Serial_COM4_TxSize];
 
-    uint8_t COM2_RxBuf[Serial_COM2_RxSize];
-    uint8_t COM4_RxBuf[Serial_COM4_RxSize];
+	uint8_t COM2_RxBuf[Serial_COM2_RxSize];
+	uint8_t COM4_RxBuf[Serial_COM4_RxSize];
 } USARTx_DATA;
 
 typedef struct
 {
-    uint8_t  COM2_TxIdx;    
-    uint8_t  COM4_TxIdx;    
-    
-    uint8_t  COM2_TxCnt;    
-    uint8_t  COM4_TxCnt;    
-    
-    uint8_t  COM2_RxCnt;    
-    uint8_t  COM4_RxCnt;    
+	uint8_t  COM2_TxIdx;    
+	uint8_t  COM4_TxIdx;    
+
+	uint8_t  COM2_TxCnt;    
+	uint8_t  COM4_TxCnt;    
+
+	uint8_t  COM2_RxCnt;    
+	uint8_t  COM4_RxCnt;    
 } USARTx_INDEX;
+
+#pragma pack(1)
+typedef struct 
+{
+	uint8_t  _STX;    
+	uint16_t index   ;
+	uint8_t  data[1024];    
+	uint16_t  CRC_data;  
+	uint8_t  _ETX;  
+} USARTx_RX_BUF;
+ #pragma pack()
+ 
+typedef struct 
+{
+	union
+	{
+		uint8_t 	File_RxBuf[Serial_file_RxSize];
+     		USARTx_RX_BUF Bin_Data;
+	};
+	uint16_t	File_RxCnt;
+	
+} USARTx_FILE_RX_DATA;
 
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
@@ -109,6 +134,8 @@ typedef struct
 extern USARTx_DATA  WL9FM_USART_DATA;
 extern USARTx_INDEX WL9FM_USART_INDEX;
 
+extern USARTx_FILE_RX_DATA WL9FM_USART_RX_FILE_DATA;
+extern USARTx_FILE_RX_DATA WL9FM_USART_FILE_DATA;
 /* Exported functions ------------------------------------------------------- */
 extern void USART_COMInit(uint8_t COM);
 extern void USARTx_PutChar(uint8_t COM, uint8_t data);

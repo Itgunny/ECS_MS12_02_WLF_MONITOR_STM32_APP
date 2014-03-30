@@ -49,6 +49,7 @@
 #include "TW8832_OSD.h"
 #include "UART_Control.h"
 #include "CAN_Control.h"
+#include "M25PXX.h"
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -224,7 +225,8 @@ extern u8 Uart2_RxMsg_Single_251[8];
 extern u8 Uart2_RxMsg_Single_252[8];
 
 extern u8 Uart2_RxMsg_Single_253[8];
-
+extern u8 Uart2_RxMsg_Single_239[8];
+extern u8 Uart2_RxMsg_Single_247[8];
 
 extern u16 CommErrCnt;
 extern u32 Flag_SerialRxMsg;

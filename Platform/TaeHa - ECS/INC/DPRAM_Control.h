@@ -38,6 +38,8 @@
 /* Exported variables --------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 extern void DPRAM_Init(void);
+extern void DPRAM_WriteBuffer(uint16_t* pBuffer, uint32_t WriteAddr, uint32_t NumHalfwordToWrite);
+extern void DPRAM_ReadBuffer(uint16_t* pBuffer, uint32_t ReadAddr, uint32_t NumHalfwordToRead);
 
 #endif /* __DPRAM_Control_H */
 

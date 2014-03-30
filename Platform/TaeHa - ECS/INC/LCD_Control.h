@@ -62,6 +62,10 @@ typedef struct
 /* Exported variables --------------------------------------------------------*/
 extern WL9FM_LCDBL_DATA	WL9FM_LCDBL;
 
+extern unsigned char Camera_Mode;
+extern unsigned char Camera_CheckFlag;
+extern unsigned char Camera_CheckCnt;
+
 /* Exported functions ------------------------------------------------------- */
 extern void LCD_Control_Init(void);
 extern void LCD_POWER_ONOFF(uint8_t BitData);
@@ -71,7 +75,8 @@ extern void LCDBL_ONOFF(uint8_t BitData);
 extern void LCDBL_PWM_LEVEL(uint8_t LEVEL);
 extern void LCDBL_PWM_CONTROL(uint16_t PWM_VALUE);
 extern void LCD_Display_Change(uint8_t BitData);
-extern void cam_mode_change(void);
+extern void cam_mode_change(u8 Mode);
+extern void cam_mode_check(void);
 #endif /* __LCD_Control_H */
 
 /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/

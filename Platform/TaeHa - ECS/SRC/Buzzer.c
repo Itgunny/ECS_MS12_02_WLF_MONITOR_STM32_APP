@@ -58,7 +58,7 @@ void Buzzer_Init(void)
 	
     #endif
     
-    TIM_TimeBaseStructure.TIM_Period        = 0x1388;   //  (1 / 1MHz) * 10000 -> 10msec
+    TIM_TimeBaseStructure.TIM_Period        = 0x2710;   //  (1 / 1MHz) * 10000 -> 10msec
     TIM_TimeBaseStructure.TIM_Prescaler     = 0xA8;     //  168 MHz / 168 = 1MHz
     TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
     TIM_TimeBaseStructure.TIM_CounterMode   = TIM_CounterMode_Up;
@@ -95,9 +95,9 @@ void Buzzer_Init(void)
   */
 void Buzzer_Set(uint16_t OnTime)
 {
-    WL9FM_BUZZER.Status = 2;
-    WL9FM_BUZZER.OnTime = OnTime;        
-    WL9FM_BUZZER.OnCnt  = 0;
+	WL9FM_BUZZER.Status = 2;
+	WL9FM_BUZZER.OnTime = OnTime;        
+	WL9FM_BUZZER.OnCnt  = 0;
 }
 
 /**
@@ -175,7 +175,9 @@ void Buzzer_SendToEXYNOS(uint8_t BuzzerValue)
 		BuzzerValueBuffer[1] = BUZZERCMD;			//	BUZZER Command, 0x42
 		BuzzerValueBuffer[2] = BuzzerValue +0x10;	//	Buzzer Value HexCode, 
 		BuzzerValueBuffer[3] = 0x03;				//	ETX
-		USARTx_EXYNOS(COM4, (char *)BuzzerValueBuffer);	
+
+		if(Change_UART4_for_Download==0)
+			USARTx_EXYNOS(COM4, (char *)BuzzerValueBuffer);	
 
 	    DebugMsg_printf("BuzzerValueBuffer %x\r\n", BuzzerValueBuffer[2]);
 	}	

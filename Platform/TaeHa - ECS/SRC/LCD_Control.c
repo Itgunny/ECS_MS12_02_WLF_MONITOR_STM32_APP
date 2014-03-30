@@ -52,7 +52,12 @@ const uint16_t LCDBL_PWMLEVEL[MaxBackLightLEVEL] =
 	0, 		//  8 Step : 100%
 }; 
 
-unsigned char CAM_Mode=0;
+//  ++, kutelf, 131007
+unsigned char Camera_Mode = 0;
+unsigned char Camera_CheckFlag = 1;
+unsigned char Camera_CheckCnt = 0;
+//  --, kutelf, 131007
+
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
@@ -239,20 +244,30 @@ void LCD_Display_Change(uint8_t BitData)
 	}
 }
 
-void cam_mode_change(void)
+//  ++, kutelf, 131007
+//	카메라 동작 모드 일 경우, 3초 마다 한번씩 각 채널의
+//	상태를 체크하여, Video가 없으면 No Video 띄워준다.
+void cam_mode_check(void)
 {
-	if(CAM_Mode<7)
+	CheckCamera_Input(Camera_Mode);		
+}
+	
+void cam_mode_change(u8 Mode)
+{
+	Camera_Mode = Mode;
+	if(Mode == 0xFF)
 	{
-		CameraMode(CAM_Mode++,0);
-		LCD_Display_Change(STM32F4_DISPLAY);
+		LCD_Display_Change(EXYNOS_DISPLAY);
 	}
 	else
 	{
-		CAM_Mode=0;
-		LCD_Display_Change(EXYNOS_DISPLAY);
+		CameraMode(Mode, 1);
+		LCD_Display_Change(STM32F4_DISPLAY);
 	}
 	
+	
 }
+//  --, kutelf, 131007
 
 /**\
   * @brief  None
@@ -261,11 +276,12 @@ void cam_mode_change(void)
   */
 void LCD_Control_Init(void)
 {
-	TimeDelay_msec(2500); 
+	TimeDelay_msec(3000); 
 	LCD_Display_Change(EXYNOS_DISPLAY);
+	//LCD_Display_Change(STM32F4_DISPLAY);
 	LCDBL_Init();	
 	LCDBL_ONOFF(LCDBL_ON);	//  LCDBL Power On!!!
-							//	LCDBL PWM 설정 
+			//	LCDBL PWM 설정 
 	
 	//LCD_Display_Change(STM32F4_DISPLAY);
 }

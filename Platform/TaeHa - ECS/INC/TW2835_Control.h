@@ -110,6 +110,7 @@
 #define INIT_PUBLICS
 #define I2C_PUBLICS
 
+#define CAMCMD 				0x4e
 //==================================================================================
 
 #define	HSPB_SET	GPIO_SetBits(TW2835_CTRLPORT, TW2835_HSPB)
@@ -253,6 +254,9 @@ extern void Port_Change(u8 in_Dir);
 extern void Write_TW2835(u8 Data);
 extern u8 Read_TW2835();
 extern void CameraMode(u8 Mode, u8 OSD);
+//  ++, kutelf, 131007
+extern void CheckCamera_Input(u8 Mode);
+//  --, kutelf, 131007
 
 
 extern unsigned char	tbl_ntsc_pg0_cmn[];

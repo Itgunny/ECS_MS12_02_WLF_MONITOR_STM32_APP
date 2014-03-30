@@ -51,11 +51,14 @@
 #define KEYSWITCH_ENTER         	0x44		//	
 #define KEYSWITCH_RIGHT         	0x48		//	
 #define KEYSWITCH_ESC	       	0x50		//	
-#define KEYSWITCH_CAM	       	0x81		//	
+#define KEYSWITCH_CAM	       	0x81		//
+
+#define KEYSWITCH_REAR_WIPER	       	0xc4		//
+#define KEYSWITCH_REAR_WIPER_Washer	       	0xe4		//
 
 //	기타 시스템 용도로 사용하는 키는 Key 값 +0x40으로 처리.
 #define KEYSWITCH_NONE		    0x20		//	+0x40 : VK_NUMPAD0(0x60) 
-#define KEYSWITCH_POWER_OFF     0x22		//	+0x40 : VK_NUMPAD1(0x61)
+#define KEYSWITCH_POWER_OFF     0x95		//	+0x40 : VK_NUMPAD1(0x61)
 											
 #define MAXSCAN 	            3           //  Scan Switch 
 #define MAXINPUT               	6           //  Input Switch 
@@ -83,6 +86,7 @@ extern void KeyTest_TEST(uint8_t value);
 
 extern void KeySwitch_SendToEXYNOS(uint8_t KeyValue, uint8_t ShortKey);
 extern void RTC_SendToExynos(uint8_t Rtc_Hour, uint8_t Rtc_Min);
+
 
 #endif /* __KeySwitch_H */
 

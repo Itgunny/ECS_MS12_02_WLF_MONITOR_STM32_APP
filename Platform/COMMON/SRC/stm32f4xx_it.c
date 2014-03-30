@@ -55,6 +55,10 @@ struct st_CAN_Msg
 CanRxMsg RxMsg;
 struct st_CAN_Msg Iden; 
 
+extern Realy_Control		rx_Realy_Control;
+extern EHCU_Status		rx_EHCU_Status;
+extern Auto_position_Status rx_Auto_position_Status;
+extern st_CANDATA_HCEPGN_65428	RX_HCEPGN_65428;
 /* Private define ------------------------------------------------------------*/
 
 #define RING_BUF_SIZE			768*10
@@ -71,10 +75,9 @@ struct st_CAN_Msg Iden;
 #define RX_MSG252		0x80
 #define RX_MSG202		0x100
 #define RX_MSG253		0x200
-
-#define RX_MSG46		0x400
-
-
+#define RX_MSG203		0x400
+#define RX_MSG239		0x800
+#define RX_MSG247		0x1000
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
@@ -95,6 +98,7 @@ u16 CommErrCnt = 0;
 u8 SendEEPROMDataCnt = 0;
 u8 Flag_TxE2pRomData = 0;
 u8 stop_send_as_phone_data = 0;
+u8 Stm32_Update_CMD;
 
 u8 Buz1, Buz2;
 
@@ -123,9 +127,16 @@ extern u8 Uart2_RxMsg_Single_163[8];
 extern u8 Uart2_RxMsg_Single_251[8];
 extern u8 Uart2_RxMsg_Single_252[8];
 extern u8 Uart2_RxMsg_Single_253[8];
+extern u8 Uart2_RxMsg_Single_239[8];
+extern u8 Uart2_RxMsg_Single_247[8];
 
+extern u8 SerialMsgRTC[16];
 extern u8 Lamp_name;
 extern u8 Lamp_Value;
+
+//////////////// stm32 update /////////////////////
+extern u8 Change_UART4_for_Download;
+extern u8 ST_Update;
 
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
@@ -146,7 +157,9 @@ void WL9F_CAN_Buffer_Init(void)
 	CommErrCnt = 0;
 }
 
-uint8_t test,old_test;
+uint16_t test,old_test;
+
+unsigned char test_temp[8];
 
 void OperateRingBuffer(void)
 {
@@ -159,7 +172,24 @@ void OperateRingBuffer(void)
 
 	memcpy(&ring_buf[pWriteBufPos], (u8*)&RxMsg.Data, 8);
 	
-	pWriteBufPos += 8;
+	pWriteBufPos += 8;	
+
+	if(RxMsg.ExtId==0x18fff7dd) // rcu status
+	{
+		memcpy( &rx_Realy_Control, (u8*)&RxMsg.Data, 8);
+	}
+	else if(RxMsg.ExtId==0x18ffEDE4) // ECU status
+	{
+		memcpy( &rx_EHCU_Status, (u8*)&RxMsg.Data, 8);
+	}
+	else if(RxMsg.ExtId==0x18ffEc47) // auto_position
+	{
+		memcpy( &rx_Auto_position_Status, (u8*)&RxMsg.Data, 8);
+	}
+	else if(RxMsg.ExtId==0x18ff9447) // lamp
+	{
+		memcpy( &RX_HCEPGN_65428, (u8*)&RxMsg.Data, 8);
+	}
 	
 	USART_ITConfig(USART2, USART_IT_TXE, ENABLE);
 	
@@ -170,18 +200,18 @@ void SendTo_E2PROM(void)
 #if 1
 	if (SendEEPROMDataCnt < 2)	//	2번 보낸다.
 	{
-		memcpy(&Uart2_SerialTxMsg[3], &eepRomReadData1[0], 8);
+		memcpy(&Uart2_SerialTxMsg[7], &eepRomReadData1[0], 8);
 		Uart2_SerialTxMsg[15] = 0xE1;
 	}	
 	else if (SendEEPROMDataCnt < 4)	//	2번 보낸다.
 	{
-		memcpy(&Uart2_SerialTxMsg[3], &eepRomReadData1[8], 8);
-		Uart2_SerialTxMsg[15] = 0xE1;
+		memcpy(&Uart2_SerialTxMsg[7], &eepRomReadData1[8], 8);
+		Uart2_SerialTxMsg[15] = 0xE2;
 	}	
 	else
 	{
-		memcpy(&Uart2_SerialTxMsg[3], &eepRomReadData1[16], 8);
-		Uart2_SerialTxMsg[15] = 0xE2;
+		memcpy(&Uart2_SerialTxMsg[7], &eepRomReadData1[16], 8);
+		Uart2_SerialTxMsg[15] = 0xE3;
 	}		
 
 	//  Enable the USART3 Transmit interrupt
@@ -348,31 +378,32 @@ void CAN1_RX0_IRQHandler(void)
 	Iden.Source_Address = (RxMsg.ExtId & 0x000000ff)  >> 0;
 	Iden.PDU_Specific = (RxMsg.ExtId  & 0x0000ff00) >> 8;
 	
-	// Iden.Source_Address == 71	 -->>	Smart KeyMCU
+	// Iden.Source_Address == 71	 -->>	MCU
 	// Iden.Source_Address == 228	 -->>	EHCU	
 	// Iden.Source_Address == 29	 -->>	Smart Key
 	// Iden.Source_Address == 23	 -->>	Cluster
 	// Iden.Source_Address == 221	 -->>	RCU
 	
 	if((Iden.Source_Address == 71) || (Iden.Source_Address == 23) || (Iden.Source_Address == 29) || 
-		(Iden.Source_Address == 228) || (Iden.Source_Address == 221))
+		(Iden.Source_Address == 228) || (Iden.Source_Address == 221)|| (Iden.Source_Address == 0x4a)|| (Iden.Source_Address == 0xf4))
 		{
-			if(++CanRecvCnt >= 50)
+			if(++CanRecvCnt >= 100)
 			{
 				CanRecvCnt = 0;
 	
 				if(pWriteBufPos >= (768*10-1)) // End of Ring Buffer
 					pWriteBufPos = 0;
 	
-				//memcpy(&ring_buf[pWriteBufPos], (u8*)&SerialMsgRTC[0], 16);
+				memcpy(&ring_buf[pWriteBufPos], (u8*)&SerialMsgRTC[0], 12);
+			
+				pWriteBufPos += 12;
 				
-				//pWriteBufPos += 16;
 			}
 	
 	
 			PF = (RxMsg.ExtId  & 0x00ff0000) >> 16;
 	
-			if((PF == 254) || (PF == 255))
+			if((PF == 254) || (PF == 255) || (PF == 239) )
 			{	
 				if(Iden.PDU_Specific == 251)
 				{
@@ -398,12 +429,13 @@ void CAN1_RX0_IRQHandler(void)
 							Buzzer_SendToEXYNOS(0);
 						}
 					}
-					OperateRingBuffer();
+					//if(Iden.PDU_Specific == 0x9b)
+						OperateRingBuffer();
 				}
 			}
 			else if((PF == 235) || (PF == 236))
 			{
-				if(Iden.PDU_Specific == 255)
+				if((Iden.PDU_Specific == 255)||(Iden.PDU_Specific == 0x28))
 				{
 					if(PF == 236)		// TP.CM_BAM
 					{
@@ -487,12 +519,12 @@ void TIM4_IRQHandler(void)  //  10msec Timer / TimeBase UP Counter
         WL9FM_BUZZER.OnCnt  = 0;
     }
 
-	#if 0
-    CommErrCnt++;
+#if 1
+	CommErrCnt++;
 
-    if(CommErrCnt >= 1000)
-        CommErrCnt = 1001;
-	#endif
+	if(CommErrCnt >= 1000)
+		CommErrCnt = 1001;
+#endif
 }
 
 /**
@@ -513,6 +545,9 @@ void TIM5_IRQHandler(void)  //  5msec Timer / TimeBase UP Counter
   * @retval None
   */
   // STM32F407 <-> exynos4412 can_data
+
+unsigned char temp_61184;
+
 void USART2_IRQHandler(void)
 {
 	if(USART_GetITStatus(USART2, USART_IT_RXNE) != RESET)
@@ -553,8 +588,8 @@ void USART2_IRQHandler(void)
 							Flag_TxE2pRomData=0;
 							SendEEPROMDataCnt=0;
 							break;
-						case 46 :
-							Flag_SerialRxMsg |= RX_MSG46;
+						case 203 :  // for EHCU setting 61184 format 131017
+							Flag_SerialRxMsg |= RX_MSG203;
 							memcpy(&Uart2_RxMsg_Single_46[0], &Uart2_SerialRxMsg[4], 8);
 							break;
 						case 69 :	// When needed
@@ -580,6 +615,7 @@ void USART2_IRQHandler(void)
 						case 161 :	// When needed
 							Flag_SerialRxMsg |= RX_MSG161;
 							memcpy(&Uart2_RxMsg_Multi_161[0], &Uart2_SerialRxMsg[4], 14);
+							temp_61184=0;
 							break;
 						case 162 :	// When needed
 							//Flag_SerialRxMsg |= RX_MSG162;
@@ -608,6 +644,10 @@ void USART2_IRQHandler(void)
 						case 210 :	// Smart Key Registration, Elimination
 							memcpy(&Uart2_RxMsg_Smk_Reg_Eli[0], &Uart2_SerialRxMsg[4], 8);
 							break;
+						case 247 :
+							Flag_SerialRxMsg |= RX_MSG247;
+							memcpy(&Uart2_RxMsg_Single_247[0], &Uart2_SerialRxMsg[4], 8);							
+							break;	
 						case 251 :
 							Flag_SerialRxMsg |= RX_MSG251;
 							memcpy(&Uart2_RxMsg_Single_251[0], &Uart2_SerialRxMsg[4], 8);							
@@ -619,6 +659,21 @@ void USART2_IRQHandler(void)
 						case 253 :
 							Flag_SerialRxMsg |= RX_MSG253;
 							memcpy(&Uart2_RxMsg_Single_253[0], &Uart2_SerialRxMsg[4], 8);							
+							break;
+						case 101 :
+						case 102 :
+						case 109 : 
+						case 61 : 
+						case 31 : 
+						case 33 : 
+						case 34 : 
+						case 121 : 
+						case 123 : 
+							Flag_SerialRxMsg |= RX_MSG239;
+							memcpy(&Uart2_RxMsg_Single_239[0], &Uart2_SerialRxMsg[4], 8);		
+
+							temp_61184++;
+							
 							break;
 						
 					}
@@ -642,11 +697,19 @@ void USART2_IRQHandler(void)
 		if((USART2->SR & 0x80) == RESET)
 			return;
 
+		if (pWriteBufPos == pReadBufPos)
+		{
+			if(Flag_TxE2pRomData == 1)
+			{
+			    USART_ITConfig(USART2, USART_IT_TXE, DISABLE);
+			    return;
+		    	}
+		}
+
 		if(pReadBufPos >= (RING_BUF_SIZE-1))
 			pReadBufPos = 0;
 
-
-		if((Uart2_SerialTxCnt == 0) && (Flag_TxE2pRomData != 0))
+		if((Uart2_SerialTxCnt == 0) && (pWriteBufPos != pReadBufPos))
 		{
 			memcpy(&Uart2_SerialTxMsg[3] , &ring_buf[pReadBufPos], 12);
 		}
@@ -696,136 +759,186 @@ void USART2_IRQHandler(void)
 
 void UART4_IRQHandler(void)
 {
-    //  UART4 receive interrupt routine
+	//  UART4 receive interrupt routine
 	if (USART_GetITStatus(UART4, USART_IT_RXNE) != RESET) 
-    {
-		//  Read one byte to the receive data register
-		WL9FM_USART_DATA.COM4_RxBuf[WL9FM_USART_INDEX.COM4_RxCnt] = USART_ReceiveData(UART4);
-
-        //  디버깅할 때만 사용할 것
-		#ifdef DEBUG_CMD_RX
-		DebugMsg_printf("%2x ", WL9FM_USART_DATA.COM4_RxBuf[WL9FM_USART_INDEX.COM4_RxCnt]);
-        #endif
-		
-		switch (WL9FM_USART_INDEX.COM4_RxCnt)
-		{
-			case 0:
-					if (WL9FM_USART_DATA.COM4_RxBuf[0] == 0x02)
-					{
-						WL9FM_USART_INDEX.COM4_RxCnt++;
-					}						
-					break;
-			case 1:
-					if (WL9FM_USART_DATA.COM4_RxBuf[1]      == KeyCMD)		WL9FM_USART_INDEX.COM4_RxCnt++;
-					else if (WL9FM_USART_DATA.COM4_RxBuf[1] == LCDBLCMD)	WL9FM_USART_INDEX.COM4_RxCnt++;
-					else if (WL9FM_USART_DATA.COM4_RxBuf[1] == BUZZERCMD)	WL9FM_USART_INDEX.COM4_RxCnt++;
-					else if (WL9FM_USART_DATA.COM4_RxBuf[1] == LAMPCMD)	WL9FM_USART_INDEX.COM4_RxCnt++;
-					
-					break;
-
-			case 3: 
-					WL9FM_USART_INDEX.COM4_RxCnt = 0;
-					
-					//  디버깅할 때만 사용할 것
-					#ifdef DEBUG_CMD_RX
-					DebugMsg_printf("\r\n");
-					#endif
-					
-					//	사용안함.					
-                    #if 0
-                    if (WL9FM_USART_DATA.COM4_RxBuf[Serial_COM4_RxSize-1] == 0x03)
-					{
-						memcpy(WL9FM_USART_DATA.COM4_TxBuf, WL9FM_USART_DATA.COM4_RxBuf, Serial_COM4_TxSize); 
-                        memset(WL9FM_USART_DATA.COM4_RxBuf, 0x0, Serial_COM4_RxSize);
-                               
-						WL9FM_USART_INDEX.COM4_TxIdx = Serial_COM4_TxSize;
-						WL9FM_USART_INDEX.COM4_TxCnt = 0;
-						USART_ITConfig(UART4, USART_IT_TXE, ENABLE);							
-
-						//  디버깅할 때만 사용할 것
-				        //DebugMsg_printf("CMD Data Received.. \r\n");
-                    }
-					#else
-
-                    if (WL9FM_USART_DATA.COM4_RxBuf[Serial_COM4_RxSize-1] == 0x03)
-					{
-						switch (WL9FM_USART_DATA.COM4_RxBuf[1])
-						{
-							case KeyCMD   :		//	Key Command
-
-								break;
-										
-							case LCDBLCMD :		//	LCD BackLight Command
-
-								//	LCD BackLight Level 조절.. Level0 ~ Level8
-								if (WL9FM_USART_DATA.COM4_RxBuf[2] < MaxBackLightLEVEL) 												
-								{
-									LCDBL_PWM_LEVEL(WL9FM_USART_DATA.COM4_RxBuf[2]);
-								}
-
-								break;
-
-							case BUZZERCMD :	//	Buzzer Command
-
-								if (WL9FM_USART_DATA.COM4_RxBuf[2] == BUZZERDAT_ON) 
-								{
-									Buzzer_UnLimitOn();
-								}
-								else if (WL9FM_USART_DATA.COM4_RxBuf[2] == BUZZERDAT_OFF) 
-								{
-									Buzzer_UnLimitOff();											
-								}
-								break;
-
-							case LAMPCMD :	//	Buzzer Command
-								Lamp_name = (WL9FM_USART_DATA.COM4_RxBuf[2] & 0xf0)>>4;
-								Lamp_Value = (WL9FM_USART_DATA.COM4_RxBuf[2] & 0x0f);
-								
-								Lamp_Update_State();
-								break;
-						}
-                    }						
-
-                    memset(WL9FM_USART_DATA.COM4_RxBuf, 0x0, Serial_COM4_RxSize);					
-                    #endif
-
-					break;
-					
-			default :
-
-					WL9FM_USART_INDEX.COM4_RxCnt++;
-					break;
-		}					
-
-		//	사용안함.					
-		#if 0
-		if (WL9FM_USART_INDEX.COM4_RxCnt >= Serial_COM4_RxSize) 
-        {	
-			WL9FM_USART_INDEX.COM4_RxCnt = 0; //  Overflow the receive buffer
-		}
-		#endif
+    	{
+    		if(Change_UART4_for_Download==0)
+			UART4_Receive_CMD();
+		else
+			UART4_Receive_File();
+				
 	}
+	//  UART4 transmit interrupt routine
+	if (USART_GetITStatus(UART4, USART_IT_TXE) != RESET)
+	{   
+		UART4_transmit_CMD();
+	}
+}
 
-    //  UART4 transmit interrupt routine
-    if (USART_GetITStatus(UART4, USART_IT_TXE) != RESET)
-    {   
-        //  Write one byte to the transmit data register
-        USART_SendData(UART4, WL9FM_USART_DATA.COM4_TxBuf[WL9FM_USART_INDEX.COM4_TxCnt++]);
+u8 temp_rx_buf[4];
 
-        if (WL9FM_USART_INDEX.COM4_TxIdx >= Serial_COM4_TxSize)
-        {
-            WL9FM_USART_INDEX.COM4_TxIdx = Serial_COM4_TxSize;
-        }    
-        if (WL9FM_USART_INDEX.COM4_TxCnt == WL9FM_USART_INDEX.COM4_TxIdx)
-        {
-            //  Disable the UART4 Transmit interrupt
-            USART_ITConfig(UART4, USART_IT_TXE, DISABLE);
 
-			WL9FM_USART_INDEX.COM4_TxIdx = 0; //  transmit buffer Index clear
-			WL9FM_USART_INDEX.COM4_TxCnt = 0; //  transmit buffer Cnt   clear
-        }    
-    }           
+void UART4_Receive_CMD(void)
+{
+	
+	//  Read one byte to the receive data register
+	WL9FM_USART_DATA.COM4_RxBuf[WL9FM_USART_INDEX.COM4_RxCnt] = USART_ReceiveData(UART4);
+
+	
+    	//  디버깅할 때만 사용할 것
+	#ifdef DEBUG_CMD_RX
+	DebugMsg_printf("%2x ", WL9FM_USART_DATA.COM4_RxBuf[WL9FM_USART_INDEX.COM4_RxCnt]);
+	#endif
+
+	
+	switch (WL9FM_USART_INDEX.COM4_RxCnt)
+	{
+		case 0:
+				if (WL9FM_USART_DATA.COM4_RxBuf[0] == STX)
+				{
+					WL9FM_USART_INDEX.COM4_RxCnt++;
+				}	
+				else
+				{
+					WL9FM_USART_INDEX.COM4_RxCnt=0;
+				}
+				
+				break;
+		case 1:
+				if (WL9FM_USART_DATA.COM4_RxBuf[1]      == KeyCMD)		WL9FM_USART_INDEX.COM4_RxCnt++;
+				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == LCDBLCMD)	WL9FM_USART_INDEX.COM4_RxCnt++;
+				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == BUZZERCMD)	WL9FM_USART_INDEX.COM4_RxCnt++;
+				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == LAMPCMD)		WL9FM_USART_INDEX.COM4_RxCnt++;
+				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == CAMCMD)		WL9FM_USART_INDEX.COM4_RxCnt++;
+				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == DOWNCMD)	WL9FM_USART_INDEX.COM4_RxCnt++;
+				else if ((WL9FM_USART_DATA.COM4_RxBuf[1]&0x80) == 0x80)	WL9FM_USART_INDEX.COM4_RxCnt++;
+                                
+                        else
+                        {
+                          	WL9FM_USART_INDEX.COM4_RxCnt = 0;
+                        }
+				break;
+
+		case 3: 
+				WL9FM_USART_INDEX.COM4_RxCnt = 0;
+				
+				//  디버깅할 때만 사용할 것
+				#ifdef DEBUG_CMD_RX
+				DebugMsg_printf("\r\n");
+				#endif
+
+		if (WL9FM_USART_DATA.COM4_RxBuf[Serial_COM4_RxSize-1] == ETX)
+		{
+			switch (WL9FM_USART_DATA.COM4_RxBuf[1])
+			{
+				case KeyCMD   :		//	Key Command
+
+					break;
+							
+				case LCDBLCMD :		//	LCD BackLight Command
+
+					//	LCD BackLight Level 조절.. Level0 ~ Level8
+					if (WL9FM_USART_DATA.COM4_RxBuf[2] < MaxBackLightLEVEL) 												
+					{
+						LCDBL_PWM_LEVEL(WL9FM_USART_DATA.COM4_RxBuf[2]);
+					}
+
+					break;
+
+				case BUZZERCMD :	//	Buzzer Command
+					break;
+
+				case LAMPCMD :	//	Buzzer Command
+					Lamp_name = (WL9FM_USART_DATA.COM4_RxBuf[2] & 0xf0)>>4;
+					Lamp_Value = (WL9FM_USART_DATA.COM4_RxBuf[2] & 0x0f);
+					
+					Lamp_Update_State();
+					break;
+					
+				case CAMCMD:
+					cam_mode_change(WL9FM_USART_DATA.COM4_RxBuf[2]);
+					break;
+
+				case DOWNCMD:
+					Stm32_Update_CMD = WL9FM_USART_DATA.COM4_RxBuf[2];
+					ST_Update=1;
+					break;
+				case  DUMMYCMD:
+					CMD_DUMMY_SendToExynos(0);
+					break;
+
+				default :
+					break;								
+			}
+                }						
+
+		//memset(WL9FM_USART_DATA.COM4_RxBuf, 0x0, Serial_COM4_RxSize);					
+				break;
+		
+		default :
+
+			WL9FM_USART_INDEX.COM4_RxCnt++;
+			break;
+	}	
+}
+
+void UART4_Receive_File(void)
+{
+	
+	//  Read one byte to the receive data register
+	WL9FM_USART_RX_FILE_DATA.File_RxBuf[WL9FM_USART_RX_FILE_DATA.File_RxCnt] = USART_ReceiveData(UART4);
+	
+	switch (WL9FM_USART_RX_FILE_DATA.File_RxCnt)
+	{
+		case 0:
+				if (WL9FM_USART_RX_FILE_DATA.File_RxBuf[0] == STX)
+				{
+					WL9FM_USART_RX_FILE_DATA.File_RxCnt++;
+				}						
+				break;
+		case 1029: 
+				WL9FM_USART_RX_FILE_DATA.File_RxCnt = 0;
+					
+				if (WL9FM_USART_RX_FILE_DATA.File_RxBuf[1029] == ETX)
+				{
+					memcpy(&WL9FM_USART_FILE_DATA , &WL9FM_USART_RX_FILE_DATA, Serial_file_RxSize);	
+					ST_Update=1;
+				}
+				else if (WL9FM_USART_RX_FILE_DATA.File_RxBuf[1029] == EOT)
+				{
+					memcpy(&WL9FM_USART_FILE_DATA , &WL9FM_USART_RX_FILE_DATA, Serial_file_RxSize);	
+					Change_UART4_for_Download =2;
+					ST_Update=1;
+				}
+				else
+				{
+					ACK_NACK_SendToExynos(NAK);
+				}
+                                break;
+		default :
+
+			WL9FM_USART_RX_FILE_DATA.File_RxCnt++;
+			break;
+	}					
 }
 
 
+void UART4_transmit_CMD(void)
+{
+	//  Write one byte to the transmit data register
+	USART_SendData(UART4, WL9FM_USART_DATA.COM4_TxBuf[WL9FM_USART_INDEX.COM4_TxCnt++]);
+
+	if (WL9FM_USART_INDEX.COM4_TxIdx >= Serial_COM4_TxSize)
+	{
+		WL9FM_USART_INDEX.COM4_TxIdx = Serial_COM4_TxSize;
+	}    
+	if (WL9FM_USART_INDEX.COM4_TxCnt == WL9FM_USART_INDEX.COM4_TxIdx)
+	{
+		//  Disable the UART4 Transmit interrupt
+		USART_ITConfig(UART4, USART_IT_TXE, DISABLE);
+
+		WL9FM_USART_INDEX.COM4_TxIdx = 0; //  transmit buffer Index clear
+		WL9FM_USART_INDEX.COM4_TxCnt = 0; //  transmit buffer Cnt   clear
+	}              
+}
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

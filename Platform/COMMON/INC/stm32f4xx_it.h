@@ -59,6 +59,12 @@ void UART4_IRQHandler(void);
 
 void OperateRingBuffer(void);
 
+void UART4_Receive_CMD(void);
+void UART4_transmit_CMD(void);
+void UART4_Receive_File(void);
+
+
+
 #ifdef __cplusplus
 }
 #endif
