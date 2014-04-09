@@ -78,6 +78,9 @@ extern st_CANDATA_HCEPGN_65428	RX_HCEPGN_65428;
 #define RX_MSG203		0x400
 #define RX_MSG239		0x800
 #define RX_MSG247		0x1000
+#define RX_MSG174		0x2000
+
+
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
@@ -124,6 +127,7 @@ extern u8 Uart2_RxMsg_Single_160[8];
 extern u8 Uart2_RxMsg_Multi_161[16];
 extern u8 Uart2_RxMsg_Single_162[8];
 extern u8 Uart2_RxMsg_Single_163[8];
+extern u8 Uart2_RxMsg_Single_174[8];
 extern u8 Uart2_RxMsg_Single_251[8];
 extern u8 Uart2_RxMsg_Single_252[8];
 extern u8 Uart2_RxMsg_Single_253[8];
@@ -383,9 +387,12 @@ void CAN1_RX0_IRQHandler(void)
 	// Iden.Source_Address == 29	 -->>	Smart Key
 	// Iden.Source_Address == 23	 -->>	Cluster
 	// Iden.Source_Address == 221	 -->>	RCU
+	// Iden.Source_Address == 0	 -->>	ECM
+	// Iden.Source_Address == 3	 -->>	TCU
 	
 	if((Iden.Source_Address == 71) || (Iden.Source_Address == 23) || (Iden.Source_Address == 29) || 
-		(Iden.Source_Address == 228) || (Iden.Source_Address == 221)|| (Iden.Source_Address == 0x4a)|| (Iden.Source_Address == 0xf4))
+		(Iden.Source_Address == 228) || (Iden.Source_Address == 221)|| (Iden.Source_Address == 0x4a)|| (Iden.Source_Address == 0xf4)
+		|| (Iden.Source_Address == 0x00)|| (Iden.Source_Address == 0x03))
 		{
 			if(++CanRecvCnt >= 100)
 			{
@@ -627,6 +634,10 @@ void USART2_IRQHandler(void)
 						case 163 :
 							Flag_SerialRxMsg |= RX_MSG163;
 							memcpy(&Uart2_RxMsg_Single_163[0], &Uart2_SerialRxMsg[4], 8);
+							break;
+						case 174 :
+							Flag_SerialRxMsg |= RX_MSG174;
+							memcpy(&Uart2_RxMsg_Single_174[0], &Uart2_SerialRxMsg[4], 8);
 							break;
 						case 205 :	// Stop Send Cmd - A/S Phone Number
 							stop_send_as_phone_data = 1;

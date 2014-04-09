@@ -67,6 +67,9 @@ TP_CM* tp_cm_bam;
 
 #define RX_MSG239		0x800
 #define RX_MSG247		0x1000
+
+#define RX_MSG174		0x2000
+
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 u8 tmpBuf[8];
@@ -88,6 +91,7 @@ u8 Uart2_RxMsg_Single_160[8];
 u8 Uart2_RxMsg_Multi_161[16];
 u8 Uart2_RxMsg_Single_162[8];
 u8 Uart2_RxMsg_Single_163[8];
+u8 Uart2_RxMsg_Single_174[8];
 u8 Uart2_RxMsg_Single_251[8];
 u8 Uart2_RxMsg_Single_252[8];
 u8 Uart2_RxMsg_Single_253[8];
@@ -222,6 +226,7 @@ void WL9F_CAN_Variables_Init(void)
 	memset((u8*)&Uart2_RxMsg_Single_162[0], 0xff, sizeof(Uart2_RxMsg_Single_162));
 	Uart2_RxMsg_Single_162[4] = 0;		// Monitor Switch Status
 	memset((u8*)&Uart2_RxMsg_Single_163[0], 0xff, sizeof(Uart2_RxMsg_Single_163));
+	memset((u8*)&Uart2_RxMsg_Single_174[0], 0xff, sizeof(Uart2_RxMsg_Single_174));
 	memset((u8*)&Uart2_RxMsg_Single_251[0], 0xff, sizeof(Uart2_RxMsg_Single_251));
 	memset((u8*)&Uart2_RxMsg_Single_252[0], 0xff, sizeof(Uart2_RxMsg_Single_252));
 	memset((u8*)&Uart2_RxMsg_Single_253[0], 0xff, sizeof(Uart2_RxMsg_Single_253));

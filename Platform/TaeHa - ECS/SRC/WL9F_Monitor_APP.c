@@ -37,6 +37,10 @@
 #define RX_MSG203		0x400
 #define RX_MSG239		0x800
 #define RX_MSG247		0x1000
+#define RX_MSG174		0x2000
+
+
+
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 WL9FM_send_smartkey send_smartkey;
@@ -1075,6 +1079,13 @@ void WL9FM_10mSecOperationFunc(void)
 			Flag_SerialRxMsg &= ~(RX_MSG163);
 			SetCanID(255, 163, 6);
 			CAN_TX_Data(&Uart2_RxMsg_Single_163[0]);
+		}
+
+		if((Flag_SerialRxMsg & RX_MSG174) != 0)
+		{
+			Flag_SerialRxMsg &= ~(RX_MSG174);
+			SetCanID(255, 174, 6);
+			CAN_TX_Data(&Uart2_RxMsg_Single_174[0]);
 		}
 		
 		if((Flag_SerialRxMsg & RX_MSG69_M) != 0)	// 69 - Multi Packet

@@ -221,6 +221,7 @@ extern u8 Uart2_RxMsg_Single_160[8];
 extern u8 Uart2_RxMsg_Multi_161[16];
 extern u8 Uart2_RxMsg_Single_162[8];
 extern u8 Uart2_RxMsg_Single_163[8];
+extern u8 Uart2_RxMsg_Single_174[8];
 extern u8 Uart2_RxMsg_Single_251[8];
 extern u8 Uart2_RxMsg_Single_252[8];
 
