@@ -767,7 +767,16 @@ void Port_Change(u8 in_Dir)
 	}
 }
 
-
+void ClearCheckCamera()
+{
+	WriteOSDBmpX(MASTER,65,100,0x00,0x00,gt_CHANNEL_blank);
+	WriteOSDBmpX(MASTER,20,100,0x00,0x00,gt_CHANNEL_blank);
+	WriteOSDBmpX(MASTER,110,100,0x00,0x00,gt_CHANNEL_blank);
+	WriteOSDBmpX(MASTER,20,45,0x00,0x00,gt_CHANNEL_blank);
+	WriteOSDBmpX(MASTER,110,45,0x00,0x00,gt_CHANNEL_blank);
+	WriteOSDBmpX(MASTER,20,165,0x00,0x00,gt_CHANNEL_blank);
+	WriteOSDBmpX(MASTER,110,165,0x00,0x00,gt_CHANNEL_blank);
+}
 
 //  ++, kutelf, 131007
 //u8 Temp0, Temp1, Temp2, Temp3;
@@ -782,13 +791,10 @@ void CheckCamera_Input(u8 Mode)
 	u8 Signal4 = ReadAsicByte(MASTER,DVC_PG0,0x30);	//	ch4
 
 	
-
-	
-
-	
-
+	ClearCheckCamera();
 	if(Mode == 0x00)
 	{
+		
 		if(Signal1 != 0x80)
 		{
 			WriteOSDBmpX(MASTER,65,100,0x00,0x00,gt_CHANNEL_blank);
@@ -812,7 +818,6 @@ void CheckCamera_Input(u8 Mode)
 			WriteOSDBmpX(MASTER,65,100,0x00,0x00,gt_CHANNEL_x);
 		}
 
-		
 	}
 
 	else if(Mode == 0x02)
@@ -840,7 +845,6 @@ void CheckCamera_Input(u8 Mode)
 			WriteOSDBmpX(MASTER,65,100,0x00,0x00,gt_CHANNEL_x);
 		}
 
-		
 	}
 	else if(Mode == 0x04)
 	{
@@ -902,6 +906,7 @@ void CheckCamera_Input(u8 Mode)
 		{
 			WriteOSDBmpX(MASTER,110,100,0x00,0x00,gt_CHANNEL_x);
 		}
+
 	}
 	else if(Mode == 0x07)
 	{
@@ -922,6 +927,7 @@ void CheckCamera_Input(u8 Mode)
 		{
 			WriteOSDBmpX(MASTER,110,100,0x00,0x00,gt_CHANNEL_x);
 		}
+
 	}
 	else if(Mode == 0x08)
 	{
@@ -942,6 +948,7 @@ void CheckCamera_Input(u8 Mode)
 		{
 			WriteOSDBmpX(MASTER,110,100,0x00,0x00,gt_CHANNEL_x);
 		}
+
 	}
 
 	else if(Mode == 0x09)
@@ -963,6 +970,7 @@ void CheckCamera_Input(u8 Mode)
 		{
 			WriteOSDBmpX(MASTER,110,100,0x00,0x00,gt_CHANNEL_x);
 		}
+
 	}
 
 	else if(Mode == 0x0A)
@@ -1002,11 +1010,13 @@ void CheckCamera_Input(u8 Mode)
 		{
 			WriteOSDBmpX(MASTER,110,165,0x00,0x00,gt_CHANNEL_x);
 		}
-		
+
 	}
 
 }
 //  --, kutelf, 131007
+
+
 	
 //  ++, kutelf, 131007
 void CameraMode(u8 Mode, u8 OSD)

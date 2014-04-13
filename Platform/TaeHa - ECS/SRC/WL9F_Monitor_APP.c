@@ -1290,7 +1290,7 @@ void WL9FM_1SecOperationFunc(void)
 
 void WL9FM_System_Init_Start(void)
 {
-	WL9FM_PowerIG(PowerIG_OFF);					//  ->	GPIO_Control.c PowerIG를 OFF로 만들어 놓고, 
+	WL9FM_PowerIG(PowerIG_OFF);					//    ->	GPIO_Control.c PowerIG를 OFF로 만들어 놓고, 
 	WL9FM_EXYNOS_POWER_ONOFF(EXYNOS_POWER_ON);	//	->	GPIO_Control.c EXYNOS-4412 Power On..
 	
 	WL9FM_CAMERA_nRESET();						//	-> 	TW2835, TW8832 Power On..
