@@ -79,6 +79,10 @@ extern st_CANDATA_HCEPGN_65428	RX_HCEPGN_65428;
 #define RX_MSG239		0x800
 #define RX_MSG247		0x1000
 #define RX_MSG174		0x2000
+#define RX_MSG239_121	0x4000
+
+
+
 
 
 /* Private define ------------------------------------------------------------*/
@@ -132,6 +136,7 @@ extern u8 Uart2_RxMsg_Single_251[8];
 extern u8 Uart2_RxMsg_Single_252[8];
 extern u8 Uart2_RxMsg_Single_253[8];
 extern u8 Uart2_RxMsg_Single_239[8];
+extern u8 Uart2_RxMsg_Single_239_121[8];
 extern u8 Uart2_RxMsg_Single_247[8];
 
 extern u8 SerialMsgRTC[16];
@@ -678,13 +683,20 @@ void USART2_IRQHandler(void)
 						case 31 : 
 						case 33 : 
 						case 34 : 
-						case 121 : 
 						case 123 : 
 							Flag_SerialRxMsg |= RX_MSG239;
 							memcpy(&Uart2_RxMsg_Single_239[0], &Uart2_SerialRxMsg[4], 8);		
-
+								
 							temp_61184++;
 							
+							break;
+
+						case 121 :
+							Flag_SerialRxMsg |= RX_MSG239;
+							Flag_SerialRxMsg |= RX_MSG239_121;
+							memcpy(&Uart2_RxMsg_Single_239[0], &Uart2_SerialRxMsg[4], 8);	
+							memcpy(&Uart2_RxMsg_Single_239_121[0], &Uart2_SerialRxMsg[4], 8);	
+							temp_61184++;
 							break;
 						
 					}

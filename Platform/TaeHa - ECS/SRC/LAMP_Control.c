@@ -40,8 +40,8 @@ unsigned char AutoRide_Control_flag;
 unsigned char Attachment_Unlock_flag;
 unsigned char Attachment_Lock_flag;
 
-unsigned char Auto_Grease_Manual_flag;
-unsigned char Auto_Grease_Auto_flag;
+unsigned char Auto_Grease_Green_flag;
+unsigned char Auto_Grease_Red_flag;
 
 unsigned int Led_SIG_TEMP[10];
 unsigned int Led_BL_TEMP[10];
@@ -362,29 +362,32 @@ unsigned char Bucket_Detent_LampSystem(void)
 //------------------------------------------------------------------------------
 void Auto_Grease_LampSystem(void)
 {
-	if(rx_Realy_Control.Auto_Grease < 0x03)
+
+	if(RX_HCEPGN_65428.AutoGrease_Green_LED < 0x03)
 	{
-		if(rx_Realy_Control.Auto_Grease == 0)
+		if(RX_HCEPGN_65428.AutoGrease_Green_LED == 0x01)
 		{
-			Auto_Grease_Manual_flag = 0;
-			Auto_Grease_Auto_flag = 0;
+			Auto_Grease_Green_flag = 1;
 		}
-		else if(rx_Realy_Control.Auto_Grease == 1)
+		else
 		{
-			Auto_Grease_Manual_flag = 1;
-			Auto_Grease_Auto_flag = 0;
-		}
-		else if(rx_Realy_Control.Auto_Grease == 2)
-		{
-			Auto_Grease_Manual_flag = 0;
-			Auto_Grease_Auto_flag = 1;
+			Auto_Grease_Green_flag = 0;
 		}
 	}
-	else
+
+	if(RX_HCEPGN_65428.AutoGrease_Red_LED < 0x03)
 	{
-		Auto_Grease_Manual_flag = 0;
-		Auto_Grease_Auto_flag = 0;
+		if(RX_HCEPGN_65428.AutoGrease_Red_LED == 0x01)
+		{
+			Auto_Grease_Red_flag = 1;
+		}
+		else
+		{
+			Auto_Grease_Red_flag = 0;
+		}
 	}
+
+
 }
 
 //------------------------------------------------------------------------------
@@ -470,8 +473,8 @@ void Lamp_Update_State(void)
 	Led_SIG_TEMP[0] += (Work_Light_right_LampSystem())?(Work_Light_G2):(0x00);
 	
 	Auto_Grease_LampSystem();
-	Led_SIG_TEMP[0] += (Auto_Grease_Manual_flag)?(Auto_Grease_1_G):(0x00);
-	Led_SIG_TEMP[0] += (Auto_Grease_Auto_flag)?(Auto_Grease_2_R):(0x00);
+	Led_SIG_TEMP[0] += (Auto_Grease_Green_flag)?(Auto_Grease_1_G):(0x00);
+	Led_SIG_TEMP[0] += (Auto_Grease_Red_flag)?(Auto_Grease_2_R):(0x00);
 	
 	Quick_Coupler_LampSystem();
 	Led_SIG_TEMP[0] += (Attachment_Lock_flag)?(Quick_coupler_1_G):(0x00);

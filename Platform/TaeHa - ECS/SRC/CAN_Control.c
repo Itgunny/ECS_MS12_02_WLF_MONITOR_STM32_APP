@@ -69,6 +69,8 @@ TP_CM* tp_cm_bam;
 #define RX_MSG247		0x1000
 
 #define RX_MSG174		0x2000
+#define RX_MSG239_121	0x4000
+
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
@@ -97,6 +99,8 @@ u8 Uart2_RxMsg_Single_252[8];
 u8 Uart2_RxMsg_Single_253[8];
 u8 Uart2_RxMsg_Single_239[8];
 u8 Uart2_RxMsg_Single_247[8];
+u8 Uart2_RxMsg_Single_239_121[8];
+
 
 u8 McuInfoData1[79];
 u8 MachineBasicInformation[78];
@@ -231,7 +235,9 @@ void WL9F_CAN_Variables_Init(void)
 	memset((u8*)&Uart2_RxMsg_Single_252[0], 0xff, sizeof(Uart2_RxMsg_Single_252));
 	memset((u8*)&Uart2_RxMsg_Single_253[0], 0xff, sizeof(Uart2_RxMsg_Single_253));
 
-	memset((u8*)&Uart2_RxMsg_Single_239[0], 0xff, sizeof(Uart2_RxMsg_Single_239));
+	memset((u8*)&Uart2_RxMsg_Single_239[0], 0xff, sizeof(Uart2_RxMsg_Single_239));
+	memset((u8*)&Uart2_RxMsg_Single_239_121[0], 0xff, sizeof(Uart2_RxMsg_Single_239_121));
+	
 	memset((u8*)&Uart2_RxMsg_Single_247[0], 0xff, sizeof(Uart2_RxMsg_Single_247));
 
 	

@@ -38,6 +38,9 @@
 #define RX_MSG239		0x800
 #define RX_MSG247		0x1000
 #define RX_MSG174		0x2000
+#define RX_MSG239_121	0x4000
+
+
 
 
 
@@ -88,12 +91,14 @@ u8 gRebootCmd = 0;
 
 
 u8 send_mcu_data=0;
+u8 send_bkcu_data=0;
 
 u8 ST_Update=0;
 
 extern u8 Uart2_RxMsg_Single_252[8];
 extern u8 Uart2_RxMsg_Single_253[8];
 extern u8 Uart2_RxMsg_Single_239[8];
+extern u8 Uart2_RxMsg_Single_239_121[8];
 extern u8 Uart2_RxMsg_Single_247[8];
 extern u8 Uart2_RxMsg_Save_Data1[8];
 extern u8 Uart2_RxMsg_Save_Data2[8];
@@ -1176,6 +1181,19 @@ void WL9FM_100mSecOperationFunc(void)
 			Flag_SerialRxMsg &= ~(RX_MSG239);
 		}
 	}
+
+		if((Flag_SerialRxMsg & RX_MSG239_121) != 0) // send 61184 to bkcu
+	{
+		SetCanID(239, 52, 6);
+		CAN_TX_Data(&Uart2_RxMsg_Single_239_121[0]);
+		if(++send_bkcu_data>2)
+		{
+			send_bkcu_data=0;
+			Flag_SerialRxMsg &= ~(RX_MSG239_121);
+		}
+	}
+
+	
 
    	if(++Flag_200mSec >= 2)
    	{

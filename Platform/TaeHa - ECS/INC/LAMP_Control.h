@@ -145,7 +145,10 @@ typedef struct
 	unsigned char DPF_Regeneration_Inhibit:2; 				//HCESPN 354
 
 	
-	unsigned char DM3;
+	unsigned char Automatic_Engine_Shutdown:2;				// HCESPN 363
+	unsigned char Delayed_Engine_Shutdown:2;				// HCESPN 365
+	unsigned char AutoGrease_Green_LED:2;					// HCESPN 3453
+	unsigned char AutoGrease_Red_LED:2;						// HCESPN 3454
 }st_CANDATA_HCEPGN_65428;
 
 #pragma pack()
