@@ -24,6 +24,7 @@
 #include "WL9F_Monitor_Variable.h"
 #include "endecoder.h"
 /* Private typedef -----------------------------------------------------------*/
+/*
 #define RX_MSG69		0x01
 #define RX_MSG69_M		0x02
 #define RX_MSG145		0x04
@@ -39,6 +40,27 @@
 #define RX_MSG247		0x1000
 #define RX_MSG174		0x2000
 #define RX_MSG239_121	0x4000
+*/
+#define RX_MSG11	0x01
+#define RX_MSG12	0x02
+#define RX_MSG21	0x04
+#define RX_MSG23	0x08
+#define RX_MSG61	0x10
+#define RX_MSG62	0x20
+#define RX_MSG101	0x40
+#define RX_MSG104	0x80
+#define RX_MSG105	0x100
+#define RX_MSG109	0x200
+#define RX_MSG121	0x400
+#define RX_MSG123	0x800
+#define RX_MSG201	0x1000
+#define RX_MSG203	0x2000
+		
+		
+#define RX_MSG47	0x4000
+		
+#define RX_MSG145	0x8000
+#define RX_MSG247	0x10000
 
 
 
@@ -63,6 +85,11 @@ u8 DiffMachInfo = 0;
 u8 gStartHCE_DT = 0;
 u8 MachInfoSendCnt = 0;
 u8 MoniInfoSendCnt = 0;
+
+u8 RTSFlag_61184 = 0;
+u8 CTSFlag_61184 = 0;
+u8 RecvTotalPacket_61184 = 0;
+u8 ACK_Multi_61184[8];
 
 u8 Flag_UartTxStart = 0;
 u8  SendTime_E2PROM = 0;
@@ -110,7 +137,7 @@ extern u8 tmpMcuInfoData[78];
 extern u8 stop_send_as_phone_data;
 extern u8 Flag_TxE2pRomData;
 
-extern u8 Buz1, Buz2;
+extern u8 Buz1;
 
 extern u8 Stm32_Update_CMD;
 /* Private function prototypes -----------------------------------------------*/
@@ -317,191 +344,52 @@ void ReadE2PROM_ToSend()
 #endif
 }
 
-void Send_Multipacket_69(void)
+void Send_Multipacket_61184_23(void)
 {
-	if(MultiPacketSendOrder == 0)
+	if(RTSFlag_61184 == 1)
 	{
-		if(TotalPacketNum == 0)
-		{
-			TimeDelay_msec(15);
-			SendTP_CM_BAM_MultiPacket_69();
-			TotalPacketNum += 1;
-		}
-		else if(TotalPacketNum == 1)
-		{
-			// TP.DT
-			TimeDelay_msec(15);
-			SendFirstMultiPacket_69();
-			TotalPacketNum += 1;
-		}
-		else if(TotalPacketNum == 2)
-		{
-			// TP.DT
-			TimeDelay_msec(15);
-			SendSecondMultiPacket_69();
+		TimeDelay_msec(15);
+		SendTP_CM_BAM_MultiPacket_61184_23();
+		TotalPacketNum += 1;
+		RTSFlag_61184 = 0;
+	}
+	else if(RTSFlag_61184 == 2)
+	{
+		TimeDelay_msec(15);
+		SendMultiPacketData_61184_23(TotalPacketNum);
+		TotalPacketNum += 1;
 
-			if(TotalPacketNum == tp_cm_bam_TotPacketNum)
-			{
-				Flag_SerialRxMsg &= ~(RX_MSG69_M);
-				TotalPacketNum = 0;
-
-				///+++
-				if((DiffMachInfo == 1) && (gStartHCE_DT == 1))
-				{
-					if(MachInfoSendCnt <= 60)
-						MultiPacketSendOrder = 1;	// Machine Basic Information
-					else if(MoniInfoSendCnt <= 60)
-						MultiPacketSendOrder = 2;	// Monitor Basic Information
-				}
-			}
-			else
-				TotalPacketNum += 1;
-		}
-		else if(TotalPacketNum == 3)
+		if(TotalPacketNum >= 3)
 		{
-			TimeDelay_msec(15);
-			SendThirdMultiPacket_69();
+			Flag_SerialRxMsg &= ~(RX_MSG23);
 			TotalPacketNum = 0;
-
-					///+++
-			if((DiffMachInfo == 1) && (gStartHCE_DT == 1))
-			{
-				if(MachInfoSendCnt <= 60)
-					MultiPacketSendOrder = 1;	// Machine Basic Information
-				else if(MoniInfoSendCnt <= 60)
-					MultiPacketSendOrder = 2;	// Monitor Basic Information
-			}
 		}
 	}
 }
 
-void Send_Multipacket_161(void)
+void Send_Multipacket_145(void)
 {
 	if(TotalPacketNum == 0)
 	{
 		TimeDelay_msec(15);
-		SendTP_CM_BAM_MultiPacket_161();
+		SendTP_CM_BAM_MultiPacket_145();
 		TotalPacketNum += 1;
 	}
 	else if((TotalPacketNum == 1) || (TotalPacketNum == 2))
 	{
 		TimeDelay_msec(15);
-		SendMultiPacketData_161(TotalPacketNum);
+		SendMultiPacketData_145(TotalPacketNum);
 		TotalPacketNum += 1;
 
 		if(TotalPacketNum >= 3)
 		{
-			Flag_SerialRxMsg &= ~(RX_MSG161);
+			Flag_SerialRxMsg &= ~(RX_MSG145);
 			TotalPacketNum = 0;
 		}
 	}
 }
 
-void Send_Multipacket_AS_Num(void)
-{
-	if(check_as_data_len == 0)
-		CheckASDataLen();
 
-	if(as_data_len < 8)	// Single Packet
-	{
-		SetCanID(255, 145, 6);
-		CAN_TX_Data(&tmpbuf_AS[0]);
-		check_as_data_len = 0;
-
-		if(stop_send_as_phone_data == 1)
-		{
-			stop_send_as_phone_data = 0;
-			Flag_SerialRxMsg &= ~(RX_MSG202);
-		}
-	}
-	else	        	// Multi Packet
-	{
-		if(TotalPacketNum == 0)
-		{
-			TimeDelay_msec(15);
-			SendTP_CM_BAM_MultiPacket_202_AS();
-			TotalPacketNum += 1;
-		}
-		else if((TotalPacketNum == 1) || (TotalPacketNum == 2))
-		{
-			TimeDelay_msec(15);
-			SendMultiPacketData_202_AS(TotalPacketNum);
-			TotalPacketNum += 1;
-
-			if(TotalPacketNum >= 3)
-			{
-				if(stop_send_as_phone_data == 1)
-				{
-					stop_send_as_phone_data = 0;
-					Flag_SerialRxMsg &= ~(RX_MSG202);
-				}
-				
-				TotalPacketNum = 0;
-				check_as_data_len = 0;
-			}
-		}
-	}
-}
-
-void Send_Multipacket_Info(void)
-{
-	if(MultiPacketSendOrder == 1)
-	{
-		if(MachInfoSendCnt <= 60)
-		{
-			if(++Flag_1Sec_MachInfo >= 100)
-			{
-				if(MachInfoTotalPacketNum == 0)
-				{
-					SendTP_CM_BAM_MultiPacket_MachInfo();
-					MachInfoTotalPacketNum++;
-				}
-				else
-					SendMultiPacket_MachInfo();
-			}
-			else
-			{
-				if((Flag_SerialRxMsg & RX_MSG69_M) != 0)	// 69 - Multi Packet
-					MultiPacketSendOrder = 0;
-			}
-		}
-		else
-		{
-			if((Flag_SerialRxMsg & RX_MSG69_M) != 0)	// 69 - Multi Packet
-				MultiPacketSendOrder = 0;
-			else if(MoniInfoSendCnt <= 60)
-				MultiPacketSendOrder = 2;
-		}
-	}
-	else if(MultiPacketSendOrder == 2)
-	{
-		if(MoniInfoSendCnt <= 60)
-		{
-			if(++Flag_1Sec_MoniInfo >= 100)
-			{
-				if(MoniInfoTotalPacketNum == 0)
-				{
-					SendTP_CM_BAM_MultiPacket_MoniInfo();
-					MoniInfoTotalPacketNum++;
-				}
-				else
-					SendMultiPacket_MoniInfo();
-			}
-			else
-			{
-				if((Flag_SerialRxMsg & RX_MSG69_M) != 0)	// 69 - Multi Packet
-					MultiPacketSendOrder = 0;
-			}
-		}
-		else
-		{
-			if((Flag_SerialRxMsg & RX_MSG69_M) != 0)	// 69 - Multi Packet
-				MultiPacketSendOrder = 0;
-			else if(MachInfoSendCnt <= 60)
-				MultiPacketSendOrder = 1;
-		}
-	}
-}
 
 void read_clock(void)
 {
@@ -1048,7 +936,128 @@ void WL9FM_10mSecOperationFunc(void)
 {
 	Lamp_Update_State();	//	LAMP Update 상태를 체크한다.
 	//Lamp_Update_System();  
+	if(Flag_SerialRxMsg != 0)
+	{
+		if((Flag_SerialRxMsg & RX_MSG11) != 0)
+		{
+			Flag_SerialRxMsg &= ~(RX_MSG11);
+			SetCanID(239, 71, 6);
+			CAN_TX_Data(&Uart2_RxMsg_Single_11[0]);
+		}
+
+		if((Flag_SerialRxMsg & RX_MSG12) != 0)
+		{
+			Flag_SerialRxMsg &= ~(RX_MSG12);
+			SetCanID(239, 71, 6);
+			CAN_TX_Data(&Uart2_RxMsg_Single_12[0]);
+		}
+
+		if((Flag_SerialRxMsg & RX_MSG21) != 0)
+		{
+			Flag_SerialRxMsg &= ~(RX_MSG21);
+			SetCanID(239, 71, 6);
+			CAN_TX_Data(&Uart2_RxMsg_Single_21[0]);
+		}
+
+		if((Flag_SerialRxMsg & RX_MSG23) != 0)
+		{
+			Send_Multipacket_61184_23();
+		}
+
+		if((Flag_SerialRxMsg & RX_MSG61) != 0)
+		{
+			Flag_SerialRxMsg &= ~(RX_MSG61);
+			SetCanID(239, 71, 6);
+			CAN_TX_Data(&Uart2_RxMsg_Single_61[0]);
+		}
+
+		if((Flag_SerialRxMsg & RX_MSG62) != 0)
+		{
+			Flag_SerialRxMsg &= ~(RX_MSG62);
+			SetCanID(239, 71, 6);
+			CAN_TX_Data(&Uart2_RxMsg_Single_62[0]);
+		}
+
+		if((Flag_SerialRxMsg & RX_MSG101) != 0)
+		{
+			Flag_SerialRxMsg &= ~(RX_MSG101);
+			SetCanID(239, 71, 6);
+			CAN_TX_Data(&Uart2_RxMsg_Single_101[0]);
+		}
+
+		if((Flag_SerialRxMsg & RX_MSG104) != 0)
+		{
+			Flag_SerialRxMsg &= ~(RX_MSG104);
+			SetCanID(239, 71, 6);
+			CAN_TX_Data(&Uart2_RxMsg_Single_104[0]);
+		}
+
+		if((Flag_SerialRxMsg & RX_MSG105) != 0)
+		{
+			Flag_SerialRxMsg &= ~(RX_MSG105);
+			SetCanID(239, 71, 6);
+			CAN_TX_Data(&Uart2_RxMsg_Single_105[0]);
+		}
+
+		if((Flag_SerialRxMsg & RX_MSG109) != 0)
+		{
+			Flag_SerialRxMsg &= ~(RX_MSG109);
+			SetCanID(239, 71, 6);
+			CAN_TX_Data(&Uart2_RxMsg_Single_109[0]);
+
+			if(Uart2_RxMsg_Single_252[2] != 0xFF && Uart2_RxMsg_Single_252[3] != 0xFF)
+			{
+				WL9FM_RTC.Hour = Uart2_RxMsg_Single_252[2];
+				WL9FM_RTC.Minute = Uart2_RxMsg_Single_252[3];
+				WRITE_RTC(WL9FM_RTC);
+			}
+		}
+
+		if((Flag_SerialRxMsg & RX_MSG121) != 0)
+		{
+			Flag_SerialRxMsg &= ~(RX_MSG121);
+			SetCanID(239, 71, 6);
+			CAN_TX_Data(&Uart2_RxMsg_Single_121[0]);
+			SetCanID(239, 52, 6);
+			CAN_TX_Data(&Uart2_RxMsg_Single_121[0]);
+		}
+
+		if((Flag_SerialRxMsg & RX_MSG123) != 0)
+		{
+			Flag_SerialRxMsg &= ~(RX_MSG123);
+			SetCanID(239, 71, 6);
+			CAN_TX_Data(&Uart2_RxMsg_Single_123[0]);
+		}
+
+		if((Flag_SerialRxMsg & RX_MSG201) != 0)
+		{
+			Flag_SerialRxMsg &= ~(RX_MSG201);
+			SetCanID(239, 71, 6);
+			CAN_TX_Data(&Uart2_RxMsg_Single_201[0]);
+		}
+
+		if((Flag_SerialRxMsg & RX_MSG203) != 0)
+		{
+			Flag_SerialRxMsg &= ~(RX_MSG203);
+			SetCanID(239, 228, 6);		// EHCU
+			CAN_TX_Data(&Uart2_RxMsg_Single_203[0]);
+		}
+
+		if((Flag_SerialRxMsg & RX_MSG145) != 0)
+		{
+			Send_Multipacket_145();
+		}
+
+		
+		if((Flag_SerialRxMsg & RX_MSG247) != 0)
+		{
+			Flag_SerialRxMsg &= ~(RX_MSG247);
+			SetCanID(255, 247, 6);
+			CAN_TX_Data(&Uart2_RxMsg_Single_247[0]);
+		}
+	}
 	
+	#if 0
 	if(Flag_SerialRxMsg != 0)
 	{
 		if((Flag_SerialRxMsg & RX_MSG247) != 0)
@@ -1139,6 +1148,7 @@ void WL9FM_10mSecOperationFunc(void)
 	{
 		Send_Multipacket_Info();
 	}
+	#endif
 }
 
 /**
@@ -1150,73 +1160,12 @@ void WL9FM_100mSecOperationFunc(void)
 {
 	Lamp_Update_System();	//	체크된 LAMP 상태를 업데이트 한다.
 
-	SetCanID(255, 160, 6);
-	
-	CAN_TX_Data(&Uart2_RxMsg_Single_160[0]);
-
-	if(((Uart2_RxMsg_Single_160[0] & 0xc0) == 0x00) || ((Uart2_RxMsg_Single_160[0] & 0xc0) == 0x40))		// Speed Up/Down
-		Uart2_RxMsg_Single_160[0] |= 0xc0;
-
-    	//  STM32에서 KeySwitch에 따른 BUZZER에 관한 명령을 MCU로 보내기 위해서 추가~
-	if( (Uart2_RxMsg_Single_160[0] & 0x10 ) == 0x10 )
-	{
-		if( WL9FM_BUZZER.Status == 0 )
-			Uart2_RxMsg_Single_160[0] = Uart2_RxMsg_Single_160[0] & 0xCF;
-	}
-
-	if((Flag_SerialRxMsg & RX_MSG251) != 0)
-	{
-		Flag_SerialRxMsg &= ~(RX_MSG251);
-		SetCanID(255, 251, 6);
-		CAN_TX_Data(&Uart2_RxMsg_Single_251[0]);
-	}
-
-	if((Flag_SerialRxMsg & RX_MSG239) != 0) // send 61184 to mcu
-	{
-		SetCanID(239, 71, 6);
-		CAN_TX_Data(&Uart2_RxMsg_Single_239[0]);
-		if(++send_mcu_data>2)
-		{
-			send_mcu_data=0;
-			Flag_SerialRxMsg &= ~(RX_MSG239);
-		}
-	}
-
-		if((Flag_SerialRxMsg & RX_MSG239_121) != 0) // send 61184 to bkcu
-	{
-		SetCanID(239, 52, 6);
-		CAN_TX_Data(&Uart2_RxMsg_Single_239_121[0]);
-		if(++send_bkcu_data>2)
-		{
-			send_bkcu_data=0;
-			Flag_SerialRxMsg &= ~(RX_MSG239_121);
-		}
-	}
-
-	
-
-   	if(++Flag_200mSec >= 2)
-   	{
-   		Flag_200mSec = 0;
-   		SetCanID(255, 162, 6);
-   		CAN_TX_Data(&Uart2_RxMsg_Single_162[0]);
-   		if(Uart2_RxMsg_Single_162[4] != 0)
-   			Uart2_RxMsg_Single_162[4] = 0;
-   	}
 #if 0
 	if(Flag_TxE2pRomData == 1)
 		SmartKeyAuthentication();
 #endif
 	
 
-	if((Flag_SerialRxMsg & RX_MSG252) != 0)
-	{
-		Flag_SerialRxMsg &= ~(RX_MSG252);
-
-		WL9FM_RTC.Hour = Uart2_RxMsg_Single_252[4];
-		WL9FM_RTC.Minute = Uart2_RxMsg_Single_252[5];
-		WRITE_RTC(WL9FM_RTC);
-	}
 
 	
 	if(CommErrCnt > 1000)
@@ -1226,7 +1175,7 @@ void WL9FM_100mSecOperationFunc(void)
 	   		CAN_COMInit();
    			CAN_ITConfig(CAN1, CAN_IT_FMP0,ENABLE);	
 
-			Buz1 = Buz2 = 0;
+			Buz1 = 0;
 
 			if(++SendRTCnt >= 10)
 			{
@@ -1260,6 +1209,13 @@ void WL9FM_100mSecOperationFunc(void)
 
 }
 
+void WL9FM_500mSecOperationFunc(void)
+{
+
+	SetCanID(255, 47, 6);
+	CAN_TX_Data(&Uart2_RxMsg_Single_47[0]);
+	
+}
 
 
 
@@ -1404,6 +1360,12 @@ SYSTEM_RESET :
 				goto SYSTEM_RESET;
 			}
 			#endif
+		}
+
+		if(WL9FM_TIME.Flag_500mSec == 1)
+		{
+			WL9FM_TIME.Flag_500mSec = 0;
+			WL9FM_500mSecOperationFunc();
 		}
 		
 		if (WL9FM_TIME.Flag_1Sec == 1)      //  1000 msec

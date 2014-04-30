@@ -67,7 +67,7 @@
 #define 	LAMP_ALL_ON 					0x00ffffff
 #define 	LAMP_ALL_OFF 					0x00000000
 */
-
+/*
 #define 	Main_Light_1_G 					0x00000001
 #define 	Main_Light_2_B 					0x00000002
 #define 	Work_Light_G1 					0x00000004
@@ -92,6 +92,32 @@
 #define 	Auto_Position_2_G				0x00020000
 #define 	Fine_Modulation_G				0x00040000
 #define 	Function_G						0x00080000
+*/
+	
+#define 	Main_Light_1_G 					0x00000001
+#define 	Main_Light_2_B 					0x00000002
+#define 	Work_Light_G1 					0x00000004
+#define 	Work_Light_G2 					0x00000008
+	
+#define 	Auto_Grease_1_G 				0x00000010
+#define 	Auto_Grease_2_R 				0x00000020
+#define 	Quick_coupler_1_G 				0x00000040
+#define 	Quick_coupler_2_R 				0x00000080
+	
+#define 	Ride_Control_1_G 				0x00000100
+#define 	Ride_Control_2_B 				0x00000200
+#define 	Work_load_1_G 					0x00000400
+#define 	Work_load_3_R 					0x00000800
+	
+#define 	Beacon_lamp_G 					0x00001000
+#define 	Rear_Wiper_G 					0x00002000
+#define 	Mirror_Heat_1_G 				0x00004000
+#define 	Auto_Position_1_G				0x00008000
+
+#define 	Auto_Position_2_G				0x00010000
+#define 	Fine_Modulation_G				0x00020000
+#define 	Function_G						0x00040000
+
 
 #define	BGLED0							0x00100000
 #define	BGLED1							0x00200000
@@ -185,16 +211,21 @@ typedef struct
 }Realy_Control;
 #pragma pack()
 
+
 #pragma pack(1)
 typedef struct 
 {	
-	unsigned char Reserved1:2;
+	unsigned char Reserved1;
+	
+	unsigned char Reserved2:2;
 	unsigned char Fine_Modulation:2; // 2302 
-	unsigned char Reserved2:4;
+	unsigned char Reserved3:4;
 
-	unsigned char Reserved3;
+	
 	unsigned short Reserved4;
+	
 	unsigned short Reserved5;
+	
 	unsigned short Reserved6;
 }EHCU_Status;
 #pragma pack()
@@ -202,14 +233,21 @@ typedef struct
 #pragma pack(1)
 typedef struct 
 {	
-	unsigned char Reserved1;
-	unsigned char Reserved2; 
+	unsigned char MessageType;
+	
 	unsigned char Boom_Detent_Mode:3;
 	unsigned char Bucket_Detent_Mode:3;
-	unsigned char Reserved3:2;
+	unsigned char Reserved2:2;
+	
+	unsigned char Reserved3; 
+	
+	
 	unsigned short Reserved4;
+	
 	unsigned short Reserved5;
+	
 	unsigned char Reserved6;
+	
 }Auto_position_Status;
 #pragma pack()
 

@@ -170,10 +170,9 @@ typedef struct
 
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
-void Send_Multipacket_69(void);
-void Send_Multipacket_161(void);
-void Send_Multipacket_AS_Num(void);
-void Send_Multipacket_Info(void);
+
+void Send_Multipacket_61184_23(void);
+void Send_Multipacket_145(void);
 
 void SendSMKAuthResult(u8 result);
 void SendSMKMsgResult(u8 result);
@@ -229,6 +228,27 @@ extern u8 Uart2_RxMsg_Single_253[8];
 extern u8 Uart2_RxMsg_Single_239[8];
 extern u8 Uart2_RxMsg_Single_247[8];
 
+//61184
+extern u8 Uart2_RxMsg_Single_11[8];
+extern u8 Uart2_RxMsg_Single_12[8];
+extern u8 Uart2_RxMsg_Single_21[8];
+extern u8 Uart2_RxMsg_Multi_23[13];
+extern u8 Uart2_RxMsg_Single_61[8];
+extern u8 Uart2_RxMsg_Single_62[8];
+extern u8 Uart2_RxMsg_Single_101[8];
+extern u8 Uart2_RxMsg_Single_104[8];
+extern u8 Uart2_RxMsg_Single_105[8];
+extern u8 Uart2_RxMsg_Single_109[8];
+extern u8 Uart2_RxMsg_Single_121[8];
+extern u8 Uart2_RxMsg_Single_123[8];
+extern u8 Uart2_RxMsg_Single_201[8];
+extern u8 Uart2_RxMsg_Single_203[8];
+//0xFFxx
+extern u8 Uart2_RxMsg_Single_47[8];
+extern u8 Uart2_RxMsg_Multi_145[13];
+extern u8 Uart2_RxMsg_Single_247[8];
+
+
 extern u16 CommErrCnt;
 extern u32 Flag_SerialRxMsg;
 /* Exported functions ------------------------------------------------------- */
@@ -242,6 +262,7 @@ extern void WL9FM_Monitor_APP(void);
 extern void WL9FM_1mSecOperationFunc(void);
 extern void WL9FM_10mSecOperationFunc(void);
 extern void WL9FM_100mSecOperationFunc(void);
+extern void WL9FM_500mSecOperationFunc(void);
 extern void WL9FM_1SecOperationFunc(void);
 extern void WL9FM_System_Init_Start(void);
 
