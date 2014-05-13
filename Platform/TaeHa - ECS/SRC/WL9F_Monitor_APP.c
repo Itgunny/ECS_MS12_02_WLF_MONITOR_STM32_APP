@@ -1004,11 +1004,11 @@ void WL9FM_10mSecOperationFunc(void)
 			Flag_SerialRxMsg &= ~(RX_MSG109);
 			SetCanID(239, 71, 6);
 			CAN_TX_Data(&Uart2_RxMsg_Single_109[0]);
-
-			if(Uart2_RxMsg_Single_252[2] != 0xFF && Uart2_RxMsg_Single_252[3] != 0xFF)
-			{
-				WL9FM_RTC.Hour = Uart2_RxMsg_Single_252[2];
-				WL9FM_RTC.Minute = Uart2_RxMsg_Single_252[3];
+			if(Uart2_RxMsg_Single_109[2] != 0xFF )
+			{	
+				WL9FM_RTC.Hour = Uart2_RxMsg_Single_109[2];
+				WL9FM_RTC.Minute= Uart2_RxMsg_Single_109[3];
+			
 				WRITE_RTC(WL9FM_RTC);
 			}
 		}

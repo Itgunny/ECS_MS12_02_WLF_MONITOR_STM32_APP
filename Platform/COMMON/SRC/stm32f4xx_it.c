@@ -59,6 +59,7 @@ extern Realy_Control		rx_Realy_Control;
 extern EHCU_Status		rx_EHCU_Status;
 extern Auto_position_Status rx_Auto_position_Status;
 extern st_CANDATA_HCEPGN_65428	RX_HCEPGN_65428;
+extern WEIGHING_SYSTEM_STATUS_65450 rx_Weighing_System_Status;
 /* Private define ------------------------------------------------------------*/
 
 #define RING_BUF_SIZE			768*10
@@ -254,6 +255,10 @@ void OperateRingBuffer(void)
 	else if(RxMsg.ExtId==0x18ff9447) // lamp
 	{
 		memcpy( &RX_HCEPGN_65428, (u8*)&RxMsg.Data, 8);
+	}
+	else if(RxMsg.ExtId == 0x18ffaa47)	// Weighing System (Work Load Lamp)
+	{
+		memcpy( &rx_Weighing_System_Status, (u8*)&RxMsg.Data, 8);
 	}
 	
 	USART_ITConfig(USART2, USART_IT_TXE, ENABLE);
@@ -936,7 +941,7 @@ u8 temp_rx_buf[4];
 
 void UART4_Receive_CMD(void)
 {
-	
+	uint8_t Temp[Serial_COM4_TxSize];
 	//  Read one byte to the receive data register
 	WL9FM_USART_DATA.COM4_RxBuf[WL9FM_USART_INDEX.COM4_RxCnt] = USART_ReceiveData(UART4);
 
@@ -967,12 +972,14 @@ void UART4_Receive_CMD(void)
 				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == LAMPCMD)		WL9FM_USART_INDEX.COM4_RxCnt++;
 				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == CAMCMD)		WL9FM_USART_INDEX.COM4_RxCnt++;
 				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == DOWNCMD)	WL9FM_USART_INDEX.COM4_RxCnt++;
-				else if ((WL9FM_USART_DATA.COM4_RxBuf[1]&0x80) == 0x80)	WL9FM_USART_INDEX.COM4_RxCnt++;
-                                
-                        else
-                        {
-                          	WL9FM_USART_INDEX.COM4_RxCnt = 0;
-                        }
+				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == VersionHighCMD) WL9FM_USART_INDEX.COM4_RxCnt++;
+				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == VersionLowCMD) WL9FM_USART_INDEX.COM4_RxCnt++;
+				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == VersionSubCMD) WL9FM_USART_INDEX.COM4_RxCnt++;
+				else if ((WL9FM_USART_DATA.COM4_RxBuf[1]&0x80) == 0x80)	WL9FM_USART_INDEX.COM4_RxCnt++;          
+                else
+                {
+                  	WL9FM_USART_INDEX.COM4_RxCnt = 0;
+                }
 				break;
 
 		case 3: 
@@ -1022,7 +1029,30 @@ void UART4_Receive_CMD(void)
 				case  DUMMYCMD:
 					CMD_DUMMY_SendToExynos(0);
 					break;
-
+				case VersionHighCMD:
+					
+					Temp[0] = 0x02;				
+					Temp[1] = VersionHighCMD;				
+					Temp[2] = VERSION_HIGH ;	
+					Temp[3] = 0x03;	
+					USARTx_EXYNOS(COM4, (char *)Temp);	
+					break;
+				case VersionLowCMD:
+					
+					Temp[0] = 0x02;				
+					Temp[1] = VersionLowCMD;				
+					Temp[2] = VERSION_LOW ;	
+					Temp[3] = 0x03;	
+					USARTx_EXYNOS(COM4, (char *)Temp);	
+					break;
+				case VersionSubCMD:
+					
+					Temp[0] = 0x02;				
+					Temp[1] = VersionSubCMD;				
+					Temp[2] = VERSION_SUB ;	
+					Temp[3] = 0x03;	
+					USARTx_EXYNOS(COM4, (char *)Temp);	
+					break;
 				default :
 					break;								
 			}

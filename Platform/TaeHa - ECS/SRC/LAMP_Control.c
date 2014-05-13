@@ -29,6 +29,8 @@ st_CANDATA_HCEPGN_65428	RX_HCEPGN_65428;
 Realy_Control		rx_Realy_Control;
 EHCU_Status		rx_EHCU_Status;
 Auto_position_Status rx_Auto_position_Status;
+WEIGHING_SYSTEM_STATUS_65450 rx_Weighing_System_Status;
+
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 u8 Lamp_name;
@@ -42,6 +44,9 @@ unsigned char Attachment_Lock_flag;
 
 unsigned char Auto_Grease_Green_flag;
 unsigned char Auto_Grease_Red_flag;
+
+unsigned char WorkLoad_Green_Flag;
+unsigned char WorkLoad_Blue_Flag;
 
 unsigned int Led_SIG_TEMP[10];
 unsigned int Led_BL_TEMP[10];
@@ -391,6 +396,36 @@ void Auto_Grease_LampSystem(void)
 }
 
 //------------------------------------------------------------------------------
+// Function Name 	: WorkLoad_LampSystem
+// Description 	: WorkLoad_LampSystem 동작에 조건 판단.
+// Input 			: None
+// Return 		: None
+// Period 		: 10ms
+//------------------------------------------------------------------------------
+void WorkLoad_LampSystem(void)
+{
+
+	if(rx_Weighing_System_Status.WeightAccumulationMode <= 0x03)
+	{
+		if(rx_Weighing_System_Status.WeightAccumulationMode == 0x01)
+		{
+			WorkLoad_Green_Flag= 1;
+			WorkLoad_Blue_Flag= 0;
+		}
+		else if(rx_Weighing_System_Status.WeightAccumulationMode == 0x00 || rx_Weighing_System_Status.WeightAccumulationMode == 0x03)
+		{
+			WorkLoad_Green_Flag= 0;
+			WorkLoad_Blue_Flag= 1;
+		}
+	}
+
+	
+
+
+}
+
+
+//------------------------------------------------------------------------------
 // Function Name 	: Illumination_LampSystem
 // Description 	: Illumination_LampSystem Lamp  동작에 조건 판단.
 // Input 			: None
@@ -485,6 +520,9 @@ void Lamp_Update_State(void)
 	Led_SIG_TEMP[0] += (Ride_Control_flag)?(Ride_Control_1_G):(0x00);
 	Led_SIG_TEMP[0] += (AutoRide_Control_flag)?(Ride_Control_2_B):(0x00);
 
+	WorkLoad_LampSystem();
+	Led_SIG_TEMP[0] += (WorkLoad_Green_Flag)?(Work_load_1_G):(0x00);
+	Led_SIG_TEMP[0] += (WorkLoad_Blue_Flag)?(Work_load_2_B):(0x00);
 	
 	Led_SIG_TEMP[0] += (Beacon_LampSystem())?(Beacon_lamp_G):(0x00);
 

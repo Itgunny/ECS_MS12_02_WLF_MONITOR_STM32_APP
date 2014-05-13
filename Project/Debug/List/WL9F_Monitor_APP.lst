@@ -1,38 +1,40 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      30/Apr/2014  15:34:19 #
+# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      13/May/2014  13:29:02 #
 # Copyright 1999-2012 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
 #    Endian       =  little                                                   #
-#    Source file  =  C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa -          #
-#                    ECS\SRC\WL9F_Monitor_APP.c                               #
-#    Command line =  "C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa -         #
-#                    ECS\SRC\WL9F_Monitor_APP.c" -D USE_STDPERIPH_DRIVER -D   #
-#                    STM32F4XX -D USE_STM324xG_EVAL -D USE_FULL_ASSERT -lcN   #
-#                    C:\Tools\WL9F\WL_F_Monitor_APP\Project\Debug\List\ -o    #
-#                    C:\Tools\WL9F\WL_F_Monitor_APP\Project\Debug\Obj\        #
-#                    --debug --endian=little --cpu=Cortex-M4 -e               #
+#    Source file  =  C:\Tools\WL9F\WL_F_Monitor_APP_Keypad04.01\Platform\TaeH #
+#                    a - ECS\SRC\WL9F_Monitor_APP.c                           #
+#    Command line =  "C:\Tools\WL9F\WL_F_Monitor_APP_Keypad04.01\Platform\Tae #
+#                    Ha - ECS\SRC\WL9F_Monitor_APP.c" -D                      #
+#                    USE_STDPERIPH_DRIVER -D STM32F4XX -D USE_STM324xG_EVAL   #
+#                    -D USE_FULL_ASSERT -lcN C:\Tools\WL9F\WL_F_Monitor_APP_K #
+#                    eypad04.01\Project\Debug\List\ -o                        #
+#                    C:\Tools\WL9F\WL_F_Monitor_APP_Keypad04.01\Project\Debug #
+#                    \Obj\ --debug --endian=little --cpu=Cortex-M4 -e         #
 #                    --fpu=VFPv4_sp --dlib_config "C:\Tools\IAR               #
 #                    Systems\Embedded Workbench 6.5\arm\INC\c\DLib_Config_Ful #
-#                    l.h" -I C:\Tools\WL9F\WL_F_Monitor_APP\Project\..\Platfo #
-#                    rm\COMMON\INC\ -I "C:\Tools\WL9F\WL_F_Monitor_APP\Projec #
-#                    t\..\Platform\TaeHa - ECS\INC\" -I                       #
-#                    C:\Tools\WL9F\WL_F_Monitor_APP\Project\..\Libraries\CMSI #
-#                    S\Device\ST\STM32F4xx\Include\ -I                        #
-#                    C:\Tools\WL9F\WL_F_Monitor_APP\Project\..\Libraries\STM3 #
-#                    2F4xx_StdPeriph_Driver\inc\ -Oh --use_c++_inline -I      #
-#                    "C:\Tools\IAR Systems\Embedded Workbench                 #
-#                    6.5\arm\CMSIS\Include\"                                  #
-#    List file    =  C:\Tools\WL9F\WL_F_Monitor_APP\Project\Debug\List\WL9F_M #
-#                    onitor_APP.lst                                           #
-#    Object file  =  C:\Tools\WL9F\WL_F_Monitor_APP\Project\Debug\Obj\WL9F_Mo #
-#                    nitor_APP.o                                              #
+#                    l.h" -I C:\Tools\WL9F\WL_F_Monitor_APP_Keypad04.01\Proje #
+#                    ct\..\Platform\COMMON\INC\ -I                            #
+#                    "C:\Tools\WL9F\WL_F_Monitor_APP_Keypad04.01\Project\..\P #
+#                    latform\TaeHa - ECS\INC\" -I                             #
+#                    C:\Tools\WL9F\WL_F_Monitor_APP_Keypad04.01\Project\..\Li #
+#                    braries\CMSIS\Device\ST\STM32F4xx\Include\ -I            #
+#                    C:\Tools\WL9F\WL_F_Monitor_APP_Keypad04.01\Project\..\Li #
+#                    braries\STM32F4xx_StdPeriph_Driver\inc\ -Oh              #
+#                    --use_c++_inline -I "C:\Tools\IAR Systems\Embedded       #
+#                    Workbench 6.5\arm\CMSIS\Include\"                        #
+#    List file    =  C:\Tools\WL9F\WL_F_Monitor_APP_Keypad04.01\Project\Debug #
+#                    \List\WL9F_Monitor_APP.lst                               #
+#    Object file  =  C:\Tools\WL9F\WL_F_Monitor_APP_Keypad04.01\Project\Debug #
+#                    \Obj\WL9F_Monitor_APP.o                                  #
 #                                                                             #
 #                                                                             #
 ###############################################################################
 
-C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\WL9F_Monitor_APP.c
+C:\Tools\WL9F\WL_F_Monitor_APP_Keypad04.01\Platform\TaeHa - ECS\SRC\WL9F_Monitor_APP.c
       1          /**
       2            ******************************************************************************
       3            * @file    WL9F_Monitor_APP.c 
@@ -1039,11 +1041,11 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\WL9F_Monitor_APP.c
    1004          			Flag_SerialRxMsg &= ~(RX_MSG109);
    1005          			SetCanID(239, 71, 6);
    1006          			CAN_TX_Data(&Uart2_RxMsg_Single_109[0]);
-   1007          
-   1008          			if(Uart2_RxMsg_Single_252[2] != 0xFF && Uart2_RxMsg_Single_252[3] != 0xFF)
-   1009          			{
-   1010          				WL9FM_RTC.Hour = Uart2_RxMsg_Single_252[2];
-   1011          				WL9FM_RTC.Minute = Uart2_RxMsg_Single_252[3];
+   1007          			if(Uart2_RxMsg_Single_109[2] != 0xFF )
+   1008          			{	
+   1009          				WL9FM_RTC.Hour = Uart2_RxMsg_Single_109[2];
+   1010          				WL9FM_RTC.Minute= Uart2_RxMsg_Single_109[3];
+   1011          			
    1012          				WRITE_RTC(WL9FM_RTC);
    1013          			}
    1014          		}
@@ -1561,7 +1563,6 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\WL9F_Monitor_APP.c
        4  ??DataTable14_36
        4  ??DataTable14_37
        4  ??DataTable14_38
-       4  ??DataTable14_39
        4  ??DataTable14_4
        4  ??DataTable14_5
        4  ??DataTable14_6
@@ -1603,7 +1604,7 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\WL9F_Monitor_APP.c
        2  TotalPacketNum
           RTSFlag_61184
      116  WL9FM_100mSecOperationFunc
-     504  WL9FM_10mSecOperationFunc
+     502  WL9FM_10mSecOperationFunc
      116  WL9FM_1SecOperationFunc
       46  WL9FM_1mSecOperationFunc
       22  WL9FM_500mSecOperationFunc
@@ -1641,9 +1642,9 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\WL9F_Monitor_APP.c
 
  
  2 807 bytes in section .bss
- 3 184 bytes in section .text
+ 3 178 bytes in section .text
  
- 3 184 bytes of CODE memory
+ 3 178 bytes of CODE memory
  2 807 bytes of DATA memory
 
 Errors: none

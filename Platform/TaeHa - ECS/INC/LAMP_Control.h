@@ -67,7 +67,7 @@
 #define 	LAMP_ALL_ON 					0x00ffffff
 #define 	LAMP_ALL_OFF 					0x00000000
 */
-/*
+
 #define 	Main_Light_1_G 					0x00000001
 #define 	Main_Light_2_B 					0x00000002
 #define 	Work_Light_G1 					0x00000004
@@ -81,7 +81,7 @@
 #define 	Ride_Control_1_G 				0x00000100
 #define 	Ride_Control_2_B 				0x00000200
 #define 	Work_load_1_G 					0x00000400
-#define 	Work_load_3_R 					0x00000800
+#define 	Work_load_2_B 					0x00000800
 
 #define 	Beacon_lamp_G 					0x00001000
 #define 	Rear_Wiper_G 					0x00002000
@@ -92,8 +92,8 @@
 #define 	Auto_Position_2_G				0x00020000
 #define 	Fine_Modulation_G				0x00040000
 #define 	Function_G						0x00080000
-*/
-	
+
+/*
 #define 	Main_Light_1_G 					0x00000001
 #define 	Main_Light_2_B 					0x00000002
 #define 	Work_Light_G1 					0x00000004
@@ -117,7 +117,7 @@
 #define 	Auto_Position_2_G				0x00010000
 #define 	Fine_Modulation_G				0x00020000
 #define 	Function_G						0x00040000
-
+*/
 
 #define	BGLED0							0x00100000
 #define	BGLED1							0x00200000
@@ -249,6 +249,26 @@ typedef struct
 	unsigned char Reserved6;
 	
 }Auto_position_Status;
+
+#pragma pack(1)
+typedef struct 
+{	
+	unsigned char	WeighingSystemOperationMode1StatusJ_1901:2;
+	unsigned char	WeighingSystemBuzzer_1907:2;
+	unsigned char	WeightAccumulationMode:2;
+	unsigned char	Reserved0:2;
+
+	unsigned char	CurrentWeighingResult_1919:4;
+	unsigned char	SuddenChangeError:2;
+	unsigned char	BucketFullInError:2;
+
+	unsigned short	CurrentWeight_1911;
+
+	unsigned int	TodayWeight_1915;
+
+	
+}WEIGHING_SYSTEM_STATUS_65450;
+
 #pragma pack()
 
 /* Private macro -------------------------------------------------------------*/
