@@ -123,7 +123,7 @@
 
 #define	VERSION_HIGH	1
 #define	VERSION_LOW		0
-#define	VERSION_SUB		1
+#define	VERSION_SUB		2
 
 
 //=================================================================
@@ -254,7 +254,7 @@ extern u8 Uart2_RxMsg_Single_201[8];
 extern u8 Uart2_RxMsg_Single_203[8];
 //0xFFxx
 extern u8 Uart2_RxMsg_Single_47[8];
-extern u8 Uart2_RxMsg_Multi_145[13];
+extern u8 Uart2_RxMsg_Multi_145[22];
 extern u8 Uart2_RxMsg_Single_247[8];
 
 

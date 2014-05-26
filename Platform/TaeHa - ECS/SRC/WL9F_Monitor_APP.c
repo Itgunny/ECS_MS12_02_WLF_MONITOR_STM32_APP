@@ -88,8 +88,11 @@ u8 MoniInfoSendCnt = 0;
 
 u8 RTSFlag_61184 = 0;
 u8 CTSFlag_61184 = 0;
+u8 RMCU_CTSFlag_61184 = 0;
 u8 RecvTotalPacket_61184 = 0;
+u8 RMCU_RecvTotalPacket_61184 = 0;
 u8 ACK_Multi_61184[8];
+u8 RMCU_ACK_Multi_61184[8];
 
 u8 Flag_UartTxStart = 0;
 u8  SendTime_E2PROM = 0;
@@ -375,13 +378,13 @@ void Send_Multipacket_145(void)
 		SendTP_CM_BAM_MultiPacket_145();
 		TotalPacketNum += 1;
 	}
-	else if((TotalPacketNum == 1) || (TotalPacketNum == 2))
+	else
 	{
 		TimeDelay_msec(15);
 		SendMultiPacketData_145(TotalPacketNum);
 		TotalPacketNum += 1;
 
-		if(TotalPacketNum >= 3)
+		if(TotalPacketNum > tp_cm_bam_TotPacketNum)
 		{
 			Flag_SerialRxMsg &= ~(RX_MSG145);
 			TotalPacketNum = 0;
@@ -1280,6 +1283,8 @@ void WL9FM_System_Init_Start(void)
 												//		LAMP ALL ON
 	LED_POWER_ONOFF(LED_ON);					//	->	LCD_Control.c (LED On/Off)
 	LCD_POWER_ONOFF(LCDPWR_ON);					//	-> 	LCD_Control.c (LCD 12V Power On/Off)
+
+	LCDBL_ONOFF(LCDBL_OFF); 					//	->	 ºÎÆÃ½Ã LCD¿¡ ÇÏ¾á È­¸é ³ª¿È
 
 	LCD_Control_Init();							//	-> 	LCD_Control.c (LCDBL, ON/OFF)
 

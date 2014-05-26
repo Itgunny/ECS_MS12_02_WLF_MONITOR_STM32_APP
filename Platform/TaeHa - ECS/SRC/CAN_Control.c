@@ -141,7 +141,7 @@ u8 Uart2_RxMsg_Single_201[8];
 u8 Uart2_RxMsg_Single_203[8];
 //0xFFxx
 u8 Uart2_RxMsg_Single_47[8];
-u8 Uart2_RxMsg_Multi_145[13];
+u8 Uart2_RxMsg_Multi_145[22];
 u8 Uart2_RxMsg_Single_247[8];
 
 
@@ -177,6 +177,10 @@ extern u8 RTSFlag_61184;
 extern u8 CTSFlag_61184;
 extern u8 RecvTotalPacket_61184;
 extern u8 ACK_Multi_61184[8];
+extern u8 RMCU_CTSFlag_61184;
+extern u8 RMCU_RecvTotalPacket_61184;
+extern u8 RMCU_ACK_Multi_61184[8];
+
 
 
 extern Realy_Control rx_Realy_Control;
@@ -419,14 +423,34 @@ void SendMultiPacketData_61184_23(u8 packet_no)
 }
 void SendTP_CM_BAM_MultiPacket_145(void)
 {
+	int Asterisk = 0;
+	for(int i = 0; i < 22; i++)
+	{
+		if(Uart2_RxMsg_Multi_145[i] == 0x2A)
+		{
+			break;
+		}
+		else
+		{
+			Asterisk++;
+		}
+	}
 	// TP.CM_BAM
 	SetCanID(236, 255, 7);
 
 	tp_cm_bam->Control = 32;	// Control Byte
 	
-	tp_cm_bam->TotMsgSize = 13;
+	tp_cm_bam->TotMsgSize = Asterisk + 1;
 
-	tp_cm_bam->TotPacketNum = 2;
+	if((tp_cm_bam->TotMsgSize % 7) == 0)
+	{
+		tp_cm_bam->TotPacketNum = tp_cm_bam->TotMsgSize / 7;
+	}
+	else
+	{
+		tp_cm_bam->TotPacketNum = (tp_cm_bam->TotMsgSize / 7) + 1;
+	}
+
 	tp_cm_bam_TotPacketNum = tp_cm_bam->TotPacketNum;
 
 	tp_cm_bam->Reserved = 0xff;
@@ -447,9 +471,9 @@ void SendMultiPacketData_145(u8 packet_no)
 	CAN_TX_Data(&tmpBuf1[0]);
 }
 
-void Send_CTS_61184(u8* Arr)
+void Send_CTS_61184(u8* Arr, u8 SA)
 {
-	SetCanID(236, 71, 7);
+	SetCanID(236, SA, 7);
 	tmpBuf[0] = 17;	// Control Byte;l
 	tmpBuf[1] = Arr[3];
 	tmpBuf[2] = 1;
@@ -463,9 +487,9 @@ void Send_CTS_61184(u8* Arr)
 	
 }
 
-void Send_ACK_61184(u8* Arr)
+void Send_ACK_61184(u8* Arr, u8 SA)
 {
-	SetCanID(236, 71, 7);
+	SetCanID(236, SA, 7);
 	tmpBuf[0] = 19;	// Control Byte;l
 	tmpBuf[1] = Arr[1];
 	tmpBuf[2] = Arr[2];

@@ -287,6 +287,7 @@ void WL9F_System_Init_Start(void)
 	LCD_POWER_ONOFF(LCDPWR_ON);					//	-> 	LCD_Control.c (LCD 12V Power On/Off)
 
 	WL9FM_CAMERA_nRESET();						//	-> 	TW2835, TW8832 Power On..
+	LCDBL_ONOFF(LCDBL_OFF);						// 	->   ºÎÆÃ½Ã LCD¿¡ ÇÏ¾á È­¸é ³ª¿È
 	LCD_Control_Init();							//	-> 	LCD_Control.c (LCDBL, ON/OFF)
 	//TW2835_Control_Init();						//	-> 	TW2835_Control.c (CAMERA -> Decoder)
 	//TW8832_Control_Init();						//	-> 	TW8832_Control.c (LCD Interface)

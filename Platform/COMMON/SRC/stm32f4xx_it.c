@@ -63,7 +63,7 @@ extern WEIGHING_SYSTEM_STATUS_65450 rx_Weighing_System_Status;
 /* Private define ------------------------------------------------------------*/
 
 #define RING_BUF_SIZE			768*10
-#define UART2_Rx_BUF_SIZE		26			// Max Multi Packet Data -> 3개
+#define UART2_Rx_BUF_SIZE		27			// Max Multi Packet Data -> 3개
 #define UART2_Tx_BUF_SIZE		17
 
 /*
@@ -117,6 +117,7 @@ u16 pReadBufPos = 0;
 u8 CanRecvCnt = 0;
 u16 TotPacketNum = 0;
 u32 pgn = 0;
+u32 RMCUpgn = 0;
 u16 TotMsgSize = 0;
 u8 Uart2_SerialTxMsg[UART2_Tx_BUF_SIZE];
 u8 Uart2_SerialRxMsg[UART2_Rx_BUF_SIZE];
@@ -141,6 +142,10 @@ extern u8 RTSFlag_61184;
 extern u8 CTSFlag_61184;
 extern u8 RecvTotalPacket_61184;
 extern u8 ACK_Multi_61184[8];
+extern u8 RMCU_CTSFlag_61184;
+extern u8 RMCU_RecvTotalPacket_61184;
+extern u8 RMCU_ACK_Multi_61184[8];
+
 
 
 extern u8 Flag_UartTxStart;
@@ -185,7 +190,7 @@ extern u8 Uart2_RxMsg_Single_201[8];
 extern u8 Uart2_RxMsg_Single_203[8];
 //0xFFxx
 extern u8 Uart2_RxMsg_Single_47[8];
-extern u8 Uart2_RxMsg_Multi_145[13];
+extern u8 Uart2_RxMsg_Multi_145[22];
 extern u8 Uart2_RxMsg_Single_247[8];
 
 
@@ -515,7 +520,7 @@ void CAN1_RX0_IRQHandler(void)
 				if((Iden.PDU_Specific == 255)||(Iden.PDU_Specific == 0x28))
 				{
 					if(PF == 236)		// TP.CM_BAM
-					{
+					{ 
 						if(RxMsg.Data[0] == 32) 	// Control Byte (Normal)
 						{
 							pgn = (RxMsg.Data[6] << 8) | (RxMsg.Data[5]);
@@ -551,23 +556,59 @@ void CAN1_RX0_IRQHandler(void)
 						}
 						else if(RxMsg.Data[0] == 16)	// Control Byte (RTS) 0x10
 						{
-							Uart2_SerialTxMsg[15] = 0;
-							OperateRingBuffer();
-							pgn = (RxMsg.Data[6] << 8) | (RxMsg.Data[5]);
-							if(pgn == 61184)
+							if(Iden.Source_Address == 0x4a)
 							{
-								 Send_CTS_61184(RxMsg.Data);
-								 CTSFlag_61184 = 1;
-								 RecvTotalPacket_61184 = RxMsg.Data[3];
-								 memcpy((u8*)ACK_Multi_61184,(u8*)RxMsg.Data,8);
+								Uart2_SerialTxMsg[15] = 0;
+								OperateRingBuffer();
+								RMCUpgn = (RxMsg.Data[6] << 8) | (RxMsg.Data[5]);
+								if(RMCUpgn == 61184)
+								{
+									 Send_CTS_61184(RxMsg.Data,0x4A);
+									 RMCU_CTSFlag_61184 = 1;
+									 RMCU_RecvTotalPacket_61184 = RxMsg.Data[3];
+									 memcpy((u8*)RMCU_ACK_Multi_61184,(u8*)RxMsg.Data,8);
+								}
 							}
+							else
+							{
+								Uart2_SerialTxMsg[15] = 0;
+								OperateRingBuffer();
+								pgn = (RxMsg.Data[6] << 8) | (RxMsg.Data[5]);
+								if(pgn == 61184)
+								{
+									 Send_CTS_61184(RxMsg.Data,71);
+									 CTSFlag_61184 = 1;
+									 RecvTotalPacket_61184 = RxMsg.Data[3];
+									 memcpy((u8*)ACK_Multi_61184,(u8*)RxMsg.Data,8);
+								}
+							}
+							
+							
 							
 						}
 
 								
 					}
 	
-					if(pgn != 0)
+					if(Iden.Source_Address == 0x4a)
+					{
+						if(PF == 235)
+						{
+							Uart2_SerialTxMsg[15] = 0;
+							OperateRingBuffer();
+							if(RMCUpgn == 61184)
+							{
+								if(RMCU_RecvTotalPacket_61184 == RxMsg.Data[0])
+								{
+									RMCU_RecvTotalPacket_61184 = 0;
+									Send_ACK_61184(RMCU_ACK_Multi_61184,0x4a);
+								}
+							
+							}
+
+							
+						}
+					}else
 					{
 						if(PF == 235)
 						{
@@ -592,12 +633,13 @@ void CAN1_RX0_IRQHandler(void)
 								if(RecvTotalPacket_61184 == RxMsg.Data[0])
 								{
 									RecvTotalPacket_61184 = 0;
-									Send_ACK_61184(ACK_Multi_61184);
+									Send_ACK_61184(ACK_Multi_61184,71);
 								}
 							
 							}
 						}
 					}
+					
 				}
 			}
 	
@@ -693,10 +735,10 @@ void USART2_IRQHandler(void)
 				else
 					Uart2_SerialRxCnt = 0;
 				break;
-			case 25:
+			case UART2_Rx_BUF_SIZE-1:
 				Uart2_SerialRxCnt = 0;
 
-				if(Uart2_SerialRxMsg[25] == 0x03)		// ETX
+				if(Uart2_SerialRxMsg[UART2_Rx_BUF_SIZE-1] == 0x03)		// ETX
 				{
                     			//  디버깅할 때만 사용할 것
 					#ifdef DEBUG_CAN_RX
@@ -1001,7 +1043,7 @@ void UART4_Receive_CMD(void)
 				case LCDBLCMD :		//	LCD BackLight Command
 
 					//	LCD BackLight Level 조절.. Level0 ~ Level8
-					if (WL9FM_USART_DATA.COM4_RxBuf[2] < MaxBackLightLEVEL) 												
+					if (WL9FM_USART_DATA.COM4_RxBuf[2] < MaxBackLightLEVEL && (WL9FM_USART_DATA.COM4_RxBuf[2] > 0)) 												
 					{
 						LCDBL_PWM_LEVEL(WL9FM_USART_DATA.COM4_RxBuf[2]);
 					}

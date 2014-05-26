@@ -53,8 +53,8 @@ extern void SendMultiPacketData_61184_23(u8 packet_no);
 extern void SendTP_CM_BAM_MultiPacket_145(void);
 extern void SendMultiPacketData_145(u8 packet_no);
 extern void Send_RTS_61184(u8* Arr);
-extern void Send_CTS_61184(u8* Arr);
-extern void Send_ACK_61184(u8* Arr);
+extern void Send_CTS_61184(u8* Arr, u8 SA);
+extern void Send_ACK_61184(u8* Arr, u8 SA);
 
 
 

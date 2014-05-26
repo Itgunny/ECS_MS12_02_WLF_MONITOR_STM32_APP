@@ -107,7 +107,7 @@
 #define 	Ride_Control_1_G 				0x00000100
 #define 	Ride_Control_2_B 				0x00000200
 #define 	Work_load_1_G 					0x00000400
-#define 	Work_load_3_R 					0x00000800
+#define 	Work_load_2_B 					0x00000800
 	
 #define 	Beacon_lamp_G 					0x00001000
 #define 	Rear_Wiper_G 					0x00002000
@@ -116,7 +116,7 @@
 
 #define 	Auto_Position_2_G				0x00010000
 #define 	Fine_Modulation_G				0x00020000
-#define 	Function_G						0x00040000
+#define 	Function_G					0x00040000
 */
 
 #define	BGLED0							0x00100000
