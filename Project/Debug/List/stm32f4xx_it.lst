@@ -1,6 +1,6 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      26/May/2014  20:06:16 #
+# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      27/May/2014  21:54:46 #
 # Copyright 1999-2012 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
@@ -287,21 +287,21 @@ C:\Tools\WL9F\WL_F_Monitor_APP_Keypad04.01\Platform\COMMON\SRC\stm32f4xx_it.c
     251          		{
     252          			memcpy( &rx_Auto_position_Status, (u8*)&RxMsg.Data, 8);
     253          		}
-    254          		else if(RxMsg.Data[0] == 203)
-    255          		{
-    256          			memcpy( &rx_EHCU_Status, (u8*)&RxMsg.Data, 8);
-    257          		}
-    258          		
+    254          		
+    255          	}
+    256          	else if(RxMsg.ExtId==0x18ff9447) // lamp
+    257          	{
+    258          		memcpy( &RX_HCEPGN_65428, (u8*)&RxMsg.Data, 8);
     259          	}
-    260          	else if(RxMsg.ExtId==0x18ff9447) // lamp
+    260          	else if(RxMsg.ExtId == 0x18ffaa47)	// Weighing System (Work Load Lamp)
     261          	{
-    262          		memcpy( &RX_HCEPGN_65428, (u8*)&RxMsg.Data, 8);
+    262          		memcpy( &rx_Weighing_System_Status, (u8*)&RxMsg.Data, 8);
     263          	}
-    264          	else if(RxMsg.ExtId == 0x18ffaa47)	// Weighing System (Work Load Lamp)
-    265          	{
-    266          		memcpy( &rx_Weighing_System_Status, (u8*)&RxMsg.Data, 8);
-    267          	}
-    268          	
+    264          	
+    265          	else if(RxMsg.ExtId == 0x18ffede4)	// EHCU
+    266          	{
+    267          		memcpy( &rx_EHCU_Status, (u8*)&RxMsg.Data, 8);
+    268          	}
     269          	USART_ITConfig(USART2, USART_IT_TXE, ENABLE);
     270          	
     271          }
@@ -1341,6 +1341,7 @@ C:\Tools\WL9F\WL_F_Monitor_APP_Keypad04.01\Platform\COMMON\SRC\stm32f4xx_it.c
        4  ??DataTable12_63
        4  ??DataTable12_64
        4  ??DataTable12_65
+       4  ??DataTable12_66
        4  ??DataTable12_7
        4  ??DataTable12_8
        4  ??DataTable12_9
@@ -1351,7 +1352,7 @@ C:\Tools\WL9F\WL_F_Monitor_APP_Keypad04.01\Platform\COMMON\SRC\stm32f4xx_it.c
        2  HardFault_Handler
        2  MemManage_Handler
        2  NMI_Handler
-     206  OperateRingBuffer
+     210  OperateRingBuffer
        2  PendSV_Handler
       20  RxMsg
        2  SVC_Handler
@@ -1394,9 +1395,9 @@ C:\Tools\WL9F\WL_F_Monitor_APP_Keypad04.01\Platform\COMMON\SRC\stm32f4xx_it.c
 
  
  7 799 bytes in section .bss
- 2 836 bytes in section .text
+ 2 844 bytes in section .text
  
- 2 824 bytes of CODE memory (+ 12 bytes shared)
+ 2 832 bytes of CODE memory (+ 12 bytes shared)
  7 799 bytes of DATA memory
 
 Errors: none

@@ -43,31 +43,8 @@
 #define 	C_LAMP_CLR_ENABLE()    	GPIO_WriteBit(LAMP_PORT, LAMP_CLR, Bit_SET)
 #define 	C_LAMP_CLR_DISABLE() 	GPIO_WriteBit(LAMP_PORT, LAMP_CLR, Bit_RESET)
 
+/////////////// Keypad RevA04.01///////////////////////////
 /*
-#define	Ride_Control_Manual_Lamp		0x00000040		//key pad L7 Green
-#define	Ride_Control_Auto_Lamp			0x00000080		//key pad L8 Blue
-#define	Ride_Control_Lamp_Off			0x000000c0
-
-#define 	Quick_Coupler_Lock_Lamp		0x00000100		//key pad L9 Green
-#define 	Quick_Coupler_UnLock_Lamp		0x00000200		//key pad L10 Red
-#define 	Quick_Coupler_Lamp_Off			0x00000300
-
-#define	Auto_Grease_Manual_Lamp		0x00000400		//key Pad L11	Grean
-#define	Auto_Grease_Auto_Lamp			0x00000800		//key Pad L12	Blue
-#define	Auto_Grease_Lamp_Off			0x00000c00
-
-#define	Beacon_Lamp					0x00001000		//Key pad L13 
-#define	Mirror_Heat_Lamp				0x00002000		//Key pad L14 
-#define	Rear_Wiper_Lamp				0x00004000		//key pad L15
-
-#define		BGLED0						0x00100000
-#define		BGLED1						0x00200000
-#define		BGLED2						0x00400000
-
-#define 	LAMP_ALL_ON 					0x00ffffff
-#define 	LAMP_ALL_OFF 					0x00000000
-*/
-
 #define 	Main_Light_1_G 					0x00000001
 #define 	Main_Light_2_B 					0x00000002
 #define 	Work_Light_G1 					0x00000004
@@ -92,8 +69,11 @@
 #define 	Auto_Position_2_G				0x00020000
 #define 	Fine_Modulation_G				0x00040000
 #define 	Function_G						0x00080000
+*/
+///////////////////////////////////////////////////////////
+/////////////// Keypad RevA06.01///////////////////////////
 
-/*
+
 #define 	Main_Light_1_G 					0x00000001
 #define 	Main_Light_2_B 					0x00000002
 #define 	Work_Light_G1 					0x00000004
@@ -117,7 +97,8 @@
 #define 	Auto_Position_2_G				0x00010000
 #define 	Fine_Modulation_G				0x00020000
 #define 	Function_G					0x00040000
-*/
+
+///////////////////////////////////////////////////////////
 
 #define	BGLED0							0x00100000
 #define	BGLED1							0x00200000
@@ -215,11 +196,11 @@ typedef struct
 #pragma pack(1)
 typedef struct 
 {	
-	unsigned char Reserved1;
-	
-	unsigned char Reserved2:2;
+	unsigned char Reserved1:2;
 	unsigned char Fine_Modulation:2; // 2302 
-	unsigned char Reserved3:4;
+	unsigned char Reserved2:4;
+	
+	unsigned char Reserved3;
 
 	
 	unsigned short Reserved4;

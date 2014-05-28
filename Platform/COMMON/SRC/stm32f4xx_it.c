@@ -251,10 +251,6 @@ void OperateRingBuffer(void)
 		{
 			memcpy( &rx_Auto_position_Status, (u8*)&RxMsg.Data, 8);
 		}
-		else if(RxMsg.Data[0] == 203)
-		{
-			memcpy( &rx_EHCU_Status, (u8*)&RxMsg.Data, 8);
-		}
 		
 	}
 	else if(RxMsg.ExtId==0x18ff9447) // lamp
@@ -266,6 +262,10 @@ void OperateRingBuffer(void)
 		memcpy( &rx_Weighing_System_Status, (u8*)&RxMsg.Data, 8);
 	}
 	
+	else if(RxMsg.ExtId == 0x18ffede4)	// EHCU
+	{
+		memcpy( &rx_EHCU_Status, (u8*)&RxMsg.Data, 8);
+	}
 	USART_ITConfig(USART2, USART_IT_TXE, ENABLE);
 	
 }
