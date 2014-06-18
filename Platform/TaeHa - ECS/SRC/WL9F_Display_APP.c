@@ -275,7 +275,7 @@ void WL9F_System_Init_Start(void)
 {
 	WL9FM_PowerIG(PowerIG_OFF);					//  ->	GPIO_Control.c PowerIG를 OFF로 만들어 놓고, 
 	WL9FM_EXYNOS_POWER_ONOFF(EXYNOS_POWER_ON);	//	->	GPIO_Control.c EXYNOS-4412 Power On..
-	//WL9FM_EXYNOS_PMIC_ONOFF();
+	WL9FM_EXYNOS_PMIC_ONOFF();
 
 	DPRAM_Init();								//	-> 	DPRAM_Control.c (Dual Port RAM Init)
 	Hardware_Version_Init();					//  ->  Hardware_Version.c (Hardware Version ADC Start)

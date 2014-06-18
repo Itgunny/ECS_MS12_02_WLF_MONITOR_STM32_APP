@@ -488,7 +488,8 @@ void System_CheckPowerIG()
 					CAN_ITConfig(CAN1, CAN_IT_FMP0, DISABLE);
 
 					WL9FM_PowerIG(PowerIG_ON);	// System Reset
-					SystemReset = 1;
+					//SystemReset = 1;
+					SystemReset = 0;
 					return;
 				}
 			
@@ -513,24 +514,43 @@ void System_CheckPowerIG()
 
 			//	엔딩화면 딜레이 시간
 			//	1200msec 이상 설정하면, LCD가 하얗게 된다. -> POWER Off Time으로 인하여
+
+			LAMP_Update_Data = LAMP_ALL_OFF;
+			Lamp_Update_System();
+			
 			TimeDelay_msec(1200);
 
 			LCDBL_PWM_LEVEL(0);                         	//  LCDBL PWM LEVEL0
 			LCDBL_ONOFF(LCDBL_OFF);			//  LCDBL Power On!!!
 	
-	        
+
+			LCD_POWER_ONOFF(LCDPWR_OFF);                        //  LCD Power Off
+			LED_POWER_ONOFF(LED_OFF);                        	//  LED Off
+
+			/*
+			WL9FM_EXYNOS_POWER_ONOFF(EXYNOS_POWER_OFF);
+			TimeDelay_msec(100);
+			WL9FM_EXYNOS_POWER_ONOFF(EXYNOS_POWER_ON);
+			
+			WL9FM_EXYNOS_PMIC_ONOFF();
+				
+			
+			*/
+			WL9FM_EXYNOS_POWER_ONOFF(EXYNOS_POWER_OFF);
+			
+			
 			//	엔딩화면이 지난 후에 PowerIG가 다시 들어오면, System을 RESET 시킨다. 
+			TimeDelay_msec(1000);
 			if(!WL9FM_GetPowerIG())
 			{
 				WL9FM_PowerIG(PowerIG_ON);
 				SystemReset = 1;
 				return;
 			}
-	        
-			LCD_POWER_ONOFF(LCDPWR_OFF);                        //  LCD Power Off
-			LED_POWER_ONOFF(LED_OFF);                        	//  LED Off
-			WL9FM_EXYNOS_POWER_ONOFF(EXYNOS_POWER_OFF);	
-			WL9FM_PowerIG(PowerIG_OFF);                    //  24v Main Power Off	        
+
+			WL9FM_PowerIG(PowerIG_OFF);                    //  24v Main Power Off	    
+
+			
 		}
 	}
 }
@@ -1269,6 +1289,7 @@ void WL9FM_System_Init_Start(void)
 {
 	WL9FM_PowerIG(PowerIG_OFF);					//    ->	GPIO_Control.c PowerIG를 OFF로 만들어 놓고, 
 	WL9FM_EXYNOS_POWER_ONOFF(EXYNOS_POWER_ON);	//	->	GPIO_Control.c EXYNOS-4412 Power On..
+	//WL9FM_EXYNOS_PMIC_ONOFF();
 	
 	WL9FM_CAMERA_nRESET();						//	-> 	TW2835, TW8832 Power On..
 	TW8832_Control_Init();						//	-> 	TW8832_Control.c (LCD Interface)
@@ -1322,7 +1343,7 @@ void WL9FM_Monitor_APP(void)
 
 	System_Initialize();		//	-> 	System_Init.c
 								//		IAP와 동일한 초기화를 한다. -> 상태 변경 없음.
-	
+
 //	System 강제 RESET시키기 위하여 goto lable 추가..
 SYSTEM_RESET :
 

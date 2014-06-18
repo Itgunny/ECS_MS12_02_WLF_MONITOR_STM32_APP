@@ -38,7 +38,7 @@ void WL9FM_EXYNOS_PMIC_ONOFF(void)
 	GPIO_WriteBit(EXYNOS_PMIC_CTRL_PORT, EXYNOS_PMIC_CTRL, Bit_SET);
 	TimeDelay_msec(100);
 	GPIO_WriteBit(EXYNOS_PMIC_CTRL_PORT, EXYNOS_PMIC_CTRL, Bit_RESET);
-	TimeDelay_msec(100);
+	//TimeDelay_msec(100);
 }
 
 void WL9FM_CAMERA_nRESET(void)
