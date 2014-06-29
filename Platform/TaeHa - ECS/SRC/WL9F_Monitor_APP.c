@@ -527,7 +527,7 @@ void System_CheckPowerIG()
 			LCD_POWER_ONOFF(LCDPWR_OFF);                        //  LCD Power Off
 			LED_POWER_ONOFF(LED_OFF);                        	//  LED Off
 
-			/*
+			
 			WL9FM_EXYNOS_POWER_ONOFF(EXYNOS_POWER_OFF);
 			TimeDelay_msec(100);
 			WL9FM_EXYNOS_POWER_ONOFF(EXYNOS_POWER_ON);
@@ -535,7 +535,8 @@ void System_CheckPowerIG()
 			WL9FM_EXYNOS_PMIC_ONOFF();
 				
 			
-			*/
+			
+			
 			WL9FM_EXYNOS_POWER_ONOFF(EXYNOS_POWER_OFF);
 			
 			
@@ -1289,7 +1290,7 @@ void WL9FM_System_Init_Start(void)
 {
 	WL9FM_PowerIG(PowerIG_OFF);					//    ->	GPIO_Control.c PowerIG를 OFF로 만들어 놓고, 
 	WL9FM_EXYNOS_POWER_ONOFF(EXYNOS_POWER_ON);	//	->	GPIO_Control.c EXYNOS-4412 Power On..
-	//WL9FM_EXYNOS_PMIC_ONOFF();
+	WL9FM_EXYNOS_PMIC_ONOFF();
 	
 	WL9FM_CAMERA_nRESET();						//	-> 	TW2835, TW8832 Power On..
 	TW8832_Control_Init();						//	-> 	TW8832_Control.c (LCD Interface)
@@ -1346,7 +1347,7 @@ void WL9FM_Monitor_APP(void)
 
 //	System 강제 RESET시키기 위하여 goto lable 추가..
 SYSTEM_RESET :
-
+	WL9FM_PowerIG(PowerIG_ON);
 	System_Variable_Init();
 	WL9FM_System_Init_Start();
 	
