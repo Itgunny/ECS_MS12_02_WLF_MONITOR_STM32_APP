@@ -204,6 +204,12 @@ extern u8 Lamp_Value;
 extern u8 Change_UART4_for_Download;
 extern u8 ST_Update;
 
+
+// Smart Key
+extern WL9FM_receive_smartkey recv_smartkey;
+extern WL9FM_flag_data smk_flag_data;
+
+
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 void WL9F_CAN_Buffer_Init(void)
@@ -461,13 +467,13 @@ void CAN1_RX0_IRQHandler(void)
 	
 	// Iden.Source_Address == 71	 -->>	MCU
 	// Iden.Source_Address == 228	 -->>	EHCU	
-	// Iden.Source_Address == 29	 -->>	Smart Key
+	// Iden.Source_Address == 0x29	 -->>	Smart Key
 	// Iden.Source_Address == 23	 -->>	Cluster
 	// Iden.Source_Address == 221	 -->>	RCU
 	// Iden.Source_Address == 0	 -->>	ECM
 	// Iden.Source_Address == 3	 -->>	TCU
 	
-	if((Iden.Source_Address == 71) || (Iden.Source_Address == 23) || (Iden.Source_Address == 29) || 
+	if((Iden.Source_Address == 71) || (Iden.Source_Address == 23) || (Iden.Source_Address == 0x29) || 
 		(Iden.Source_Address == 228) || (Iden.Source_Address == 221)|| (Iden.Source_Address == 0x4a)|| (Iden.Source_Address == 0xf4)
 		|| (Iden.Source_Address == 0x00)|| (Iden.Source_Address == 0x03))
 		{
@@ -494,6 +500,13 @@ void CAN1_RX0_IRQHandler(void)
 					MoniInfoSendCnt = 0;
 					Flag_1Sec_MoniInfo = 0;
 					MoniInfoTotalPacketNum = 0;
+				}
+				else if(Iden.PDU_Specific == 232)	// Smart Key
+				{
+					smk_flag_data.recv_resp_packet |= RESPONSE_AUTHENTICATION;	
+					//smk_flag_data.recv_resp_packet |= 0x0100; 
+
+					memcpy((u8*)&recv_smartkey, (u8*)&RxMsg.Data[0], 8);
 				}
 				else
 				{
@@ -784,7 +797,12 @@ void USART2_IRQHandler(void)
 								
 							case 145 : memcpy(&Uart2_RxMsg_Multi_145[0], &Uart2_SerialRxMsg[4], sizeof(Uart2_RxMsg_Multi_145));	Flag_SerialRxMsg |= RX_MSG145;break;
 							case 247 : memcpy(&Uart2_RxMsg_Single_247[0], &Uart2_SerialRxMsg[4], sizeof(Uart2_RxMsg_Single_247));	Flag_SerialRxMsg |= RX_MSG247;break;
-						
+
+
+							// smart key
+							case 210 :	// Smart Key Registration, Elimination
+							memcpy(&Uart2_RxMsg_Smk_Reg_Eli[0], &Uart2_SerialRxMsg[4], 8);
+							break;
 
 						#if 0
 							

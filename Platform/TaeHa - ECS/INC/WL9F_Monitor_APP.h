@@ -275,4 +275,6 @@ extern void WL9FM_500mSecOperationFunc(void);
 extern void WL9FM_1SecOperationFunc(void);
 extern void WL9FM_System_Init_Start(void);
 
+
+extern void Init_Smart_Key_valuable(void);
 #endif /* __WL9F_Monitor_APP_H */

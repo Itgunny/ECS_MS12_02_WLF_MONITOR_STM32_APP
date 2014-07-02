@@ -347,6 +347,16 @@ void ReadE2PROM_ToSend()
 #endif
 }
 
+
+void Init_Smart_Key_valuable(void)
+{
+	smk_flag_data.recv_resp_packet = REQUEST_FIRST_AUTHENTICATION;
+	AuthResult = 0xff;
+	SMK_Msg_Send = 0;
+	SMK_Tag_Count = 0;
+}
+
+
 void Send_Multipacket_61184_23(void)
 {
 	if(RTSFlag_61184 == 1)
@@ -561,7 +571,7 @@ void System_CheckPowerIG()
 *	Smart Key Test Function
 *
 *******************************************************************************/
-#if 0
+#if 1
 void SendSMKAuthResult(u8 result)
 {
 	RTC_SendToExynos( result, SMK_Tag_Count );
@@ -843,6 +853,7 @@ void CheckResponseMsgComm(void)
 		SendSMKMsgResult(SMK_MSG_FAIL);
 }
 
+
 void SmartKeyAuthentication(void)
 {
 	u8  Auth = 0;
@@ -906,6 +917,14 @@ void SmartKeyAuthentication(void)
 					else if(smk_flag_data.recv_resp_packet & REQUEST_SECOND_AUTHENTICATION)
 						smk_flag_data.recv_resp_packet = REQUEST_SECOND_AUTHENTICATION;
 				}
+			}
+			else if(smk_flag_data.recv_resp_packet == (REQUEST_FIRST_AUTHENTICATION | RESPONSE_WAIT))
+			{
+				//RequestFirstAuthentication();
+			}
+			else if(smk_flag_data.recv_resp_packet == (REQUEST_SECOND_AUTHENTICATION | RESPONSE_WAIT))
+			{
+				//RequestSecondAuthentication();
 			}
 		}
 	}
@@ -1184,7 +1203,7 @@ void WL9FM_100mSecOperationFunc(void)
 {
 	Lamp_Update_System();	//	체크된 LAMP 상태를 업데이트 한다.
 
-#if 0
+#if 1
 	if(Flag_TxE2pRomData == 1)
 		SmartKeyAuthentication();
 #endif
