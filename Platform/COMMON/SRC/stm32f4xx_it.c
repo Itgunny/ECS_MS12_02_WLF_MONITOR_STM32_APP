@@ -275,6 +275,18 @@ void OperateRingBuffer(void)
 	USART_ITConfig(USART2, USART_IT_TXE, ENABLE);
 	
 }
+void RTCSend(void)
+{
+	if(pWriteBufPos >= (RING_BUF_SIZE-1)) // End of Ring Buffer
+		pWriteBufPos = 0;
+
+	memcpy(&ring_buf[pWriteBufPos], (u8*)&SerialMsgRTC[0], 12);
+
+	pWriteBufPos += 12;
+
+	USART_ITConfig(USART2, USART_IT_TXE, ENABLE);
+}
+
 
 void SendTo_E2PROM(void)
 {
@@ -481,12 +493,7 @@ void CAN1_RX0_IRQHandler(void)
 			{
 				CanRecvCnt = 0;
 	
-				if(pWriteBufPos >= (768*10-1)) // End of Ring Buffer
-					pWriteBufPos = 0;
-	
-				memcpy(&ring_buf[pWriteBufPos], (u8*)&SerialMsgRTC[0], 12);
-			
-				pWriteBufPos += 12;
+				RTCSend();
 				
 			}
 	

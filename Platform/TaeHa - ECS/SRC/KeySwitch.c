@@ -203,13 +203,13 @@ void KeySwitch_SendToEXYNOS(uint8_t KeyValue, uint8_t ShortKey)
     DebugMsg_printf("KEYSWITCH %x\r\n", KeyValueBuffer[2]);
 }
 
-void RTC_SendToExynos(uint8_t Rtc_Hour, uint8_t Rtc_Min)
+void SMK_SendToExynos(uint8_t SMK_Msg, uint8_t SMK_Count)
 {
 	uint8_t KeyValueBuffer[Serial_COM2_TxSize];
 
 	KeyValueBuffer[0] = 0x02;				//	STX
-	KeyValueBuffer[1] = (Rtc_Hour|0x80);				//	KeyValue Command, 0x4B
-	KeyValueBuffer[2] = Rtc_Min;	//	Key Value HexCode, 
+	KeyValueBuffer[1] = SMK_Msg;				//	KeyValue Command, 0x4B
+	KeyValueBuffer[2] = SMK_Count;	//	Key Value HexCode, 
 	KeyValueBuffer[3] = 0x03;				//	ETX
 
 	if(Change_UART4_for_Download==0)

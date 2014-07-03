@@ -574,12 +574,12 @@ void System_CheckPowerIG()
 #if 1
 void SendSMKAuthResult(u8 result)
 {
-	RTC_SendToExynos( result, SMK_Tag_Count );
+	SMK_SendToExynos( result, SMK_Tag_Count );
 }
 
 void SendSMKMsgResult(u8 result)
 {
-	RTC_SendToExynos( result, recv_smartkey.Registered_Tag_Count );
+	SMK_SendToExynos( result, recv_smartkey.Registered_Tag_Count );
 }
 
 void SetTagLevel(u8 level)
@@ -1219,14 +1219,12 @@ void WL9FM_100mSecOperationFunc(void)
    			CAN_ITConfig(CAN1, CAN_IT_FMP0,ENABLE);	
 
 			Buz1 = 0;
-
+            //RTCSend();
 			if(++SendRTCnt >= 10)
 			{
 				SendRTCnt = 0;
-
-				RTC_SendToExynos( WL9FM_RTC.Hour, WL9FM_RTC.Minute );
+				
 			}
-			//Buzzer_SendToEXYNOS(1);
 	   	}
 	}	
 	

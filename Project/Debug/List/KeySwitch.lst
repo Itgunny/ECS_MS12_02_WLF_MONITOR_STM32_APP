@@ -1,6 +1,6 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      02/Jul/2014  11:44:15 #
+# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      02/Jul/2014  19:49:17 #
 # Copyright 1999-2012 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
@@ -238,13 +238,13 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\KeySwitch.c
     203              DebugMsg_printf("KEYSWITCH %x\r\n", KeyValueBuffer[2]);
     204          }
     205          
-    206          void RTC_SendToExynos(uint8_t Rtc_Hour, uint8_t Rtc_Min)
+    206          void SMK_SendToExynos(uint8_t SMK_Msg, uint8_t SMK_Count)
     207          {
     208          	uint8_t KeyValueBuffer[Serial_COM2_TxSize];
     209          
     210          	KeyValueBuffer[0] = 0x02;				//	STX
-    211          	KeyValueBuffer[1] = (Rtc_Hour|0x80);				//	KeyValue Command, 0x4B
-    212          	KeyValueBuffer[2] = Rtc_Min;	//	Key Value HexCode, 
+    211          	KeyValueBuffer[1] = SMK_Msg;				//	KeyValue Command, 0x4B
+    212          	KeyValueBuffer[2] = SMK_Count;	//	Key Value HexCode, 
     213          	KeyValueBuffer[3] = 0x03;				//	ETX
     214          
     215          	if(Change_UART4_for_Download==0)
@@ -612,7 +612,7 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\KeySwitch.c
          8   -> USARTx_EXYNOS
        0   KeyTest_TEST
          0   -> CameraMode
-     264   RTC_SendToExynos
+     264   SMK_SendToExynos
        264   -> USARTx_EXYNOS
 
 
@@ -640,7 +640,7 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\KeySwitch.c
       90  KeySwitch_SendToEXYNOS
       74  KeyTest_TEST
        4  New_Value
-      44  RTC_SendToExynos
+      40  SMK_SendToExynos
        4  Temp_Value2
        4  Temp_Value4
        1  Test1
@@ -653,9 +653,9 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\KeySwitch.c
   55 bytes in section .bss
   52 bytes in section .data
   16 bytes in section .rodata
- 590 bytes in section .text
+ 586 bytes in section .text
  
- 590 bytes of CODE  memory
+ 586 bytes of CODE  memory
   16 bytes of CONST memory
  107 bytes of DATA  memory
 

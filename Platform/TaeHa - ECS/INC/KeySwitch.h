@@ -85,7 +85,7 @@ extern void KeySwitch_Process(void);
 extern void KeyTest_TEST(uint8_t value);
 
 extern void KeySwitch_SendToEXYNOS(uint8_t KeyValue, uint8_t ShortKey);
-extern void RTC_SendToExynos(uint8_t Rtc_Hour, uint8_t Rtc_Min);
+extern void SMK_SendToExynos(uint8_t SMK_Msg, uint8_t SMK_Count);
 
 
 #endif /* __KeySwitch_H */
