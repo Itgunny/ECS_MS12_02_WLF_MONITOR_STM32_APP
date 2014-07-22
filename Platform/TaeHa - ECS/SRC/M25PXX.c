@@ -446,7 +446,7 @@ void ACK_NACK_SendToExynos(uint8_t data)
 	ValueBuffer[0] = 0x02;				//	STX
 	ValueBuffer[1] = WL9FM_USART_FILE_DATA.Bin_Data.index ;			//	index L
 	ValueBuffer[2] = WL9FM_USART_FILE_DATA.Bin_Data.index>>8  ; 	//	index H
-	ValueBuffer[3] = data;				//	ETX
+	ValueBuffer[Serial_COM4_TxSize-1] = data;				//	ETX
 	
 	USARTx_EXYNOS(COM4, (char *)ValueBuffer);	
 }
@@ -456,9 +456,9 @@ void CMD_ACK_SendToExynos(uint8_t data)
 	uint8_t ValueBuffer[Serial_COM4_TxSize];
 
 	ValueBuffer[0] = 0x02;				//	STX
-	ValueBuffer[1] = DOWNCMD;			//	KeyValue Command, 0x4B
+	ValueBuffer[1] = DOWNRES;			//	KeyValue Command, 0x4B
 	ValueBuffer[2] = data;   			//	Key Value HexCode, 
-	ValueBuffer[3] = 0x03;				//	ETX
+	ValueBuffer[Serial_COM4_TxSize-1] = 0x03;				//	ETX
 	
 	USARTx_EXYNOS(COM4, (char *)ValueBuffer);	
 }

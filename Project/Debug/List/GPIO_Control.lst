@@ -1,6 +1,6 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      02/Jul/2014  19:49:19 #
+# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      22/Jul/2014  21:47:26 #
 # Copyright 1999-2012 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
@@ -68,34 +68,39 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\GPIO_Control.c
      33          	GPIO_WriteBit(EXYNOS_PWR_CTRL_PORT, EXYNOS_PWR_CTRL, (BitAction) BitData);
      34          }
      35          
-     36          void WL9FM_EXYNOS_PMIC_ONOFF(void)
-     37          {
-     38          	GPIO_WriteBit(EXYNOS_PMIC_CTRL_PORT, EXYNOS_PMIC_CTRL, Bit_SET);
-     39          	TimeDelay_msec(1000);
-     40          	GPIO_WriteBit(EXYNOS_PMIC_CTRL_PORT, EXYNOS_PMIC_CTRL, Bit_RESET);
-     41          	//TimeDelay_msec(100);
-     42          }
-     43          
-     44          void WL9FM_CAMERA_nRESET(void)
-     45          {
-     46          	GPIO_WriteBit(CAMERA_nRESET_PORT, CAMERA_nRESET, Bit_RESET);
-     47          	TimeDelay_msec(100);
-     48          	GPIO_WriteBit(CAMERA_nRESET_PORT, CAMERA_nRESET, Bit_SET);
-     49          }
+     36          //	이 함수를 실행시키면, 안드로이드에서 전원 팝업이 실행
+     37          //		=> 500msec 이상 Set을 유지 시켜야 정상 동작..
+     38          void WL9FM_EXYNOS_PMIC_PWRON(void)
+     39          {
+     40          	GPIO_WriteBit(EXYNOS_PMIC_CTRL_PORT, EXYNOS_PMIC_CTRL, Bit_SET);
+     41          	TimeDelay_msec(1000);
+     42          	GPIO_WriteBit(EXYNOS_PMIC_CTRL_PORT, EXYNOS_PMIC_CTRL, Bit_RESET);
+     43          }
+     44          
+     45          void WL9FM_EXYNOS_PMIC_PWROFF(void)
+     46          {
+     47          	GPIO_WriteBit(EXYNOS_PMIC_CTRL_PORT, EXYNOS_PMIC_CTRL, Bit_RESET);
+     48          }
+     49          
      50          
-     51          void WL9FM_PowerIG(uint8_t BitData)
+     51          void WL9FM_CAMERA_nRESET(void)
      52          {
-     53              GPIO_WriteBit(PWR_CTRL_PORT, PWR_CTRL, (BitAction) BitData);
-     54          }
-     55          
-     56          uint8_t WL9FM_GetPowerIG(void)
-     57          {
-     58              return GPIO_ReadInputDataBit(PWR_IGMON_PORT, PWR_IGMON);
-     59          }
-     60          
-     61          
+     53          	GPIO_WriteBit(CAMERA_nRESET_PORT, CAMERA_nRESET, Bit_RESET);
+     54          	TimeDelay_msec(100);
+     55          	GPIO_WriteBit(CAMERA_nRESET_PORT, CAMERA_nRESET, Bit_SET);
+     56          }
+     57          
+     58          void WL9FM_PowerIG(uint8_t BitData)
+     59          {
+     60              GPIO_WriteBit(PWR_CTRL_PORT, PWR_CTRL, (BitAction) BitData);
+     61          }
      62          
-     63          /*********(C) COPYRIGHT 2013 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
+     63          uint8_t WL9FM_GetPowerIG(void)
+     64          {
+     65              return GPIO_ReadInputDataBit(PWR_IGMON_PORT, PWR_IGMON);
+     66          }
+     67          
+     68          /*********(C) COPYRIGHT 2013 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
 
    Maximum stack usage in bytes:
 
@@ -105,7 +110,9 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\GPIO_Control.c
          0   -> GPIO_WriteBit
          8   -> GPIO_WriteBit
          8   -> TimeDelay_msec
-       8   WL9FM_EXYNOS_PMIC_ONOFF
+       0   WL9FM_EXYNOS_PMIC_PWROFF
+         0   -> GPIO_WriteBit
+       8   WL9FM_EXYNOS_PMIC_PWRON
          0   -> GPIO_WriteBit
          8   -> GPIO_WriteBit
          8   -> TimeDelay_msec
@@ -121,19 +128,20 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\GPIO_Control.c
 
    Bytes  Function/Label
    -----  --------------
-       4  ??DataTable4
-       4  ??DataTable4_1
-       4  ??DataTable4_2
+       4  ??DataTable5
+       4  ??DataTable5_1
+       4  ??DataTable5_2
       38  WL9FM_CAMERA_nRESET
-      36  WL9FM_EXYNOS_PMIC_ONOFF
+      10  WL9FM_EXYNOS_PMIC_PWROFF
+      36  WL9FM_EXYNOS_PMIC_PWRON
       12  WL9FM_EXYNOS_POWER_ONOFF
        8  WL9FM_GetPowerIG
       10  WL9FM_PowerIG
 
  
- 116 bytes in section .text
+ 126 bytes in section .text
  
- 116 bytes of CODE memory
+ 126 bytes of CODE memory
 
 Errors: none
 Warnings: none

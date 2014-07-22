@@ -33,13 +33,20 @@ void WL9FM_EXYNOS_POWER_ONOFF(uint8_t BitData)
 	GPIO_WriteBit(EXYNOS_PWR_CTRL_PORT, EXYNOS_PWR_CTRL, (BitAction) BitData);
 }
 
-void WL9FM_EXYNOS_PMIC_ONOFF(void)
+//	이 함수를 실행시키면, 안드로이드에서 전원 팝업이 실행
+//		=> 500msec 이상 Set을 유지 시켜야 정상 동작..
+void WL9FM_EXYNOS_PMIC_PWRON(void)
 {
 	GPIO_WriteBit(EXYNOS_PMIC_CTRL_PORT, EXYNOS_PMIC_CTRL, Bit_SET);
 	TimeDelay_msec(1000);
 	GPIO_WriteBit(EXYNOS_PMIC_CTRL_PORT, EXYNOS_PMIC_CTRL, Bit_RESET);
-	//TimeDelay_msec(100);
 }
+
+void WL9FM_EXYNOS_PMIC_PWROFF(void)
+{
+	GPIO_WriteBit(EXYNOS_PMIC_CTRL_PORT, EXYNOS_PMIC_CTRL, Bit_RESET);
+}
+
 
 void WL9FM_CAMERA_nRESET(void)
 {
@@ -57,7 +64,5 @@ uint8_t WL9FM_GetPowerIG(void)
 {
     return GPIO_ReadInputDataBit(PWR_IGMON_PORT, PWR_IGMON);
 }
-
-
 
 /*********(C) COPYRIGHT 2013 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/

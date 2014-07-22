@@ -1,6 +1,6 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      02/Jul/2014  19:49:20 #
+# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      22/Jul/2014  21:24:45 #
 # Copyright 1999-2012 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
@@ -481,7 +481,7 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\M25PXX.c
     446          	ValueBuffer[0] = 0x02;				//	STX
     447          	ValueBuffer[1] = WL9FM_USART_FILE_DATA.Bin_Data.index ;			//	index L
     448          	ValueBuffer[2] = WL9FM_USART_FILE_DATA.Bin_Data.index>>8  ; 	//	index H
-    449          	ValueBuffer[3] = data;				//	ETX
+    449          	ValueBuffer[Serial_COM4_TxSize-1] = data;				//	ETX
     450          	
     451          	USARTx_EXYNOS(COM4, (char *)ValueBuffer);	
     452          }
@@ -491,9 +491,9 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\M25PXX.c
     456          	uint8_t ValueBuffer[Serial_COM4_TxSize];
     457          
     458          	ValueBuffer[0] = 0x02;				//	STX
-    459          	ValueBuffer[1] = DOWNCMD;			//	KeyValue Command, 0x4B
+    459          	ValueBuffer[1] = DOWNRES;			//	KeyValue Command, 0x4B
     460          	ValueBuffer[2] = data;   			//	Key Value HexCode, 
-    461          	ValueBuffer[3] = 0x03;				//	ETX
+    461          	ValueBuffer[Serial_COM4_TxSize-1] = 0x03;				//	ETX
     462          	
     463          	USARTx_EXYNOS(COM4, (char *)ValueBuffer);	
     464          }
@@ -583,12 +583,12 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\M25PXX.c
 
    .cstack Function
    ------- --------
-       8   ACK_NACK_SendToExynos
-         8   -> USARTx_EXYNOS
-       8   CMD_ACK_SendToExynos
-         8   -> USARTx_EXYNOS
-       8   CMD_DUMMY_SendToExynos
-         8   -> USARTx_EXYNOS
+      16   ACK_NACK_SendToExynos
+        16   -> USARTx_EXYNOS
+      16   CMD_ACK_SendToExynos
+        16   -> USARTx_EXYNOS
+      16   CMD_DUMMY_SendToExynos
+        16   -> USARTx_EXYNOS
       16   File_Write_to_SFLAH
          0   -> ACK_NACK_SendToExynos
         16   -> ACK_NACK_SendToExynos
@@ -672,12 +672,11 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\M25PXX.c
        4  ??DataTable14_2
        4  ??DataTable14_3
        4  ??DataTable14_4
-       8  ??Subroutine2_0
        8  ?Subroutine0
-      12  ?Subroutine1
-      34  ACK_NACK_SendToExynos
-      12  CMD_ACK_SendToExynos
-      10  CMD_DUMMY_SendToExynos
+      16  ?Subroutine1
+      30  ACK_NACK_SendToExynos
+      22  CMD_ACK_SendToExynos
+      26  CMD_DUMMY_SendToExynos
      512  Crc16Table
      136  File_Write_to_SFLAH
        2  Index_temp
@@ -707,9 +706,9 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\M25PXX.c
  
  1 026 bytes in section .bss
  1 044 bytes in section .data
- 1 984 bytes in section .text
+ 2 002 bytes in section .text
  
- 1 984 bytes of CODE memory
+ 2 002 bytes of CODE memory
  2 070 bytes of DATA memory
 
 Errors: none

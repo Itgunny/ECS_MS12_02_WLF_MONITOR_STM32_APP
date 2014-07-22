@@ -46,7 +46,9 @@ typedef struct
 #define 	MaxBackLightLEVEL				9			//	LEVEL은 1 ~ 7 설정. LEVEL0은 BackLight Off
 #define 	DefaultLCDBLLEVEL				6			//	Default LCD BackLight LEVEL
 
-#define 	LCDBLCMD    	  				0x4C   		//	LCD BackLight CMD	- 통신 Command Data
+#define 	LCDBLCMD    	  				0x01   		//	LCD BackLight CMD	- 통신 Command Data
+#define 	LCDBLRES    	  				0x81   		//	LCD BackLight CMD	- 통신 Command Data
+
 
 #define 	STM32F4_DISPLAY					1			
 #define 	EXYNOS_DISPLAY					0

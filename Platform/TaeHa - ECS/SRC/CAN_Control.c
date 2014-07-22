@@ -93,6 +93,7 @@ TP_CM* tp_cm_bam;
 #define RX_MSG145	0x8000
 #define RX_MSG247	0x10000
 
+struct st_CAN_Message_Ring_Buffer_Tx_Single CAN_Message_Ring_Buffer_Tx_Single;
 
 
 /* Private macro -------------------------------------------------------------*/
@@ -329,6 +330,26 @@ void WL9F_CAN_Variables_Init(void)
 	memset((u8*)&SerialMsgRTC[2], 0xF0, 2);
 }
 
+u8 can_data_temp[255];
+u8 old_can_data;
+
+void Write_CAN_Single(struct st_CAN_Message1 Message)
+{
+	if(Message.PDU_Specific != 47)  // 비주기 테이터 
+	{
+		memcpy(&CAN_Message_Ring_Buffer_Tx_Single.Message[CAN_Message_Ring_Buffer_Tx_Single.Head],&Message,12);
+		
+		if (++(CAN_Message_Ring_Buffer_Tx_Single.Head) >= MAX_CAN_TX_DATA_SINGLE)
+			CAN_Message_Ring_Buffer_Tx_Single.Head = 0;
+	}
+	else  // 주기 데이터  PS = 47
+	{
+		if(Message.PDU_Specific == 47)
+			memcpy(&Uart2_RxMsg_Single_47,&Message.Data,8);
+	}
+}
+
+
 void SetCanID(u8 PF, u8 PS, u8 Priority)
 {
 	if(PF != 0)
@@ -358,6 +379,84 @@ void CAN_TX_Data(u8* Data)
 	
 	CAN_Transmit(CAN1,&TxMessage);
 }
+u8 can_status;
+u8 can_status_buf[100];
+u8 can_tx_error_count;
+
+void CAN_TX(void)
+{
+	CanTxMsg TxMessage;
+	unsigned char i;
+	static unsigned short Tx_Rountine_Count_CAN;
+
+	
+	if((++Tx_Rountine_Count_CAN%2)==0)
+	{
+		if (CAN_Message_Ring_Buffer_Tx_Single.Head != CAN_Message_Ring_Buffer_Tx_Single.Tail)
+		{
+			
+			TxMessage.ExtId = (CAN_Message_Ring_Buffer_Tx_Single.Message[CAN_Message_Ring_Buffer_Tx_Single.Tail].Priority<<24)+
+							(CAN_Message_Ring_Buffer_Tx_Single.Message[CAN_Message_Ring_Buffer_Tx_Single.Tail].PDU_Format<<16)+
+							(CAN_Message_Ring_Buffer_Tx_Single.Message[CAN_Message_Ring_Buffer_Tx_Single.Tail].PDU_Specific<<8)+
+							CAN_Message_Ring_Buffer_Tx_Single.Message[CAN_Message_Ring_Buffer_Tx_Single.Tail].Source_Address;
+			TxMessage.IDE = CAN_ID_EXT;
+			TxMessage.RTR = CAN_RTR_DATA;
+			TxMessage.DLC = 8;
+
+			
+			for (i = 0; i < 8; i++)
+			{
+				TxMessage.Data[i] = CAN_Message_Ring_Buffer_Tx_Single.Message[CAN_Message_Ring_Buffer_Tx_Single.Tail].Data[i];
+			}
+
+			can_status = CAN_Transmit(CAN1,&TxMessage);
+
+							
+			if(can_status !=CAN_TxStatus_NoMailBox)
+			{
+				if (++(CAN_Message_Ring_Buffer_Tx_Single.Tail) >= MAX_CAN_TX_DATA_SINGLE)
+					CAN_Message_Ring_Buffer_Tx_Single.Tail = 0;
+			}
+			else
+			{
+				can_status_buf[can_tx_error_count++] = can_status;
+				if(can_tx_error_count>100)	can_tx_error_count=0;
+			}
+
+
+		}
+		
+	}
+
+
+	 //if(Tx_Rountine_Count_CAN++ > 500)
+	 //{
+	//		Tx_Rountine_Count_CAN = 0;
+	 //}
+       	
+}
+void MonitorStatus_CAN_TX(void)
+{
+	struct st_CAN_Message1 Send_Message;
+
+
+	Send_Message.Priority = 0x18;
+	Send_Message.PDU_Format = 0xFF;		// 255
+	Send_Message.PDU_Specific = 0x2F;	// 47
+	Send_Message.Source_Address = 0x28;
+	memcpy(&Send_Message.Data,&Uart2_RxMsg_Single_47,8);
+	memcpy(&CAN_Message_Ring_Buffer_Tx_Single.Message[CAN_Message_Ring_Buffer_Tx_Single.Head],&Send_Message,12);
+
+	if (++(CAN_Message_Ring_Buffer_Tx_Single.Head) >= MAX_CAN_TX_DATA_SINGLE)
+		CAN_Message_Ring_Buffer_Tx_Single.Head = 0;
+	//if( (Uart2_RxMsg_Single_47[4] & 0x10 ) == 0x10 )
+	//{
+	//	if( WL9FM_BUZZER.Status == 0 )
+	//		Uart2_RxMsg_Single_47[4] = Uart2_RxMsg_Single_47[4] & 0xCF;
+	//}
+}
+
+
 
 void SendTP_CM_BAM_MultiPacket_161(void)
 {

@@ -28,13 +28,13 @@
 #define	Key_Left			0x02
 #define	Key_Enter			0x04
 #define	Key_Right			0x08
-#define	Key_ESC			0x10
+#define	Key_ESC				0x10
 #define	Key_Info			0x20
 
-#define	Key_CAM			        0x41
-#define	Key_Work_Load		    0x42
+#define	Key_CAM			    0x41
+#define	Key_Work_Load		0x42
 #define	Key_EH_MODE		    0x44
-#define	Key_Ride_Control	    0x48
+#define	Key_Ride_Control	0x48
 #define	Key_Quick_Coupler	0x50
 #define	Key_Auto_Grease	    0x60
 
@@ -105,46 +105,25 @@ extern Realy_Control		rx_Realy_Control;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
-void KeySwitch_SendToEXYNOS(uint8_t KeyValue, uint8_t ShortKey)
+void KeySwitch_SendToEXYNOS(uint32_t KeyValue, uint8_t LongKey)
 {
 	uint8_t KeyValueBuffer[Serial_COM4_TxSize];
 	uint8_t KeyValue_temp;
 
-	//	KeyValue에 + 0x40을 한다. 
-	//	윈도우에서 VK_A에서부터 순서대로 부여하기 위해서 더한다.
-	//	연속키 일 경우, 0x40 + 0x30을 해서 0x70의 값을 만들어 내기 위해서..
+	
+	memset(KeyValueBuffer, 0, Serial_COM4_TxSize * sizeof(uint8_t));
 
 	
-	if(ShortKey)
-	{
-		if((KeyValue & 0xc0)==0x00)		KeyValue_temp = KeyValue+ 0x40;    // first line    //0x4~  --> 0x8~
-		else if((KeyValue & 0x40)==0x40)	KeyValue_temp = KeyValue+ 0x40;    // second line //0x8~  --> 0xc~
-		else if((KeyValue & 0x80)==0x80)	KeyValue_temp = KeyValue+ 0x40;    // third line  // 0xc~ --> 0x4~
-	}
-	else
-	{
-		KeyValue_temp = KeyValue+ 0x40 + 0x20;    // first line    
-	}
 	KeyValueBuffer[0] = 0x02;				//	STX
-	KeyValueBuffer[1] = KeyCMD;				//	KeyValue Command, 0x4B
-	KeyValueBuffer[2] = KeyValue_temp ;	//	Key Value HexCode, 
-	KeyValueBuffer[3] = 0x03;				//	ETX
+	KeyValueBuffer[1] = KeyRES;				//	KeyValue Command, 
+	KeyValueBuffer[2] = KeyValue & 0x000000FF;
+	KeyValueBuffer[3] = ((KeyValue & 0x0000FF00) >> 8);
+	KeyValueBuffer[4] = ((KeyValue & 0x00FF0000) >> 16);
+	KeyValueBuffer[5] = LongKey ;			//	Key Value Short/Long Key, 
 	
-    //  STM32에서 KeySwitch에 따른 BUZZER에 관한 명령을 MCU로 보내기 위해서 추가~
-    
-	if( KeyValue_temp == KEYSWITCH_RIGHT )
-	{
-		if( WL9FM_BUZZER.Status == 1 )
-		{
-			Uart2_RxMsg_Single_160[0] |= 0x10;
-			Buzzer_Off();
-		}
-	}
-	//else if(KeyValue_temp == KEYSWITCH_CAM )
-	//{
-	//	cam_mode_change();	
-	//}
+	KeyValueBuffer[Serial_COM4_TxSize-1] = 0x03;				//	ETX
 	
+   
 ////////////////////////// DPRAM TEST /////////////////////
 #if 0
 	else if( KeyValue_temp == KEYSWITCH_MENU) 
@@ -203,14 +182,16 @@ void KeySwitch_SendToEXYNOS(uint8_t KeyValue, uint8_t ShortKey)
     DebugMsg_printf("KEYSWITCH %x\r\n", KeyValueBuffer[2]);
 }
 
-void SMK_SendToExynos(uint8_t SMK_Msg, uint8_t SMK_Count)
+void SMK_SendToExynos(uint8_t SMK_Auth, uint8_t SMK_Msg, uint8_t SMK_Count)
 {
 	uint8_t KeyValueBuffer[Serial_COM2_TxSize];
 
 	KeyValueBuffer[0] = 0x02;				//	STX
-	KeyValueBuffer[1] = SMK_Msg;				//	KeyValue Command, 0x4B
-	KeyValueBuffer[2] = SMK_Count;	//	Key Value HexCode, 
-	KeyValueBuffer[3] = 0x03;				//	ETX
+	KeyValueBuffer[1] = SMKRES;				
+	KeyValueBuffer[2] = SMK_Auth;	
+	KeyValueBuffer[3] = SMK_Msg;	
+	KeyValueBuffer[4] = SMK_Count;	
+	KeyValueBuffer[Serial_COM2_TxSize-1] = 0x03;				//	ETX
 
 	if(Change_UART4_for_Download==0)
 		USARTx_EXYNOS(COM4, (char *)KeyValueBuffer);	
@@ -441,7 +422,8 @@ void KeySwitch_Process(void)
         if ( (Temp_Value1 == 0) && (New_Value != 0) ) 
         //if (New_Value != 0)
         {
-            Temp_Value1 = New_Value+(KeySwitchScan<<6);
+            //Temp_Value1 = New_Value+(KeySwitchScan<<6);
+            Temp_Value1 = New_Value << (KeySwitchScan * 8);
         }
         
         
@@ -467,7 +449,7 @@ void KeySwitch_Process(void)
 					Buzzer_Set(10);
 					#endif
 
-					KeySwitch_SendToEXYNOS(KeySwitch_Value,1);
+					KeySwitch_SendToEXYNOS(KeySwitch_Value,0);
 				}
 				
 				if (Temp_Cnt == 300)         //  10번 연속 체크 되었을 때
@@ -476,12 +458,12 @@ void KeySwitch_Process(void)
 					KeySwitch_Value = Temp_Value1;   
 					Temp_Cnt -= 50;
 					
-					if(KeySwitch_Value<0x20)
+					//if(KeySwitch_Value<0x20)
 					{
 						#ifdef STM32_BUZZER
 							Buzzer_Set(10);
 						#endif
-						KeySwitch_SendToEXYNOS(KeySwitch_Value,0);
+						KeySwitch_SendToEXYNOS(KeySwitch_Value,1);
 					}
 				}
 			}

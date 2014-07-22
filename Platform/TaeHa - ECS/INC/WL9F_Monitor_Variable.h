@@ -47,7 +47,7 @@ USARTx_INDEX 				WL9FM_USART_INDEX;
 USARTx_FILE_RX_DATA			WL9FM_USART_RX_FILE_DATA;
 USARTx_FILE_RX_DATA			WL9FM_USART_FILE_DATA;
 
-uint8_t                    	KeySwitch_Value;            //  GPIO Key Value
+uint32_t                    	KeySwitch_Value;            //  GPIO Key Value
 uint32_t 					LAMP_Update_Data;			//	LAMP Value
 
 /* Private function prototypes -----------------------------------------------*/

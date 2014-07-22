@@ -64,7 +64,8 @@
 #define SPI_FLASH_WP_ENABLE()     	GPIO_WriteBit(SFLASH_PORT, SFLASH_WP,Bit_RESET)
 #define SPI_FLASH_WP_DISABLE()    	GPIO_WriteBit(SFLASH_PORT, SFLASH_WP,Bit_SET)
 
-#define DOWNCMD 				0x4f
+#define DOWNCMD 				0x06
+#define DOWNRES 				0x86
 #define DUMMYCMD 				0xF5
 
 

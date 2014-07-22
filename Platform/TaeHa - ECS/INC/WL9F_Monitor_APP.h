@@ -117,13 +117,26 @@
 #define SMK_MSG_TAG_ELIMINATION_SUCCESS		0x06
 
 
-#define	VersionHighCMD		0x50
-#define	VersionLowCMD		0x51
-#define	VersionSubCMD		0x52
+#define	VersionCMD		0x05
+#define	VersionRES		0x85
 
-#define	VERSION_HIGH	1
-#define	VERSION_LOW		0
-#define	VERSION_SUB		4
+#define	StartCANCMD		0x09
+#define	StartCANRES		0x89
+
+#define	RTCCMD			0x03
+#define	RTCRES			0x83
+
+#define	SMKCMD			0x07
+#define	SMKRES			0x87
+
+#define	CANUPDATECMD	0x0A
+#define	CANUPDATERES	0x8A
+
+
+#define	VERSION_HIGH		1
+#define	VERSION_LOW			0
+#define	VERSION_SUB_HIGH	0
+#define	VERSION_SUB_LOW		5
 
 
 //=================================================================

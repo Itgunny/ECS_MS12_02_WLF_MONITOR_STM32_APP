@@ -58,14 +58,16 @@
 
 //	기타 시스템 용도로 사용하는 키는 Key 값 +0x40으로 처리.
 #define KEYSWITCH_NONE		    0x20		//	+0x40 : VK_NUMPAD0(0x60) 
-#define KEYSWITCH_POWER_OFF     0x95		//	+0x40 : VK_NUMPAD1(0x61)
+#define KEYSWITCH_POWER_OFF     0xF5		//	+0x40 : VK_NUMPAD1(0x61)
 											
 #define MAXSCAN 	            3           //  Scan Switch 
 #define MAXINPUT               	6           //  Input Switch 
 
 #define MAXSWITCH               6           //  Input Switch 
 
-#define KeyCMD  		  	  	0x4B   		//	KeyCMD - 통신 Command Data
+#define KeyCMD  		  	  	0x00   		//	KeyCMD - 통신 Command Data
+#define KeyRES  		  	  	0x80   		//	KeyCMD - 통신 Command Data
+
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
@@ -77,15 +79,15 @@
 /* Exported macro ------------------------------------------------------------*/
 /* Exported variables --------------------------------------------------------*/
 
-extern uint8_t                  KeySwitch_Value;
+extern uint32_t                  KeySwitch_Value;
 
 /* Exported functions ------------------------------------------------------- */
 extern void KeySwitch_Init(void);
 extern void KeySwitch_Process(void);
 extern void KeyTest_TEST(uint8_t value);
 
-extern void KeySwitch_SendToEXYNOS(uint8_t KeyValue, uint8_t ShortKey);
-extern void SMK_SendToExynos(uint8_t SMK_Msg, uint8_t SMK_Count);
+extern void KeySwitch_SendToEXYNOS(uint32_t KeyValue, uint8_t LongKey);
+extern void SMK_SendToExynos(uint8_t SMK_Auth, uint8_t SMK_Msg, uint8_t SMK_Count);
 
 
 #endif /* __KeySwitch_H */

@@ -60,10 +60,11 @@ extern EHCU_Status		rx_EHCU_Status;
 extern Auto_position_Status rx_Auto_position_Status;
 extern st_CANDATA_HCEPGN_65428	RX_HCEPGN_65428;
 extern WEIGHING_SYSTEM_STATUS_65450 rx_Weighing_System_Status;
+extern CMD_LAMP rx_CMD_LAMP;
 /* Private define ------------------------------------------------------------*/
 
 #define RING_BUF_SIZE			768*10
-#define UART2_Rx_BUF_SIZE		27			// Max Multi Packet Data -> 3개
+#define UART2_Rx_BUF_SIZE		14			
 #define UART2_Tx_BUF_SIZE		17
 
 /*
@@ -130,6 +131,9 @@ u8 SendEEPROMDataCnt = 0;
 u8 Flag_TxE2pRomData = 0;
 u8 stop_send_as_phone_data = 0;
 u8 Stm32_Update_CMD;
+u8 CANUpdateFlag = 0;
+u8 CANUpdateSA = 0;
+
 
 u8 Buz1;
 
@@ -203,6 +207,7 @@ extern u8 Lamp_Value;
 //////////////// stm32 update /////////////////////
 extern u8 Change_UART4_for_Download;
 extern u8 ST_Update;
+extern u8 UpdateMode;
 
 
 // Smart Key
@@ -485,23 +490,14 @@ void CAN1_RX0_IRQHandler(void)
 	// Iden.Source_Address == 0	 -->>	ECM
 	// Iden.Source_Address == 3	 -->>	TCU
 	
-	if((Iden.Source_Address == 71) || (Iden.Source_Address == 23) || (Iden.Source_Address == 0x29) || 
-		(Iden.Source_Address == 228) || (Iden.Source_Address == 221)|| (Iden.Source_Address == 0x4a)|| (Iden.Source_Address == 0xf4)
-		|| (Iden.Source_Address == 0x00)|| (Iden.Source_Address == 0x03))
+	if((Iden.Source_Address == 0x47) || (Iden.Source_Address == 0x17) || (Iden.Source_Address == 0x29) || 
+		(Iden.Source_Address == 0xE4) || (Iden.Source_Address == 0xDD)|| (Iden.Source_Address == 0x4a)|| (Iden.Source_Address == 0xf4)
+		|| (Iden.Source_Address == 0x00)|| (Iden.Source_Address == 0x03) || (Iden.Source_Address == 0x02))
 		{
-			if(++CanRecvCnt >= 100)
-			{
-				CanRecvCnt = 0;
-	
-				RTCSend();
-				
-			}
-	
-	
-			PF = (RxMsg.ExtId  & 0x00ff0000) >> 16;
 	
 			if((PF == 254) || (PF == 255) || (PF == 239) )
 			{	
+				PF = (RxMsg.ExtId  & 0x00ff0000) >> 16;
 				if(Iden.PDU_Specific == 251)
 				{
 					MoniInfoSendCnt = 0;
@@ -517,153 +513,21 @@ void CAN1_RX0_IRQHandler(void)
 				}
 				else
 				{
-					if( (Iden.PDU_Specific == 84)  ) 
-					{
-					
-						Buz1 = (RxMsg.Data[2] & 0x30 ) >> 4; 		// 1 :On 	0 : Off
-					
-						if( (Buz1 == 1))
-						{
-							Buzzer_SendToEXYNOS(1);
-						}
-						else
-						{
-							Buzzer_SendToEXYNOS(0);
-						}
-					}
+	
 					//if(Iden.PDU_Specific == 0x9b)
 						OperateRingBuffer();
 				}
 			}
-			else if((PF == 235) || (PF == 236))
-			{
-				if((Iden.PDU_Specific == 255)||(Iden.PDU_Specific == 0x28))
-				{
-					if(PF == 236)		// TP.CM_BAM
-					{ 
-						if(RxMsg.Data[0] == 32) 	// Control Byte (Normal)
-						{
-							pgn = (RxMsg.Data[6] << 8) | (RxMsg.Data[5]);
-							if(pgn == 65340)
-							{
-								TotPacketNum = RxMsg.Data[3];		// Total number of packets
-								TotMsgSize = (RxMsg.Data[2] << 8) | RxMsg.Data[1];
-							}
-							else
-							{
-								Uart2_SerialTxMsg[15] = 0;
-								OperateRingBuffer();
-							}
-							return;
-						}
-
-						else if(RxMsg.Data[0] == 17)	// Control Byte (CTS) 0x11
-						{
-							pgn = (RxMsg.Data[6] << 8) | (RxMsg.Data[5]);
-							if(pgn == 61184)
-							{
-								RTSFlag_61184 = 2;
-							}
-							
-						}
-						else if(RxMsg.Data[0] == 19)	// Control Byte (ACK) 0x13 
-						{
-							pgn = (RxMsg.Data[6] << 8) | (RxMsg.Data[5]);
-							if(pgn == 61184)
-							{
-								RTSFlag_61184 = 0;
-							}
-						}
-						else if(RxMsg.Data[0] == 16)	// Control Byte (RTS) 0x10
-						{
-							if(Iden.Source_Address == 0x4a)
-							{
-								Uart2_SerialTxMsg[15] = 0;
-								OperateRingBuffer();
-								RMCUpgn = (RxMsg.Data[6] << 8) | (RxMsg.Data[5]);
-								if(RMCUpgn == 61184)
-								{
-									 Send_CTS_61184(RxMsg.Data,0x4A);
-									 RMCU_CTSFlag_61184 = 1;
-									 RMCU_RecvTotalPacket_61184 = RxMsg.Data[3];
-									 memcpy((u8*)RMCU_ACK_Multi_61184,(u8*)RxMsg.Data,8);
-								}
-							}
-							else
-							{
-								Uart2_SerialTxMsg[15] = 0;
-								OperateRingBuffer();
-								pgn = (RxMsg.Data[6] << 8) | (RxMsg.Data[5]);
-								if(pgn == 61184)
-								{
-									 Send_CTS_61184(RxMsg.Data,71);
-									 CTSFlag_61184 = 1;
-									 RecvTotalPacket_61184 = RxMsg.Data[3];
-									 memcpy((u8*)ACK_Multi_61184,(u8*)RxMsg.Data,8);
-								}
-							}
-							
-							
-							
-						}
-
-								
-					}
-	
-					if(Iden.Source_Address == 0x4a)
-					{
-						if(PF == 235)
-						{
-							Uart2_SerialTxMsg[15] = 0;
-							OperateRingBuffer();
-							if(RMCUpgn == 61184)
-							{
-								if(RMCU_RecvTotalPacket_61184 == RxMsg.Data[0])
-								{
-									RMCU_RecvTotalPacket_61184 = 0;
-									Send_ACK_61184(RMCU_ACK_Multi_61184,0x4a);
-								}
-							
-							}
-
-							
-						}
-					}else
-					{
-						if(PF == 235)
-						{
-							if(pgn == 65340)
-							{
-								memcpy(&MachineBasicInformation[(RxMsg.Data[0]-1)*7], &RxMsg.Data[1] , 7);
-								if(RxMsg.Data[0] == TotPacketNum)
-								{
-									pgn = TotPacketNum = 0;
-									RecvMachInfo = 1;
-								}
-							}
-							
-							else
-							{
-								Uart2_SerialTxMsg[15] = 0;
-								OperateRingBuffer();
-							}
-
-							if(pgn == 61184)
-							{
-								if(RecvTotalPacket_61184 == RxMsg.Data[0])
-								{
-									RecvTotalPacket_61184 = 0;
-									Send_ACK_61184(ACK_Multi_61184,71);
-								}
-							
-							}
-						}
-					}
-					
-				}
+			
+			else
+			{                    
+                OperateRingBuffer();
 			}
 	
 			CommErrCnt = 0;
+
+			
+			
 		}
 
 }
@@ -734,6 +598,8 @@ unsigned char temp_61184;
 
 void USART2_IRQHandler(void)
 {
+	struct st_CAN_Message1 Send_Message;
+	
 	if(USART_GetITStatus(USART2, USART_IT_RXNE) != RESET)
 	{
 		Uart2_SerialRxMsg[Uart2_SerialRxCnt] = (u8)USART_ReceiveData(USART2);
@@ -749,162 +615,13 @@ void USART2_IRQHandler(void)
 				if(Uart2_SerialRxMsg[0] == 0x02)		// STX
 					Uart2_SerialRxCnt++;
 				break;
-			case 1:
-				if(Uart2_SerialRxMsg[1] == 0xF5)		// ID
-					Uart2_SerialRxCnt++;
-				else
-					Uart2_SerialRxCnt = 0;
-				break;
 			case UART2_Rx_BUF_SIZE-1:
 				Uart2_SerialRxCnt = 0;
 
 				if(Uart2_SerialRxMsg[UART2_Rx_BUF_SIZE-1] == 0x03)		// ETX
 				{
-                    			//  디버깅할 때만 사용할 것
-					#ifdef DEBUG_CAN_RX
-					DebugMsg_printf("\r\n");
-					#endif
-					
-					switch(Uart2_SerialRxMsg[3])		// Cmd
-					{
-						case 1 :		// UART TX Start Flag
-							Flag_UartTxStart = 1;
-							Flag_TxE2pRomData=0;
-							SendEEPROMDataCnt=0;
-							break;
-						case 2 :	// Save Data1
-							memcpy(&Uart2_RxMsg_Save_Data1[0], &Uart2_SerialRxMsg[4], 8);
-							break;
-						case 3 :	// Save Data2
-							memcpy(&Uart2_RxMsg_Save_Data2[0], &Uart2_SerialRxMsg[4], 8);
-							break;
-						case 4 :	// A/S Phone Number -> Save to EEPROM
-							memcpy(&Uart2_RxMsg_AS_Phone_Data[0], &Uart2_SerialRxMsg[4], 8);
-							break;
-
-							
-						
-							case 11 : memcpy(&Uart2_RxMsg_Single_11[0], &Uart2_SerialRxMsg[4], sizeof(Uart2_RxMsg_Single_11));	Flag_SerialRxMsg |= RX_MSG11; break;
-							case 12 : memcpy(&Uart2_RxMsg_Single_12[0], &Uart2_SerialRxMsg[4], sizeof(Uart2_RxMsg_Single_12));	Flag_SerialRxMsg |= RX_MSG12;break;
-							case 21 : memcpy(&Uart2_RxMsg_Single_21[0], &Uart2_SerialRxMsg[4], sizeof(Uart2_RxMsg_Single_21));	Flag_SerialRxMsg |= RX_MSG21;break;
-							case 23 : memcpy(&Uart2_RxMsg_Multi_23[0], &Uart2_SerialRxMsg[4], sizeof(Uart2_RxMsg_Multi_23));	Flag_SerialRxMsg |= RX_MSG23; RTSFlag_61184 = 1;break;
-							case 61 : memcpy(&Uart2_RxMsg_Single_61[0], &Uart2_SerialRxMsg[4], sizeof(Uart2_RxMsg_Single_61));	Flag_SerialRxMsg |= RX_MSG61;break;
-							case 62 : memcpy(&Uart2_RxMsg_Single_62[0], &Uart2_SerialRxMsg[4], sizeof(Uart2_RxMsg_Single_62));	Flag_SerialRxMsg |= RX_MSG62;break;
-							case 101 : memcpy(&Uart2_RxMsg_Single_101[0], &Uart2_SerialRxMsg[4], sizeof(Uart2_RxMsg_Single_101));Flag_SerialRxMsg |= RX_MSG101;	break;
-							case 104 : memcpy(&Uart2_RxMsg_Single_104[0], &Uart2_SerialRxMsg[4], sizeof(Uart2_RxMsg_Single_104));	Flag_SerialRxMsg |= RX_MSG104;break;
-							case 105 : memcpy(&Uart2_RxMsg_Single_105[0], &Uart2_SerialRxMsg[4], sizeof(Uart2_RxMsg_Single_105));	Flag_SerialRxMsg |= RX_MSG105;break;
-							case 109 : memcpy(&Uart2_RxMsg_Single_109[0], &Uart2_SerialRxMsg[4], sizeof(Uart2_RxMsg_Single_109));	Flag_SerialRxMsg |= RX_MSG109;break;
-							case 121 : memcpy(&Uart2_RxMsg_Single_121[0], &Uart2_SerialRxMsg[4], sizeof(Uart2_RxMsg_Single_121));	Flag_SerialRxMsg |= RX_MSG121;break;
-							case 123 : memcpy(&Uart2_RxMsg_Single_123[0], &Uart2_SerialRxMsg[4], sizeof(Uart2_RxMsg_Single_123));	Flag_SerialRxMsg |= RX_MSG123;break;
-							case 201 : memcpy(&Uart2_RxMsg_Single_201[0], &Uart2_SerialRxMsg[4], sizeof(Uart2_RxMsg_Single_201));	Flag_SerialRxMsg |= RX_MSG201;break;
-							case 203 : memcpy(&Uart2_RxMsg_Single_203[0], &Uart2_SerialRxMsg[4], sizeof(Uart2_RxMsg_Single_203));	Flag_SerialRxMsg |= RX_MSG203;break;
-								
-								
-							case 47 : memcpy(&Uart2_RxMsg_Single_47[0], &Uart2_SerialRxMsg[4], sizeof(Uart2_RxMsg_Single_47));	break;
-								
-							case 145 : memcpy(&Uart2_RxMsg_Multi_145[0], &Uart2_SerialRxMsg[4], sizeof(Uart2_RxMsg_Multi_145));	Flag_SerialRxMsg |= RX_MSG145;break;
-							case 247 : memcpy(&Uart2_RxMsg_Single_247[0], &Uart2_SerialRxMsg[4], sizeof(Uart2_RxMsg_Single_247));	Flag_SerialRxMsg |= RX_MSG247;break;
-
-
-							// smart key
-							case 210 :	// Smart Key Registration, Elimination
-							memcpy(&Uart2_RxMsg_Smk_Reg_Eli[0], &Uart2_SerialRxMsg[4], 8);
-							break;
-
-						#if 0
-							
-						case 203 :  // for EHCU setting 61184 format 131017
-							Flag_SerialRxMsg |= RX_MSG203;
-							memcpy(&Uart2_RxMsg_Single_46[0], &Uart2_SerialRxMsg[4], 8);
-							break;
-						case 69 :	// When needed
-							Flag_SerialRxMsg |= RX_MSG69;
-							memcpy(&Uart2_RxMsg_Single_69[0], &Uart2_SerialRxMsg[4], 8);
-							break;
-						case 70 :	// When needed - RX_MSG69 Multi Packet
-							Flag_SerialRxMsg |= RX_MSG69_M;
-							memcpy(&Uart2_RxMsg_Multi_69[0], &Uart2_SerialRxMsg[4], 21);
-							break;
-						case 160 :	// 100 ms
-							if((Uart2_RxMsg_Single_160[0] & 0xc0) == 0xc0)
-								memcpy(&Uart2_RxMsg_Single_160[0], &Uart2_SerialRxMsg[4], 8);
-							else
-							{
-								memcpy(&Uart2_RxMsg_Single_160[1], &Uart2_SerialRxMsg[5], 7);
-								Uart2_RxMsg_Single_160[0] |= (Uart2_SerialRxMsg[4] & 0x3F);
-							}
-																						
-							if(((Uart2_SerialRxMsg[4] & 0xc0) == 0x00) || ((Uart2_SerialRxMsg[4] & 0xc0) == 0x40))
-							        memcpy(&Uart2_RxMsg_Single_160[0], &Uart2_SerialRxMsg[4], 8);
-							break;
-						case 161 :	// When needed
-							Flag_SerialRxMsg |= RX_MSG161;
-							memcpy(&Uart2_RxMsg_Multi_161[0], &Uart2_SerialRxMsg[4], 14);
-							temp_61184=0;
-							break;
-						case 162 :	// When needed
-							//Flag_SerialRxMsg |= RX_MSG162;
-							if(Uart2_RxMsg_Single_162[4] == 0)
-								memcpy(&Uart2_RxMsg_Single_162[0], &Uart2_SerialRxMsg[4], 8);
-							else
-								memcpy(&Uart2_RxMsg_Single_162[0], &Uart2_SerialRxMsg[4], 4);
-							break;	
-						case 163 :
-							Flag_SerialRxMsg |= RX_MSG163;
-							memcpy(&Uart2_RxMsg_Single_163[0], &Uart2_SerialRxMsg[4], 8);
-							break;
-						case 174 :
-							Flag_SerialRxMsg |= RX_MSG174;
-							memcpy(&Uart2_RxMsg_Single_174[0], &Uart2_SerialRxMsg[4], 8);
-							break;
-						case 205 :	// Stop Send Cmd - A/S Phone Number
-							stop_send_as_phone_data = 1;
-							break;
-
-						case 210 :	// Smart Key Registration, Elimination
-							memcpy(&Uart2_RxMsg_Smk_Reg_Eli[0], &Uart2_SerialRxMsg[4], 8);
-							break;
-						case 247 :
-							Flag_SerialRxMsg |= RX_MSG247;
-							memcpy(&Uart2_RxMsg_Single_247[0], &Uart2_SerialRxMsg[4], 8);							
-							break;	
-						case 251 :
-							Flag_SerialRxMsg |= RX_MSG251;
-							memcpy(&Uart2_RxMsg_Single_251[0], &Uart2_SerialRxMsg[4], 8);							
-							break;
-						case 252 :	// Clock Set Data
-							Flag_SerialRxMsg |= RX_MSG252;
-							memcpy(&Uart2_RxMsg_Single_252[0], &Uart2_SerialRxMsg[4], 8);							
-							break;
-						case 253 :
-							Flag_SerialRxMsg |= RX_MSG253;
-							memcpy(&Uart2_RxMsg_Single_253[0], &Uart2_SerialRxMsg[4], 8);							
-							break;
-						case 101 :
-						case 102 :
-						case 109 : 
-						case 61 : 
-						case 31 : 
-						case 33 : 
-						case 34 : 
-						case 123 : 
-							Flag_SerialRxMsg |= RX_MSG239;
-							memcpy(&Uart2_RxMsg_Single_239[0], &Uart2_SerialRxMsg[4], 8);		
-								
-							temp_61184++;
-							
-							break;
-
-						case 121 :
-							Flag_SerialRxMsg |= RX_MSG239;
-							Flag_SerialRxMsg |= RX_MSG239_121;
-							memcpy(&Uart2_RxMsg_Single_239[0], &Uart2_SerialRxMsg[4], 8);	
-							memcpy(&Uart2_RxMsg_Single_239_121[0], &Uart2_SerialRxMsg[4], 8);	
-							temp_61184++;
-							break;
-					#endif
-						
-					}
+					memcpy(&Send_Message,&Uart2_SerialRxMsg[1],12);	
+					Write_CAN_Single(Send_Message);
 				}
 				else
 				{
@@ -931,7 +648,7 @@ void USART2_IRQHandler(void)
 			{
 			    USART_ITConfig(USART2, USART_IT_TXE, DISABLE);
 			    return;
-		    	}
+		    }
 		}
 
 		if(pReadBufPos >= (RING_BUF_SIZE-1))
@@ -952,7 +669,7 @@ void USART2_IRQHandler(void)
 
 			if(Flag_TxE2pRomData == 0)
 			{
-                		//  보내는 횟수 중요하다. 초기에 버그가 생실 수 있으니, 테스트 필요함!!!
+                //  보내는 횟수 중요하다. 초기에 버그가 생실 수 있으니, 테스트 필요함!!!
 				//	EEPROM Data를 6번 보낸다.
 				if(SendEEPROMDataCnt > 5)	
 				{
@@ -1039,17 +756,18 @@ void UART4_Receive_CMD(void)
 				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == LAMPCMD)		WL9FM_USART_INDEX.COM4_RxCnt++;
 				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == CAMCMD)		WL9FM_USART_INDEX.COM4_RxCnt++;
 				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == DOWNCMD)	WL9FM_USART_INDEX.COM4_RxCnt++;
-				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == VersionHighCMD) WL9FM_USART_INDEX.COM4_RxCnt++;
-				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == VersionLowCMD) WL9FM_USART_INDEX.COM4_RxCnt++;
-				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == VersionSubCMD) WL9FM_USART_INDEX.COM4_RxCnt++;
-				else if ((WL9FM_USART_DATA.COM4_RxBuf[1]&0x80) == 0x80)	WL9FM_USART_INDEX.COM4_RxCnt++;          
+				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == VersionCMD) WL9FM_USART_INDEX.COM4_RxCnt++;
+				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == StartCANCMD) WL9FM_USART_INDEX.COM4_RxCnt++;    
+				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == RTCCMD) WL9FM_USART_INDEX.COM4_RxCnt++;
+				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == CANUPDATECMD) WL9FM_USART_INDEX.COM4_RxCnt++;
+
                 else
                 {
                   	WL9FM_USART_INDEX.COM4_RxCnt = 0;
                 }
 				break;
 
-		case 3: 
+		case Serial_COM4_RxSize-1: 
 				WL9FM_USART_INDEX.COM4_RxCnt = 0;
 				
 				//  디버깅할 때만 사용할 것
@@ -1076,13 +794,22 @@ void UART4_Receive_CMD(void)
 					break;
 
 				case BUZZERCMD :	//	Buzzer Command
+					if (WL9FM_USART_DATA.COM4_RxBuf[2] == 0)	//	Buzzer Off
+					{
+						Buzzer_UnLimitOff();
+					}
+					else if(WL9FM_USART_DATA.COM4_RxBuf[2] == 1)					//	Buzzer On
+					{
+						Buzzer_UnLimitOn();
+					}
 					break;
 
 				case LAMPCMD :	//	Buzzer Command
 					Lamp_name = (WL9FM_USART_DATA.COM4_RxBuf[2] & 0xf0)>>4;
 					Lamp_Value = (WL9FM_USART_DATA.COM4_RxBuf[2] & 0x0f);
-					
+					memcpy(&rx_CMD_LAMP , &WL9FM_USART_DATA.COM4_RxBuf[2], 8);	
 					Lamp_Update_State();
+					//Lamp_Update_System();
 					break;
 					
 				case CAMCMD:
@@ -1092,34 +819,46 @@ void UART4_Receive_CMD(void)
 				case DOWNCMD:
 					Stm32_Update_CMD = WL9FM_USART_DATA.COM4_RxBuf[2];
 					ST_Update=1;
+
 					break;
-				case  DUMMYCMD:
-					CMD_DUMMY_SendToExynos(0);
-					break;
-				case VersionHighCMD:
+				case VersionCMD:
 					
 					Temp[0] = 0x02;				
-					Temp[1] = VersionHighCMD;				
-					Temp[2] = VERSION_HIGH ;	
-					Temp[3] = 0x03;	
+					Temp[1] = VersionRES;				
+					Temp[2] = ((VERSION_HIGH  << 4) & 0xF0 ) + (VERSION_LOW & 0x0F);	
+					Temp[3] = ((VERSION_SUB_HIGH  << 4) & 0xF0 )+ (VERSION_SUB_LOW & 0x0F);	
+					// HW Version/////
+					Temp[4] = 'A';
+					Temp[5] = 1;
+					Temp[6] = 0;
+					//////////////////
+					Temp[Serial_COM4_RxSize-1] = 0x03;	
 					USARTx_EXYNOS(COM4, (char *)Temp);	
 					break;
-				case VersionLowCMD:
+				case StartCANCMD:
+					//Flag_UartTxStart = 1;
+					CAN_ITConfig(CAN1, CAN_IT_FMP0,ENABLE);	
+					break;
+				case RTCCMD:
+					WL9FM_RTC.Year = WL9FM_USART_DATA.COM4_RxBuf[2];
+					WL9FM_RTC.Month = WL9FM_USART_DATA.COM4_RxBuf[3];
+					WL9FM_RTC.Date = WL9FM_USART_DATA.COM4_RxBuf[4];
+					WL9FM_RTC.Day = WL9FM_USART_DATA.COM4_RxBuf[5];
+					WL9FM_RTC.Hour = WL9FM_USART_DATA.COM4_RxBuf[6];
+					WL9FM_RTC.Minute= WL9FM_USART_DATA.COM4_RxBuf[7];
+					WL9FM_RTC.Second= WL9FM_USART_DATA.COM4_RxBuf[8];
+					WRITE_RTC(WL9FM_RTC);
+					break;
+
+				case SMKCMD:
+					memcpy(&Uart2_RxMsg_Smk_Reg_Eli[0], &WL9FM_USART_DATA.COM4_RxBuf[2], 8);
+					break;
+				case CANUPDATECMD:
+					CANUpdateFlag = WL9FM_USART_DATA.COM4_RxBuf[2];
+					CANUpdateSA = WL9FM_USART_DATA.COM4_RxBuf[3];
+					break;
 					
-					Temp[0] = 0x02;				
-					Temp[1] = VersionLowCMD;				
-					Temp[2] = VERSION_LOW ;	
-					Temp[3] = 0x03;	
-					USARTx_EXYNOS(COM4, (char *)Temp);	
-					break;
-				case VersionSubCMD:
 					
-					Temp[0] = 0x02;				
-					Temp[1] = VersionSubCMD;				
-					Temp[2] = VERSION_SUB ;	
-					Temp[3] = 0x03;	
-					USARTx_EXYNOS(COM4, (char *)Temp);	
-					break;
 				default :
 					break;								
 			}

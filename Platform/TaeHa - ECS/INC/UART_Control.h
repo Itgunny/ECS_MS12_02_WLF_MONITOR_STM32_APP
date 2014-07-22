@@ -72,10 +72,10 @@ typedef enum
 //  TxSize를 255보다 크게 변경하려면, 
 //  void USARTx_printf(uint8_t COM, char *fmt,...) func에서 string size를 크게 해야한다.
 #define Serial_COM2_TxSize            255
-#define Serial_COM4_TxSize            4
+#define Serial_COM4_TxSize            11
 
 #define Serial_COM2_RxSize            255
-#define Serial_COM4_RxSize            4   
+#define Serial_COM4_RxSize            11   
 
 #define Serial_file_RxSize            1030
 

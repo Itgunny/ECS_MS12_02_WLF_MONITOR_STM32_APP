@@ -27,7 +27,8 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
-#define 	LAMPCMD			0x4d
+#define 	LAMPCMD			0x08
+#define 	LAMPRES			0x88
 
 
 
@@ -108,6 +109,43 @@
 
 #define 	LAMP_ALL_ON 					0x00ffffff
 #define 	LAMP_ALL_OFF 					0x00000000
+
+
+#pragma pack(1)
+typedef struct
+{	
+	unsigned char	MainLight1:2;
+	unsigned char	MainLight2:2;
+	unsigned char	WorkLight1:2;
+	unsigned char	WorkLight2:2;
+
+	unsigned char	AutoGrease1:2;
+	unsigned char	AutoGrease2:2;
+	unsigned char	QuickCoupler1:2;
+	unsigned char	QuickCoupler2:2;
+
+	unsigned char	RideControl1:2;
+	unsigned char	RideControl2:2;
+	unsigned char	WorkLoad1:2;
+	unsigned char	WorkLoad2:2;
+
+	unsigned char	BeaconLamp:2;
+	unsigned char	RearWiper:2;
+	unsigned char	MirrorHeat:2;
+	unsigned char	AutoPosition1:2;
+	
+	unsigned char	AutoPosition2:2;
+	unsigned char	FineModulation:2;
+	unsigned char	FN:2;
+	unsigned char	Illumination:2;
+
+
+	unsigned char	DM[3];
+}CMD_LAMP;
+
+#pragma pack()
+
+
 
 #pragma pack(1)
 typedef struct

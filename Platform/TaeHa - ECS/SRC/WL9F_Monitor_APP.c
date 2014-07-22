@@ -124,6 +124,7 @@ u8 send_mcu_data=0;
 u8 send_bkcu_data=0;
 
 u8 ST_Update=0;
+u8 UpdateMode = 0;
 
 extern u8 Uart2_RxMsg_Single_252[8];
 extern u8 Uart2_RxMsg_Single_253[8];
@@ -143,6 +144,7 @@ extern u8 Flag_TxE2pRomData;
 extern u8 Buz1;
 
 extern u8 Stm32_Update_CMD;
+extern u8 CANUpdateFlag;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
@@ -406,9 +408,23 @@ void Send_Multipacket_145(void)
 
 void read_clock(void)
 {
+	uint8_t Temp[Serial_COM4_TxSize];
+	
 	READ_RTC(&WL9FM_RTC);
-	SerialMsgRTC[8] = WL9FM_RTC.Hour;
-	SerialMsgRTC[9] = WL9FM_RTC.Minute;
+
+	Temp[0] = 0x02;				
+	Temp[1] = RTCRES;				
+	Temp[2] = WL9FM_RTC.Year;	
+	Temp[3] = WL9FM_RTC.Month;	
+	Temp[4] = WL9FM_RTC.Date;	
+	Temp[5] = WL9FM_RTC.Day;	
+	Temp[6] = WL9FM_RTC.Hour;	
+	Temp[7] = WL9FM_RTC.Minute;	
+	Temp[8] = WL9FM_RTC.Second;	
+	Temp[9] = 0xFF;	
+	Temp[Serial_COM4_RxSize-1] = 0x03;	
+	USARTx_EXYNOS(COM4, (char *)Temp);	
+
 }
 
 void SaveDataToEEPROM(void)
@@ -491,14 +507,20 @@ void System_CheckPowerIG()
 
 			while(1)
 			{
+				//	100msec 마다 15번 체크 -> 1.5초..
+				//	PowerIG Off 상태일 경우
+				//		-> while 루프를 나와서 PowerOff Logic 진행  
+				//	PowerIG On  상태일 경우 
+				//		-> PowerIG Control 신호를 Enable하고, 정상 동작으로 진행 
 				if(!WL9FM_GetPowerIG())
 				{
 					//	POWER OFF 일 때, 시리얼과 캔 통신 부분을 죽여놔야지, 정상적으로 RESET 동작을 수행
 					USART_ITConfig(USART2, USART_IT_TXE, DISABLE);
 					CAN_ITConfig(CAN1, CAN_IT_FMP0, DISABLE);
 
-					WL9FM_PowerIG(PowerIG_ON);	// System Reset
-					//SystemReset = 1;
+					WL9FM_PowerIG(PowerIG_ON);	// PowerIG Set
+
+					//	1.5초 동안 체크해서 PowerIG가 다시 들어오면, Software Reset을 하지 않고, 다시 동작
 					SystemReset = 0;
 					return;
 				}
@@ -506,62 +528,50 @@ void System_CheckPowerIG()
 				TimeDelay_msec(100);
 
 				PwrOffCnt++;
-				if(PwrOffCnt >= 15)	//	100msec 마다 15번 체크 -> 1.5초..
+				if(PwrOffCnt >= 15)	
 					break;
 			}
 
 			Buzzer_Off();
 
-			//	POWER OFF Code를 3msec 마다 2번 SPICA로 보낸다. 
-			KeySwitch_SendToEXYNOS(KEYSWITCH_POWER_OFF,0);	
-			TimeDelay_msec(3);
-			KeySwitch_SendToEXYNOS(KEYSWITCH_POWER_OFF,0);	
-			TimeDelay_msec(3);
+			//	POWER OFF Code를 3msec 마다 2번 Exynos로 보낸다. 
+			KeySwitch_SendToEXYNOS(KEYSWITCH_POWER_OFF,0);	TimeDelay_msec(3);
+			KeySwitch_SendToEXYNOS(KEYSWITCH_POWER_OFF,0);	TimeDelay_msec(3);
 
 			//	POWER OFF 일 때, 시리얼과 캔 통신 부분을 죽여놔야지, 정상적으로 RESET 동작을 수행
 			USART_ITConfig(USART2, USART_IT_TXE, DISABLE);
 			CAN_ITConfig(CAN1,CAN_IT_FMP0, DISABLE);
 
-			//	엔딩화면 딜레이 시간
-			//	1200msec 이상 설정하면, LCD가 하얗게 된다. -> POWER Off Time으로 인하여
-
+			//	POWER OFF 일 때, LAMP Clear
 			LAMP_Update_Data = LAMP_ALL_OFF;
 			Lamp_Update_System();
 			
+			//	엔딩화면 딜레이 시간
+			//	1200msec 이상 설정하면, LCD가 하얗게 된다. -> POWER Off Time으로 인하여
 			TimeDelay_msec(1200);
 
-			LCDBL_PWM_LEVEL(0);                         	//  LCDBL PWM LEVEL0
-			LCDBL_ONOFF(LCDBL_OFF);			//  LCDBL Power On!!!
-	
+			//	LCDBL, LCD, LED Off
+			LCDBL_PWM_LEVEL(0);            	//  LCDBL PWM LEVEL0
+			LCDBL_ONOFF(LCDBL_OFF);			//  LCDBL Power On
+			LCD_POWER_ONOFF(LCDPWR_OFF);	//  LCD Power Off
+			LED_POWER_ONOFF(LED_OFF);       //  LED Off
 
-			LCD_POWER_ONOFF(LCDPWR_OFF);                        //  LCD Power Off
-			LED_POWER_ONOFF(LED_OFF);                        	//  LED Off
-
+			WL9FM_EXYNOS_PMIC_PWRON();
 			
-			WL9FM_EXYNOS_POWER_ONOFF(EXYNOS_POWER_OFF);
-			TimeDelay_msec(100);
-			WL9FM_EXYNOS_POWER_ONOFF(EXYNOS_POWER_ON);
-			
-			WL9FM_EXYNOS_PMIC_ONOFF();
-				
-			
-			
-			
+			//	Exynos VDD5V0_4412 Off
 			WL9FM_EXYNOS_POWER_ONOFF(EXYNOS_POWER_OFF);
 			
-			
+			TimeDelay_msec(1000);			//	1.5초 동안. 대기한 후, 마지막으로 PowerIG를 체크 
+
 			//	엔딩화면이 지난 후에 PowerIG가 다시 들어오면, System을 RESET 시킨다. 
-			TimeDelay_msec(1000);
 			if(!WL9FM_GetPowerIG())
 			{
-				WL9FM_PowerIG(PowerIG_ON);
-				SystemReset = 1;
+				WL9FM_PowerIG(PowerIG_ON);	// 	PowerIG Set
+				SystemReset = 1;			//	Software RESET
 				return;
 			}
 
-			WL9FM_PowerIG(PowerIG_OFF);                    //  24v Main Power Off	    
-
-			
+			WL9FM_PowerIG(PowerIG_OFF);		//  24v Main Power Off	    
 		}
 	}
 }
@@ -574,12 +584,12 @@ void System_CheckPowerIG()
 #if 1
 void SendSMKAuthResult(u8 result)
 {
-	SMK_SendToExynos( result, SMK_Tag_Count );
+	SMK_SendToExynos( result,0xFF, SMK_Tag_Count );
 }
 
 void SendSMKMsgResult(u8 result)
 {
-	SMK_SendToExynos( result, recv_smartkey.Registered_Tag_Count );
+	SMK_SendToExynos( 0xFF, result, recv_smartkey.Registered_Tag_Count );
 }
 
 void SetTagLevel(u8 level)
@@ -967,6 +977,8 @@ void WL9FM_1mSecOperationFunc(void)
 			KeySwitch_SendToEXYNOS(KEYSWITCH_NONE,0);
 		}			
 	}
+	// CAN_TX Routine
+	CAN_TX();
 #endif
 }
 
@@ -977,221 +989,7 @@ void WL9FM_1mSecOperationFunc(void)
   */
 void WL9FM_10mSecOperationFunc(void)
 {
-	Lamp_Update_State();	//	LAMP Update 상태를 체크한다.
-	//Lamp_Update_System();  
-	if(Flag_SerialRxMsg != 0)
-	{
-		if((Flag_SerialRxMsg & RX_MSG11) != 0)
-		{
-			Flag_SerialRxMsg &= ~(RX_MSG11);
-			SetCanID(239, 71, 6);
-			CAN_TX_Data(&Uart2_RxMsg_Single_11[0]);
-		}
-
-		if((Flag_SerialRxMsg & RX_MSG12) != 0)
-		{
-			Flag_SerialRxMsg &= ~(RX_MSG12);
-			SetCanID(239, 71, 6);
-			CAN_TX_Data(&Uart2_RxMsg_Single_12[0]);
-		}
-
-		if((Flag_SerialRxMsg & RX_MSG21) != 0)
-		{
-			Flag_SerialRxMsg &= ~(RX_MSG21);
-			SetCanID(239, 71, 6);
-			CAN_TX_Data(&Uart2_RxMsg_Single_21[0]);
-		}
-
-		if((Flag_SerialRxMsg & RX_MSG23) != 0)
-		{
-			Send_Multipacket_61184_23();
-		}
-
-		if((Flag_SerialRxMsg & RX_MSG61) != 0)
-		{
-			Flag_SerialRxMsg &= ~(RX_MSG61);
-			SetCanID(239, 71, 6);
-			CAN_TX_Data(&Uart2_RxMsg_Single_61[0]);
-		}
-
-		if((Flag_SerialRxMsg & RX_MSG62) != 0)
-		{
-			Flag_SerialRxMsg &= ~(RX_MSG62);
-			SetCanID(239, 71, 6);
-			CAN_TX_Data(&Uart2_RxMsg_Single_62[0]);
-		}
-
-		if((Flag_SerialRxMsg & RX_MSG101) != 0)
-		{
-			Flag_SerialRxMsg &= ~(RX_MSG101);
-			SetCanID(239, 71, 6);
-			CAN_TX_Data(&Uart2_RxMsg_Single_101[0]);
-		}
-
-		if((Flag_SerialRxMsg & RX_MSG104) != 0)
-		{
-			Flag_SerialRxMsg &= ~(RX_MSG104);
-			SetCanID(239, 71, 6);
-			CAN_TX_Data(&Uart2_RxMsg_Single_104[0]);
-		}
-
-		if((Flag_SerialRxMsg & RX_MSG105) != 0)
-		{
-			Flag_SerialRxMsg &= ~(RX_MSG105);
-			SetCanID(239, 71, 6);
-			CAN_TX_Data(&Uart2_RxMsg_Single_105[0]);
-		}
-
-		if((Flag_SerialRxMsg & RX_MSG109) != 0)
-		{
-			Flag_SerialRxMsg &= ~(RX_MSG109);
-			SetCanID(239, 71, 6);
-			CAN_TX_Data(&Uart2_RxMsg_Single_109[0]);
-			if(Uart2_RxMsg_Single_109[2] != 0xFF )
-			{	
-				WL9FM_RTC.Hour = Uart2_RxMsg_Single_109[2];
-				WL9FM_RTC.Minute= Uart2_RxMsg_Single_109[3];
-			
-				WRITE_RTC(WL9FM_RTC);
-			}
-		}
-
-		if((Flag_SerialRxMsg & RX_MSG121) != 0)
-		{
-			Flag_SerialRxMsg &= ~(RX_MSG121);
-			SetCanID(239, 71, 6);
-			CAN_TX_Data(&Uart2_RxMsg_Single_121[0]);
-			SetCanID(239, 52, 6);
-			CAN_TX_Data(&Uart2_RxMsg_Single_121[0]);
-		}
-
-		if((Flag_SerialRxMsg & RX_MSG123) != 0)
-		{
-			Flag_SerialRxMsg &= ~(RX_MSG123);
-			SetCanID(239, 71, 6);
-			CAN_TX_Data(&Uart2_RxMsg_Single_123[0]);
-		}
-
-		if((Flag_SerialRxMsg & RX_MSG201) != 0)
-		{
-			Flag_SerialRxMsg &= ~(RX_MSG201);
-			SetCanID(239, 71, 6);
-			CAN_TX_Data(&Uart2_RxMsg_Single_201[0]);
-		}
-
-		if((Flag_SerialRxMsg & RX_MSG203) != 0)
-		{
-			Flag_SerialRxMsg &= ~(RX_MSG203);
-			SetCanID(239, 228, 6);		// EHCU
-			CAN_TX_Data(&Uart2_RxMsg_Single_203[0]);
-		}
-
-		if((Flag_SerialRxMsg & RX_MSG145) != 0)
-		{
-			Send_Multipacket_145();
-		}
-
-		
-		if((Flag_SerialRxMsg & RX_MSG247) != 0)
-		{
-			Flag_SerialRxMsg &= ~(RX_MSG247);
-			SetCanID(255, 247, 6);
-			CAN_TX_Data(&Uart2_RxMsg_Single_247[0]);
-		}
-	}
-	
-	#if 0
-	if(Flag_SerialRxMsg != 0)
-	{
-		if((Flag_SerialRxMsg & RX_MSG247) != 0)
-		{
-			Flag_SerialRxMsg &= ~(RX_MSG247);
-			SetCanID(255, 247, 6);
-			CAN_TX_Data(&Uart2_RxMsg_Single_247[0]);
-		}
-		
-		if((Flag_SerialRxMsg & RX_MSG253) != 0)
-		{
-			Flag_SerialRxMsg &= ~(RX_MSG253);
-			SetCanID(255, 253, 6);
-			CAN_TX_Data(&Uart2_RxMsg_Single_253[0]);
-		}
-		
-		if((Flag_SerialRxMsg & RX_MSG203) != 0)	    // 61184 -203 
-		{
-			Flag_SerialRxMsg &= ~(RX_MSG203);
-			SetCanID(239, 228, 6);
-			CAN_TX_Data(&Uart2_RxMsg_Single_46[0]);
-		}
-
-		if((Flag_SerialRxMsg & RX_MSG69) != 0)	    // 69 - Single Packet
-		{
-			Flag_SerialRxMsg &= ~(RX_MSG69);
-			SetCanID(255, 69, 6);
-			CAN_TX_Data(&Uart2_RxMsg_Single_69[0]);
-		}
-		
-		if((Flag_SerialRxMsg & RX_MSG163) != 0)
-		{
-			Flag_SerialRxMsg &= ~(RX_MSG163);
-			SetCanID(255, 163, 6);
-			CAN_TX_Data(&Uart2_RxMsg_Single_163[0]);
-		}
-
-		if((Flag_SerialRxMsg & RX_MSG174) != 0)
-		{
-			Flag_SerialRxMsg &= ~(RX_MSG174);
-			SetCanID(255, 174, 6);
-			CAN_TX_Data(&Uart2_RxMsg_Single_174[0]);
-		}
-		
-		if((Flag_SerialRxMsg & RX_MSG69_M) != 0)	// 69 - Multi Packet
-		{
-			Send_Multipacket_69();
-		}
-		else if((Flag_SerialRxMsg & RX_MSG161) != 0)
-		{
-			Send_Multipacket_161();
-		}
-		else if((Flag_SerialRxMsg & RX_MSG202) != 0)
-		{
-			Send_Multipacket_AS_Num();
-		}
-		else
-		{
-			///+++
-			if(gStartHCE_DT == 1)
-			{
-				if(MachInfoSendCnt <= 60)
-				{
-					if(MultiPacketSendOrder == 0)
-						MultiPacketSendOrder = 1;
-				}
-				else if(MoniInfoSendCnt <= 60)
-					MultiPacketSendOrder = 2;
-			}
-		}
-	}
-	else
-	{
-		///+++
-		if(gStartHCE_DT == 1)
-		{
-			if(MachInfoSendCnt <= 60)
-			{
-				if(MultiPacketSendOrder == 0)
-					MultiPacketSendOrder = 1;
-			}
-			else if(MoniInfoSendCnt <= 60)
-				MultiPacketSendOrder = 2;
-		}
-	}
-
-	if(gStartHCE_DT == 1)
-	{
-		Send_Multipacket_Info();
-	}
-	#endif
+	//Lamp_Update_State();	//	LAMP Update 상태를 체크한다.
 }
 
 /**
@@ -1232,8 +1030,14 @@ void WL9FM_100mSecOperationFunc(void)
 
 	if(ST_Update)
 	{
-		STM32_Update(Stm32_Update_CMD);	
-		ST_Update=0;
+		if(UpdateMode < 10)
+			UpdateMode++;
+
+		if(UpdateMode >= 10)
+		{
+			STM32_Update(Stm32_Update_CMD); 
+			ST_Update=0;
+		}
 	}
 		
 	//	WL9A Monitor RESET Code
@@ -1252,10 +1056,12 @@ void WL9FM_100mSecOperationFunc(void)
 
 void WL9FM_500mSecOperationFunc(void)
 {
+//	SetCanID(255, 47, 6);
+//	CAN_TX_Data(&Uart2_RxMsg_Single_47[0]);
 
-	SetCanID(255, 47, 6);
-	CAN_TX_Data(&Uart2_RxMsg_Single_47[0]);
-	
+	if(CANUpdateFlag != 1)
+		MonitorStatus_CAN_TX();
+
 }
 
 
@@ -1280,13 +1086,14 @@ void WL9FM_1SecOperationFunc(void)
 				MultiPacketSendOrder = 0;
 		}
 	}
-	read_clock();
+	if(UpdateMode < 10)
+		read_clock();
 
 
 	//  ++, kutelf, 131007
 	//	카메라 동작 모드 일 경우, 3초 마다 한번씩 각 채널의
 	//	상태를 체크하여, Video가 없으면 No Video 띄워준다.
-	if (Camera_CheckFlag == 1)
+	if (Camera_CheckFlag == 1 && Camera_Mode != 0xFF)
 	{
 		if (++Camera_CheckCnt == 6) Camera_CheckCnt = 0;
 			
@@ -1305,9 +1112,14 @@ void WL9FM_1SecOperationFunc(void)
 
 void WL9FM_System_Init_Start(void)
 {
-	WL9FM_PowerIG(PowerIG_OFF);					//    ->	GPIO_Control.c PowerIG를 OFF로 만들어 놓고, 
+	//	만약에 Software RESET 일 경우, 이미 PowerIG_ON을 한 상태이므로 PowerIG_OFF를 수행하지 않는다. 
+	if (SystemReset != 1)
+	{
+		WL9FM_PowerIG(PowerIG_OFF);				//  ->	GPIO_Control.c PowerIG를 OFF로 만들어 놓고
+												//		System_CheckPowerIG() 함수에서 PowerIG 상태에 따라서 설정
+	}													
 	WL9FM_EXYNOS_POWER_ONOFF(EXYNOS_POWER_ON);	//	->	GPIO_Control.c EXYNOS-4412 Power On..
-	WL9FM_EXYNOS_PMIC_ONOFF();
+	WL9FM_EXYNOS_PMIC_PWRON();
 	
 	WL9FM_CAMERA_nRESET();						//	-> 	TW2835, TW8832 Power On..
 	TW8832_Control_Init();						//	-> 	TW8832_Control.c (LCD Interface)
@@ -1337,13 +1149,7 @@ void WL9FM_System_Init_Start(void)
 
 	M25P32_Init();
 
-	//WL9FM_PowerIG(PowerIG_ON);				//	->	GPIO_Control.c 초기화가 끝나면, PowerIG를 ON 한다.!!
-	LAMP_Update_Data = LAMP_ALL_OFF;			//	-> 	LAMP ALL OFF
-	
-
-
-
-	
+	LAMP_Update_Data = LAMP_ALL_OFF;			//	-> 	LAMP ALL OFF	
 }
 
 /**
@@ -1357,7 +1163,7 @@ void WL9FM_Monitor_APP(void)
 	DebugMsg_printf("== START -> DebugMsg from Exynos-4412 \r\n");    
 
 	System_Configuration();		//  ->  System_Init.c
-	                    //      RCC, NVIC, GPIO Initialize
+	                    		//      RCC, NVIC, GPIO Initialize
 
 	System_Initialize();		//	-> 	System_Init.c
 								//		IAP와 동일한 초기화를 한다. -> 상태 변경 없음.

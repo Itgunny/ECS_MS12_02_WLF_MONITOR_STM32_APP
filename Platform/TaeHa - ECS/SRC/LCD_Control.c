@@ -53,7 +53,7 @@ const uint16_t LCDBL_PWMLEVEL[MaxBackLightLEVEL] =
 }; 
 
 //  ++, kutelf, 131007
-unsigned char Camera_Mode = 0;
+unsigned char Camera_Mode = 0xFF;
 unsigned char Camera_CheckFlag = 1;
 unsigned char Camera_CheckCnt = 0;
 //  --, kutelf, 131007

@@ -110,7 +110,9 @@
 #define INIT_PUBLICS
 #define I2C_PUBLICS
 
-#define CAMCMD 				0x4e
+#define CAMCMD 				0x04
+#define CAMRES 				0x84
+
 //==================================================================================
 
 #define	HSPB_SET	GPIO_SetBits(TW2835_CTRLPORT, TW2835_HSPB)

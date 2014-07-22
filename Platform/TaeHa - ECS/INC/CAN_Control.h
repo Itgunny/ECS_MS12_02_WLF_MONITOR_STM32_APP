@@ -27,6 +27,34 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
+#define MAX_CAN_TX_DATA_SINGLE      255
+#define MAX_CAN_TX_DATA_MULTI       4
+
+#define CANCMD	0x50
+
+
+#pragma pack(1)
+struct st_CAN_Message1
+{	
+	unsigned char Priority;
+	unsigned char PDU_Format;
+	unsigned char PDU_Specific;
+	unsigned char Source_Address;       
+
+	unsigned char Data[8];   
+};
+#pragma pack()
+
+struct st_CAN_Message_Ring_Buffer_Tx_Single
+{
+	unsigned char Head;
+	unsigned char Tail;     
+
+	struct st_CAN_Message1 Message[MAX_CAN_TX_DATA_SINGLE];   
+};
+
+
+
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
@@ -67,6 +95,14 @@ extern void SendTP_CM_BAM_MultiPacket_MoniInfo(void);
 extern void SendMultiPacket_MoniInfo(void);
 extern void RequestMachBasicInfo(void);
 extern void CompareMachBasicInfo(void);
+
+
+
+extern void CAN_TX(void);
+extern void MonitorStatus_CAN_TX(void);
+
+extern void Write_CAN_Single(struct st_CAN_Message1 Message);
+
 #endif /* __CAN_Control_H */
 
 /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/

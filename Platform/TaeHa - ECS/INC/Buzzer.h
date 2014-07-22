@@ -26,9 +26,10 @@
 #include "WL9F_Monitor_APP.h"	
 
 /* Private typedef -----------------------------------------------------------*/
-#define 	BUZZERCMD    	  	0x42   	//	BUZZER - 통신 Command Data
-#define 	BUZZERDAT_ON   	  	0x11   	//	BUZZER - 통신 Command Data
-#define 	BUZZERDAT_OFF  	  	0x10   	//	BUZZER - 통신 Command Data
+#define 	BUZZERCMD    	  	0x02   	//	BUZZER - 통신 Command Data
+#define 	BUZZERRES    	  	0x82   	//	BUZZER - 통신 Command Data
+//#define 	BUZZERDAT_ON   	  	0x11   	//	BUZZER - 통신 Command Data
+//#define 	BUZZERDAT_OFF  	  	0x10   	//	BUZZER - 통신 Command Data
 
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/

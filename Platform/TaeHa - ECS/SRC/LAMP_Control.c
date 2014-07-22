@@ -30,6 +30,8 @@ Realy_Control		rx_Realy_Control;
 EHCU_Status		rx_EHCU_Status;
 Auto_position_Status rx_Auto_position_Status;
 WEIGHING_SYSTEM_STATUS_65450 rx_Weighing_System_Status;
+CMD_LAMP rx_CMD_LAMP;
+
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
@@ -493,55 +495,54 @@ void Lamp_Update_State(void)
 {
 	unsigned int i;
 	
-	for (i= 9;  i !=0; i--)
-	{
-		Led_SIG_TEMP[i] 		= Led_SIG_TEMP[i -1];
-		Led_BL_TEMP[i] 		= Led_BL_TEMP[i -1];
-	}
+	//for (i= 9;  i !=0; i--)
+	//{
+	//	Led_SIG_TEMP[i] 		= Led_SIG_TEMP[i -1];
+	//	Led_BL_TEMP[i] 		= Led_BL_TEMP[i -1];
+	//}
 
 	Led_SIG_TEMP[0]  = 0;
 
-	Led_SIG_TEMP[0] += (Main_Light_left_LampSystem())?(Main_Light_1_G):(0x00);
-	Led_SIG_TEMP[0] += (Main_Light_Right_LampSystem())?(Main_Light_2_B):(0x00);
+	Led_SIG_TEMP[0] += (rx_CMD_LAMP.MainLight1)?(Main_Light_1_G):(0x00);
+	Led_SIG_TEMP[0] += (rx_CMD_LAMP.MainLight2)?(Main_Light_2_B):(0x00);
 
-	Led_SIG_TEMP[0] += (Work_Light_left_LampSystem())?(Work_Light_G1):(0x00);
-	Led_SIG_TEMP[0] += (Work_Light_right_LampSystem())?(Work_Light_G2):(0x00);
+	Led_SIG_TEMP[0] += (rx_CMD_LAMP.WorkLight1)?(Work_Light_G1):(0x00);
+	Led_SIG_TEMP[0] += (rx_CMD_LAMP.WorkLight2)?(Work_Light_G2):(0x00);
 	
-	Auto_Grease_LampSystem();
-	Led_SIG_TEMP[0] += (Auto_Grease_Green_flag)?(Auto_Grease_1_G):(0x00);
-	Led_SIG_TEMP[0] += (Auto_Grease_Red_flag)?(Auto_Grease_2_R):(0x00);
+
+	Led_SIG_TEMP[0] += (rx_CMD_LAMP.AutoGrease1)?(Auto_Grease_1_G):(0x00);
+	Led_SIG_TEMP[0] += (rx_CMD_LAMP.AutoGrease2)?(Auto_Grease_2_R):(0x00);
 	
-	Quick_Coupler_LampSystem();
-	Led_SIG_TEMP[0] += (Attachment_Lock_flag)?(Quick_coupler_1_G):(0x00);
-	Led_SIG_TEMP[0] += (Attachment_Unlock_flag)?(Quick_coupler_2_R):(0x00);
+
+	Led_SIG_TEMP[0] += (rx_CMD_LAMP.QuickCoupler1)?(Quick_coupler_1_G):(0x00);
+	Led_SIG_TEMP[0] += (rx_CMD_LAMP.QuickCoupler2)?(Quick_coupler_2_R):(0x00);
 
 	
-	Ride_Control_LampSystem();
-	Led_SIG_TEMP[0] += (Ride_Control_flag)?(Ride_Control_1_G):(0x00);
-	Led_SIG_TEMP[0] += (AutoRide_Control_flag)?(Ride_Control_2_B):(0x00);
+	Led_SIG_TEMP[0] += (rx_CMD_LAMP.RideControl1)?(Ride_Control_1_G):(0x00);
+	Led_SIG_TEMP[0] += (rx_CMD_LAMP.RideControl2)?(Ride_Control_2_B):(0x00);
 
-	WorkLoad_LampSystem();
-	Led_SIG_TEMP[0] += (WorkLoad_Green_Flag)?(Work_load_1_G):(0x00);
-	Led_SIG_TEMP[0] += (WorkLoad_Blue_Flag)?(Work_load_2_B):(0x00);
+	Led_SIG_TEMP[0] += (rx_CMD_LAMP.WorkLoad1)?(Work_load_1_G):(0x00);
+	Led_SIG_TEMP[0] += (rx_CMD_LAMP.WorkLoad2)?(Work_load_2_B):(0x00);
 	
-	Led_SIG_TEMP[0] += (Beacon_LampSystem())?(Beacon_lamp_G):(0x00);
+	Led_SIG_TEMP[0] += (rx_CMD_LAMP.BeaconLamp)?(Beacon_lamp_G):(0x00);
 
-	Led_SIG_TEMP[0] += (Rear_Wiper_LampSystem())?(Rear_Wiper_G):(0x00);
+	Led_SIG_TEMP[0] += (rx_CMD_LAMP.RearWiper)?(Rear_Wiper_G):(0x00);
 	
-	Led_SIG_TEMP[0] += (Mirror_heat_LampSystem())?(Mirror_Heat_1_G):(0x00);
-	Led_SIG_TEMP[0] += (Fine_Modulation_LampSystem())?(Fine_Modulation_G):(0x00);
+	Led_SIG_TEMP[0] += (rx_CMD_LAMP.MirrorHeat)?(Mirror_Heat_1_G):(0x00);
+	
+	Led_SIG_TEMP[0] += (rx_CMD_LAMP.AutoPosition1)?(Auto_Position_1_G):(0x00);
+	Led_SIG_TEMP[0] += (rx_CMD_LAMP.AutoPosition2)?(Auto_Position_2_G):(0x00);
+	
+	Led_SIG_TEMP[0] += (rx_CMD_LAMP.FineModulation)?(Fine_Modulation_G):(0x00);
 
 
-	Led_SIG_TEMP[0] += (Boom_Detent_LampSystem())?(Auto_Position_1_G):(0x00);
-	Led_SIG_TEMP[0] += (Bucket_Detent_LampSystem())?(Auto_Position_2_G):(0x00);
+	Led_BL_TEMP[0] = rx_CMD_LAMP.Illumination;
 
-	Led_BL_TEMP[0] = Illumination_Lamp_System();
-
-	if((Led_SIG_TEMP[9] == Led_SIG_TEMP[8]) && (Led_SIG_TEMP[8] == Led_SIG_TEMP[1]) && (Led_SIG_TEMP[1] == Led_SIG_TEMP[0])) 
+	//if((Led_SIG_TEMP[9] == Led_SIG_TEMP[8]) && (Led_SIG_TEMP[8] == Led_SIG_TEMP[1]) && (Led_SIG_TEMP[1] == Led_SIG_TEMP[0])) 
 	{
 		LAMP_Update_Data = Led_SIG_TEMP[0];
 	}
-	if((Led_BL_TEMP[9] == Led_BL_TEMP[8]) && (Led_BL_TEMP[8] == Led_BL_TEMP[1]) && (Led_BL_TEMP[1] == Led_BL_TEMP[0]))  
+	//if((Led_BL_TEMP[9] == Led_BL_TEMP[8]) && (Led_BL_TEMP[8] == Led_BL_TEMP[1]) && (Led_BL_TEMP[1] == Led_BL_TEMP[0]))  
 	{		
 		Illumination_Sig = Led_BL_TEMP[0];
 	}
