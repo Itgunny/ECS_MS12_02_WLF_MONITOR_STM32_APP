@@ -1,38 +1,39 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      22/Jul/2014  21:24:52 #
+# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      28/Jul/2014  22:19:59 #
 # Copyright 1999-2012 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
 #    Endian       =  little                                                   #
-#    Source file  =  C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa -          #
-#                    ECS\SRC\UART_Control.c                                   #
-#    Command line =  "C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa -         #
-#                    ECS\SRC\UART_Control.c" -D USE_STDPERIPH_DRIVER -D       #
+#    Source file  =  C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Platform\TaeHa #
+#                     - ECS\SRC\UART_Control.c                                #
+#    Command line =  "C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Platform\TaeH #
+#                    a - ECS\SRC\UART_Control.c" -D USE_STDPERIPH_DRIVER -D   #
 #                    STM32F4XX -D USE_STM324xG_EVAL -D USE_FULL_ASSERT -lcN   #
-#                    C:\Tools\WL9F\WL_F_Monitor_APP\Project\Debug\List\ -o    #
-#                    C:\Tools\WL9F\WL_F_Monitor_APP\Project\Debug\Obj\        #
-#                    --debug --endian=little --cpu=Cortex-M4 -e               #
-#                    --fpu=VFPv4_sp --dlib_config "C:\Tools\IAR               #
+#                    C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Project\Debug\ #
+#                    List\ -o C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Proje #
+#                    ct\Debug\Obj\ --debug --endian=little --cpu=Cortex-M4    #
+#                    -e --fpu=VFPv4_sp --dlib_config "C:\Tools\IAR            #
 #                    Systems\Embedded Workbench 6.5\arm\INC\c\DLib_Config_Ful #
-#                    l.h" -I C:\Tools\WL9F\WL_F_Monitor_APP\Project\..\Platfo #
-#                    rm\COMMON\INC\ -I "C:\Tools\WL9F\WL_F_Monitor_APP\Projec #
-#                    t\..\Platform\TaeHa - ECS\INC\" -I                       #
-#                    C:\Tools\WL9F\WL_F_Monitor_APP\Project\..\Libraries\CMSI #
-#                    S\Device\ST\STM32F4xx\Include\ -I                        #
-#                    C:\Tools\WL9F\WL_F_Monitor_APP\Project\..\Libraries\STM3 #
-#                    2F4xx_StdPeriph_Driver\inc\ -Oh --use_c++_inline -I      #
-#                    "C:\Tools\IAR Systems\Embedded Workbench                 #
-#                    6.5\arm\CMSIS\Include\"                                  #
-#    List file    =  C:\Tools\WL9F\WL_F_Monitor_APP\Project\Debug\List\UART_C #
-#                    ontrol.lst                                               #
-#    Object file  =  C:\Tools\WL9F\WL_F_Monitor_APP\Project\Debug\Obj\UART_Co #
-#                    ntrol.o                                                  #
+#                    l.h" -I C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Projec #
+#                    t\..\Platform\COMMON\INC\ -I                             #
+#                    "C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Project\..\Pl #
+#                    atform\TaeHa - ECS\INC\" -I                              #
+#                    C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Project\..\Lib #
+#                    raries\CMSIS\Device\ST\STM32F4xx\Include\ -I             #
+#                    C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Project\..\Lib #
+#                    raries\STM32F4xx_StdPeriph_Driver\inc\ -Oh               #
+#                    --use_c++_inline -I "C:\Tools\IAR Systems\Embedded       #
+#                    Workbench 6.5\arm\CMSIS\Include\"                        #
+#    List file    =  C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Project\Debug\ #
+#                    List\UART_Control.lst                                    #
+#    Object file  =  C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Project\Debug\ #
+#                    Obj\UART_Control.o                                       #
 #                                                                             #
 #                                                                             #
 ###############################################################################
 
-C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\UART_Control.c
+C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\UART_Control.c
       1          /**
       2            ******************************************************************************
       3            * @file    UART_Control.c 
@@ -58,297 +59,428 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\UART_Control.c
      23          
      24          /* Private typedef -----------------------------------------------------------*/
      25          /* Private define ------------------------------------------------------------*/
-     26          /* Private macro -------------------------------------------------------------*/
-     27          /* Private variables ---------------------------------------------------------*/
-     28          USART_TypeDef* Serial_USART[5]     = {  0, 
-     29                                                  0, 
-     30                                                  Serial_COM2, 
-     31                                                  0,
-     32                                                  Serial_COM4, 
-     33                                                  }; 
-     34          
-     35          GPIO_TypeDef*  Serial_PORT[5]      = {  0, 
-     36                                                  0, 
-     37                                                  Serial_COM2_GPIO, 
-     38                                                  0,
-     39          	                                    Serial_COM4_GPIO, 
-     40                                                  };
-     41          
-     42          const uint32_t Serial_USART_CLK[5] = {  0, 
-     43                                                  0, 
-     44                                                  Serial_COM2_CLK, 
-     45                                                  0,
-     46                                                  Serial_COM4_CLK, 
-     47                                                  };
-     48          
-     49          const uint32_t Serial_PORT_CLK[5]  = {  0, 
-     50                                                  0, 
-     51                                                  Serial_COM2_GPIO_CLK, 
-     52                                                  0,
-     53                                                  Serial_COM4_GPIO_CLK, 
-     54                                                  };
-     55          
-     56          const uint16_t Serial_TX_PIN[5]    = {  0, 
-     57                                                  0, 
-     58                                                  Serial_COM2_TxPin, 
-     59                                                  0,
-     60                                                  Serial_COM4_TxPin,
-     61                                                  };
-     62          
-     63          const uint16_t Serial_RX_PIN[5]    = {  0, 
-     64                                                  0, 
-     65                                                  Serial_COM2_RxPin,
-     66                                                  0,
-     67                                                  Serial_COM4_RxPin,
-     68                                                  };
-     69          
-     70          const uint32_t Serial_BaudRate[5]  = {  0,
-     71                                                  0, 
-     72                                                  115200,	//  USART2
-     73                                                  57600,
-     74                                                  115200,  //  USART4
-     75                                                  };
-     76          
-     77          const uint16_t Serial_IRQ_Channel[5]= { 0, 
-     78                                                  0, 
-     79                                                  USART2_IRQn,
-     80                                                  0,
-     81                                                  UART4_IRQn,
-     82                                                  };
-     83          
-     84          /* Private function prototypes -----------------------------------------------*/
-     85          /* Private functions ---------------------------------------------------------*/
-     86          /**
-     87            * @brief  USART2, UART4 Initialize (COM param을 받아서. Port를 초기화 한다.)
-     88            * @param  COM
-     89            * @retval None
-     90            */
-     91          void USART_COMInit(uint8_t COM)
-     92          {
-     93          	USART_InitTypeDef   	USART_InitStructure;
-     94          	NVIC_InitTypeDef    	NVIC_InitStructure;
-     95          
-     96          	DebugMsg_printf("++ USART %d Initialize START\r\n", COM);
-     97          
-     98          #if 0
-     99          	USART_ClockInitStructure.USART_Clock   = USART_Clock_Disable;
-    100          	USART_ClockInitStructure.USART_CPOL    = USART_CPOL_Low;
-    101          	USART_ClockInitStructure.USART_CPHA    = USART_CPHA_2Edge;
-    102          	USART_ClockInitStructure.USART_LastBit = USART_LastBit_Disable;
-    103          
-    104          	if (COM != 4) USART_ClockInit(Serial_USART[COM], &USART_ClockInitStructure);
-    105          #endif
+     26          #define UART2_Rx_BUF_SIZE		14			
+     27          #define UART2_Tx_BUF_SIZE		17
+     28          
+     29          /* Private macro -------------------------------------------------------------*/
+     30          /* Private variables ---------------------------------------------------------*/
+     31          USART_TypeDef* Serial_USART[5]     = {  0, 
+     32                                                  0, 
+     33                                                  Serial_COM2, 
+     34                                                  0,
+     35                                                  Serial_COM4, 
+     36                                                  }; 
+     37          
+     38          GPIO_TypeDef*  Serial_PORT[5]      = {  0, 
+     39                                                  0, 
+     40                                                  Serial_COM2_GPIO, 
+     41                                                  0,
+     42          	                                    Serial_COM4_GPIO, 
+     43                                                  };
+     44          
+     45          const uint32_t Serial_USART_CLK[5] = {  0, 
+     46                                                  0, 
+     47                                                  Serial_COM2_CLK, 
+     48                                                  0,
+     49                                                  Serial_COM4_CLK, 
+     50                                                  };
+     51          
+     52          const uint32_t Serial_PORT_CLK[5]  = {  0, 
+     53                                                  0, 
+     54                                                  Serial_COM2_GPIO_CLK, 
+     55                                                  0,
+     56                                                  Serial_COM4_GPIO_CLK, 
+     57                                                  };
+     58          
+     59          const uint16_t Serial_TX_PIN[5]    = {  0, 
+     60                                                  0, 
+     61                                                  Serial_COM2_TxPin, 
+     62                                                  0,
+     63                                                  Serial_COM4_TxPin,
+     64                                                  };
+     65          
+     66          const uint16_t Serial_RX_PIN[5]    = {  0, 
+     67                                                  0, 
+     68                                                  Serial_COM2_RxPin,
+     69                                                  0,
+     70                                                  Serial_COM4_RxPin,
+     71                                                  };
+     72          
+     73          const uint32_t Serial_BaudRate[5]  = {  0,
+     74                                                  0, 
+     75                                                  115200,	//  USART2
+     76                                                  57600,
+     77                                                  115200,  //  USART4
+     78                                                  };
+     79          
+     80          const uint16_t Serial_IRQ_Channel[5]= { 0, 
+     81                                                  0, 
+     82                                                  USART2_IRQn,
+     83                                                  0,
+     84                                                  UART4_IRQn,
+     85                                                  };
+     86          
+     87          /* Private function prototypes -----------------------------------------------*/
+     88          /* Private functions ---------------------------------------------------------*/
+     89          /**
+     90            * @brief  USART2, UART4 Initialize (COM param을 받아서. Port를 초기화 한다.)
+     91            * @param  COM
+     92            * @retval None
+     93            */
+     94          void USART_COMInit(uint8_t COM)
+     95          {
+     96          	USART_InitTypeDef   	USART_InitStructure;
+     97          	NVIC_InitTypeDef    	NVIC_InitStructure;
+     98          
+     99          	DebugMsg_printf("++ USART %d Initialize START\r\n", COM);
+    100          
+    101          #if 0
+    102          	USART_ClockInitStructure.USART_Clock   = USART_Clock_Disable;
+    103          	USART_ClockInitStructure.USART_CPOL    = USART_CPOL_Low;
+    104          	USART_ClockInitStructure.USART_CPHA    = USART_CPHA_2Edge;
+    105          	USART_ClockInitStructure.USART_LastBit = USART_LastBit_Disable;
     106          
-    107          	/* 
-    108          	USARTx configuration
+    107          	if (COM != 4) USART_ClockInit(Serial_USART[COM], &USART_ClockInitStructure);
+    108          #endif
     109          
-    110          	- BaudRate = xxxx baudrate
-    111          	- Word Length = 8 Bits
-    112          	- One Stop Bit
-    113          	- No parity
-    114          	- Hardware flow control disabled (RTS and CTS signals)
-    115          	- Receive and transmit enabled/Disabled
-    116          	*/
-    117          
-    118          	USART_InitStructure.USART_WordLength          = USART_WordLength_8b;
-    119          	USART_InitStructure.USART_StopBits            = USART_StopBits_1;
-    120          	USART_InitStructure.USART_Parity              = USART_Parity_No;
-    121          	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
-    122          	USART_InitStructure.USART_Mode                = USART_Mode_Rx | USART_Mode_Tx;
-    123          	USART_InitStructure.USART_BaudRate            = Serial_BaudRate[COM];
-    124          	// USART_InitStructure.USART_BaudRate            = 57600;
-    125          	
-    126          	//  USART configuration
-    127          	USART_Init(Serial_USART[COM], &USART_InitStructure);
-    128          
-    129          	//  Enable USART
-    130          	USART_Cmd(Serial_USART[COM], ENABLE);
+    110          	/* 
+    111          	USARTx configuration
+    112          
+    113          	- BaudRate = xxxx baudrate
+    114          	- Word Length = 8 Bits
+    115          	- One Stop Bit
+    116          	- No parity
+    117          	- Hardware flow control disabled (RTS and CTS signals)
+    118          	- Receive and transmit enabled/Disabled
+    119          	*/
+    120          
+    121          	USART_InitStructure.USART_WordLength          = USART_WordLength_8b;
+    122          	USART_InitStructure.USART_StopBits            = USART_StopBits_1;
+    123          	USART_InitStructure.USART_Parity              = USART_Parity_No;
+    124          	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+    125          	USART_InitStructure.USART_Mode                = USART_Mode_Rx | USART_Mode_Tx;
+    126          	USART_InitStructure.USART_BaudRate            = Serial_BaudRate[COM];
+    127          	// USART_InitStructure.USART_BaudRate            = 57600;
+    128          	
+    129          	//  USART configuration
+    130          	USART_Init(Serial_USART[COM], &USART_InitStructure);
     131          
-    132          	//  Enable USART2 ~ UART5 Receive interrupt
-    133          	USART_ITConfig(Serial_USART[COM], USART_IT_RXNE, ENABLE);    
-    134          	USART_ITConfig(Serial_USART[COM], USART_IT_TXE, DISABLE);
-    135          
-    136          	NVIC_InitStructure.NVIC_IRQChannel                   = Serial_IRQ_Channel[COM];
-    137          	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
-    138          	NVIC_InitStructure.NVIC_IRQChannelSubPriority        = 0;
-    139          	NVIC_InitStructure.NVIC_IRQChannelCmd                = ENABLE;
-    140          	NVIC_Init(&NVIC_InitStructure);
-    141          
-    142          	DebugMsg_printf("-- USART %d Initialize END\r\n", COM);
-    143          }
+    132          	//  Enable USART
+    133          	USART_Cmd(Serial_USART[COM], ENABLE);
+    134          
+    135          	//  Enable USART2 ~ UART5 Receive interrupt
+    136          	USART_ITConfig(Serial_USART[COM], USART_IT_RXNE, ENABLE);    
+    137          	USART_ITConfig(Serial_USART[COM], USART_IT_TXE, DISABLE);
+    138          
+    139          	NVIC_InitStructure.NVIC_IRQChannel                   = Serial_IRQ_Channel[COM];
+    140          	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+    141          	NVIC_InitStructure.NVIC_IRQChannelSubPriority        = 0;
+    142          	NVIC_InitStructure.NVIC_IRQChannelCmd                = ENABLE;
+    143          	NVIC_Init(&NVIC_InitStructure);
     144          
-    145          /**
-    146            * @brief  One Byte ASCII Sending
-    147            * @param  None
-    148            * @retval None
-    149            */
-    150          void USARTx_PutChar(uint8_t COM, uint8_t data)
-    151          {
-    152             USART_SendData(Serial_USART[COM], data);
-    153             
-    154             while (USART_GetFlagStatus(Serial_USART[COM], USART_FLAG_TXE) == RESET)
-    155             {
-    156             }
-    157          }
-    158          
-    159          /**
-    160            * @brief  String Data Sending
-    161            * @param  None
-    162            * @retval None
-    163            */
-    164          void USARTx_PutStr(uint8_t COM, char *pStr)
-    165          {
-    166          	while (*pStr != '\0') 
-    167              {
-    168                  USARTx_PutChar(COM, *(pStr++));
-    169              }        
-    170          }
+    145          	DebugMsg_printf("-- USART %d Initialize END\r\n", COM);
+    146          }
+    147          
+    148          /* Private function prototypes -----------------------------------------------*/
+    149          /* Private functions ---------------------------------------------------------*/
+    150          /**
+    151            * @brief  USART2, UART4 Initialize (COM param을 받아서. Port를 초기화 한다.)
+    152            * @param  COM
+    153            * @retval None
+    154            */
+    155          void USART_COMInit_DMA(uint8_t COM, unsigned char *TxBuf)
+    156          {
+    157          	USART_InitTypeDef   	USART_InitStructure;
+    158          	DMA_InitTypeDef 		DMA_InitStructure;
+    159          	NVIC_InitTypeDef    	NVIC_InitStructure;
+    160          	
+    161          	DebugMsg_printf("++ USART %d Initialize START\r\n", COM);
+    162          
+    163          #if 0
+    164          	USART_ClockInitStructure.USART_Clock   = USART_Clock_Disable;
+    165          	USART_ClockInitStructure.USART_CPOL    = USART_CPOL_Low;
+    166          	USART_ClockInitStructure.USART_CPHA    = USART_CPHA_2Edge;
+    167          	USART_ClockInitStructure.USART_LastBit = USART_LastBit_Disable;
+    168          
+    169          	if (COM != 4) USART_ClockInit(Serial_USART[COM], &USART_ClockInitStructure);
+    170          #endif
     171          
-    172          /**
-    173            * @brief  One Byte Hex Sending
-    174            * @param  None
-    175            * @retval None
-    176            */
-    177          void USARTx_PutHex(uint8_t COM, uint8_t hex)
-    178          {
-    179          	USARTx_PutChar(COM, HexToAscii(hex >> 4));
-    180          	USARTx_PutChar(COM, HexToAscii(hex & 0x0F));
-    181          }
-    182          
-    183          
-    184          /**
-    185            * @brief  Hex code to ASCII code
-    186            * @param  
-    187            * @retval ASCII
-    188            */
-    189          char HexToAscii(uint8_t hex)
-    190          {	
-    191          	return hex < 10 ? hex + '0' : hex - 10 + 'A';
-    192          }
-    193          
-    194          /**
-    195            * @brief  ASCII Code to Hex Code
-    196            * @param  None
-    197            * @retval Hex 
-    198            */
-    199          uint8_t AsciiToHex(char ascii)
-    200          {	
-    201          	ascii = toupper(ascii);
-    202          	
-    203              return ascii >= 'A' ? ascii - 'A' + 10 : ascii - '0';
-    204          }
-    205          
-    206          /**
-    207            * @brief  Hex Code to Decimal
-    208            * @param  None
-    209            * @retval Hex 
-    210            */
-    211          int HexToDec(int def)
-    212          {
-    213              int ten, one;
-    214          
-    215              one = def & 0x0f;
-    216              ten = 0;
-    217              ten = (def & 0x70) >> 4;
-    218              def =ten * 10 + one;
-    219              
-    220              return def;
-    221          }
-    222          
-    223          /**
-    224            * @brief  Decimal to Hex
-    225            * @param  None
-    226            * @retval Hex 
-    227            */
-    228          /*
-    229          char *DecToHex(uint8_t *Hex, uint16_t Dec)
-    230          {
-    231              char Hex[5];
-    232                  
-    233              
-    234              // 65535 = FFFF
-    235              if (Dec > 65535) return "1";
-    236              
-    237              sprintf(Hex, "%4x", Dec);
-    238          
-    239              return Hex;
-    240          }
-    241          */
-    242          
-    243          
-    244          /**
-    245            * @brief  usartx printf, polling
-    246            * @param  None
-    247            * @retval Hex 
-    248            */
-    249          void USARTx_printf(uint8_t COM, char *fmt,...)
-    250          {
-    251              va_list ap;
-    252              
-    253              char string[255];
-    254              
-    255              va_start(ap, fmt);
-    256              vsprintf(string, fmt, ap);
-    257              USARTx_PutStr(COM, string);
-    258              va_end(ap);
-    259          }  
+    172          	
+    173            //DMA_Init(SD_SDIO_DMA_STREAM, &SDDMA_InitStructure);
+    174           // DMA_ITConfig(SD_SDIO_DMA_STREAM, DMA_IT_TC, ENABLE);
+    175            //DMA_FlowControllerConfig(SD_SDIO_DMA_STREAM, DMA_FlowCtrl_Peripheral);
+    176          
+    177          
+    178          	/* USARTy TX DMA1 Channel (triggered by USARTy Tx event) Config */
+    179          	DMA_DeInit(DMA1_Stream6);	
+    180          	DMA_InitStructure.DMA_Channel 				= DMA_Channel_4;
+    181          	DMA_InitStructure.DMA_PeripheralBaseAddr 	= (uint32_t)&USART2->DR;
+    182          	DMA_InitStructure.DMA_Memory0BaseAddr 	= (u32)TxBuf;
+    183          	DMA_InitStructure.DMA_DIR 					= DMA_DIR_MemoryToPeripheral;
+    184          	DMA_InitStructure.DMA_BufferSize 			= 17;
+    185          	DMA_InitStructure.DMA_PeripheralInc 			= DMA_PeripheralInc_Disable;
+    186          	DMA_InitStructure.DMA_MemoryInc 			= DMA_MemoryInc_Enable;
+    187          	DMA_InitStructure.DMA_FIFOMode			= DMA_FIFOMode_Enable;
+    188          	DMA_InitStructure.DMA_FIFOThreshold 		= DMA_FIFOThreshold_Full;
+    189          	DMA_InitStructure.DMA_PeripheralDataSize 	= DMA_MemoryDataSize_Byte;
+    190          	DMA_InitStructure.DMA_MemoryDataSize 		= DMA_MemoryDataSize_Byte;
+    191          	DMA_InitStructure.DMA_MemoryBurst 			= DMA_MemoryBurst_Single;
+    192          	DMA_InitStructure.DMA_Mode 				= DMA_Mode_Normal;
+    193          	DMA_InitStructure.DMA_Priority 				= DMA_Priority_VeryHigh;
+    194          	DMA_InitStructure.DMA_PeripheralBurst 		= DMA_PeripheralBurst_Single;
+    195          	DMA_Init(DMA1_Stream6, &DMA_InitStructure);
+    196          
+    197          	DMA_ITConfig(DMA1_Stream6,DMA_IT_TC,DISABLE);
+    198          
+    199          	/* USARTy RX DMA1 Channel (triggered by USARTy Rx event) Config 
+    200          	DMA_DeInit(DMA1_Stream5);  
+    201          	DMA_InitStructure.DMA_PeripheralBaseAddr 	= APB1PERIPH_BASE + 0x4400 + 0x04;
+    202          	DMA_InitStructure.DMA_Memory0BaseAddr 		= (u32)RxBuf;
+    203          	DMA_InitStructure.DMA_Mode 				= DMA_Mode_Circular;
+    204          	DMA_InitStructure.DMA_DIR 					= DMA_DIR_MemoryToPeripheral;
+    205          	DMA_InitStructure.DMA_BufferSize 			= UART2_Rx_BUF_SIZE;
+    206          	DMA_Init(DMA1_Stream5, &DMA_InitStructure);	*/
+    207          	
+    208          	/* 
+    209          	USARTx configuration
+    210          
+    211          	- BaudRate = xxxx baudrate
+    212          	- Word Length = 8 Bits
+    213          	- One Stop Bit
+    214          	- No parity
+    215          	- Hardware flow control disabled (RTS and CTS signals)
+    216          	- Receive and transmit enabled/Disabled
+    217          	*/
+    218          
+    219          	USART_InitStructure.USART_WordLength          = USART_WordLength_8b;
+    220          	USART_InitStructure.USART_StopBits            = USART_StopBits_1;
+    221          	USART_InitStructure.USART_Parity              = USART_Parity_No;
+    222          	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+    223          	USART_InitStructure.USART_Mode                = USART_Mode_Rx | USART_Mode_Tx;
+    224          	USART_InitStructure.USART_BaudRate            = Serial_BaudRate[COM];
+    225          	// USART_InitStructure.USART_BaudRate            = 57600;
+    226          	
+    227          	//  USART configuration
+    228          	USART_Init(Serial_USART[COM], &USART_InitStructure);
+    229          
+    230          
+    231          	USART_DMACmd(USART2,USART_DMAReq_Tx, ENABLE);
+    232          
+    233          	//DMA_ITConfig(DMA1_Stream6, DMA_IT_TC, ENABLE);
+    234          	
+    235          	//DMA_Configuration(DMA1_Channel2, UART3_RxBuf, USART1_BASE, DMA_DIR_PeripheralSRC);
+    236          	//DMA_Cmd(DMA1_Stream5, ENABLE);      
+    237          
+    238          	//  Enable USART2 ~ UART5 Receive interrupt
+    239          	USART_ITConfig(Serial_USART[COM], USART_IT_RXNE, ENABLE);    
+    240          	
+    241          	//NVIC_InitStructure.NVIC_IRQChannel                   = Serial_IRQ_Channel[COM] | DMA1_Stream6_IRQn;
+    242          	NVIC_InitStructure.NVIC_IRQChannel                   = Serial_IRQ_Channel[COM];
+    243          	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+    244          	NVIC_InitStructure.NVIC_IRQChannelSubPriority        = 0;
+    245          	NVIC_InitStructure.NVIC_IRQChannelCmd                = ENABLE;
+    246          	NVIC_Init(&NVIC_InitStructure);
+    247          	//  Enable USART
+    248          	USART_Cmd(Serial_USART[COM], ENABLE);
+    249          
+    250          }
+    251          
+    252          u8 count_DMA;
+    253          
+    254          void DMA_UART_SendFrame(unsigned char *dst, unsigned char *src, unsigned short size)
+    255          { 
+    256          
+    257          	DMA_Cmd(DMA1_Stream6, DISABLE); 
+    258          
+    259          	memcpy(dst, src, size);
     260          
-    261          /**
-    262            * @brief  usartx printk, interrupt
-    263            * @param  None
-    264            * @retval None 
-    265            */
-    266          void USARTx_printk(uint8_t COM, char *fmt,...)
-    267          {
-    268              va_list ap;
-    269              
-    270              char string[255];
-    271              
-    272              va_start(ap, fmt);
-    273              vsprintf(string, fmt, ap);
-    274              va_end(ap);
-    275              
-    276              switch (COM)
-    277              {
-    278                  case COMPORT2 : 
-    279                              strcpy((char *)WL9FM_USART_DATA.COM2_TxBuf, string);
-    280                              
-    281          			        WL9FM_USART_INDEX.COM2_TxCnt = 0;
-    282          			        WL9FM_USART_INDEX.COM2_TxIdx = strlen((char *)WL9FM_USART_DATA.COM2_TxBuf);
-    283                                      
-    284                              break;
+    261          	DMA1_Stream6->NDTR = size;
+    262          
+    263          	DMA_Cmd(DMA1_Stream6, ENABLE);  	
+    264          
+    265          	while(DMA_GetCurrDataCounter(DMA1_Stream6));
+    266          
+    267          	DMA_ClearFlag(DMA1_Stream6,DMA_FLAG_TCIF6);
+    268          	
+    269          }
+    270          
+    271          
+    272          /**
+    273            * @brief  One Byte ASCII Sending
+    274            * @param  None
+    275            * @retval None
+    276            */
+    277          void USARTx_PutChar(uint8_t COM, uint8_t data)
+    278          {
+    279             USART_SendData(Serial_USART[COM], data);
+    280             
+    281             while (USART_GetFlagStatus(Serial_USART[COM], USART_FLAG_TXE) == RESET)
+    282             {
+    283             }
+    284          }
     285          
-    286                  case COMPORT4 :
-    287                              strcpy((char *)WL9FM_USART_DATA.COM4_TxBuf, string);
-    288                              
-    289          			        WL9FM_USART_INDEX.COM4_TxCnt = 0;
-    290          			        WL9FM_USART_INDEX.COM4_TxIdx = strlen((char *)WL9FM_USART_DATA.COM4_TxBuf);
-    291          					
-    292                              break;
-    293                              
-    294                  default   : return;
-    295              }                    
-    296                  
-    297              USART_ITConfig(Serial_USART[COM], USART_IT_TXE, ENABLE);
-    298          }  
-    299          
-    300          /**
-    301            * @brief  None
-    302            * @param  None
-    303            * @retval None
-    304            */
-    305          //  
-    306          void USARTx_EXYNOS(uint8_t COM, char *TmpBuffer)
-    307          {
-    308          	memcpy((char *)WL9FM_USART_DATA.COM4_TxBuf, TmpBuffer, Serial_COM4_TxSize);
-    309          						
-    310          	WL9FM_USART_INDEX.COM4_TxCnt = 0;
-    311          	WL9FM_USART_INDEX.COM4_TxIdx = Serial_COM4_TxSize;
-    312          	    
-    313          	USART_ITConfig(Serial_USART[COM], USART_IT_TXE, ENABLE);
-    314          }
-    315          
-    316          /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
+    286          /**
+    287            * @brief  String Data Sending
+    288            * @param  None
+    289            * @retval None
+    290            */
+    291          void USARTx_PutStr(uint8_t COM, char *pStr)
+    292          {
+    293          	while (*pStr != '\0') 
+    294              {
+    295                  USARTx_PutChar(COM, *(pStr++));
+    296              }        
+    297          }
+    298          
+    299          /**
+    300            * @brief  One Byte Hex Sending
+    301            * @param  None
+    302            * @retval None
+    303            */
+    304          void USARTx_PutHex(uint8_t COM, uint8_t hex)
+    305          {
+    306          	USARTx_PutChar(COM, HexToAscii(hex >> 4));
+    307          	USARTx_PutChar(COM, HexToAscii(hex & 0x0F));
+    308          }
+    309          
+    310          
+    311          /**
+    312            * @brief  Hex code to ASCII code
+    313            * @param  
+    314            * @retval ASCII
+    315            */
+    316          char HexToAscii(uint8_t hex)
+    317          {	
+    318          	return hex < 10 ? hex + '0' : hex - 10 + 'A';
+    319          }
+    320          
+    321          /**
+    322            * @brief  ASCII Code to Hex Code
+    323            * @param  None
+    324            * @retval Hex 
+    325            */
+    326          uint8_t AsciiToHex(char ascii)
+    327          {	
+    328          	ascii = toupper(ascii);
+    329          	
+    330              return ascii >= 'A' ? ascii - 'A' + 10 : ascii - '0';
+    331          }
+    332          
+    333          /**
+    334            * @brief  Hex Code to Decimal
+    335            * @param  None
+    336            * @retval Hex 
+    337            */
+    338          int HexToDec(int def)
+    339          {
+    340              int ten, one;
+    341          
+    342              one = def & 0x0f;
+    343              ten = 0;
+    344              ten = (def & 0x70) >> 4;
+    345              def =ten * 10 + one;
+    346              
+    347              return def;
+    348          }
+    349          
+    350          /**
+    351            * @brief  Decimal to Hex
+    352            * @param  None
+    353            * @retval Hex 
+    354            */
+    355          /*
+    356          char *DecToHex(uint8_t *Hex, uint16_t Dec)
+    357          {
+    358              char Hex[5];
+    359                  
+    360              
+    361              // 65535 = FFFF
+    362              if (Dec > 65535) return "1";
+    363              
+    364              sprintf(Hex, "%4x", Dec);
+    365          
+    366              return Hex;
+    367          }
+    368          */
+    369          
+    370          
+    371          /**
+    372            * @brief  usartx printf, polling
+    373            * @param  None
+    374            * @retval Hex 
+    375            */
+    376          void USARTx_printf(uint8_t COM, char *fmt,...)
+    377          {
+    378              va_list ap;
+    379              
+    380              char string[255];
+    381              
+    382              va_start(ap, fmt);
+    383              vsprintf(string, fmt, ap);
+    384              USARTx_PutStr(COM, string);
+    385              va_end(ap);
+    386          }  
+    387          
+    388          /**
+    389            * @brief  usartx printk, interrupt
+    390            * @param  None
+    391            * @retval None 
+    392            */
+    393          void USARTx_printk(uint8_t COM, char *fmt,...)
+    394          {
+    395              va_list ap;
+    396              
+    397              char string[255];
+    398              
+    399              va_start(ap, fmt);
+    400              vsprintf(string, fmt, ap);
+    401              va_end(ap);
+    402              
+    403              switch (COM)
+    404              {
+    405                  case COMPORT2 : 
+    406                              strcpy((char *)WL9FM_USART_DATA.COM2_TxBuf, string);
+    407                              
+    408          			        WL9FM_USART_INDEX.COM2_TxCnt = 0;
+    409          			        WL9FM_USART_INDEX.COM2_TxIdx = strlen((char *)WL9FM_USART_DATA.COM2_TxBuf);
+    410                                      
+    411                              break;
+    412          
+    413                  case COMPORT4 :
+    414                              strcpy((char *)WL9FM_USART_DATA.COM4_TxBuf, string);
+    415                              
+    416          			        WL9FM_USART_INDEX.COM4_TxCnt = 0;
+    417          			        WL9FM_USART_INDEX.COM4_TxIdx = strlen((char *)WL9FM_USART_DATA.COM4_TxBuf);
+    418          					
+    419                              break;
+    420                              
+    421                  default   : return;
+    422              }                    
+    423                  
+    424              USART_ITConfig(Serial_USART[COM], USART_IT_TXE, ENABLE);
+    425          }  
+    426          
+    427          /**
+    428            * @brief  None
+    429            * @param  None
+    430            * @retval None
+    431            */
+    432          //  
+    433          void USARTx_EXYNOS(uint8_t COM, char *TmpBuffer)
+    434          {
+    435          
+    436          	memcpy((char *)WL9FM_USART_DATA.COM4_TxBuf, TmpBuffer, Serial_COM4_TxSize);
+    437          						
+    438          	WL9FM_USART_INDEX.COM4_TxCnt = 0;
+    439          	WL9FM_USART_INDEX.COM4_TxIdx = Serial_COM4_TxSize;
+    440          	    
+    441          	USART_ITConfig(Serial_USART[COM], USART_IT_TXE, ENABLE);
+    442          	
+    443          	
+    444          
+    445          }
+    446          
+    447          /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
 
    Maximum stack usage in bytes:
 
@@ -356,6 +488,11 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\UART_Control.c
    ------- --------
        8   AsciiToHex
          8   -> toupper
+      24   DMA_UART_SendFrame
+         0   -> DMA_ClearFlag
+        24   -> DMA_Cmd
+        24   -> DMA_GetCurrDataCounter
+        24   -> __aeabi_memcpy
        0   HexToAscii
        0   HexToDec
       32   USART_COMInit
@@ -363,6 +500,15 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\UART_Control.c
         32   -> USART_Cmd
         32   -> USART_ITConfig
         32   -> USART_Init
+      96   USART_COMInit_DMA
+        96   -> DMA_DeInit
+        96   -> DMA_ITConfig
+        96   -> DMA_Init
+        96   -> NVIC_Init
+        96   -> USART_Cmd
+        96   -> USART_DMACmd
+        96   -> USART_ITConfig
+        96   -> USART_Init
        8   USARTx_EXYNOS
          0   -> USART_ITConfig
          8   -> __aeabi_memcpy
@@ -389,12 +535,17 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\UART_Control.c
 
    Bytes  Function/Label
    -----  --------------
-       4  ??DataTable10
-       4  ??DataTable10_1
-       4  ??DataTable10_2
-       4  ??DataTable10_3
+       4  ??DataTable12
+       4  ??DataTable12_1
+       4  ??DataTable12_2
+       4  ??DataTable12_3
+       4  ??DataTable12_4
+       4  ??DataTable12_5
+       4  ??DataTable12_6
+       4  ??DataTable12_7
        8  ?Subroutine0
       20  AsciiToHex
+      60  DMA_UART_SendFrame
       12  HexToAscii
       18  HexToDec
       20  Serial_BaudRate
@@ -406,21 +557,24 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\UART_Control.c
       20  Serial_USART
       20  Serial_USART_CLK
      122  USART_COMInit
+     204  USART_COMInit_DMA
       42  USARTx_EXYNOS
       30  USARTx_PutChar
       54  USARTx_PutHex
       42  USARTx_PutStr
       32  USARTx_printf
       98  USARTx_printk
+       1  count_DMA
 
  
+   1 byte  in section .bss
   40 bytes in section .data
   64 bytes in section .rodata
- 526 bytes in section .text
+ 806 bytes in section .text
  
- 526 bytes of CODE  memory
+ 806 bytes of CODE  memory
   64 bytes of CONST memory
-  40 bytes of DATA  memory
+  41 bytes of DATA  memory
 
 Errors: none
 Warnings: none

@@ -149,6 +149,9 @@ extern uint8_t AsciiToHex(char ascii);
 extern int HexToDec(int def);
 extern void USARTx_EXYNOS(uint8_t COM, char *TmpBuffer);
 
+extern void USART_COMInit_DMA(uint8_t COM, unsigned char *TxBuf);
+extern void DMA_UART_SendFrame(unsigned char *dst, unsigned char *src, unsigned short size);
+
 #endif /* __UART_Control_H */
 
 /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/

@@ -63,7 +63,7 @@ extern WEIGHING_SYSTEM_STATUS_65450 rx_Weighing_System_Status;
 extern CMD_LAMP rx_CMD_LAMP;
 /* Private define ------------------------------------------------------------*/
 
-#define RING_BUF_SIZE			768*10
+#define RING_BUF_SIZE			768
 #define UART2_Rx_BUF_SIZE		14			
 #define UART2_Tx_BUF_SIZE		17
 
@@ -138,7 +138,6 @@ u8 CANUpdateSA = 0;
 u8 Buz1;
 
 extern u8 MoniInfoSendCnt;
-extern u16 Flag_1Sec_MoniInfo;
 extern u8 MoniInfoTotalPacketNum;
 extern u8 RecvMachInfo;
 extern u8 MachineBasicInformation[78];
@@ -215,6 +214,10 @@ extern WL9FM_receive_smartkey recv_smartkey;
 extern WL9FM_flag_data smk_flag_data;
 
 
+unsigned long long CANRXIndex = 0;
+unsigned long long SerialTXIndex = 0;
+
+
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 void WL9F_CAN_Buffer_Init(void)
@@ -251,32 +254,6 @@ void OperateRingBuffer(void)
 	
 	pWriteBufPos += 8;	
 
-	if(RxMsg.ExtId==0x18fff7dd || RxMsg.ExtId==0x18fff747) // rcu status
-	{
-		memcpy( &rx_Realy_Control, (u8*)&RxMsg.Data, 8);
-	}
-
-	else if(RxMsg.ExtId==0x18EFFF47 || RxMsg.ExtId==0x18EF2847) // auto_position
-	{
-		if(RxMsg.Data[0] == 124)
-		{
-			memcpy( &rx_Auto_position_Status, (u8*)&RxMsg.Data, 8);
-		}
-		
-	}
-	else if(RxMsg.ExtId==0x18ff9447) // lamp
-	{
-		memcpy( &RX_HCEPGN_65428, (u8*)&RxMsg.Data, 8);
-	}
-	else if(RxMsg.ExtId == 0x18ffaa47)	// Weighing System (Work Load Lamp)
-	{
-		memcpy( &rx_Weighing_System_Status, (u8*)&RxMsg.Data, 8);
-	}
-	
-	else if(RxMsg.ExtId == 0x18ffede4)	// EHCU
-	{
-		memcpy( &rx_EHCU_Status, (u8*)&RxMsg.Data, 8);
-	}
 	USART_ITConfig(USART2, USART_IT_TXE, ENABLE);
 	
 }
@@ -476,6 +453,8 @@ void SysTick_Handler(void)
 void CAN1_RX0_IRQHandler(void)
 {
 	u32 PF; 
+	u32 PS;
+	u32 PGN;
 
 	CAN_Receive(CAN1,CAN_FIFO0,&RxMsg);
 				
@@ -494,37 +473,70 @@ void CAN1_RX0_IRQHandler(void)
 		(Iden.Source_Address == 0xE4) || (Iden.Source_Address == 0xDD)|| (Iden.Source_Address == 0x4a)|| (Iden.Source_Address == 0xf4)
 		|| (Iden.Source_Address == 0x00)|| (Iden.Source_Address == 0x03) || (Iden.Source_Address == 0x02))
 		{
-	
-			if((PF == 254) || (PF == 255) || (PF == 239) )
-			{	
-				PF = (RxMsg.ExtId  & 0x00ff0000) >> 16;
-				if(Iden.PDU_Specific == 251)
-				{
-					MoniInfoSendCnt = 0;
-					Flag_1Sec_MoniInfo = 0;
-					MoniInfoTotalPacketNum = 0;
-				}
-				else if(Iden.PDU_Specific == 232)	// Smart Key
-				{
-					smk_flag_data.recv_resp_packet |= RESPONSE_AUTHENTICATION;	
-					//smk_flag_data.recv_resp_packet |= 0x0100; 
+		#if 1
+			if(CANUpdateFlag == 0)
+			{
+				if((PF == 254) || (PF == 255) || (PF == 239) )
+				{	
+					PF = (RxMsg.ExtId  & 0x00ff0000) >> 16;
+					if(Iden.PDU_Specific == 232)	// Smart Key
+					{
+						smk_flag_data.recv_resp_packet |= RESPONSE_AUTHENTICATION;	
+						//smk_flag_data.recv_resp_packet |= 0x0100; 
 
-					memcpy((u8*)&recv_smartkey, (u8*)&RxMsg.Data[0], 8);
+						memcpy((u8*)&recv_smartkey, (u8*)&RxMsg.Data[0], 8);
+					}
+					else
+					{
+		
+						//if(Iden.PDU_Specific == 0x9b)
+							CAN_RX(RxMsg);
+					}
 				}
+				
 				else
-				{
-	
-					//if(Iden.PDU_Specific == 0x9b)
-						OperateRingBuffer();
+				{                    
+	                		CAN_RX(RxMsg);
 				}
+		
+				CommErrCnt = 0;
 			}
+			else if(CANUpdateFlag == 1)
+			{
+				if(Iden.Source_Address == CANUpdateSA)
+				{
+					PF = (RxMsg.ExtId  & 0x00ff0000) >> 16;
+					PS = (RxMsg.ExtId  & 0x0000FF00) >> 8;
+					PGN = (RxMsg.ExtId  & 0x00FFFF00) >> 8;
+					if(PGN == 0xEFFA || PGN  == 0xECFA || PGN  == 0xEBFA)
+					{
+						CAN_RX(RxMsg);
+					}
+
+				}
+				
+			}
+		#else
+			if(CANUpdateFlag == 1)
+			{
+				if(Iden.Source_Address == CANUpdateSA)
+				{
+					PF = (RxMsg.ExtId  & 0x00ff0000) >> 16;
+					PS = (RxMsg.ExtId  & 0x0000FF00) >> 8;
+					PGN = (RxMsg.ExtId  & 0x00FFFF00) >> 8;
+					if(PGN == 0xEFFA || PGN  == 0xECFA || PGN  == 0xEBFA)
+					{
+						//OperateRingBuffer();
+						CAN_RX(RxMsg);
+						CANRXIndex++;
+					}
+
+				}
+				
+			}
+		#endif
 			
-			else
-			{                    
-                OperateRingBuffer();
-			}
-	
-			CommErrCnt = 0;
+			
 
 			
 			
@@ -637,6 +649,7 @@ void USART2_IRQHandler(void)
 		}
 	}
 
+#if 0
 	if(USART_GetITStatus(USART2, USART_IT_TXE) != RESET)
 	{   
 		if((USART2->SR & 0x80) == RESET)
@@ -657,12 +670,14 @@ void USART2_IRQHandler(void)
 		if((Uart2_SerialTxCnt == 0) && (pWriteBufPos != pReadBufPos))
 		{
 			memcpy(&Uart2_SerialTxMsg[3] , &ring_buf[pReadBufPos], 12);
+			
 		}
 		
 		USART_SendData(USART2, (u16)(Uart2_SerialTxMsg[Uart2_SerialTxCnt++]));    
 		
 		if (Uart2_SerialTxCnt >= UART2_Tx_BUF_SIZE)
 		{
+			#if 0
 			//Uart2_SerialTxCnt = 0;
 			//pReadBufPos += 12;
 			//USART_ITConfig(USART2, USART_IT_TXE, DISABLE);
@@ -698,9 +713,63 @@ void USART2_IRQHandler(void)
 				Uart2_SerialTxCnt = 0;
 				pReadBufPos += 12;
 			}
+			#else
+			if(Flag_TxE2pRomData == 0)
+			{
+              
+				Uart2_SerialTxCnt = 0;	
+				Uart2_SerialTxMsg[15] = 0;
+				Flag_TxE2pRomData = 1;
+					
+				//	EEPROM Data를 그만 보내고 CAN Data를 보낸다. 
+				Flag_UartTxStart = 0;
+				
+				//  Enable the USART2 Transmit interrupt
+				USART_ITConfig(USART2, USART_IT_TXE, ENABLE);
+				CAN_ITConfig(CAN1, CAN_IT_FMP0,ENABLE);		
+				
+				
+			}
+			else
+			{
+				Uart2_SerialTxCnt = 0;
+				pReadBufPos += 12;
+				SerialTXIndex++;
+			}
+			#endif
 		}  
 	}
+#else
+	
+
+#endif
+
 }
+
+/*
+void DMA1_Stream6_IRQHandler(void)
+{
+	if (DMA_GetITStatus(DMA1_Stream6, DMA_IT_TCIF6) != RESET) 
+    	{
+    		if(pReadBufPos >= (RING_BUF_SIZE-1))
+			pReadBufPos = 0;
+
+		if((Uart2_SerialTxCnt == 0) && (pWriteBufPos != pReadBufPos))
+		{
+			memcpy(&Uart2_SerialTxMsg[3] , &ring_buf[pReadBufPos], 12);	
+		}
+		USART_SendData(USART2, (u16)(Uart2_SerialTxMsg[Uart2_SerialTxCnt++]));    
+		
+		if (Uart2_SerialTxCnt >= UART2_Tx_BUF_SIZE)
+		{
+			Uart2_SerialTxCnt = 0;
+			pReadBufPos += 12;
+			SerialTXIndex++;
+		}  
+	}
+}*/
+
+
 
 void UART4_IRQHandler(void)
 {
@@ -932,5 +1001,6 @@ void UART4_transmit_CMD(void)
 		WL9FM_USART_INDEX.COM4_TxIdx = 0; //  transmit buffer Index clear
 		WL9FM_USART_INDEX.COM4_TxCnt = 0; //  transmit buffer Cnt   clear
 	}              
+	
 }
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

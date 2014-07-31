@@ -63,7 +63,7 @@
 #define RX_MSG247	0x10000
 
 
-
+#define UART2_Tx_BUF_SIZE		17
 
 
 /* Private define ------------------------------------------------------------*/
@@ -98,7 +98,6 @@ u8 Flag_UartTxStart = 0;
 u8  SendTime_E2PROM = 0;
 
 u16 Flag_1Sec_MachInfo = 0;
-u16 Flag_1Sec_MoniInfo = 0;
 u16 Flag_1Min = 0;
 
 u8 MachInfoTotalPacketNum = 0;
@@ -145,6 +144,12 @@ extern u8 Buz1;
 
 extern u8 Stm32_Update_CMD;
 extern u8 CANUpdateFlag;
+
+extern u16 pWriteBufPos;
+extern u16 pReadBufPos;
+
+extern u8 Uart2_SerialTxMsg[UART2_Tx_BUF_SIZE];
+
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
@@ -979,6 +984,7 @@ void WL9FM_1mSecOperationFunc(void)
 	}
 	// CAN_TX Routine
 	CAN_TX();
+	Write_UART_Single();
 #endif
 }
 
@@ -1059,8 +1065,8 @@ void WL9FM_500mSecOperationFunc(void)
 //	SetCanID(255, 47, 6);
 //	CAN_TX_Data(&Uart2_RxMsg_Single_47[0]);
 
-	if(CANUpdateFlag != 1)
-		MonitorStatus_CAN_TX();
+	//if(CANUpdateFlag != 1)
+	//	MonitorStatus_CAN_TX();
 
 }
 
@@ -1139,7 +1145,7 @@ void WL9FM_System_Init_Start(void)
 
 	LCD_Control_Init();							//	-> 	LCD_Control.c (LCDBL, ON/OFF)
 
-	USART_COMInit(COMPORT2);       				//      COM2 : CAN
+	USART_COMInit_DMA(COMPORT2,Uart2_SerialTxMsg);       				//      COM2 : CAN
 	USART_COMInit(COMPORT4);       				//      COM4 : CMDData
 
 												

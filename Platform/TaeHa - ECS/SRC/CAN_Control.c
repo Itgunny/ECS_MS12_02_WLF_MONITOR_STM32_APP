@@ -94,8 +94,9 @@ TP_CM* tp_cm_bam;
 #define RX_MSG247	0x10000
 
 struct st_CAN_Message_Ring_Buffer_Tx_Single CAN_Message_Ring_Buffer_Tx_Single;
+struct st_CAN_Message_Ring_Buffer_Rx_Single CAN_Message_Ring_Buffer_Rx_Single;
 
-
+#define UART2_Tx_BUF_SIZE		17
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 u8 tmpBuf[8];
@@ -165,7 +166,6 @@ extern u8 CanRecvCnt;
 extern u16 TotMsgSize;
 
 extern u16 Flag_1Sec_MachInfo;
-extern u16 Flag_1Sec_MoniInfo;
 extern u8 MachInfoTotalPacketNum;
 extern u8 MoniInfoTotalPacketNum;
 extern u8 MachInfoSendCnt;
@@ -183,9 +183,11 @@ extern u8 RMCU_RecvTotalPacket_61184;
 extern u8 RMCU_ACK_Multi_61184[8];
 
 
-
+extern u8 Uart2_SerialTxMsg[UART2_Tx_BUF_SIZE];
 extern Realy_Control rx_Realy_Control;
 extern EHCU_Status rx_EHCU_Status;
+
+extern unsigned long long SerialTXIndex;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 /**
@@ -349,6 +351,50 @@ void Write_CAN_Single(struct st_CAN_Message1 Message)
 	}
 }
 
+void Write_UART_Single(void)
+{
+	static unsigned short Tx_Rountine_Count_UART;
+
+	/*
+	if((++Tx_Rountine_Count_UART%3)==0)
+	{
+		Tx_Rountine_Count_UART = 0;
+		if (CAN_Message_Ring_Buffer_Rx_Single.Head != CAN_Message_Ring_Buffer_Rx_Single.Tail)
+		{
+			int i;
+			u8 UARTTxMessage[17];
+			memcpy(&UARTTxMessage[0],(u8*)&CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Tail],17);
+			for(i = 0; i < 17; i++)
+				USARTx_PutChar(2,(uint8_t)UARTTxMessage[i]);
+			//	USART_SendData(USART2, UARTTxMessage[i]);	 
+ 			
+			SerialTXIndex++;
+			if (++(CAN_Message_Ring_Buffer_Rx_Single.Tail) >= MAX_CAN_RX_DATA_SINGLE)
+				CAN_Message_Ring_Buffer_Rx_Single.Tail = 0;
+		}
+
+	}
+	*/
+
+	if((++Tx_Rountine_Count_UART%3)==0)
+	{
+		Tx_Rountine_Count_UART = 0;
+		if (CAN_Message_Ring_Buffer_Rx_Single.Head != CAN_Message_Ring_Buffer_Rx_Single.Tail)
+		{
+			int i;
+			//u8 UARTTxMessage[17];
+
+			DMA_UART_SendFrame(&Uart2_SerialTxMsg[0],(u8*)&CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Tail],17);
+			
+			SerialTXIndex++;
+			if (++(CAN_Message_Ring_Buffer_Rx_Single.Tail) >= MAX_CAN_RX_DATA_SINGLE)
+				CAN_Message_Ring_Buffer_Rx_Single.Tail = 0;
+		}
+
+	}
+
+}
+
 
 void SetCanID(u8 PF, u8 PS, u8 Priority)
 {
@@ -410,6 +456,7 @@ void CAN_TX(void)
 			}
 
 			can_status = CAN_Transmit(CAN1,&TxMessage);
+			
 
 							
 			if(can_status !=CAN_TxStatus_NoMailBox)
@@ -434,6 +481,26 @@ void CAN_TX(void)
 	//		Tx_Rountine_Count_CAN = 0;
 	 //}
        	
+}
+
+void CAN_RX(CanRxMsg RxMessage)
+{
+	
+	CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Head].RX_STX = 0x02;
+	CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Head].RX_ID = 0xF5;
+	CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Head].RX_LEN = 0x08;
+	CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Head].RX_SAVE_DATA = 0x00;
+	CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Head].RX_ETX = 0x03;
+
+	CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Head].Rx_ExtID = RxMessage.ExtId;
+
+	memcpy(&CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Head].RX_DATA[0],&RxMessage.Data[0],8);
+		
+	
+	if (++(CAN_Message_Ring_Buffer_Rx_Single.Head) >= MAX_CAN_RX_DATA_SINGLE)
+		CAN_Message_Ring_Buffer_Rx_Single.Head = 0;
+
+	
 }
 void MonitorStatus_CAN_TX(void)
 {

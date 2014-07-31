@@ -23,6 +23,9 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
+#define UART2_Rx_BUF_SIZE		14			
+#define UART2_Tx_BUF_SIZE		17
+
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 USART_TypeDef* Serial_USART[5]     = {  0, 
@@ -141,6 +144,130 @@ void USART_COMInit(uint8_t COM)
 
 	DebugMsg_printf("-- USART %d Initialize END\r\n", COM);
 }
+
+/* Private function prototypes -----------------------------------------------*/
+/* Private functions ---------------------------------------------------------*/
+/**
+  * @brief  USART2, UART4 Initialize (COM param을 받아서. Port를 초기화 한다.)
+  * @param  COM
+  * @retval None
+  */
+void USART_COMInit_DMA(uint8_t COM, unsigned char *TxBuf)
+{
+	USART_InitTypeDef   	USART_InitStructure;
+	DMA_InitTypeDef 		DMA_InitStructure;
+	NVIC_InitTypeDef    	NVIC_InitStructure;
+	
+	DebugMsg_printf("++ USART %d Initialize START\r\n", COM);
+
+#if 0
+	USART_ClockInitStructure.USART_Clock   = USART_Clock_Disable;
+	USART_ClockInitStructure.USART_CPOL    = USART_CPOL_Low;
+	USART_ClockInitStructure.USART_CPHA    = USART_CPHA_2Edge;
+	USART_ClockInitStructure.USART_LastBit = USART_LastBit_Disable;
+
+	if (COM != 4) USART_ClockInit(Serial_USART[COM], &USART_ClockInitStructure);
+#endif
+
+	
+  //DMA_Init(SD_SDIO_DMA_STREAM, &SDDMA_InitStructure);
+ // DMA_ITConfig(SD_SDIO_DMA_STREAM, DMA_IT_TC, ENABLE);
+  //DMA_FlowControllerConfig(SD_SDIO_DMA_STREAM, DMA_FlowCtrl_Peripheral);
+
+
+	/* USARTy TX DMA1 Channel (triggered by USARTy Tx event) Config */
+	DMA_DeInit(DMA1_Stream6);	
+	DMA_InitStructure.DMA_Channel 				= DMA_Channel_4;
+	DMA_InitStructure.DMA_PeripheralBaseAddr 	= (uint32_t)&USART2->DR;
+	DMA_InitStructure.DMA_Memory0BaseAddr 	= (u32)TxBuf;
+	DMA_InitStructure.DMA_DIR 					= DMA_DIR_MemoryToPeripheral;
+	DMA_InitStructure.DMA_BufferSize 			= 17;
+	DMA_InitStructure.DMA_PeripheralInc 			= DMA_PeripheralInc_Disable;
+	DMA_InitStructure.DMA_MemoryInc 			= DMA_MemoryInc_Enable;
+	DMA_InitStructure.DMA_FIFOMode			= DMA_FIFOMode_Enable;
+	DMA_InitStructure.DMA_FIFOThreshold 		= DMA_FIFOThreshold_Full;
+	DMA_InitStructure.DMA_PeripheralDataSize 	= DMA_MemoryDataSize_Byte;
+	DMA_InitStructure.DMA_MemoryDataSize 		= DMA_MemoryDataSize_Byte;
+	DMA_InitStructure.DMA_MemoryBurst 			= DMA_MemoryBurst_Single;
+	DMA_InitStructure.DMA_Mode 				= DMA_Mode_Normal;
+	DMA_InitStructure.DMA_Priority 				= DMA_Priority_VeryHigh;
+	DMA_InitStructure.DMA_PeripheralBurst 		= DMA_PeripheralBurst_Single;
+	DMA_Init(DMA1_Stream6, &DMA_InitStructure);
+
+	DMA_ITConfig(DMA1_Stream6,DMA_IT_TC,DISABLE);
+
+	/* USARTy RX DMA1 Channel (triggered by USARTy Rx event) Config 
+	DMA_DeInit(DMA1_Stream5);  
+	DMA_InitStructure.DMA_PeripheralBaseAddr 	= APB1PERIPH_BASE + 0x4400 + 0x04;
+	DMA_InitStructure.DMA_Memory0BaseAddr 		= (u32)RxBuf;
+	DMA_InitStructure.DMA_Mode 				= DMA_Mode_Circular;
+	DMA_InitStructure.DMA_DIR 					= DMA_DIR_MemoryToPeripheral;
+	DMA_InitStructure.DMA_BufferSize 			= UART2_Rx_BUF_SIZE;
+	DMA_Init(DMA1_Stream5, &DMA_InitStructure);	*/
+	
+	/* 
+	USARTx configuration
+
+	- BaudRate = xxxx baudrate
+	- Word Length = 8 Bits
+	- One Stop Bit
+	- No parity
+	- Hardware flow control disabled (RTS and CTS signals)
+	- Receive and transmit enabled/Disabled
+	*/
+
+	USART_InitStructure.USART_WordLength          = USART_WordLength_8b;
+	USART_InitStructure.USART_StopBits            = USART_StopBits_1;
+	USART_InitStructure.USART_Parity              = USART_Parity_No;
+	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+	USART_InitStructure.USART_Mode                = USART_Mode_Rx | USART_Mode_Tx;
+	USART_InitStructure.USART_BaudRate            = Serial_BaudRate[COM];
+	// USART_InitStructure.USART_BaudRate            = 57600;
+	
+	//  USART configuration
+	USART_Init(Serial_USART[COM], &USART_InitStructure);
+
+
+	USART_DMACmd(USART2,USART_DMAReq_Tx, ENABLE);
+
+	//DMA_ITConfig(DMA1_Stream6, DMA_IT_TC, ENABLE);
+	
+	//DMA_Configuration(DMA1_Channel2, UART3_RxBuf, USART1_BASE, DMA_DIR_PeripheralSRC);
+	//DMA_Cmd(DMA1_Stream5, ENABLE);      
+
+	//  Enable USART2 ~ UART5 Receive interrupt
+	USART_ITConfig(Serial_USART[COM], USART_IT_RXNE, ENABLE);    
+	
+	//NVIC_InitStructure.NVIC_IRQChannel                   = Serial_IRQ_Channel[COM] | DMA1_Stream6_IRQn;
+	NVIC_InitStructure.NVIC_IRQChannel                   = Serial_IRQ_Channel[COM];
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority        = 0;
+	NVIC_InitStructure.NVIC_IRQChannelCmd                = ENABLE;
+	NVIC_Init(&NVIC_InitStructure);
+	//  Enable USART
+	USART_Cmd(Serial_USART[COM], ENABLE);
+
+}
+
+u8 count_DMA;
+
+void DMA_UART_SendFrame(unsigned char *dst, unsigned char *src, unsigned short size)
+{ 
+
+	DMA_Cmd(DMA1_Stream6, DISABLE); 
+
+	memcpy(dst, src, size);
+
+	DMA1_Stream6->NDTR = size;
+
+	DMA_Cmd(DMA1_Stream6, ENABLE);  	
+
+	while(DMA_GetCurrDataCounter(DMA1_Stream6));
+
+	DMA_ClearFlag(DMA1_Stream6,DMA_FLAG_TCIF6);
+	
+}
+
 
 /**
   * @brief  One Byte ASCII Sending
@@ -305,12 +432,16 @@ void USARTx_printk(uint8_t COM, char *fmt,...)
 //  
 void USARTx_EXYNOS(uint8_t COM, char *TmpBuffer)
 {
+
 	memcpy((char *)WL9FM_USART_DATA.COM4_TxBuf, TmpBuffer, Serial_COM4_TxSize);
 						
 	WL9FM_USART_INDEX.COM4_TxCnt = 0;
 	WL9FM_USART_INDEX.COM4_TxIdx = Serial_COM4_TxSize;
 	    
 	USART_ITConfig(Serial_USART[COM], USART_IT_TXE, ENABLE);
+	
+	
+
 }
 
 /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/

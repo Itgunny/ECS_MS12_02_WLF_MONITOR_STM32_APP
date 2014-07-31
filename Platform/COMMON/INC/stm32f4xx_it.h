@@ -64,7 +64,7 @@ void UART4_Receive_CMD(void);
 void UART4_transmit_CMD(void);
 void UART4_Receive_File(void);
 
-
+void DMA1_Stream6_IRQHandler(void);
 
 #ifdef __cplusplus
 }
