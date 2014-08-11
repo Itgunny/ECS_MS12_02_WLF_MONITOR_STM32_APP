@@ -1,0 +1,978 @@
+###############################################################################
+#                                                                             #
+# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      28/Jul/2014  18:42:34 #
+# Copyright 1999-2012 IAR Systems AB.                                         #
+#                                                                             #
+#    Cpu mode     =  thumb                                                    #
+#    Endian       =  little                                                   #
+#    Source file  =  C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Platform\TaeHa #
+#                     - ECS\SRC\FM31X4.c                                      #
+#    Command line =  "C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Platform\TaeH #
+#                    a - ECS\SRC\FM31X4.c" -D USE_STDPERIPH_DRIVER -D         #
+#                    STM32F4XX -D USE_STM324xG_EVAL -D USE_FULL_ASSERT -lcN   #
+#                    C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Project\Debug\ #
+#                    List\ -o C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Proje #
+#                    ct\Debug\Obj\ --debug --endian=little --cpu=Cortex-M4    #
+#                    -e --fpu=VFPv4_sp --dlib_config "C:\Tools\IAR            #
+#                    Systems\Embedded Workbench 6.5\arm\INC\c\DLib_Config_Ful #
+#                    l.h" -I C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Projec #
+#                    t\..\Platform\COMMON\INC\ -I                             #
+#                    "C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Project\..\Pl #
+#                    atform\TaeHa - ECS\INC\" -I                              #
+#                    C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Project\..\Lib #
+#                    raries\CMSIS\Device\ST\STM32F4xx\Include\ -I             #
+#                    C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Project\..\Lib #
+#                    raries\STM32F4xx_StdPeriph_Driver\inc\ -Oh               #
+#                    --use_c++_inline -I "C:\Tools\IAR Systems\Embedded       #
+#                    Workbench 6.5\arm\CMSIS\Include\"                        #
+#    List file    =  C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Project\Debug\ #
+#                    List\FM31X4.lst                                          #
+#    Object file  =  C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Project\Debug\ #
+#                    Obj\FM31X4.o                                             #
+#                                                                             #
+#                                                                             #
+###############################################################################
+
+C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\FM31X4.c
+      1          /**
+      2            ******************************************************************************
+      3            * @file    FM31X4.h 
+      4            * @author  kutelf (kutelf@taeha.co.kr)
+      5            * @version V1.0.0
+      6            * @date    02/22/2013
+      7            * @brief   FM31X4.c module
+      8            *
+      9            * Project Name       : WL9F Monitor APP
+     10            * Project Enviroment : IAREmbedded Workbench for ARM 6.5x 
+     11            *                      STM32F407ZGT6 Firmware Library
+     12            * Project Workspace  : WL9F_Monitor_APP
+     13            * MCU Type           : STM32F407ZGT6
+     14            *
+     15            * TAEHA MECHATRONICS Co., Ltd (http://www.taeha.co.kr)				
+     16            * ECS Division R&D Center. / Author by Young-Min Han (kutelf@taeha.co.kr)
+     17            * 
+     18            ******************************************************************************
+     19            */ 
+     20          
+     21          /* Includes ------------------------------------------------------------------*/
+     22          #include "WL9F_Monitor_APP.h" 
+     23          
+     24          
+     25          /* Private typedef -----------------------------------------------------------*/
+     26          /* Private define ------------------------------------------------------------*/
+     27          /* Private macro -------------------------------------------------------------*/
+     28          /* Private variables ---------------------------------------------------------*/
+     29          /* Private function prototypes -----------------------------------------------*/
+     30          /* Private functions ---------------------------------------------------------*/
+     31          void NOP(void)
+     32          {
+     33          	__NOP; __NOP; __NOP; __NOP; __NOP; __NOP; __NOP; 
+     34          	__NOP; __NOP; __NOP; __NOP; __NOP; __NOP; __NOP; 
+     35          	__NOP; __NOP; __NOP; __NOP; __NOP; __NOP; __NOP; 
+     36          	__NOP; __NOP; __NOP; __NOP; __NOP; __NOP; __NOP; 
+     37          	__NOP; __NOP; __NOP; __NOP; __NOP; __NOP; __NOP; 
+     38          	__NOP; __NOP; __NOP; __NOP; __NOP; __NOP; __NOP; 
+     39          	__NOP; __NOP; __NOP; __NOP; __NOP; __NOP; __NOP; 
+     40          	__NOP; __NOP; __NOP; __NOP; __NOP; __NOP; __NOP; 
+     41          	__NOP; __NOP; __NOP; __NOP; __NOP; __NOP; __NOP; 
+     42          	__NOP; __NOP; __NOP; __NOP; __NOP; __NOP; __NOP; 
+     43          }
+     44          
+     45          void EEPROM_PortChange(unsigned char dir)
+     46          {
+     47          	unsigned short temp;
+     48          	
+     49          	GPIO_InitTypeDef GPIO_InitStructure;
+     50          	
+     51          	if (dir)// Output
+     52          	{
+     53          		temp = FM31X4_I2C1_PORT->IDR;			//	GPIO_ReadInputData
+     54          		temp = ((~(FM31X4_I2C1_SDA)) & temp);
+     55          		FM31X4_I2C1_PORT->ODR = (temp);			//	GPIO_Write
+     56          		
+     57          		GPIO_InitStructure.GPIO_Pin   = FM31X4_I2C1_SDA;
+     58          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;
+     59          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_25MHz;
+     60          		GPIO_Init(FM31X4_I2C1_PORT, &GPIO_InitStructure);	
+     61          	}
+     62          	else	// Input
+     63          	{	
+     64          		temp = FM31X4_I2C1_PORT->IDR;			//	GPIO_ReadInputData
+     65          		temp = ((~(FM31X4_I2C1_SDA)) & temp);
+     66          		FM31X4_I2C1_PORT->ODR = (temp);			//	GPIO_Write
+     67          		
+     68          		GPIO_InitStructure.GPIO_Pin  = FM31X4_I2C1_SDA;
+     69          		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+     70          		GPIO_Init(FM31X4_I2C1_PORT, &GPIO_InitStructure);	
+     71          	}
+     72          }
+     73          
+     74          void EEPROM_ByteWrite ( unsigned char WData )
+     75          {
+     76          	unsigned char i,j;
+     77          	
+     78          	NOP();
+     79          	
+     80          	for ( i = 0; i < 8; i++ )
+     81          	{
+     82          		j = ( WData & 0x80 ) ? 1 : 0;
+     83          		(j) ? GPIO_SetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA) : GPIO_ResetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+     84          
+     85          		NOP(); 
+     86          		SCL1; 
+     87          		NOP();
+     88          		
+     89          		WData <<= 1;
+     90          
+     91          		SCL0;
+     92          		NOP();
+     93          	}
+     94          	
+     95          	GPIO_ResetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+     96          
+     97          	NOP(); 
+     98          	SCL1; 
+     99          	NOP(); 
+    100          	SCL0;
+    101          }
+    102          
+    103          unsigned char CheckEepromByteWrite ( void )  /* return 0 -> ok */
+    104          {
+    105          	unsigned char i, j;
+    106          	unsigned char WData = 0xa0;
+    107          	
+    108          	NOP(); 
+    109          	
+    110          	for ( i = 0; i < 8; i++ )
+    111          	{
+    112          		j = ( WData & 0x80 ) ? 1 : 0;
+    113          		(j) ? GPIO_SetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA) : GPIO_ResetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    114          
+    115          		NOP(); 
+    116          		SCL1;
+    117          		WData <<= 1;
+    118          		NOP(); 
+    119          		SCL0;
+    120          		NOP(); 
+    121          	}
+    122          	
+    123          	GPIO_SetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    124          	NOP(); 
+    125          	SDAIN;
+    126          	SCL1;
+    127          	NOP(); 
+    128          	i = SDA_READ;
+    129          	SCL0;
+    130          	SDAOUT;
+    131          	return (i);
+    132          }
+    133          
+    134          unsigned char EEPROM_ByteRead ( void )
+    135          {
+    136          	unsigned char i;
+    137          	unsigned char RData;
+    138          
+    139          	NOP(); 
+    140          	SCL0;
+    141          	NOP(); 
+    142          	NOP(); 
+    143          	GPIO_SetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    144          	SDAIN;
+    145          
+    146          	for ( i = 0; i < 8; i++ )
+    147          	{
+    148          		SCL1;
+    149          		NOP(); 
+    150          		RData = (RData << 1) | SDA_READ;
+    151          		SCL0;
+    152          		NOP(); 
+    153          		NOP(); 
+    154          	}
+    155          	GPIO_ResetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    156          	SDAOUT;
+    157          	return (RData );
+    158          }
+    159          
+    160          
+    161          void EEPROM_Write ( unsigned long Add, unsigned char WData )
+    162          {
+    163          	GPIO_SetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    164          	SDAOUT;
+    165          	/* start */
+    166          	GPIO_SetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    167          	SCL1;
+    168          	NOP(); 
+    169          	GPIO_ResetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    170          	NOP(); 
+    171          	SCL0;
+    172          	/* start end */
+    173          
+    174          	EEPROM_ByteWrite( 0xa0 );
+    175          	EEPROM_ByteWrite( (unsigned char)(Add >> 8) );
+    176          	EEPROM_ByteWrite( (unsigned char) Add );
+    177          	EEPROM_ByteWrite( WData );
+    178          
+    179          	/* stop */
+    180          	GPIO_ResetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    181          	NOP(); 
+    182          	SCL1;
+    183          	NOP(); 
+    184          	GPIO_SetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    185          }
+    186          
+    187          
+    188          unsigned char EEPROM_Read ( unsigned long Add )
+    189          {
+    190          	GPIO_SetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    191          	SDAOUT;
+    192          	/* start */
+    193          	GPIO_SetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    194          	SCL1;
+    195          	NOP(); 
+    196          	GPIO_ResetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    197          	NOP(); 
+    198          	SCL0;
+    199          	/* start end */
+    200          
+    201          	EEPROM_ByteWrite( 0xa0 );
+    202          	EEPROM_ByteWrite( (unsigned char)(Add >> 8) );
+    203          	EEPROM_ByteWrite( (unsigned char) Add );
+    204          
+    205          	NOP(); 
+    206          	NOP(); 
+    207          
+    208          	/* start */
+    209          	GPIO_SetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    210          	NOP(); 
+    211          	SCL1;
+    212          	NOP(); 
+    213          
+    214          	GPIO_ResetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    215          	NOP(); 
+    216          	SCL0;
+    217          	/* start end */
+    218          
+    219          	EEPROM_ByteWrite( 0xa1 );
+    220          	Add = EEPROM_ByteRead();
+    221          
+    222          	/* nak */
+    223          	GPIO_SetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    224          	NOP(); 
+    225          	SCL1;
+    226          	NOP(); 
+    227          	SCL0;
+    228          	NOP(); 
+    229          	NOP(); 
+    230          
+    231          	/* stop */
+    232          	GPIO_ResetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    233          	NOP(); 
+    234          	SCL1;
+    235          	NOP(); 
+    236          	GPIO_SetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    237          
+    238          	return (Add);
+    239          }
+    240          
+    241          
+    242          void EEPROM_PageWrite ( unsigned long Add, unsigned char *WData, unsigned char No )
+    243          {
+    244          	unsigned char i;
+    245          	GPIO_SetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    246          	SDAOUT;
+    247          	/* start */
+    248          	GPIO_SetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    249          	SCL1;
+    250          	NOP(); 
+    251          	GPIO_ResetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    252          	NOP(); 
+    253          	SCL0;
+    254          	/* start end */
+    255          	EEPROM_ByteWrite( 0xa0 );
+    256          	EEPROM_ByteWrite( (unsigned char)(Add >> 8) );
+    257          	EEPROM_ByteWrite( (unsigned char) Add );
+    258          
+    259          	for ( i = 0; i < No; i++ )
+    260          	{
+    261          		EEPROM_ByteWrite( WData[i] );
+    262          	}
+    263          
+    264          	/* stop */
+    265          	GPIO_ResetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    266          	NOP(); 
+    267          	SCL1;
+    268          	NOP(); 
+    269          	GPIO_SetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    270          }
+    271          
+    272          
+    273          void EEPROM_PageRead ( unsigned long Add, unsigned char *RData, unsigned char NoC )
+    274          {
+    275          	unsigned i;
+    276          
+    277          	GPIO_SetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    278          	SDAOUT;
+    279          
+    280          	/* start */
+    281          	GPIO_SetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    282          	SCL1;
+    283          	NOP(); 
+    284          	GPIO_ResetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    285          	NOP(); 
+    286          	SCL0;
+    287          	/* start end */
+    288          
+    289          	EEPROM_ByteWrite( 0xa0 );
+    290          	EEPROM_ByteWrite( (unsigned char)(Add >> 8) );
+    291          	EEPROM_ByteWrite( (unsigned char) Add );
+    292          
+    293          	NOP(); 
+    294          	NOP(); 
+    295          
+    296          	/* start */
+    297          	GPIO_SetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    298          	NOP(); 
+    299          	SCL1;
+    300          	NOP(); 
+    301          	GPIO_ResetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    302          	NOP(); 
+    303          	SCL0;
+    304          	/* start end */
+    305          
+    306          	EEPROM_ByteWrite( 0xa1 );
+    307          
+    308          	for ( i = 0; i < NoC; i++ )
+    309          	{
+    310          		RData[i] = EEPROM_ByteRead();
+    311          
+    312          		if ( (i+1) == NoC )
+    313          		{
+    314          			/* nak */
+    315          			GPIO_SetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    316          		}
+    317          		else
+    318          		{
+    319          			/* ack */
+    320          			GPIO_ResetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    321          		}
+    322          		NOP(); 
+    323          		SCL1;
+    324          		NOP(); 
+    325          		NOP(); 
+    326          		SCL0;
+    327          		NOP(); 
+    328          	}
+    329          
+    330          	/* stop */
+    331          	NOP(); 
+    332          	GPIO_ResetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    333          	NOP(); 
+    334          	SCL1;
+    335          	NOP(); 
+    336          	GPIO_SetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    337          }
+    338          
+    339          unsigned char EEPROM_WritingCheck ( void )
+    340          {
+    341          	GPIO_SetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    342          	SDAOUT;
+    343          	/* start */
+    344          	GPIO_SetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    345          	SCL1;
+    346          	NOP(); 
+    347          	GPIO_SetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    348          	NOP(); 
+    349          	SCL0;
+    350          	/* start end */
+    351          
+    352          return ( CheckEepromByteWrite() );
+    353          }
+    354          
+    355          
+    356          void FM3164_Watchdog_Init(unsigned char watchdog)
+    357          {
+    358          	GPIO_SetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    359          	SDAOUT;
+    360          	// start
+    361          	GPIO_SetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    362          	SCL1;
+    363          	NOP(); 
+    364          	GPIO_ResetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    365          	NOP(); 
+    366          	SCL0;
+    367          	// start end
+    368          
+    369          	EEPROM_ByteWrite( 0xD0 );
+    370          	EEPROM_ByteWrite( 0x0A );
+    371          	EEPROM_ByteWrite( watchdog );
+    372          
+    373          	// stop
+    374          	NOP(); 
+    375          	GPIO_ResetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    376          	NOP(); 
+    377          	SCL1;
+    378          	NOP(); 
+    379          	GPIO_SetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    380          }
+    381          
+    382          void FM3164_Restart(void)
+    383          {
+    384          
+    385              GPIO_SetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    386          	SDAOUT;
+    387          	// start
+    388          	GPIO_SetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    389          	SCL1;
+    390          	NOP(); 
+    391          	GPIO_ResetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    392          	NOP(); 
+    393          	SCL0;
+    394          	// start end 
+    395          	EEPROM_ByteWrite( 0xD0 );
+    396          	EEPROM_ByteWrite( 0x09 );
+    397          	EEPROM_ByteWrite( 0x0A );
+    398          	
+    399          	// stop
+    400          	NOP(); 
+    401          	GPIO_ResetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    402          	NOP(); 
+    403          	SCL1;
+    404          	NOP(); 
+    405          	GPIO_SetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    406          
+    407          }
+    408          
+    409          void WRITE_FM31xx_RTC_Companion(unsigned char address, unsigned char data)
+    410          {
+    411          	GPIO_SetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    412          	SDAOUT;
+    413          	// start
+    414          	GPIO_SetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    415          	SCL1;
+    416          	NOP(); 
+    417          	GPIO_ResetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    418          	NOP(); 
+    419          	SCL0;
+    420          	// start end
+    421          
+    422          	EEPROM_ByteWrite( 0xD0 );
+    423          	EEPROM_ByteWrite( address );
+    424          	EEPROM_ByteWrite( data );
+    425          	
+    426          	// stop
+    427          	NOP(); 
+    428          	GPIO_ResetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    429          	NOP(); 
+    430          	SCL1;
+    431          	NOP(); 
+    432          	GPIO_SetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    433          
+    434          }
+    435          
+    436          unsigned char READ_FM31xx_RTC_Companion(unsigned char Add)
+    437          {
+    438          	GPIO_SetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    439          	SDAOUT;
+    440          	// start
+    441          	GPIO_SetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    442          	SCL1;
+    443          	NOP(); 
+    444          	GPIO_ResetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    445          	NOP(); 
+    446          	SCL0;
+    447          	// start end
+    448          
+    449          	EEPROM_ByteWrite( 0xD0 );
+    450          	EEPROM_ByteWrite( (unsigned char) Add );
+    451          
+    452          	NOP(); 
+    453          	NOP(); 
+    454          
+    455          	//start
+    456          	GPIO_SetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    457          	NOP(); 
+    458          	SCL1;
+    459          	NOP(); 
+    460          
+    461          	GPIO_ResetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    462          	NOP(); 
+    463          	SCL0;
+    464          	//start end
+    465          
+    466          	EEPROM_ByteWrite( 0xD1 );
+    467          	Add = EEPROM_ByteRead();
+    468          
+    469          	// nak
+    470          	GPIO_SetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    471          	NOP(); 
+    472          	SCL1;
+    473          	NOP(); 
+    474          	SCL0;
+    475          	NOP(); 
+    476          	NOP(); 
+    477          
+    478          	// stop
+    479          	GPIO_ResetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    480          	NOP(); 
+    481          	SCL1;
+    482          	NOP(); 
+    483          	GPIO_SetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+    484          
+    485          	return (Add);
+    486          }
+    487          
+    488          void WRITE_RTC_Year(unsigned char data)
+    489          {
+    490              unsigned char temp;
+    491              
+    492              if (data > 99)
+    493                  return;
+    494              
+    495              temp = 0;
+    496              temp += (data / 10) << 4;
+    497              temp += data % 10;
+    498              
+    499              WRITE_FM31xx_RTC_Companion(ADDR_RTC_YEAR, temp);
+    500          }
+    501          
+    502          unsigned char READ_RTC_Year(void)
+    503          {
+    504              unsigned char data;
+    505              unsigned char temp;
+    506              
+    507              data = READ_FM31xx_RTC_Companion(ADDR_RTC_YEAR);
+    508              
+    509              temp = 0;
+    510              temp += ((data >> 4) & 0x0f) * 10;
+    511              temp += data & 0x0f;
+    512              
+    513              return temp;
+    514          }
+    515          
+    516          void WRITE_RTC_Month(unsigned char data)
+    517          {
+    518              unsigned char temp;
+    519              
+    520              if (data > 12)
+    521                  return;
+    522              
+    523              if (data < 1)
+    524                  return;
+    525              
+    526              temp = 0;
+    527              temp += (data / 10) << 4;
+    528              temp += data % 10;
+    529              
+    530              WRITE_FM31xx_RTC_Companion(ADDR_RTC_MONTH, temp);
+    531          }
+    532          
+    533          unsigned char READ_RTC_Month(void)
+    534          {
+    535              unsigned char data;
+    536              unsigned char temp;
+    537              
+    538              data = READ_FM31xx_RTC_Companion(ADDR_RTC_MONTH);
+    539              
+    540              temp = 0;
+    541              temp += ((data >> 4) & 0x01) * 10;
+    542              temp += data & 0x0f;
+    543              
+    544              return temp;
+    545          }
+    546          
+    547          void WRITE_RTC_Date(unsigned char data)
+    548          {
+    549              unsigned char temp;
+    550              
+    551              if (data > 31)
+    552                  return;
+    553              
+    554              if (data < 1)
+    555                  return;
+    556              
+    557              temp = 0;
+    558              temp += (data / 10) << 4;
+    559              temp += data % 10;
+    560              
+    561              WRITE_FM31xx_RTC_Companion(ADDR_RTC_DATE, temp);
+    562          }
+    563          
+    564          unsigned char READ_RTC_Date(void)
+    565          {
+    566              unsigned char data;
+    567              unsigned char temp;
+    568              
+    569              data = READ_FM31xx_RTC_Companion(ADDR_RTC_DATE);
+    570              
+    571              temp = 0;
+    572              temp += ((data >> 4) & 0x03) * 10;
+    573              temp += data & 0x0f;
+    574              
+    575              return temp;
+    576          }
+    577          
+    578          void WRITE_RTC_Day(unsigned char data)
+    579          {
+    580              unsigned char temp;
+    581              
+    582              if (data > 7)
+    583                  return;
+    584              
+    585              if (data < 1)
+    586                  return;
+    587              
+    588              temp = data;
+    589              
+    590              WRITE_FM31xx_RTC_Companion(ADDR_RTC_DAY, temp);
+    591          }
+    592          
+    593          unsigned char READ_RTC_Day(void)
+    594          {
+    595              unsigned char data;
+    596              unsigned char temp;
+    597              
+    598              data = READ_FM31xx_RTC_Companion(ADDR_RTC_DAY);
+    599              
+    600              temp = data & 0x07;
+    601              
+    602              return temp;
+    603          }
+    604          
+    605          void WRITE_RTC_Hour(unsigned char data)
+    606          {
+    607              unsigned char temp;
+    608              
+    609              if (data > 23)
+    610                  return;
+    611              
+    612              temp = 0;
+    613              temp += (data / 10) << 4;
+    614              temp += data % 10;
+    615              
+    616              WRITE_FM31xx_RTC_Companion(ADDR_RTC_HOUR, temp);
+    617          }
+    618          
+    619          unsigned char READ_RTC_Hour(void)
+    620          {
+    621              unsigned char data;
+    622              unsigned char temp;
+    623              
+    624              data = READ_FM31xx_RTC_Companion(ADDR_RTC_HOUR);
+    625              
+    626              temp = 0;
+    627              temp += ((data >> 4) & 0x03) * 10;
+    628              temp += data & 0x0f;
+    629              
+    630              return temp;
+    631          }
+    632          
+    633          void WRITE_RTC_Minute(unsigned char data)
+    634          {
+    635              unsigned char temp;
+    636              
+    637              if (data > 59)
+    638                  return;
+    639              
+    640              temp = 0;
+    641              temp += (data / 10) << 4;
+    642              temp += data % 10;
+    643              
+    644              WRITE_FM31xx_RTC_Companion(ADDR_RTC_MINUTE, temp);
+    645          }
+    646          
+    647          unsigned char READ_RTC_Minute(void)
+    648          {
+    649              unsigned char data;
+    650              unsigned char temp;
+    651              
+    652              data = READ_FM31xx_RTC_Companion(ADDR_RTC_MINUTE);
+    653              
+    654              temp = 0;
+    655              temp += ((data >> 4) & 0x07) * 10;
+    656              temp += data & 0x0f;
+    657              
+    658              return temp;
+    659          }
+    660          
+    661          void WRITE_RTC_Second(unsigned char data)
+    662          {
+    663              unsigned char temp;
+    664              
+    665              if (data > 59)
+    666                  return;
+    667              
+    668              temp = 0;
+    669              temp += (data / 10) << 4;
+    670              temp += data % 10;
+    671              
+    672              WRITE_FM31xx_RTC_Companion(ADDR_RTC_SECOND, temp);
+    673          }
+    674          
+    675          unsigned char READ_RTC_Second(void)
+    676          {
+    677              unsigned char data;
+    678              unsigned char temp;
+    679              
+    680              data = READ_FM31xx_RTC_Companion(ADDR_RTC_SECOND);
+    681              
+    682              temp = 0;
+    683              temp += ((data >> 4) & 0x07) * 10;
+    684              temp += data & 0x0f;
+    685              
+    686              return temp;
+    687          }
+    688          
+    689          void WRITE_RTC(WL9FM_DATA_RTC RTC_Data)
+    690          {    
+    691              WRITE_FM31xx_RTC_Companion(0x00, 0x02);
+    692              
+    693              WRITE_RTC_Year(RTC_Data.Year);
+    694              WRITE_RTC_Month(RTC_Data.Month);
+    695              WRITE_RTC_Date(RTC_Data.Date);
+    696              WRITE_RTC_Day(RTC_Data.Day);
+    697              WRITE_RTC_Hour(RTC_Data.Hour);
+    698              WRITE_RTC_Minute(RTC_Data.Minute);
+    699              WRITE_RTC_Second(RTC_Data.Second);
+    700              
+    701              WRITE_FM31xx_RTC_Companion(0x00, 0x00);
+    702              
+    703              WRITE_FM31xx_RTC_Companion(0x01, 0x00);
+    704          }
+    705          
+    706          void READ_RTC(WL9FM_DATA_RTC *RTC_Data)
+    707          {    
+    708              WRITE_FM31xx_RTC_Companion(0x00, 0x01);
+    709              
+    710              RTC_Data->Year 	 = READ_RTC_Year();
+    711              RTC_Data->Month  = READ_RTC_Month();
+    712              RTC_Data->Date 	 = READ_RTC_Date();
+    713              RTC_Data->Day 	 = READ_RTC_Day();
+    714              RTC_Data->Hour   = READ_RTC_Hour();
+    715              RTC_Data->Minute = READ_RTC_Minute();
+    716              RTC_Data->Second = READ_RTC_Second();
+    717              
+    718              WRITE_FM31xx_RTC_Companion(0x00, 0x00);
+    719          }
+    720          
+    721          
+    722          void InitEEPROM(void)
+    723          {
+    724          	uint8_t i;
+    725          
+    726          	for(i = 0; i < 100; i++) EEPROM_Write(i, 0);	
+    727          }
+    728          
+    729          void ReadAllData(WL9FM_DATA_EEPROM *ReadData)
+    730          {
+    731          	uint8_t  i;
+    732          	uint8_t  *buf;
+    733          	uint16_t size;
+    734          
+    735          	size = sizeof(WL9FM_DATA_EEPROM); 
+    736          
+    737          	buf = (uint8_t *)ReadData;
+    738          
+    739          	for(i = 0; i < size; i++)
+    740          	{
+    741          		*buf = EEPROM_Read(i);
+    742          		buf++;
+    743          	}
+    744          }
+    745          
+    746          void SaveAllData(WL9FM_DATA_EEPROM SaveData)
+    747          {
+    748          	uint8_t  i;
+    749          	uint8_t  *buf;
+    750          	uint16_t size;
+    751          
+    752          	size = sizeof(WL9FM_DATA_EEPROM); 
+    753          
+    754          	buf = (uint8_t *)&SaveData;
+    755          	
+    756          	for(i = 0; i < size; i++)
+    757          	{
+    758          		EEPROM_Write(i, *buf++);
+    759          		TimeDelay_msec(10);
+    760          	}
+    761          }
+    762          
+    763          /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
+    764          
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+      16   CheckEepromByteWrite
+        16   -> EEPROM_PortChange
+        16   -> GPIO_ReadInputDataBit
+        16   -> GPIO_ResetBits
+        16   -> GPIO_SetBits
+      16   EEPROM_ByteRead
+        16   -> EEPROM_PortChange
+        16   -> GPIO_ReadInputDataBit
+        16   -> GPIO_ResetBits
+        16   -> GPIO_SetBits
+      16   EEPROM_ByteWrite
+         0   -> GPIO_ResetBits
+        16   -> GPIO_ResetBits
+        16   -> GPIO_SetBits
+      24   EEPROM_PageRead
+        24   -> EEPROM_ByteRead
+        24   -> EEPROM_ByteWrite
+        24   -> EEPROM_PortChange
+        24   -> GPIO_ResetBits
+         0   -> GPIO_SetBits
+        24   -> GPIO_SetBits
+      24   EEPROM_PageWrite
+        24   -> EEPROM_ByteWrite
+        24   -> EEPROM_PortChange
+        24   -> GPIO_ResetBits
+         0   -> GPIO_SetBits
+        24   -> GPIO_SetBits
+      16   EEPROM_PortChange
+        16   -> GPIO_Init
+      16   EEPROM_Read
+        16   -> EEPROM_ByteRead
+        16   -> EEPROM_ByteWrite
+        16   -> EEPROM_PortChange
+        16   -> GPIO_ResetBits
+        16   -> GPIO_SetBits
+      16   EEPROM_Write
+        16   -> EEPROM_ByteWrite
+        16   -> EEPROM_PortChange
+        16   -> GPIO_ResetBits
+         0   -> GPIO_SetBits
+        16   -> GPIO_SetBits
+       8   EEPROM_WritingCheck
+         0   -> CheckEepromByteWrite
+         8   -> EEPROM_PortChange
+         8   -> GPIO_ResetBits
+         8   -> GPIO_SetBits
+       8   FM3164_Restart
+         8   -> EEPROM_ByteWrite
+         8   -> EEPROM_PortChange
+         8   -> GPIO_ResetBits
+         0   -> GPIO_SetBits
+         8   -> GPIO_SetBits
+      16   FM3164_Watchdog_Init
+        16   -> EEPROM_ByteWrite
+        16   -> EEPROM_PortChange
+        16   -> GPIO_ResetBits
+         0   -> GPIO_SetBits
+        16   -> GPIO_SetBits
+       8   InitEEPROM
+         8   -> EEPROM_Write
+       0   NOP
+      16   READ_FM31xx_RTC_Companion
+        16   -> EEPROM_ByteRead
+        16   -> EEPROM_ByteWrite
+        16   -> EEPROM_PortChange
+        16   -> GPIO_ResetBits
+        16   -> GPIO_SetBits
+       8   READ_RTC
+         8   -> READ_FM31xx_RTC_Companion
+         0   -> WRITE_FM31xx_RTC_Companion
+         8   -> WRITE_FM31xx_RTC_Companion
+       8   READ_RTC_Date
+         8   -> READ_FM31xx_RTC_Companion
+       8   READ_RTC_Day
+         8   -> READ_FM31xx_RTC_Companion
+       8   READ_RTC_Hour
+         8   -> READ_FM31xx_RTC_Companion
+       8   READ_RTC_Minute
+         8   -> READ_FM31xx_RTC_Companion
+       8   READ_RTC_Month
+         8   -> READ_FM31xx_RTC_Companion
+       8   READ_RTC_Second
+         8   -> READ_FM31xx_RTC_Companion
+       8   READ_RTC_Year
+         8   -> READ_FM31xx_RTC_Companion
+      16   ReadAllData
+        16   -> EEPROM_Read
+      32   SaveAllData
+        32   -> EEPROM_Write
+        32   -> TimeDelay_msec
+      16   WRITE_FM31xx_RTC_Companion
+        16   -> EEPROM_ByteWrite
+        16   -> EEPROM_PortChange
+        16   -> GPIO_ResetBits
+         0   -> GPIO_SetBits
+        16   -> GPIO_SetBits
+      16   WRITE_RTC
+         0   -> WRITE_FM31xx_RTC_Companion
+        16   -> WRITE_FM31xx_RTC_Companion
+        16   -> WRITE_RTC_Date
+        16   -> WRITE_RTC_Hour
+        16   -> WRITE_RTC_Minute
+        16   -> WRITE_RTC_Month
+        16   -> WRITE_RTC_Second
+        16   -> WRITE_RTC_Year
+       0   WRITE_RTC_Date
+         0   -> WRITE_FM31xx_RTC_Companion
+       0   WRITE_RTC_Day
+         0   -> WRITE_FM31xx_RTC_Companion
+       0   WRITE_RTC_Hour
+         0   -> WRITE_FM31xx_RTC_Companion
+       0   WRITE_RTC_Minute
+         0   -> WRITE_FM31xx_RTC_Companion
+       0   WRITE_RTC_Month
+         0   -> WRITE_FM31xx_RTC_Companion
+       0   WRITE_RTC_Second
+         0   -> WRITE_FM31xx_RTC_Companion
+       0   WRITE_RTC_Year
+         0   -> WRITE_FM31xx_RTC_Companion
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable9
+       8  ??Subroutine4_0
+      16  ??Subroutine5_0
+      14  ?Subroutine0
+      36  ?Subroutine1
+      74  ?Subroutine2
+       8  ?Subroutine3
+     104  CheckEepromByteWrite
+      80  EEPROM_ByteRead
+      92  EEPROM_ByteWrite
+     218  EEPROM_PageRead
+     208  EEPROM_PageWrite
+      62  EEPROM_PortChange
+     126  EEPROM_Read
+      82  EEPROM_Write
+      66  EEPROM_WritingCheck
+     106  FM3164_Restart
+     108  FM3164_Watchdog_Init
+      20  InitEEPROM
+       2  NOP
+     122  READ_FM31xx_RTC_Companion
+     176  READ_RTC
+       6  READ_RTC_Date
+      14  READ_RTC_Day
+       4  READ_RTC_Hour
+      14  READ_RTC_Minute
+      14  READ_RTC_Month
+      14  READ_RTC_Second
+      12  READ_RTC_Year
+      24  ReadAllData
+      36  SaveAllData
+      80  WRITE_FM31xx_RTC_Companion
+      96  WRITE_RTC
+      36  WRITE_RTC_Date
+      14  WRITE_RTC_Day
+      32  WRITE_RTC_Hour
+      32  WRITE_RTC_Minute
+      36  WRITE_RTC_Month
+      32  WRITE_RTC_Second
+      32  WRITE_RTC_Year
+
+ 
+ 2 260 bytes in section .text
+ 
+ 2 260 bytes of CODE memory
+
+Errors: none
+Warnings: none

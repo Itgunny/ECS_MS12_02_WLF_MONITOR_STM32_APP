@@ -1,0 +1,708 @@
+###############################################################################
+#                                                                             #
+# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      28/Jul/2014  18:42:36 #
+# Copyright 1999-2012 IAR Systems AB.                                         #
+#                                                                             #
+#    Cpu mode     =  thumb                                                    #
+#    Endian       =  little                                                   #
+#    Source file  =  C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Platform\TaeHa #
+#                     - ECS\SRC\LAMP_Control.c                                #
+#    Command line =  "C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Platform\TaeH #
+#                    a - ECS\SRC\LAMP_Control.c" -D USE_STDPERIPH_DRIVER -D   #
+#                    STM32F4XX -D USE_STM324xG_EVAL -D USE_FULL_ASSERT -lcN   #
+#                    C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Project\Debug\ #
+#                    List\ -o C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Proje #
+#                    ct\Debug\Obj\ --debug --endian=little --cpu=Cortex-M4    #
+#                    -e --fpu=VFPv4_sp --dlib_config "C:\Tools\IAR            #
+#                    Systems\Embedded Workbench 6.5\arm\INC\c\DLib_Config_Ful #
+#                    l.h" -I C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Projec #
+#                    t\..\Platform\COMMON\INC\ -I                             #
+#                    "C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Project\..\Pl #
+#                    atform\TaeHa - ECS\INC\" -I                              #
+#                    C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Project\..\Lib #
+#                    raries\CMSIS\Device\ST\STM32F4xx\Include\ -I             #
+#                    C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Project\..\Lib #
+#                    raries\STM32F4xx_StdPeriph_Driver\inc\ -Oh               #
+#                    --use_c++_inline -I "C:\Tools\IAR Systems\Embedded       #
+#                    Workbench 6.5\arm\CMSIS\Include\"                        #
+#    List file    =  C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Project\Debug\ #
+#                    List\LAMP_Control.lst                                    #
+#    Object file  =  C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Project\Debug\ #
+#                    Obj\LAMP_Control.o                                       #
+#                                                                             #
+#                                                                             #
+###############################################################################
+
+C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\LAMP_Control.c
+      1          /**
+      2            ******************************************************************************
+      3            * @file    LAMP_Control.c 
+      4            * @author  kutelf (kutelf@taeha.co.kr)
+      5            * @version V1.0.0
+      6            * @date    02/22/2013
+      7            * @brief   LAMP_Control.c module
+      8            *
+      9            * Project Name       : WL9F Monitor APP
+     10            * Project Enviroment : IAREmbedded Workbench for ARM 6.5x 
+     11            *                      STM32F407ZGT6 Firmware Library
+     12            * Project Workspace  : WL9F_Monitor_APP
+     13            * MCU Type           : STM32F407ZGT6
+     14            *
+     15            * TAEHA MECHATRONICS Co., Ltd (http://www.taeha.co.kr)				
+     16            * ECS Division R&D Center. / Author by Young-Min Han (kutelf@taeha.co.kr)
+     17            * 
+     18            ******************************************************************************
+     19            */ 
+     20          
+     21          /* Includes ------------------------------------------------------------------*/
+     22          #include "WL9F_Monitor_APP.h"	
+     23          
+     24          
+     25          
+     26          /* Private typedef -----------------------------------------------------------*/
+     27          /* Private define ------------------------------------------------------------*/ 
+     28          st_CANDATA_HCEPGN_65428	RX_HCEPGN_65428;
+     29          Realy_Control		rx_Realy_Control;
+     30          EHCU_Status		rx_EHCU_Status;
+     31          Auto_position_Status rx_Auto_position_Status;
+     32          WEIGHING_SYSTEM_STATUS_65450 rx_Weighing_System_Status;
+     33          CMD_LAMP rx_CMD_LAMP;
+     34          
+     35          
+     36          /* Private macro -------------------------------------------------------------*/
+     37          /* Private variables ---------------------------------------------------------*/
+     38          u8 Lamp_name;
+     39          u8 Lamp_Value;
+     40          
+     41          unsigned char Ride_Control_flag;
+     42          unsigned char AutoRide_Control_flag;
+     43          
+     44          unsigned char Attachment_Unlock_flag;
+     45          unsigned char Attachment_Lock_flag;
+     46          
+     47          unsigned char Auto_Grease_Green_flag;
+     48          unsigned char Auto_Grease_Red_flag;
+     49          
+     50          unsigned char WorkLoad_Green_Flag;
+     51          unsigned char WorkLoad_Blue_Flag;
+     52          
+     53          unsigned int Led_SIG_TEMP[10];
+     54          unsigned int Led_BL_TEMP[10];
+     55          
+     56          unsigned char Illumination_Sig;
+     57          /* Private function prototypes -----------------------------------------------*/
+     58          /* Private functions ---------------------------------------------------------*/
+     59          
+     60          //------------------------------------------------------------------------------
+     61          // Function Name 	: Work_Light_left_LampSystem
+     62          // Description 	: Work_Light_left_LampSystem  동작에 조건 판단.
+     63          // Input 			: None
+     64          // Return 		: None
+     65          // Period 		: 10ms
+     66          // rx_Realy_Control.work_lamp_Status 3435
+     67          // rx_Realy_Control.rear_work_Status 3446
+     68          //------------------------------------------------------------------------------
+     69          unsigned char Work_Light_left_LampSystem(void)
+     70          {
+     71          	unsigned char work_Light_Lamp_flag;
+     72          
+     73          	if(rx_Realy_Control.Work_Lamp_Status < 0x03)
+     74          	{
+     75          		if(rx_Realy_Control.Work_Lamp_Status == 0) 
+     76          			work_Light_Lamp_flag =0;
+     77          		else if(rx_Realy_Control.Work_Lamp_Status == 1)
+     78          			work_Light_Lamp_flag =1;
+     79          		else
+     80          			work_Light_Lamp_flag =0;
+     81          	}
+     82          	else 
+     83          		work_Light_Lamp_flag = 0;
+     84          
+     85          	return work_Light_Lamp_flag;
+     86          }
+     87          //------------------------------------------------------------------------------
+     88          // Function Name 	: Work_Light_right_LampSystem
+     89          // Description 	: Work_Light_right_LampSystem  동작에 조건 판단.
+     90          // Input 			: None
+     91          // Return 		: None
+     92          // Period 		: 10ms
+     93          // rx_Realy_Control.work_lamp_Status 3435
+     94          // rx_Realy_Control.rear_work_Status 3446
+     95          //------------------------------------------------------------------------------
+     96          unsigned char Work_Light_right_LampSystem(void)
+     97          {
+     98          	unsigned char work_Light_Lamp_flag;
+     99          
+    100          	if((rx_Realy_Control.Work_Lamp_Status < 0x03) && (rx_Realy_Control.Rear_Work_lamp_Status < 0x03)) 
+    101          	{
+    102          		if((rx_Realy_Control.Work_Lamp_Status == 0) && (rx_Realy_Control.Rear_Work_lamp_Status == 0)) 
+    103          			work_Light_Lamp_flag =0;
+    104          		else if((rx_Realy_Control.Work_Lamp_Status == 1) && (rx_Realy_Control.Rear_Work_lamp_Status == 1))
+    105          			work_Light_Lamp_flag =1;
+    106          		else
+    107          			work_Light_Lamp_flag =0;
+    108          	}
+    109          	else 
+    110          		work_Light_Lamp_flag = 0;
+    111          
+    112          	return work_Light_Lamp_flag;
+    113          }
+    114          //------------------------------------------------------------------------------
+    115          // Function Name 	: Main_Light_LampSystem
+    116          // Description 	: Main_Light_LampSystem  동작에 조건 판단.
+    117          // Input 			: None
+    118          // Return 		: None
+    119          // Period 		: 10ms
+    120          // rx_Realy_Control.Head_lamp_Status 3436
+    121          // rx_Realy_Control.Illumination_Status 3438
+    122          //------------------------------------------------------------------------------
+    123          unsigned char Main_Light_left_LampSystem(void)
+    124          {
+    125          	unsigned char Main_Light_Lamp_flag;
+    126          
+    127          	if((rx_Realy_Control.Head_lamp_Status < 0x03) && (rx_Realy_Control.Illumination_Status < 0x03)) 
+    128          	{
+    129          		if((rx_Realy_Control.Head_lamp_Status == 0) && (rx_Realy_Control.Illumination_Status == 0)) 
+    130          			Main_Light_Lamp_flag =0;
+    131          		else if(rx_Realy_Control.Illumination_Status == 1)
+    132          			Main_Light_Lamp_flag =1;
+    133          		else
+    134          			Main_Light_Lamp_flag =0;
+    135          	}
+    136          	else 
+    137          		Main_Light_Lamp_flag = 0;
+    138          
+    139          	return Main_Light_Lamp_flag;
+    140          }
+    141          
+    142          //------------------------------------------------------------------------------
+    143          // Function Name 	: Main_Light_LampSystem
+    144          // Description 	: Main_Light_LampSystem  동작에 조건 판단.
+    145          // Input 			: None
+    146          // Return 		: None
+    147          // Period 		: 10ms
+    148          // rx_Realy_Control.Head_lamp_Status 3436
+    149          // rx_Realy_Control.Illumination_Status 3438
+    150          //------------------------------------------------------------------------------
+    151          unsigned char Main_Light_Right_LampSystem(void)
+    152          {
+    153          	unsigned char Main_Light_Lamp_flag;
+    154          
+    155          	if((rx_Realy_Control.Head_lamp_Status < 0x03) && (rx_Realy_Control.Illumination_Status < 0x03)) 
+    156          	{
+    157          		if((rx_Realy_Control.Head_lamp_Status == 0) && (rx_Realy_Control.Illumination_Status == 0)) 
+    158          			Main_Light_Lamp_flag =0;
+    159          		else if(rx_Realy_Control.Illumination_Status == 1)
+    160          			Main_Light_Lamp_flag = ((rx_Realy_Control.Head_lamp_Status == 0x01) ? 0x01 : 0x00);
+    161          		else
+    162          			Main_Light_Lamp_flag =0;
+    163          	}
+    164          	else 
+    165          		Main_Light_Lamp_flag = 0;
+    166          
+    167          	return Main_Light_Lamp_flag;
+    168          }
+    169          
+    170          
+    171          //------------------------------------------------------------------------------
+    172          // Function Name 	: Fine_Modulation_LampSystem
+    173          // Description 	: Fine_Modulation_LampSystem  동작에 조건 판단.
+    174          // Input 			: None
+    175          // Return 		: None
+    176          // Period 		: 10ms
+    177          //------------------------------------------------------------------------------
+    178          unsigned char Fine_Modulation_LampSystem(void)
+    179          {
+    180          	unsigned char Fine_Modulation_Lamp_flag;
+    181          
+    182          	if(rx_EHCU_Status.Fine_Modulation < 0x03) 	
+    183          		Fine_Modulation_Lamp_flag = 	((rx_EHCU_Status.Fine_Modulation == 0x01) ? 0x01 : 0x00);
+    184          	else 
+    185          		Fine_Modulation_Lamp_flag = 0;
+    186          
+    187          	return Fine_Modulation_Lamp_flag;
+    188          }
+    189          
+    190          //------------------------------------------------------------------------------
+    191          // Function Name 	: Beacon_LampSystem
+    192          // Description 	: Beacon_LampSystem  동작에 조건 판단.
+    193          // Input 			: None
+    194          // Return 		: None
+    195          // Period 		: 10ms
+    196          //------------------------------------------------------------------------------
+    197          unsigned char Beacon_LampSystem(void)
+    198          {
+    199          	unsigned char Beacon_Lamp_flag;
+    200          
+    201          	if(rx_Realy_Control.beacon < 0x03) 	
+    202          		Beacon_Lamp_flag = 	((rx_Realy_Control.beacon == 0x01) ? 0x01 : 0x00);
+    203          	else 
+    204          		Beacon_Lamp_flag = 0;
+    205          
+    206          	return Beacon_Lamp_flag;
+    207          }
+    208          
+    209          //------------------------------------------------------------------------------
+    210          // Function Name 	: Mirror_heat_LampSystem
+    211          // Description 	: Mirror_heat_Lamp  동작에 조건 판단.
+    212          // Input 			: None
+    213          // Return 		: None
+    214          // Period 		: 10ms
+    215          //------------------------------------------------------------------------------
+    216          unsigned char Mirror_heat_LampSystem(void)
+    217          {
+    218          	unsigned char Mirror_heat_flag;
+    219          
+    220          	if(RX_HCEPGN_65428.Mirror_Heater_Status < 0x03) 	
+    221          		Mirror_heat_flag = 	((RX_HCEPGN_65428.Mirror_Heater_Status == 0x01) ? 0x01 : 0x00);
+    222          	else 
+    223          		Mirror_heat_flag = 0;
+    224          
+    225          	return Mirror_heat_flag;
+    226          }
+    227          
+    228          //------------------------------------------------------------------------------
+    229          // Function Name 	: Mirror_heat_LampSystem
+    230          // Description 	: Mirror_heat_Lamp  동작에 조건 판단.
+    231          // Input 			: None
+    232          // Return 		: None
+    233          // Period 		: 10ms
+    234          //------------------------------------------------------------------------------
+    235          unsigned char Rear_Wiper_LampSystem(void)
+    236          {
+    237          	unsigned char rear_wiper_flag;
+    238          
+    239          	if(rx_Realy_Control.Rear_Wiper < 0x03) 	
+    240          		rear_wiper_flag = 	((rx_Realy_Control.Rear_Wiper == 0x00) ? 0x00 : 0x01);
+    241          	else 
+    242          		rear_wiper_flag = 0;
+    243          
+    244          	return rear_wiper_flag;
+    245          }
+    246          //------------------------------------------------------------------------------
+    247          // Function Name 	: Ride_Control_LampSystem
+    248          // Description 	: Ride_Control_Lamp 동작에 조건 판단.
+    249          // Input 			: None
+    250          // Return 		: None
+    251          // Period 		: 10ms
+    252          //------------------------------------------------------------------------------
+    253          void Ride_Control_LampSystem(void)
+    254          {
+    255          	if(rx_Realy_Control.Ride_Control < 0x03)
+    256          	{
+    257          		if(rx_Realy_Control.Ride_Control == 0)
+    258          		{
+    259          			Ride_Control_flag = 0;
+    260          			AutoRide_Control_flag = 0;
+    261          		}
+    262          		else if(rx_Realy_Control.Ride_Control == 1)
+    263          		{
+    264          			Ride_Control_flag = 1;
+    265          			AutoRide_Control_flag = 0;
+    266          		}
+    267          		else if(rx_Realy_Control.Ride_Control == 2)
+    268          		{
+    269          			Ride_Control_flag = 0;
+    270          			AutoRide_Control_flag = 1;
+    271          		}
+    272          	}
+    273          	else
+    274          	{
+    275          		Ride_Control_flag = 0;
+    276          		AutoRide_Control_flag = 0;
+    277          	}
+    278          }
+    279          
+    280          //------------------------------------------------------------------------------
+    281          // Function Name 	: Quick_Coupler_LampSystem
+    282          // Description 	: Quick_Coupler_Lamp 동작에 조건 판단.
+    283          // Input 			: None
+    284          // Return 		: None
+    285          // Period 		: 10ms
+    286          //------------------------------------------------------------------------------
+    287          void Quick_Coupler_LampSystem(void)
+    288          {
+    289          	if(rx_Realy_Control.Quick_Coupler < 0x03)
+    290          	{
+    291          		if(rx_Realy_Control.Quick_Coupler == 0)
+    292          		{
+    293          			Attachment_Unlock_flag = 1;
+    294          			Attachment_Lock_flag = 0;
+    295          		}
+    296          		else if(rx_Realy_Control.Quick_Coupler == 1)
+    297          		{
+    298          			Attachment_Unlock_flag = 0;
+    299          			Attachment_Lock_flag = 1;
+    300          		}
+    301          		else
+    302          		{
+    303          			Attachment_Unlock_flag = 0;
+    304          			Attachment_Lock_flag = 0;
+    305          		}
+    306          	}
+    307          	else
+    308          	{
+    309          		Attachment_Unlock_flag = 0;
+    310          		Attachment_Lock_flag = 0;
+    311          	}
+    312          }
+    313          
+    314          //------------------------------------------------------------------------------
+    315          // Function Name 	: Boom_Detent_LampSystem
+    316          // Description 	: Boom_Detent_LampSystem 동작에 조건 판단.
+    317          // Input 			: None
+    318          // Return 		: None
+    319          // Period 		: 10ms
+    320          //------------------------------------------------------------------------------
+    321          unsigned char Boom_Detent_LampSystem(void)
+    322          {
+    323          	unsigned char Boom_Detent_flag;
+    324          
+    325          	if(rx_Auto_position_Status.Boom_Detent_Mode < 0x07) 	
+    326          	{
+    327          		if(rx_Auto_position_Status.Boom_Detent_Mode > 0 && rx_Auto_position_Status.Boom_Detent_Mode < 4)
+    328          			Boom_Detent_flag = 1;
+    329          		else
+    330          			Boom_Detent_flag = 0;
+    331          	}		
+    332          	else 
+    333          		Boom_Detent_flag = 0;
+    334          
+    335          	return Boom_Detent_flag;
+    336          }
+    337          
+    338          //------------------------------------------------------------------------------
+    339          // Function Name 	: Bucket_Detent_LampSystem
+    340          // Description 	: Bomm_Detent_LampSystem 동작에 조건 판단.
+    341          // Input 			: None
+    342          // Return 		: None
+    343          // Period 		: 10ms
+    344          //------------------------------------------------------------------------------
+    345          unsigned char Bucket_Detent_LampSystem(void)
+    346          {
+    347          	unsigned char Bucket_Detent_flag;
+    348          
+    349          	if(rx_Auto_position_Status.Bucket_Detent_Mode < 0x07) 	
+    350          	{
+    351          		if(rx_Auto_position_Status.Bucket_Detent_Mode > 0 && rx_Auto_position_Status.Bucket_Detent_Mode < 4)
+    352          			Bucket_Detent_flag = 1;
+    353          		else
+    354          			Bucket_Detent_flag = 0;
+    355          	}		
+    356          	else 
+    357          		Bucket_Detent_flag = 0;
+    358          
+    359          	return Bucket_Detent_flag;
+    360          }
+    361          
+    362          
+    363          //------------------------------------------------------------------------------
+    364          // Function Name 	: Auto_Grease_LampSystem
+    365          // Description 	: Auto_Grease_Lamp 동작에 조건 판단.
+    366          // Input 			: None
+    367          // Return 		: None
+    368          // Period 		: 10ms
+    369          //------------------------------------------------------------------------------
+    370          void Auto_Grease_LampSystem(void)
+    371          {
+    372          
+    373          	if(RX_HCEPGN_65428.AutoGrease_Green_LED < 0x03)
+    374          	{
+    375          		if(RX_HCEPGN_65428.AutoGrease_Green_LED == 0x01)
+    376          		{
+    377          			Auto_Grease_Green_flag = 1;
+    378          		}
+    379          		else
+    380          		{
+    381          			Auto_Grease_Green_flag = 0;
+    382          		}
+    383          	}
+    384          
+    385          	if(RX_HCEPGN_65428.AutoGrease_Red_LED < 0x03)
+    386          	{
+    387          		if(RX_HCEPGN_65428.AutoGrease_Red_LED == 0x01)
+    388          		{
+    389          			Auto_Grease_Red_flag = 1;
+    390          		}
+    391          		else
+    392          		{
+    393          			Auto_Grease_Red_flag = 0;
+    394          		}
+    395          	}
+    396          
+    397          
+    398          }
+    399          
+    400          //------------------------------------------------------------------------------
+    401          // Function Name 	: WorkLoad_LampSystem
+    402          // Description 	: WorkLoad_LampSystem 동작에 조건 판단.
+    403          // Input 			: None
+    404          // Return 		: None
+    405          // Period 		: 10ms
+    406          //------------------------------------------------------------------------------
+    407          void WorkLoad_LampSystem(void)
+    408          {
+    409          
+    410          	if(rx_Weighing_System_Status.WeightAccumulationMode <= 0x03)
+    411          	{
+    412          		if(rx_Weighing_System_Status.WeightAccumulationMode == 0x01)
+    413          		{
+    414          			WorkLoad_Green_Flag= 1;
+    415          			WorkLoad_Blue_Flag= 0;
+    416          		}
+    417          		else if(rx_Weighing_System_Status.WeightAccumulationMode == 0x00 || rx_Weighing_System_Status.WeightAccumulationMode == 0x03)
+    418          		{
+    419          			WorkLoad_Green_Flag= 0;
+    420          			WorkLoad_Blue_Flag= 1;
+    421          		}
+    422          	}
+    423          
+    424          	
+    425          
+    426          
+    427          }
+    428          
+    429          
+    430          //------------------------------------------------------------------------------
+    431          // Function Name 	: Illumination_LampSystem
+    432          // Description 	: Illumination_LampSystem Lamp  동작에 조건 판단.
+    433          // Input 			: None
+    434          // Return 		: None
+    435          // Period 		: 10ms
+    436          //------------------------------------------------------------------------------
+    437          unsigned char Illumination_Lamp_System(void)
+    438          {
+    439          	unsigned char Illumination_falg;
+    440          
+    441          	if(rx_Realy_Control.Illumination_Status < 0x03)
+    442          	{
+    443          		if(rx_Realy_Control.Illumination_Status == 1)
+    444          			Illumination_falg =1;
+    445          		else
+    446          			Illumination_falg =0;
+    447          	}
+    448          	else 
+    449          		Illumination_falg = 0;
+    450          
+    451          	return Illumination_falg;
+    452          }
+    453          
+    454          //------------------------------------------------------------------------------
+    455          // Function Name	: Lamp_Update_System
+    456          // Description 		: Lamp 제어
+    457          // Input 			: Symbol_state
+    458          // Return 			: None
+    459          // Period 			: 초기화시 , 100ms
+    460          //------------------------------------------------------------------------------
+    461           void Lamp_Update_System(void)
+    462          {
+    463          	unsigned long temp;
+    464          	unsigned short i;
+    465          
+    466          	// SIG
+    467          	temp = 0x400000;
+    468          
+    469          	if(Illumination_Sig)	LAMP_Update_Data |= 0x700000;
+    470          	
+    471          	for ( i = 0 ; i < 23 ; i++)
+    472          	{  
+    473          		if ( LAMP_Update_Data & temp )
+    474          			C_LAMP_SDATA_HIGH();
+    475          		else	
+    476          			C_LAMP_SDATA_LOW();
+    477          
+    478          		C_LAMP_SCLK_HIGH();		
+    479          		TimeDelay_msec(1);
+    480          		C_LAMP_SCLK_LOW();
+    481          
+    482          		temp = temp >> 1;
+    483          	}
+    484          
+    485          	C_LAMP_SLCLK_HIGH();	
+    486          	TimeDelay_msec(1);
+    487          	C_LAMP_SLCLK_LOW();		
+    488          	TimeDelay_msec(1);
+    489          	C_LAMP_SLCLK_HIGH();
+    490          }
+    491          
+    492          
+    493          //	10msec 마다 실행해야된다.
+    494          void Lamp_Update_State(void)
+    495          {
+    496          	unsigned int i;
+    497          	
+    498          	//for (i= 9;  i !=0; i--)
+    499          	//{
+    500          	//	Led_SIG_TEMP[i] 		= Led_SIG_TEMP[i -1];
+    501          	//	Led_BL_TEMP[i] 		= Led_BL_TEMP[i -1];
+    502          	//}
+    503          
+    504          	Led_SIG_TEMP[0]  = 0;
+    505          
+    506          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.MainLight1)?(Main_Light_1_G):(0x00);
+    507          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.MainLight2)?(Main_Light_2_B):(0x00);
+    508          
+    509          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.WorkLight1)?(Work_Light_G1):(0x00);
+    510          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.WorkLight2)?(Work_Light_G2):(0x00);
+    511          	
+    512          
+    513          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.AutoGrease1)?(Auto_Grease_1_G):(0x00);
+    514          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.AutoGrease2)?(Auto_Grease_2_R):(0x00);
+    515          	
+    516          
+    517          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.QuickCoupler1)?(Quick_coupler_1_G):(0x00);
+    518          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.QuickCoupler2)?(Quick_coupler_2_R):(0x00);
+    519          
+    520          	
+    521          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.RideControl1)?(Ride_Control_1_G):(0x00);
+    522          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.RideControl2)?(Ride_Control_2_B):(0x00);
+    523          
+    524          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.WorkLoad1)?(Work_load_1_G):(0x00);
+    525          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.WorkLoad2)?(Work_load_2_B):(0x00);
+    526          	
+    527          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.BeaconLamp)?(Beacon_lamp_G):(0x00);
+    528          
+    529          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.RearWiper)?(Rear_Wiper_G):(0x00);
+    530          	
+    531          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.MirrorHeat)?(Mirror_Heat_1_G):(0x00);
+    532          	
+    533          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.AutoPosition1)?(Auto_Position_1_G):(0x00);
+    534          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.AutoPosition2)?(Auto_Position_2_G):(0x00);
+    535          	
+    536          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.FineModulation)?(Fine_Modulation_G):(0x00);
+    537          
+    538          
+    539          	Led_BL_TEMP[0] = rx_CMD_LAMP.Illumination;
+    540          
+    541          	//if((Led_SIG_TEMP[9] == Led_SIG_TEMP[8]) && (Led_SIG_TEMP[8] == Led_SIG_TEMP[1]) && (Led_SIG_TEMP[1] == Led_SIG_TEMP[0])) 
+    542          	{
+    543          		LAMP_Update_Data = Led_SIG_TEMP[0];
+    544          	}
+    545          	//if((Led_BL_TEMP[9] == Led_BL_TEMP[8]) && (Led_BL_TEMP[8] == Led_BL_TEMP[1]) && (Led_BL_TEMP[1] == Led_BL_TEMP[0]))  
+    546          	{		
+    547          		Illumination_Sig = Led_BL_TEMP[0];
+    548          	}
+    549          }
+    550          
+    551          /**
+    552            * @brief  LAMP Initialize 
+    553            * @param  
+    554            * @retval None
+    555            */
+    556          void LAMP_Control_Init(void)
+    557          {
+    558          	DebugMsg_printf("++ LAMP Initialize START\r\n");
+    559          
+    560          	//  LAMP GPIO는 System_Init.c 에서 설정
+    561          #if 0
+    562          	GPIO_InitStructure.GPIO_Pin   = LAMP_CLR | LAMP_SLCLK | LAMP_SCLK | LAMP_SDATA;
+    563          	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+    564          	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+    565          	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+    566          	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    567          	GPIO_Init(LAMP_PORT, &GPIO_InitStructure);
+    568          #endif
+    569          
+    570          	GPIO_WriteBit(LAMP_PORT, LAMP_CLR, Bit_SET);
+    571          	TimeDelay_msec(10);
+    572          	GPIO_WriteBit(LAMP_PORT, LAMP_CLR, Bit_RESET);
+    573          
+    574          	LAMP_Update_Data = LAMP_ALL_ON;
+    575          
+    576          	Lamp_Update_System();
+    577          
+    578          	DebugMsg_printf("-- LAMP Initialize END\r\n");
+    579          }
+    580          
+    581          /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       0   Auto_Grease_LampSystem
+       0   Beacon_LampSystem
+       0   Boom_Detent_LampSystem
+       0   Bucket_Detent_LampSystem
+       0   Fine_Modulation_LampSystem
+       0   Illumination_Lamp_System
+       8   LAMP_Control_Init
+         8   -> GPIO_WriteBit
+         0   -> Lamp_Update_System
+         8   -> TimeDelay_msec
+       0   Lamp_Update_State
+      24   Lamp_Update_System
+         0   -> GPIO_WriteBit
+        24   -> GPIO_WriteBit
+        24   -> TimeDelay_msec
+       0   Main_Light_Right_LampSystem
+       0   Main_Light_left_LampSystem
+       0   Mirror_heat_LampSystem
+       0   Quick_Coupler_LampSystem
+       0   Rear_Wiper_LampSystem
+       0   Ride_Control_LampSystem
+       0   WorkLoad_LampSystem
+       0   Work_Light_left_LampSystem
+       0   Work_Light_right_LampSystem
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable16
+       4  ??DataTable16_1
+       4  ??DataTable16_2
+       4  ??DataTable16_3
+       4  ??DataTable16_4
+       4  ??DataTable16_5
+       4  ??DataTable16_6
+       4  ??DataTable16_7
+      16  ?Subroutine0
+      36  Auto_Grease_LampSystem
+       4  Beacon_LampSystem
+      26  Boom_Detent_LampSystem
+      26  Bucket_Detent_LampSystem
+       6  Fine_Modulation_LampSystem
+       8  Illumination_Lamp_System
+      48  LAMP_Control_Init
+     268  Lamp_Update_State
+     136  Lamp_Update_System
+       1  Lamp_Value
+       1  Lamp_name
+      38  Main_Light_Right_LampSystem
+      32  Main_Light_left_LampSystem
+      10  Mirror_heat_LampSystem
+      40  Quick_Coupler_LampSystem
+      10  RX_HCEPGN_65428
+          Auto_Grease_Green_flag
+          Auto_Grease_Red_flag
+      26  Rear_Wiper_LampSystem
+      44  Ride_Control_LampSystem
+      12  WorkLoad_Green_Flag
+          WorkLoad_Blue_Flag
+          rx_Weighing_System_Status
+      40  WorkLoad_LampSystem
+      26  Work_Light_left_LampSystem
+      42  Work_Light_right_LampSystem
+       8  rx_Auto_position_Status
+      92  rx_CMD_LAMP
+          Illumination_Sig
+          Led_SIG_TEMP
+          Led_BL_TEMP
+       8  rx_EHCU_Status
+      12  rx_Realy_Control
+          Ride_Control_flag
+          AutoRide_Control_flag
+          Attachment_Unlock_flag
+          Attachment_Lock_flag
+
+ 
+ 144 bytes in section .bss
+ 904 bytes in section .text
+ 
+ 904 bytes of CODE memory
+ 144 bytes of DATA memory
+
+Errors: none
+Warnings: 1
