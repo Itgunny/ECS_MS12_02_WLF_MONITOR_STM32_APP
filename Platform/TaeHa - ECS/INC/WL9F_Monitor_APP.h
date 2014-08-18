@@ -136,7 +136,7 @@
 #define	VERSION_HIGH		1
 #define	VERSION_LOW			0
 #define	VERSION_SUB_HIGH	0
-#define	VERSION_SUB_LOW		5
+#define	VERSION_SUB_LOW		6
 
 
 //=================================================================

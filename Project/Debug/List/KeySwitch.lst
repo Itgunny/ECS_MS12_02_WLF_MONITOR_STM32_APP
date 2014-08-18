@@ -1,39 +1,38 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      28/Jul/2014  18:42:35 #
+# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      18/Aug/2014  14:32:52 #
 # Copyright 1999-2012 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
 #    Endian       =  little                                                   #
-#    Source file  =  C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Platform\TaeHa #
-#                     - ECS\SRC\KeySwitch.c                                   #
-#    Command line =  "C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Platform\TaeH #
-#                    a - ECS\SRC\KeySwitch.c" -D USE_STDPERIPH_DRIVER -D      #
+#    Source file  =  C:\Tools\WL9F\WL_F_Monitor_APP_DMA\Platform\TaeHa -      #
+#                    ECS\SRC\KeySwitch.c                                      #
+#    Command line =  "C:\Tools\WL9F\WL_F_Monitor_APP_DMA\Platform\TaeHa -     #
+#                    ECS\SRC\KeySwitch.c" -D USE_STDPERIPH_DRIVER -D          #
 #                    STM32F4XX -D USE_STM324xG_EVAL -D USE_FULL_ASSERT -lcN   #
-#                    C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Project\Debug\ #
-#                    List\ -o C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Proje #
-#                    ct\Debug\Obj\ --debug --endian=little --cpu=Cortex-M4    #
-#                    -e --fpu=VFPv4_sp --dlib_config "C:\Tools\IAR            #
+#                    C:\Tools\WL9F\WL_F_Monitor_APP_DMA\Project\Debug\List\   #
+#                    -o C:\Tools\WL9F\WL_F_Monitor_APP_DMA\Project\Debug\Obj\ #
+#                     --debug --endian=little --cpu=Cortex-M4 -e              #
+#                    --fpu=VFPv4_sp --dlib_config "C:\Tools\IAR               #
 #                    Systems\Embedded Workbench 6.5\arm\INC\c\DLib_Config_Ful #
-#                    l.h" -I C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Projec #
-#                    t\..\Platform\COMMON\INC\ -I                             #
-#                    "C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Project\..\Pl #
-#                    atform\TaeHa - ECS\INC\" -I                              #
-#                    C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Project\..\Lib #
-#                    raries\CMSIS\Device\ST\STM32F4xx\Include\ -I             #
-#                    C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Project\..\Lib #
-#                    raries\STM32F4xx_StdPeriph_Driver\inc\ -Oh               #
-#                    --use_c++_inline -I "C:\Tools\IAR Systems\Embedded       #
-#                    Workbench 6.5\arm\CMSIS\Include\"                        #
-#    List file    =  C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Project\Debug\ #
-#                    List\KeySwitch.lst                                       #
-#    Object file  =  C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Project\Debug\ #
-#                    Obj\KeySwitch.o                                          #
+#                    l.h" -I C:\Tools\WL9F\WL_F_Monitor_APP_DMA\Project\..\Pl #
+#                    atform\COMMON\INC\ -I "C:\Tools\WL9F\WL_F_Monitor_APP_DM #
+#                    A\Project\..\Platform\TaeHa - ECS\INC\" -I               #
+#                    C:\Tools\WL9F\WL_F_Monitor_APP_DMA\Project\..\Libraries\ #
+#                    CMSIS\Device\ST\STM32F4xx\Include\ -I                    #
+#                    C:\Tools\WL9F\WL_F_Monitor_APP_DMA\Project\..\Libraries\ #
+#                    STM32F4xx_StdPeriph_Driver\inc\ -Oh --use_c++_inline -I  #
+#                    "C:\Tools\IAR Systems\Embedded Workbench                 #
+#                    6.5\arm\CMSIS\Include\"                                  #
+#    List file    =  C:\Tools\WL9F\WL_F_Monitor_APP_DMA\Project\Debug\List\Ke #
+#                    ySwitch.lst                                              #
+#    Object file  =  C:\Tools\WL9F\WL_F_Monitor_APP_DMA\Project\Debug\Obj\Key #
+#                    Switch.o                                                 #
 #                                                                             #
 #                                                                             #
 ###############################################################################
 
-C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\KeySwitch.c
+C:\Tools\WL9F\WL_F_Monitor_APP_DMA\Platform\TaeHa - ECS\SRC\KeySwitch.c
       1          /**
       2            ******************************************************************************
       3            * @file    KeySwitch.c 
@@ -77,7 +76,7 @@ C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\KeySwitch.c
      41          #define	Key_Beacon			0x81
      42          #define	Key_Mirror_Heat		0x82
      43          #define	Key_Rear_Wiper		0x84
-     44          #define	Key_USER			    0x88
+     44          #define	Key_USER			0x88
      45          #define	Key_Reserved1		0x90
      46          #define	Key_Reserved2		0xa0
      47          
@@ -455,12 +454,12 @@ C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\KeySwitch.c
     419          	}
     420          
     421          	
-    422                  if ( (Temp_Value1 == 0) && (New_Value != 0) ) 
-    423                  //if (New_Value != 0)
-    424                  {
-    425                      //Temp_Value1 = New_Value+(KeySwitchScan<<6);
-    426                      Temp_Value1 = New_Value << (KeySwitchScan * 8);
-    427                  }
+    422              if ( (Temp_Value1 == 0) && (New_Value != 0) ) 
+    423              //if (New_Value != 0)
+    424              {
+    425                  //Temp_Value1 = New_Value+(KeySwitchScan<<6);
+    426                  Temp_Value1 = New_Value << (KeySwitchScan * 8);
+    427              }
     428                  
     429                  
     430          	if (KeySwitchScan == 2)    //  15msec
@@ -468,114 +467,119 @@ C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\KeySwitch.c
     432                        //  KeySwitch Value 생성
     433          		if (Temp_Value1 == 0) 
     434          		{
-    435          			Temp_Value3 = Temp_Cnt = 0;		
-    436          		}
-    437          		else
-    438                  	{
-    439          	            if (Temp_Value3 == Temp_Value1) //  눌려있던 키?
-    440          	            {
-    441                          		Temp_Cnt++;                 //  계속 눌려 있는가?
-    442                          
-    443          				if (Temp_Cnt ==3)          //  3번 연속 체크 되었을 때, 45msec
-    444          				{
-    445          					KeySwitch_Value = Temp_Value1;   
-    446          
-    447          					//  STM32 BUZZER를 사용할 경우.. 버튼 클릭 
-    448          					#ifdef STM32_BUZZER
-    449          					Buzzer_Set(10);
-    450          					#endif
+    435          			if(KeySwitch_Value != 0)
+    436          			{
+    437          				KeySwitch_Value = Temp_Value3 = Temp_Cnt = 0;	
+    438          				KeySwitch_SendToEXYNOS(KeySwitch_Value,0);
+    439          			}
+    440          			KeySwitch_Value = Temp_Value3 = Temp_Cnt = 0;		
+    441          		}
+    442          		else
+    443                  {
+    444                      if (Temp_Value3 == Temp_Value1) //  눌려있던 키?
+    445                      {
+    446                      	Temp_Cnt++;                 //  계속 눌려 있는가?
+    447                      
+    448          				if (Temp_Cnt ==3)          //  3번 연속 체크 되었을 때, 45msec
+    449          				{
+    450          					KeySwitch_Value = Temp_Value1;   
     451          
-    452          					KeySwitch_SendToEXYNOS(KeySwitch_Value,0);
-    453          				}
-    454          				
-    455          				if (Temp_Cnt == 300)         //  10번 연속 체크 되었을 때
-    456          				{
-    457          					//  연속 스위치 루틴..                              
-    458          					KeySwitch_Value = Temp_Value1;   
-    459          					Temp_Cnt -= 50;
-    460          					
-    461          					//if(KeySwitch_Value<0x20)
-    462          					{
-    463          						#ifdef STM32_BUZZER
-    464          							Buzzer_Set(10);
-    465          						#endif
-    466          						KeySwitch_SendToEXYNOS(KeySwitch_Value,1);
-    467          					}
-    468          				}
-    469          			}
-    470          			else    //  순간적으로 눌렸는가?
-    471          			{
-    472          				Temp_Cnt    = 0;
-    473          				Temp_Value3 = Temp_Value1;
+    452          					//  STM32 BUZZER를 사용할 경우.. 버튼 클릭 
+    453          					#ifdef STM32_BUZZER
+    454          					Buzzer_Set(10);
+    455          					#endif
+    456          
+    457          					KeySwitch_SendToEXYNOS(KeySwitch_Value,0);
+    458          				}
+    459          				
+    460          				if (Temp_Cnt == 300)         //  10번 연속 체크 되었을 때
+    461          				{
+    462          					//  연속 스위치 루틴..                              
+    463          					KeySwitch_Value = Temp_Value1;   
+    464          					Temp_Cnt -= 50;
+    465          					
+    466          					//if(KeySwitch_Value<0x20)
+    467          					{
+    468          						#ifdef STM32_BUZZER
+    469          							Buzzer_Set(10);
+    470          						#endif
+    471          						KeySwitch_SendToEXYNOS(KeySwitch_Value,1);
+    472          					}
+    473          				}
     474          			}
-    475          		}
-    476          	}        
-    477          
-    478          	if (++KeySwitchScan > 2) KeySwitchScan = 0;        
-    479          }
-    480          #endif
-    481          
+    475          			else    //  순간적으로 눌렸는가?
+    476          			{
+    477          				Temp_Cnt    = 0;
+    478          				Temp_Value3 = Temp_Value1;
+    479          			}
+    480          		}
+    481          	}        
     482          
-    483          void KeySwitch_Init(void)
-    484          {
-    485              TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
-    486              NVIC_InitTypeDef        NVIC_InitStructure;
+    483          	if (++KeySwitchScan > 2) KeySwitchScan = 0;        
+    484          }
+    485          #endif
+    486          
     487          
-    488              DebugMsg_printf("++ KeySwitch (TIM5 : 5msec), TIM5_IRQn Initialize START\r\n");
-    489          
-    490              //  KeySwitch GPIO는 System_Init.c 에서 설정
-    491              #if 0
+    488          void KeySwitch_Init(void)
+    489          {
+    490              TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
+    491              NVIC_InitTypeDef        NVIC_InitStructure;
     492          
-    493              GPIO_InitTypeDef    GPIO_InitStructure;
-    494              
-    495          	//	KeySwitch Matrix -> GPIO Output
-    496          	GPIO_InitStructure.GPIO_Pin   = KeySCAN0 | KeySCAN1 | KeySCAN2;
-    497              GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
-    498            	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-    499            	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-    500              GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    501              GPIO_Init(KeySWXX_PORT, &GPIO_InitStructure);
-    502          
-    503          	//	KeySwitch Matrix -> GPIO Input
-    504          	GPIO_InitStructure.GPIO_Pin   = KeyInput0 | KeyInput1 | KeyInput2 | KeyInput3 | KeyInput4 | KeyInput5;
-    505              GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_IN;   
-    506            	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-    507            	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-    508              GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    509              GPIO_Init(KeySWXX_PORT, &GPIO_InitStructure);
-    510          	
-    511              #endif
-    512          
-    513              TIM_TimeBaseStructure.TIM_Period        = 0x9c4;   	//  (1 / 1MHz) * 5000 -> 5msec
-    514          
-    515          	//TIM_TimeBaseStructure.TIM_Period        = 0x4e2;   	//  (1 / 0.5MHz) * 2500 -> 5msec
-    516          
-    517          	//TIM_TimeBaseStructure.TIM_Period        = 0x271; 
-    518          
-    519          	TIM_TimeBaseStructure.TIM_Prescaler     = 0xA8;     //  84 MHz / 168 = 1MHz
-    520          	TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
-    521          	TIM_TimeBaseStructure.TIM_CounterMode   = TIM_CounterMode_Up;
-    522          	TIM_TimeBaseInit(TIM5, &TIM_TimeBaseStructure);
+    493              DebugMsg_printf("++ KeySwitch (TIM5 : 5msec), TIM5_IRQn Initialize START\r\n");
+    494          
+    495              //  KeySwitch GPIO는 System_Init.c 에서 설정
+    496              #if 0
+    497          
+    498              GPIO_InitTypeDef    GPIO_InitStructure;
+    499              
+    500          	//	KeySwitch Matrix -> GPIO Output
+    501          	GPIO_InitStructure.GPIO_Pin   = KeySCAN0 | KeySCAN1 | KeySCAN2;
+    502              GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+    503            	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+    504            	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+    505              GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    506              GPIO_Init(KeySWXX_PORT, &GPIO_InitStructure);
+    507          
+    508          	//	KeySwitch Matrix -> GPIO Input
+    509          	GPIO_InitStructure.GPIO_Pin   = KeyInput0 | KeyInput1 | KeyInput2 | KeyInput3 | KeyInput4 | KeyInput5;
+    510              GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_IN;   
+    511            	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+    512            	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+    513              GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    514              GPIO_Init(KeySWXX_PORT, &GPIO_InitStructure);
+    515          	
+    516              #endif
+    517          
+    518              TIM_TimeBaseStructure.TIM_Period        = 0x9c4;   	//  (1 / 1MHz) * 5000 -> 5msec
+    519          
+    520          	//TIM_TimeBaseStructure.TIM_Period        = 0x4e2;   	//  (1 / 0.5MHz) * 2500 -> 5msec
+    521          
+    522          	//TIM_TimeBaseStructure.TIM_Period        = 0x271; 
     523          
-    524          	//  TIM5 Enable counter
-    525          	TIM_Cmd(TIM5, ENABLE);
-    526          
-    527          	//  Enable TIM5 Update Interrupt
-    528          	TIM_ITConfig(TIM5, TIM_IT_Update, ENABLE);
-    529          
-    530          	//  Enable the TIM5 Interrupt, KeySwitch
-    531          	NVIC_InitStructure.NVIC_IRQChannel                   = TIM5_IRQn;
-    532          	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
-    533          	NVIC_InitStructure.NVIC_IRQChannelSubPriority        = 0;
-    534          	NVIC_InitStructure.NVIC_IRQChannelCmd                = ENABLE;
-    535          	NVIC_Init(&NVIC_InitStructure);
-    536          
-    537          	DebugMsg_printf("-- KeySwitch (TIM5 : 5msec), TIM5_IRQn Initialize END\r\n");
-    538          
-    539          	KeySwitch_Value = 0;	
-    540          }
+    524          	TIM_TimeBaseStructure.TIM_Prescaler     = 0xA8;     //  84 MHz / 168 = 1MHz
+    525          	TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
+    526          	TIM_TimeBaseStructure.TIM_CounterMode   = TIM_CounterMode_Up;
+    527          	TIM_TimeBaseInit(TIM5, &TIM_TimeBaseStructure);
+    528          
+    529          	//  TIM5 Enable counter
+    530          	TIM_Cmd(TIM5, ENABLE);
+    531          
+    532          	//  Enable TIM5 Update Interrupt
+    533          	TIM_ITConfig(TIM5, TIM_IT_Update, ENABLE);
+    534          
+    535          	//  Enable the TIM5 Interrupt, KeySwitch
+    536          	NVIC_InitStructure.NVIC_IRQChannel                   = TIM5_IRQn;
+    537          	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+    538          	NVIC_InitStructure.NVIC_IRQChannelSubPriority        = 0;
+    539          	NVIC_InitStructure.NVIC_IRQChannelCmd                = ENABLE;
+    540          	NVIC_Init(&NVIC_InitStructure);
     541          
-    542          /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
+    542          	DebugMsg_printf("-- KeySwitch (TIM5 : 5msec), TIM5_IRQn Initialize END\r\n");
+    543          
+    544          	KeySwitch_Value = 0;	
+    545          }
+    546          
+    547          /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
 
    Maximum stack usage in bytes:
 
@@ -617,7 +621,7 @@ C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\KeySwitch.c
           Temp_Value3
           Temp_Cnt
       92  KeySwitch_Init
-     248  KeySwitch_Process
+     274  KeySwitch_Process
       68  KeySwitch_SendToEXYNOS
       74  KeyTest_TEST
        4  New_Value
@@ -634,9 +638,9 @@ C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\KeySwitch.c
   55 bytes in section .bss
   52 bytes in section .data
   16 bytes in section .rodata
- 560 bytes in section .text
+ 586 bytes in section .text
  
- 560 bytes of CODE  memory
+ 586 bytes of CODE  memory
   16 bytes of CONST memory
  107 bytes of DATA  memory
 

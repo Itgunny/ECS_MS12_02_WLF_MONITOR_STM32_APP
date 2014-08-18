@@ -41,7 +41,7 @@
 #define	Key_Beacon			0x81
 #define	Key_Mirror_Heat		0x82
 #define	Key_Rear_Wiper		0x84
-#define	Key_USER			    0x88
+#define	Key_USER			0x88
 #define	Key_Reserved1		0x90
 #define	Key_Reserved2		0xa0
 
@@ -419,12 +419,12 @@ void KeySwitch_Process(void)
 	}
 
 	
-        if ( (Temp_Value1 == 0) && (New_Value != 0) ) 
-        //if (New_Value != 0)
-        {
-            //Temp_Value1 = New_Value+(KeySwitchScan<<6);
-            Temp_Value1 = New_Value << (KeySwitchScan * 8);
-        }
+    if ( (Temp_Value1 == 0) && (New_Value != 0) ) 
+    //if (New_Value != 0)
+    {
+        //Temp_Value1 = New_Value+(KeySwitchScan<<6);
+        Temp_Value1 = New_Value << (KeySwitchScan * 8);
+    }
         
         
 	if (KeySwitchScan == 2)    //  15msec
@@ -432,14 +432,19 @@ void KeySwitch_Process(void)
               //  KeySwitch Value 생성
 		if (Temp_Value1 == 0) 
 		{
-			Temp_Value3 = Temp_Cnt = 0;		
+			if(KeySwitch_Value != 0)
+			{
+				KeySwitch_Value = Temp_Value3 = Temp_Cnt = 0;	
+				KeySwitch_SendToEXYNOS(KeySwitch_Value,0);
+			}
+			KeySwitch_Value = Temp_Value3 = Temp_Cnt = 0;		
 		}
 		else
-        	{
-	            if (Temp_Value3 == Temp_Value1) //  눌려있던 키?
-	            {
-                		Temp_Cnt++;                 //  계속 눌려 있는가?
-                
+        {
+            if (Temp_Value3 == Temp_Value1) //  눌려있던 키?
+            {
+            	Temp_Cnt++;                 //  계속 눌려 있는가?
+            
 				if (Temp_Cnt ==3)          //  3번 연속 체크 되었을 때, 45msec
 				{
 					KeySwitch_Value = Temp_Value1;   

@@ -1,39 +1,38 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      28/Jul/2014  18:42:36 #
+# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      18/Aug/2014  08:59:13 #
 # Copyright 1999-2012 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
 #    Endian       =  little                                                   #
-#    Source file  =  C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Platform\TaeHa #
-#                     - ECS\SRC\LAMP_Control.c                                #
-#    Command line =  "C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Platform\TaeH #
-#                    a - ECS\SRC\LAMP_Control.c" -D USE_STDPERIPH_DRIVER -D   #
+#    Source file  =  C:\Tools\WL9F\WL_F_Monitor_APP_DMA\Platform\TaeHa -      #
+#                    ECS\SRC\LAMP_Control.c                                   #
+#    Command line =  "C:\Tools\WL9F\WL_F_Monitor_APP_DMA\Platform\TaeHa -     #
+#                    ECS\SRC\LAMP_Control.c" -D USE_STDPERIPH_DRIVER -D       #
 #                    STM32F4XX -D USE_STM324xG_EVAL -D USE_FULL_ASSERT -lcN   #
-#                    C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Project\Debug\ #
-#                    List\ -o C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Proje #
-#                    ct\Debug\Obj\ --debug --endian=little --cpu=Cortex-M4    #
-#                    -e --fpu=VFPv4_sp --dlib_config "C:\Tools\IAR            #
+#                    C:\Tools\WL9F\WL_F_Monitor_APP_DMA\Project\Debug\List\   #
+#                    -o C:\Tools\WL9F\WL_F_Monitor_APP_DMA\Project\Debug\Obj\ #
+#                     --debug --endian=little --cpu=Cortex-M4 -e              #
+#                    --fpu=VFPv4_sp --dlib_config "C:\Tools\IAR               #
 #                    Systems\Embedded Workbench 6.5\arm\INC\c\DLib_Config_Ful #
-#                    l.h" -I C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Projec #
-#                    t\..\Platform\COMMON\INC\ -I                             #
-#                    "C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Project\..\Pl #
-#                    atform\TaeHa - ECS\INC\" -I                              #
-#                    C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Project\..\Lib #
-#                    raries\CMSIS\Device\ST\STM32F4xx\Include\ -I             #
-#                    C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Project\..\Lib #
-#                    raries\STM32F4xx_StdPeriph_Driver\inc\ -Oh               #
-#                    --use_c++_inline -I "C:\Tools\IAR Systems\Embedded       #
-#                    Workbench 6.5\arm\CMSIS\Include\"                        #
-#    List file    =  C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Project\Debug\ #
-#                    List\LAMP_Control.lst                                    #
-#    Object file  =  C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Project\Debug\ #
-#                    Obj\LAMP_Control.o                                       #
+#                    l.h" -I C:\Tools\WL9F\WL_F_Monitor_APP_DMA\Project\..\Pl #
+#                    atform\COMMON\INC\ -I "C:\Tools\WL9F\WL_F_Monitor_APP_DM #
+#                    A\Project\..\Platform\TaeHa - ECS\INC\" -I               #
+#                    C:\Tools\WL9F\WL_F_Monitor_APP_DMA\Project\..\Libraries\ #
+#                    CMSIS\Device\ST\STM32F4xx\Include\ -I                    #
+#                    C:\Tools\WL9F\WL_F_Monitor_APP_DMA\Project\..\Libraries\ #
+#                    STM32F4xx_StdPeriph_Driver\inc\ -Oh --use_c++_inline -I  #
+#                    "C:\Tools\IAR Systems\Embedded Workbench                 #
+#                    6.5\arm\CMSIS\Include\"                                  #
+#    List file    =  C:\Tools\WL9F\WL_F_Monitor_APP_DMA\Project\Debug\List\LA #
+#                    MP_Control.lst                                           #
+#    Object file  =  C:\Tools\WL9F\WL_F_Monitor_APP_DMA\Project\Debug\Obj\LAM #
+#                    P_Control.o                                              #
 #                                                                             #
 #                                                                             #
 ###############################################################################
 
-C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\LAMP_Control.c
+C:\Tools\WL9F\WL_F_Monitor_APP_DMA\Platform\TaeHa - ECS\SRC\LAMP_Control.c
       1          /**
       2            ******************************************************************************
       3            * @file    LAMP_Control.c 
@@ -571,50 +570,51 @@ C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\LAMP_Control.
     535          	
     536          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.FineModulation)?(Fine_Modulation_G):(0x00);
     537          
-    538          
-    539          	Led_BL_TEMP[0] = rx_CMD_LAMP.Illumination;
-    540          
-    541          	//if((Led_SIG_TEMP[9] == Led_SIG_TEMP[8]) && (Led_SIG_TEMP[8] == Led_SIG_TEMP[1]) && (Led_SIG_TEMP[1] == Led_SIG_TEMP[0])) 
-    542          	{
-    543          		LAMP_Update_Data = Led_SIG_TEMP[0];
-    544          	}
-    545          	//if((Led_BL_TEMP[9] == Led_BL_TEMP[8]) && (Led_BL_TEMP[8] == Led_BL_TEMP[1]) && (Led_BL_TEMP[1] == Led_BL_TEMP[0]))  
-    546          	{		
-    547          		Illumination_Sig = Led_BL_TEMP[0];
-    548          	}
-    549          }
-    550          
-    551          /**
-    552            * @brief  LAMP Initialize 
-    553            * @param  
-    554            * @retval None
-    555            */
-    556          void LAMP_Control_Init(void)
-    557          {
-    558          	DebugMsg_printf("++ LAMP Initialize START\r\n");
-    559          
-    560          	//  LAMP GPIO는 System_Init.c 에서 설정
-    561          #if 0
-    562          	GPIO_InitStructure.GPIO_Pin   = LAMP_CLR | LAMP_SLCLK | LAMP_SCLK | LAMP_SDATA;
-    563          	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
-    564          	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-    565          	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-    566          	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    567          	GPIO_Init(LAMP_PORT, &GPIO_InitStructure);
-    568          #endif
-    569          
-    570          	GPIO_WriteBit(LAMP_PORT, LAMP_CLR, Bit_SET);
-    571          	TimeDelay_msec(10);
-    572          	GPIO_WriteBit(LAMP_PORT, LAMP_CLR, Bit_RESET);
-    573          
-    574          	LAMP_Update_Data = LAMP_ALL_ON;
-    575          
-    576          	Lamp_Update_System();
-    577          
-    578          	DebugMsg_printf("-- LAMP Initialize END\r\n");
-    579          }
-    580          
-    581          /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
+    538          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.FN)?(Function_G):(0x00);
+    539          
+    540          	Led_BL_TEMP[0] = rx_CMD_LAMP.Illumination;
+    541          
+    542          	//if((Led_SIG_TEMP[9] == Led_SIG_TEMP[8]) && (Led_SIG_TEMP[8] == Led_SIG_TEMP[1]) && (Led_SIG_TEMP[1] == Led_SIG_TEMP[0])) 
+    543          	{
+    544          		LAMP_Update_Data = Led_SIG_TEMP[0];
+    545          	}
+    546          	//if((Led_BL_TEMP[9] == Led_BL_TEMP[8]) && (Led_BL_TEMP[8] == Led_BL_TEMP[1]) && (Led_BL_TEMP[1] == Led_BL_TEMP[0]))  
+    547          	{		
+    548          		Illumination_Sig = Led_BL_TEMP[0];
+    549          	}
+    550          }
+    551          
+    552          /**
+    553            * @brief  LAMP Initialize 
+    554            * @param  
+    555            * @retval None
+    556            */
+    557          void LAMP_Control_Init(void)
+    558          {
+    559          	DebugMsg_printf("++ LAMP Initialize START\r\n");
+    560          
+    561          	//  LAMP GPIO는 System_Init.c 에서 설정
+    562          #if 0
+    563          	GPIO_InitStructure.GPIO_Pin   = LAMP_CLR | LAMP_SLCLK | LAMP_SCLK | LAMP_SDATA;
+    564          	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+    565          	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+    566          	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+    567          	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    568          	GPIO_Init(LAMP_PORT, &GPIO_InitStructure);
+    569          #endif
+    570          
+    571          	GPIO_WriteBit(LAMP_PORT, LAMP_CLR, Bit_SET);
+    572          	TimeDelay_msec(10);
+    573          	GPIO_WriteBit(LAMP_PORT, LAMP_CLR, Bit_RESET);
+    574          
+    575          	LAMP_Update_Data = LAMP_ALL_ON;
+    576          
+    577          	Lamp_Update_System();
+    578          
+    579          	DebugMsg_printf("-- LAMP Initialize END\r\n");
+    580          }
+    581          
+    582          /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
 
    Maximum stack usage in bytes:
 
@@ -666,12 +666,12 @@ C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\LAMP_Control.
        6  Fine_Modulation_LampSystem
        8  Illumination_Lamp_System
       48  LAMP_Control_Init
-     268  Lamp_Update_State
+     282  Lamp_Update_State
      136  Lamp_Update_System
        1  Lamp_Value
        1  Lamp_name
       38  Main_Light_Right_LampSystem
-      32  Main_Light_left_LampSystem
+      34  Main_Light_left_LampSystem
       10  Mirror_heat_LampSystem
       40  Quick_Coupler_LampSystem
       10  RX_HCEPGN_65428
@@ -699,9 +699,9 @@ C:\Tools\WL9F\CAN_UPDATE\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\LAMP_Control.
 
  
  144 bytes in section .bss
- 904 bytes in section .text
+ 920 bytes in section .text
  
- 904 bytes of CODE memory
+ 920 bytes of CODE memory
  144 bytes of DATA memory
 
 Errors: none

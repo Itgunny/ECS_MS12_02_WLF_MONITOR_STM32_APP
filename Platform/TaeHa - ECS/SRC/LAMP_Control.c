@@ -535,6 +535,7 @@ void Lamp_Update_State(void)
 	
 	Led_SIG_TEMP[0] += (rx_CMD_LAMP.FineModulation)?(Fine_Modulation_G):(0x00);
 
+	Led_SIG_TEMP[0] += (rx_CMD_LAMP.FN)?(Function_G):(0x00);
 
 	Led_BL_TEMP[0] = rx_CMD_LAMP.Illumination;
 

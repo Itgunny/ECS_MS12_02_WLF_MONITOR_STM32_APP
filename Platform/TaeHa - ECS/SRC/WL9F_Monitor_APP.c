@@ -1065,8 +1065,8 @@ void WL9FM_500mSecOperationFunc(void)
 //	SetCanID(255, 47, 6);
 //	CAN_TX_Data(&Uart2_RxMsg_Single_47[0]);
 
-	//if(CANUpdateFlag != 1)
-	//	MonitorStatus_CAN_TX();
+	if(CANUpdateFlag != 1)
+		MonitorStatus_CAN_TX();
 
 }
 
