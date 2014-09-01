@@ -136,6 +136,7 @@ extern u8 Uart2_RxMsg_AS_Phone_Data[8];
 extern u8 Uart2_RxMsg_Smk_Reg_Eli[8];
 extern u8 McuInfoData1[79];
 extern u8 tmpMcuInfoData[78];
+extern u8 FatoryInit_Flag;
 
 extern u8 stop_send_as_phone_data;
 extern u8 Flag_TxE2pRomData;
@@ -1041,7 +1042,7 @@ void WL9FM_100mSecOperationFunc(void)
 
 		if(UpdateMode >= 10)
 		{
-			STM32_Update(Stm32_Update_CMD); 
+			STM32_Update(Stm32_Update_CMD,FatoryInit_Flag); 
 			ST_Update=0;
 		}
 	}

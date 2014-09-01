@@ -77,11 +77,11 @@
 
 //extern void SPI_FLASH_Init(void);
 void M25P32_Init(void);
-void STM32_Update(unsigned char cmd);
+void STM32_Update(unsigned char cmd, unsigned char FactoryInitFlag);
 void ACK_NACK_SendToExynos(uint8_t data);
-void File_Write_to_SFLAH(void);
+void File_Write_to_SFLAH(unsigned long addr);
 void CMD_ACK_SendToExynos(uint8_t data);
-void Read_File_From_SFLAH(void);
+void Read_File_From_SFLAH(unsigned long addr);
 void CMD_DUMMY_SendToExynos(uint8_t data);
 
 

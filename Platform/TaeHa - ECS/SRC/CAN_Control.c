@@ -198,6 +198,7 @@ extern unsigned long long SerialTXIndex;
 void CAN_COMInit(void)
 {
 	CAN_InitTypeDef        CAN_InitStructure;
+	CAN_InitTypeDef        CAN_InitStructure2;
 	CAN_FilterInitTypeDef  CAN_FilterInitStructure;
 	NVIC_InitTypeDef        NVIC_InitStructure;
 
@@ -218,9 +219,23 @@ void CAN_COMInit(void)
 	CAN_InitStructure.CAN_SJW = CAN_SJW_1tq;
 	CAN_InitStructure.CAN_BS1 = CAN_BS1_14tq;
 	CAN_InitStructure.CAN_BS2 = CAN_BS2_6tq;  
-	CAN_InitStructure.CAN_Prescaler = 8;   // 2:1M, 4:500k, 8:250k. 16:125k
+	CAN_InitStructure.CAN_Prescaler = 4;   // 2:1M, 4:500k, 8:250k. 16:125k
 	CAN_Init(CAN1, &CAN_InitStructure);
-	CAN_Init(CAN2, &CAN_InitStructure);
+
+
+	CAN_InitStructure2.CAN_TTCM = DISABLE;
+	//CAN_InitStructure2.CAN_ABOM = ENABLE;
+	CAN_InitStructure2.CAN_ABOM = DISABLE;
+	CAN_InitStructure2.CAN_AWUM = DISABLE;
+	CAN_InitStructure2.CAN_NART = DISABLE;
+	CAN_InitStructure2.CAN_RFLM = DISABLE;
+	CAN_InitStructure2.CAN_TXFP = DISABLE;
+	CAN_InitStructure2.CAN_Mode = CAN_Mode_Normal;
+	CAN_InitStructure2.CAN_SJW = CAN_SJW_1tq;
+	CAN_InitStructure2.CAN_BS1 = CAN_BS1_14tq;
+	CAN_InitStructure2.CAN_BS2 = CAN_BS2_6tq;  
+	CAN_InitStructure2.CAN_Prescaler = 8;   // 2:1M, 4:500k, 8:250k. 16:125k
+	CAN_Init(CAN2, &CAN_InitStructure2);
 
 	//CAN_FilterInitStructure.CAN_FilterNumber = 0;
 	CAN_FilterInitStructure.CAN_FilterNumber = 0;

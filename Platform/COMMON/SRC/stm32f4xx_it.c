@@ -131,6 +131,7 @@ u8 SendEEPROMDataCnt = 0;
 u8 Flag_TxE2pRomData = 0;
 u8 stop_send_as_phone_data = 0;
 u8 Stm32_Update_CMD;
+u8 FatoryInit_Flag = 0;
 u8 CANUpdateFlag = 0;
 u8 CANUpdateSA = 0;
 
@@ -887,6 +888,7 @@ void UART4_Receive_CMD(void)
 
 				case DOWNCMD:
 					Stm32_Update_CMD = WL9FM_USART_DATA.COM4_RxBuf[2];
+					FatoryInit_Flag = WL9FM_USART_DATA.COM4_RxBuf[3];
 					ST_Update=1;
 
 					break;
