@@ -184,14 +184,14 @@ void KeySwitch_SendToEXYNOS(uint32_t KeyValue, uint8_t LongKey)
 
 void SMK_SendToExynos(uint8_t SMK_Auth, uint8_t SMK_Msg, uint8_t SMK_Count)
 {
-	uint8_t KeyValueBuffer[Serial_COM2_TxSize];
+	uint8_t KeyValueBuffer[Serial_COM4_TxSize];
 
 	KeyValueBuffer[0] = 0x02;				//	STX
 	KeyValueBuffer[1] = SMKRES;				
 	KeyValueBuffer[2] = SMK_Auth;	
 	KeyValueBuffer[3] = SMK_Msg;	
 	KeyValueBuffer[4] = SMK_Count;	
-	KeyValueBuffer[Serial_COM2_TxSize-1] = 0x03;				//	ETX
+	KeyValueBuffer[Serial_COM4_TxSize-1] = 0x03;				//	ETX
 
 	if(Change_UART4_for_Download==0)
 		USARTx_EXYNOS(COM4, (char *)KeyValueBuffer);	

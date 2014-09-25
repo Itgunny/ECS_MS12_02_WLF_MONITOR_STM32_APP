@@ -77,12 +77,12 @@ WL9FM_flag_data smk_flag_data;
 u8 gAuthentication_Cnt = 0;
 
 u8 AuthResult;
+u8 SMKSuccess;
 u8 SMK_Msg_Send;
 u8 SMK_Tag_Count;
 u8 MultiPacketSendOrder = 0;
 u8 TotalPacketNum = 0;
 u8 DiffMachInfo = 0;
-u8 gStartHCE_DT = 0;
 u8 MachInfoSendCnt = 0;
 u8 MoniInfoSendCnt = 0;
 
@@ -362,54 +362,8 @@ void Init_Smart_Key_valuable(void)
 	AuthResult = 0xff;
 	SMK_Msg_Send = 0;
 	SMK_Tag_Count = 0;
+	SMKSuccess = 0;
 }
-
-
-void Send_Multipacket_61184_23(void)
-{
-	if(RTSFlag_61184 == 1)
-	{
-		TimeDelay_msec(15);
-		SendTP_CM_BAM_MultiPacket_61184_23();
-		TotalPacketNum += 1;
-		RTSFlag_61184 = 0;
-	}
-	else if(RTSFlag_61184 == 2)
-	{
-		TimeDelay_msec(15);
-		SendMultiPacketData_61184_23(TotalPacketNum);
-		TotalPacketNum += 1;
-
-		if(TotalPacketNum >= 3)
-		{
-			Flag_SerialRxMsg &= ~(RX_MSG23);
-			TotalPacketNum = 0;
-		}
-	}
-}
-
-void Send_Multipacket_145(void)
-{
-	if(TotalPacketNum == 0)
-	{
-		TimeDelay_msec(15);
-		SendTP_CM_BAM_MultiPacket_145();
-		TotalPacketNum += 1;
-	}
-	else
-	{
-		TimeDelay_msec(15);
-		SendMultiPacketData_145(TotalPacketNum);
-		TotalPacketNum += 1;
-
-		if(TotalPacketNum > tp_cm_bam_TotPacketNum)
-		{
-			Flag_SerialRxMsg &= ~(RX_MSG145);
-			TotalPacketNum = 0;
-		}
-	}
-}
-
 
 
 void read_clock(void)
@@ -563,6 +517,7 @@ void System_CheckPowerIG()
 			LED_POWER_ONOFF(LED_OFF);       //  LED Off
 
 			WL9FM_EXYNOS_PMIC_PWRON();
+
 			
 			//	Exynos VDD5V0_4412 Off
 			WL9FM_EXYNOS_POWER_ONOFF(EXYNOS_POWER_OFF);
@@ -670,8 +625,14 @@ void RequestFirstAuthentication(void)
 
 	// CPK 암호화 Function 추가 필요
 	TimeDelay_msec(10);
-	SetCanID(255, 231, 6);
-	CAN_TX_Data((u8*)&send_smartkey);
+
+	struct st_CAN_Message1 Send_Message;
+	memcpy(&Send_Message.Data,&send_smartkey,8);	
+	Send_Message.Priority= 0x18;
+	Send_Message.PDU_Format= 0xFF;
+	Send_Message.PDU_Specific= 0xE7;
+	Send_Message.Source_Address= 0x28;
+	Write_CAN_Single(Send_Message);
 }
 
 void RequestSecondAuthentication(void)
@@ -694,8 +655,14 @@ void RequestSecondAuthentication(void)
 	send_smartkey.CPK = temp;
 	
 	TimeDelay_msec(10);
-	SetCanID(255, 231, 6);
-	CAN_TX_Data((u8*)&send_smartkey);
+
+	struct st_CAN_Message1 Send_Message;
+	memcpy(&Send_Message.Data,&send_smartkey,8);	
+	Send_Message.Priority= 0x18;
+	Send_Message.PDU_Format= 0xFF;
+	Send_Message.PDU_Specific= 0xE7;
+	Send_Message.Source_Address= 0x28;
+	Write_CAN_Single(Send_Message);
 
 	//smk_flag_data.recv_resp_packet = REQUEST_SECOND_AUTHENTICATION;
 }
@@ -719,8 +686,15 @@ void RequestSMKRegistration(void)
 
 	send_smartkey.CPK = temp;
 
-	SetCanID(255, 231, 6);
-	CAN_TX_Data((u8*)&send_smartkey);
+	struct st_CAN_Message1 Send_Message;
+	memcpy(&Send_Message.Data,&send_smartkey,8);	
+	Send_Message.Priority= 0x18;
+	Send_Message.PDU_Format= 0xFF;
+	Send_Message.PDU_Specific= 0xE7;
+	Send_Message.Source_Address= 0x28;
+	Write_CAN_Single(Send_Message);
+
+
 
 	//smk_flag_data.recv_resp_packet = REQUEST_SECOND_AUTHENTICATION;
 }
@@ -744,8 +718,14 @@ void RequestSMKElimination(void)
 
 	send_smartkey.CPK = temp;
 
-	SetCanID(255, 231, 6);
-	CAN_TX_Data((u8*)&send_smartkey);
+	struct st_CAN_Message1 Send_Message;
+	memcpy(&Send_Message.Data,&send_smartkey,8);	
+	Send_Message.Priority= 0x18;
+	Send_Message.PDU_Format= 0xFF;
+	Send_Message.PDU_Specific= 0xE7;
+	Send_Message.Source_Address= 0x28;
+	Write_CAN_Single(Send_Message);
+
 
 	//smk_flag_data.recv_resp_packet = REQUEST_SECOND_AUTHENTICATION;
 }
@@ -765,8 +745,13 @@ void RequestSMKComm(void)
 	GetRandValue(GET_VMC);
 	SetVMC();
 
-	SetCanID(255, 231, 6);
-	CAN_TX_Data((u8*)&send_smartkey);
+	struct st_CAN_Message1 Send_Message;
+	memcpy(&Send_Message.Data,&send_smartkey,8);	
+	Send_Message.Priority= 0x18;
+	Send_Message.PDU_Format= 0xFF;
+	Send_Message.PDU_Specific= 0xE7;
+	Send_Message.Source_Address= 0x28;
+	Write_CAN_Single(Send_Message);
 
 	//smk_flag_data.recv_resp_packet = REQUEST_SECOND_AUTHENTICATION;
 }
@@ -862,8 +847,8 @@ void CheckResponseMsgComm(void)
 		}
 		else if(recv_smartkey.Smk_Response_Code == 2)
 			SendSMKMsgResult(SMK_MSG_TAG_ELIMINATION_SUCCESS);
-                else
-                        SendSMKMsgResult(SMK_MSG_FAIL);
+		else
+			SendSMKMsgResult(SMK_MSG_FAIL);
 	}
 	else
 		SendSMKMsgResult(SMK_MSG_FAIL);
@@ -914,6 +899,7 @@ void SmartKeyAuthentication(void)
 						AuthResult = 1;
 						SMK_Tag_Count = recv_smartkey.Registered_Tag_Count;
 						smk_flag_data.recv_resp_packet = RESPONSE_SUCCESS;
+						SMKSuccess = SMK_SUCCESS;
 						SendSMKAuthResult(SMK_SUCCESS);
 					}
 				}
@@ -924,6 +910,7 @@ void SmartKeyAuthentication(void)
 						//AuthResult = 2;
 						AuthResult = 1;
 						smk_flag_data.recv_resp_packet = RESPONSE_TIME_OUT;
+						SMKSuccess = SMK_FAIL;
 						SendSMKAuthResult(SMK_FAIL);
 						return;
 					}
@@ -946,13 +933,13 @@ void SmartKeyAuthentication(void)
 	}
 	//else if(AuthResult == 1)
 	{
-		if((Uart2_RxMsg_Smk_Reg_Eli[0] == 1) || (Uart2_RxMsg_Smk_Reg_Eli[0] == 2)) 
+		if((Uart2_RxMsg_Smk_Reg_Eli[2] == 1) || (Uart2_RxMsg_Smk_Reg_Eli[2] == 2)) 
 		{
-			RequestSMKMessage(Uart2_RxMsg_Smk_Reg_Eli[0]);
+			RequestSMKMessage(Uart2_RxMsg_Smk_Reg_Eli[2]);
 			SMK_Msg_Send = 1;
 			smk_flag_data.recv_resp_packet = 0;
-			Uart2_RxMsg_Smk_Reg_Eli[7] = Uart2_RxMsg_Smk_Reg_Eli[0];
-			Uart2_RxMsg_Smk_Reg_Eli[0] = 0xff;
+		//	Uart2_RxMsg_Smk_Reg_Eli[7] = Uart2_RxMsg_Smk_Reg_Eli[0];
+			Uart2_RxMsg_Smk_Reg_Eli[2] = 0xff;
 		}
 
 		if(SMK_Msg_Send == 1)
@@ -1009,7 +996,7 @@ void WL9FM_100mSecOperationFunc(void)
 	Lamp_Update_System();	//	체크된 LAMP 상태를 업데이트 한다.
 
 #if 1
-	if(Flag_TxE2pRomData == 1)
+	//if(Flag_TxE2pRomData == 1)
 		SmartKeyAuthentication();
 #endif
 	
@@ -1063,9 +1050,6 @@ void WL9FM_100mSecOperationFunc(void)
 
 void WL9FM_500mSecOperationFunc(void)
 {
-//	SetCanID(255, 47, 6);
-//	CAN_TX_Data(&Uart2_RxMsg_Single_47[0]);
-
 	if(CANUpdateFlag != 1)
 		MonitorStatus_CAN_TX();
 
@@ -1080,19 +1064,6 @@ void WL9FM_500mSecOperationFunc(void)
   */
 void WL9FM_1SecOperationFunc(void)
 {
-	if(gStartHCE_DT == 1)
-	{
-		CompareMachBasicInfo();
-    
-		if(++Flag_1Min >= 60)
-		{
-			Flag_1Min = 0;
-			RequestMachBasicInfo();
-
-			if((MachInfoSendCnt > 60) && (MoniInfoSendCnt > 60))
-				MultiPacketSendOrder = 0;
-		}
-	}
 	if(UpdateMode < 10)
 		read_clock();
 
@@ -1124,7 +1095,7 @@ void WL9FM_System_Init_Start(void)
 	{
 		WL9FM_PowerIG(PowerIG_OFF);				//  ->	GPIO_Control.c PowerIG를 OFF로 만들어 놓고
 												//		System_CheckPowerIG() 함수에서 PowerIG 상태에 따라서 설정
-	}													
+	}	
 	WL9FM_EXYNOS_POWER_ONOFF(EXYNOS_POWER_ON);	//	->	GPIO_Control.c EXYNOS-4412 Power On..
 	WL9FM_EXYNOS_PMIC_PWRON();
 	
@@ -1157,6 +1128,10 @@ void WL9FM_System_Init_Start(void)
 	M25P32_Init();
 
 	LAMP_Update_Data = LAMP_ALL_OFF;			//	-> 	LAMP ALL OFF	
+
+	CAN_ITConfig(CAN1, CAN_IT_FMP0,ENABLE);	
+
+
 }
 
 /**
@@ -1168,16 +1143,16 @@ void WL9FM_Monitor_APP(void)
 {
 	DebugUART_Init();			//	->	Main.c
 	DebugMsg_printf("== START -> DebugMsg from Exynos-4412 \r\n");    
+	//	System 강제 RESET시키기 위하여 goto lable 추가..	
+	SYSTEM_RESET :
 
 	System_Configuration();		//  ->  System_Init.c
 	                    		//      RCC, NVIC, GPIO Initialize
 
 	System_Initialize();		//	-> 	System_Init.c
-								//		IAP와 동일한 초기화를 한다. -> 상태 변경 없음.
 
-//	System 강제 RESET시키기 위하여 goto lable 추가..
-SYSTEM_RESET :
-	WL9FM_PowerIG(PowerIG_ON);
+								//		IAP와 동일한 초기화를 한다. -> 상태 변경 없음.
+	//WL9FM_PowerIG(PowerIG_ON);
 	System_Variable_Init();
 	WL9FM_System_Init_Start();
 	

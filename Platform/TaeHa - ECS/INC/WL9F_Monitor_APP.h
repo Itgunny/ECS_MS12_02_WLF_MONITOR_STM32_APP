@@ -136,7 +136,7 @@
 #define	VERSION_HIGH		1
 #define	VERSION_LOW			0
 #define	VERSION_SUB_HIGH	0
-#define	VERSION_SUB_LOW		7
+#define	VERSION_SUB_LOW		9
 
 
 //=================================================================
@@ -193,8 +193,6 @@ typedef struct
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
 
-void Send_Multipacket_61184_23(void);
-void Send_Multipacket_145(void);
 
 void SendSMKAuthResult(u8 result);
 void SendSMKMsgResult(u8 result);

@@ -213,6 +213,7 @@ extern u8 UpdateMode;
 // Smart Key
 extern WL9FM_receive_smartkey recv_smartkey;
 extern WL9FM_flag_data smk_flag_data;
+extern int SMKSuccess;
 
 
 unsigned long long CANRXIndex = 0;
@@ -475,11 +476,13 @@ void CAN1_RX0_IRQHandler(void)
 		|| (Iden.Source_Address == 0x00)|| (Iden.Source_Address == 0x03) || (Iden.Source_Address == 0x02))
 		{
 		#if 1
+			
 			if(CANUpdateFlag == 0)
 			{
+				PF = (RxMsg.ExtId  & 0x00ff0000) >> 16;
 				if((PF == 254) || (PF == 255) || (PF == 239) )
 				{	
-					PF = (RxMsg.ExtId  & 0x00ff0000) >> 16;
+					
 					if(Iden.PDU_Specific == 232)	// Smart Key
 					{
 						smk_flag_data.recv_resp_packet |= RESPONSE_AUTHENTICATION;	
@@ -830,6 +833,9 @@ void UART4_Receive_CMD(void)
 				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == StartCANCMD) WL9FM_USART_INDEX.COM4_RxCnt++;    
 				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == RTCCMD) WL9FM_USART_INDEX.COM4_RxCnt++;
 				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == CANUPDATECMD) WL9FM_USART_INDEX.COM4_RxCnt++;
+				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == SMKCMD) WL9FM_USART_INDEX.COM4_RxCnt++;
+
+				
 
                 else
                 {
@@ -922,7 +928,15 @@ void UART4_Receive_CMD(void)
 					break;
 
 				case SMKCMD:
-					memcpy(&Uart2_RxMsg_Smk_Reg_Eli[0], &WL9FM_USART_DATA.COM4_RxBuf[2], 8);
+					
+					if(WL9FM_USART_DATA.COM4_RxBuf[2] == 0x00)
+					{
+						SendSMKAuthResult(SMKSuccess);
+					}
+					else
+					{
+						memcpy(&Uart2_RxMsg_Smk_Reg_Eli[0], &WL9FM_USART_DATA.COM4_RxBuf[0], 8);
+					}
 					break;
 				case CANUPDATECMD:
 					CANUpdateFlag = WL9FM_USART_DATA.COM4_RxBuf[2];
