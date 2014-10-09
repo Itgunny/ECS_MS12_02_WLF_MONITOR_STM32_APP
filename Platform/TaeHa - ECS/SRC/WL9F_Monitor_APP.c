@@ -150,6 +150,12 @@ extern u16 pWriteBufPos;
 extern u16 pReadBufPos;
 
 extern u8 Uart2_SerialTxMsg[UART2_Tx_BUF_SIZE];
+extern char Illumination_Sig;
+
+// ++, 141006 fort22
+u8 LCDOffCount;
+u16 OSUpdateCount;
+// --, 141006 fort22
 
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
@@ -464,7 +470,7 @@ void System_CheckPowerIG()
 			SaveDataToEEPROM();
 
 			PwrOffCnt = 0;
-
+			
 			while(1)
 			{
 				//	100msec 마다 15번 체크 -> 1.5초..
@@ -472,14 +478,13 @@ void System_CheckPowerIG()
 				//		-> while 루프를 나와서 PowerOff Logic 진행  
 				//	PowerIG On  상태일 경우 
 				//		-> PowerIG Control 신호를 Enable하고, 정상 동작으로 진행 
+				
 				if(!WL9FM_GetPowerIG())
 				{
-					//	POWER OFF 일 때, 시리얼과 캔 통신 부분을 죽여놔야지, 정상적으로 RESET 동작을 수행
-					USART_ITConfig(USART2, USART_IT_TXE, DISABLE);
-					CAN_ITConfig(CAN1, CAN_IT_FMP0, DISABLE);
-
+					
 					WL9FM_PowerIG(PowerIG_ON);	// PowerIG Set
-
+					
+					
 					//	1.5초 동안 체크해서 PowerIG가 다시 들어오면, Software Reset을 하지 않고, 다시 동작
 					SystemReset = 0;
 					return;
@@ -504,6 +509,7 @@ void System_CheckPowerIG()
 
 			//	POWER OFF 일 때, LAMP Clear
 			LAMP_Update_Data = LAMP_ALL_OFF;
+		 	Illumination_Sig = 0;
 			Lamp_Update_System();
 			
 			//	엔딩화면 딜레이 시간
@@ -529,6 +535,9 @@ void System_CheckPowerIG()
 			{
 				WL9FM_PowerIG(PowerIG_ON);	// 	PowerIG Set
 				SystemReset = 1;			//	Software RESET
+
+				USART_ITConfig(USART2, USART_IT_TXE, DISABLE);
+				CAN_ITConfig(CAN1,CAN_IT_FMP0, DISABLE);
 				return;
 			}
 
@@ -1000,8 +1009,20 @@ void WL9FM_100mSecOperationFunc(void)
 		SmartKeyAuthentication();
 #endif
 	
-
-
+	if(LCDOffCount < 30)
+	{
+		LCDOffCount++;
+		LCDBL_ONOFF(LCDBL_OFF);
+	}
+	else if(LCDOffCount == 30)
+	{
+		LCDOffCount++;
+		LCDBL_ONOFF(LCDBL_ON);
+	}
+	else
+	{
+		LCDBL_ONOFF(LCDBL_ON);
+	}
 	
 	if(CommErrCnt > 1000)
    	{
@@ -1019,8 +1040,20 @@ void WL9FM_100mSecOperationFunc(void)
 			}
 	   	}
 	}	
+	if(OSUpdateCount < 200)
+	{
+		OSUpdateCount++;
+	}
+	else if(OSUpdateCount == 200)
+	{
+		OSUpdateCount++;
+		System_CheckPowerIG();
+	}
+	else
+	{
+		System_CheckPowerIG();
+	}
 	
-	System_CheckPowerIG();
 
 	if(ST_Update)
 	{

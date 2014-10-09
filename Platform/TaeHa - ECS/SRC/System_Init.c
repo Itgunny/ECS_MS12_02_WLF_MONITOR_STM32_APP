@@ -26,6 +26,8 @@
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 extern u8 CANUpdateFlag;
+extern u8 LCDOffCount;
+extern u16 OSUpdateCount;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
@@ -700,6 +702,8 @@ void System_Variable_Init(void)
 	WL9F_CAN_Variables_Init();
 	Init_Smart_Key_valuable();
 	CANUpdateFlag = 0;
+	LCDOffCount = 30;
+	OSUpdateCount = 200;
 }
 
 /*********(C) COPYRIGHT 2013 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/

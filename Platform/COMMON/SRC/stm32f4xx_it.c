@@ -219,7 +219,8 @@ extern int SMKSuccess;
 unsigned long long CANRXIndex = 0;
 unsigned long long SerialTXIndex = 0;
 
-
+extern u8 LCDOffCount;
+extern u16 OSUpdateCount;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 void WL9F_CAN_Buffer_Init(void)
@@ -834,6 +835,7 @@ void UART4_Receive_CMD(void)
 				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == RTCCMD) WL9FM_USART_INDEX.COM4_RxCnt++;
 				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == CANUPDATECMD) WL9FM_USART_INDEX.COM4_RxCnt++;
 				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == SMKCMD) WL9FM_USART_INDEX.COM4_RxCnt++;
+				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == OSUPDATECMD) WL9FM_USART_INDEX.COM4_RxCnt++;
 
 				
 
@@ -942,7 +944,10 @@ void UART4_Receive_CMD(void)
 					CANUpdateFlag = WL9FM_USART_DATA.COM4_RxBuf[2];
 					CANUpdateSA = WL9FM_USART_DATA.COM4_RxBuf[3];
 					break;
-					
+				case OSUPDATECMD:
+					LCDOffCount = 0;
+					OSUpdateCount = 0;
+					break;
 					
 				default :
 					break;								

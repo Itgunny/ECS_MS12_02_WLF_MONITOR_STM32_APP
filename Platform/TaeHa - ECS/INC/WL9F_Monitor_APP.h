@@ -132,12 +132,25 @@
 #define	CANUPDATECMD	0x0A
 #define	CANUPDATERES	0x8A
 
+#define	OSUPDATECMD	0x0B
+#define	OSUPDATERES	0x8B
+
+
 
 #define	VERSION_HIGH		1
 #define	VERSION_LOW			0
-#define	VERSION_SUB_HIGH	0
-#define	VERSION_SUB_LOW		9
+#define	VERSION_SUB_HIGH	1
+#define	VERSION_SUB_LOW		1
 
+///////////////////////////////////////////////////
+////1.0.1.0 (1.0.0.9에서 250kpbs로 CAN2 수정)
+////1.0.1.1 (1.0.0.9에서 수정, 500kbps) 2014.10.08
+//Power Off시 Illumination Lamp Reset 안되는 문제 수정 2014.10.02
+//Key Off/On 순간 반복 시 CAN 인터럽트 죽는 현상 수정 2014.10.02
+//OS Update CMD 추가, OS Update CMD 수신 시 3초간 LCD OFF 2014.10.06
+//Key Off 후 Outro에서 Key On시 키버튼 동작 안되는 문제 수정 2014.10.06
+//OS Update 시 20초간 Key IG Check 안함 (OS Boot Update시 전원이 나가면 안됨) 	2014.10.06
+///////////////////////////////////////////////////
 
 //=================================================================
 
