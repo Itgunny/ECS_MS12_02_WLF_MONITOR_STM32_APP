@@ -45,6 +45,7 @@
 #define	Key_Reserved1		0x90
 #define	Key_Reserved2		0xa0
 
+#define	KEYSwitchSendCountMax	50
 
 #define Bank1_SRAM1_ADDR  ((uint32_t)0x60000000) 
 
@@ -94,6 +95,7 @@ const uint8_t KEYSWITCH_VALUE[MAXSWITCH]   =   {
 uint8_t     KeySwitchScan;
 uint32_t    Temp_Value1, Temp_Value2, Temp_Value3,Temp_Value4, Temp_Cnt;
 uint32_t	New_Value;
+uint32_t	KeySwitchSendCount = 0;
 
 uint8_t		Test1 = 0, Test2 = 0;	
 uint16_t		test_buf[10];
@@ -426,7 +428,10 @@ void KeySwitch_Process(void)
         Temp_Value1 = New_Value << (KeySwitchScan * 8);
     }
         
-        
+    if(KeySwitchSendCount < KEYSwitchSendCountMax)
+    {
+		KeySwitchSendCount++;
+	}
 	if (KeySwitchScan == 2)    //  15msec
 	{
               //  KeySwitch Value 생성
@@ -454,7 +459,12 @@ void KeySwitch_Process(void)
 					Buzzer_Set(10);
 					#endif
 
-					KeySwitch_SendToEXYNOS(KeySwitch_Value,0);
+					if(KeySwitchSendCount >= KEYSwitchSendCountMax)
+					{
+						KeySwitch_SendToEXYNOS(KeySwitch_Value,0);
+						KeySwitchSendCount = 0;
+					}
+					
 				}
 				
 				if (Temp_Cnt == 300)         //  10번 연속 체크 되었을 때
@@ -468,7 +478,11 @@ void KeySwitch_Process(void)
 						#ifdef STM32_BUZZER
 							Buzzer_Set(10);
 						#endif
-						KeySwitch_SendToEXYNOS(KeySwitch_Value,1);
+						if(KeySwitchSendCount >= KEYSwitchSendCountMax)
+						{
+							KeySwitch_SendToEXYNOS(KeySwitch_Value,1);
+							KeySwitchSendCount = 0;
+						}
 					}
 				}
 			}

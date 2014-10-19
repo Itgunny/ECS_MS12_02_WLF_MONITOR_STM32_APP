@@ -140,7 +140,7 @@
 #define	VERSION_HIGH		1
 #define	VERSION_LOW			0
 #define	VERSION_SUB_HIGH	1
-#define	VERSION_SUB_LOW		1
+#define	VERSION_SUB_LOW		2
 
 ///////////////////////////////////////////////////
 ////1.0.1.0 (1.0.0.9에서 250kpbs로 CAN2 수정)
@@ -150,6 +150,8 @@
 //OS Update CMD 추가, OS Update CMD 수신 시 3초간 LCD OFF 2014.10.06
 //Key Off 후 Outro에서 Key On시 키버튼 동작 안되는 문제 수정 2014.10.06
 //OS Update 시 20초간 Key IG Check 안함 (OS Boot Update시 전원이 나가면 안됨) 	2014.10.06
+////1.0.1.2
+//KeyButton 연속 입력 딜레이 250ms 추가 (Keybutton 입력 후 250ms 동안 Keybutton 데이터 나가지 않음 2014.10.16
 ///////////////////////////////////////////////////
 
 //=================================================================

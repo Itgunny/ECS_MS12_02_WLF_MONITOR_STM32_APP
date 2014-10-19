@@ -1,46 +1,38 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      08/Oct/2014  16:38:30 #
+# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      16/Oct/2014  14:31:26 #
 # Copyright 1999-2012 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
 #    Endian       =  little                                                   #
-#    Source file  =  C:\Users\1\Desktop\141007 울산\CAN                       #
-#                    Update\SRC\WL_F_Monitor_APP_DMA\Platform\TaeHa -         #
+#    Source file  =  C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa -          #
 #                    ECS\SRC\KeySwitch.c                                      #
-#    Command line =  "C:\Users\1\Desktop\141007 울산\CAN                      #
-#                    Update\SRC\WL_F_Monitor_APP_DMA\Platform\TaeHa -         #
+#    Command line =  "C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa -         #
 #                    ECS\SRC\KeySwitch.c" -D USE_STDPERIPH_DRIVER -D          #
 #                    STM32F4XX -D USE_STM324xG_EVAL -D USE_FULL_ASSERT -lcN   #
-#                    "C:\Users\1\Desktop\141007 울산\CAN                      #
-#                    Update\SRC\WL_F_Monitor_APP_DMA\Project\Debug\List\" -o  #
-#                    "C:\Users\1\Desktop\141007 울산\CAN                      #
-#                    Update\SRC\WL_F_Monitor_APP_DMA\Project\Debug\Obj\"      #
+#                    C:\Tools\WL9F\WL_F_Monitor_APP\Project\Debug\List\ -o    #
+#                    C:\Tools\WL9F\WL_F_Monitor_APP\Project\Debug\Obj\        #
 #                    --debug --endian=little --cpu=Cortex-M4 -e               #
 #                    --fpu=VFPv4_sp --dlib_config "C:\Tools\IAR               #
-#                    Systems\arm\INC\c\DLib_Config_Full.h" -I                 #
-#                    "C:\Users\1\Desktop\141007 울산\CAN                      #
-#                    Update\SRC\WL_F_Monitor_APP_DMA\Project\..\Platform\COMM #
-#                    ON\INC\" -I "C:\Users\1\Desktop\141007 울산\CAN          #
-#                    Update\SRC\WL_F_Monitor_APP_DMA\Project\..\Platform\TaeH #
-#                    a - ECS\INC\" -I "C:\Users\1\Desktop\141007 울산\CAN     #
-#                    Update\SRC\WL_F_Monitor_APP_DMA\Project\..\Libraries\CMS #
-#                    IS\Device\ST\STM32F4xx\Include\" -I                      #
-#                    "C:\Users\1\Desktop\141007 울산\CAN                      #
-#                    Update\SRC\WL_F_Monitor_APP_DMA\Project\..\Libraries\STM #
-#                    32F4xx_StdPeriph_Driver\inc\" -Oh --use_c++_inline -I    #
-#                    "C:\Tools\IAR Systems\arm\CMSIS\Include\"                #
-#    List file    =  C:\Users\1\Desktop\141007 울산\CAN                       #
-#                    Update\SRC\WL_F_Monitor_APP_DMA\Project\Debug\List\KeySw #
-#                    itch.lst                                                 #
-#    Object file  =  C:\Users\1\Desktop\141007 울산\CAN                       #
-#                    Update\SRC\WL_F_Monitor_APP_DMA\Project\Debug\Obj\KeySwi #
-#                    tch.o                                                    #
+#                    Systems\Embedded Workbench 6.5\arm\INC\c\DLib_Config_Ful #
+#                    l.h" -I C:\Tools\WL9F\WL_F_Monitor_APP\Project\..\Platfo #
+#                    rm\COMMON\INC\ -I "C:\Tools\WL9F\WL_F_Monitor_APP\Projec #
+#                    t\..\Platform\TaeHa - ECS\INC\" -I                       #
+#                    C:\Tools\WL9F\WL_F_Monitor_APP\Project\..\Libraries\CMSI #
+#                    S\Device\ST\STM32F4xx\Include\ -I                        #
+#                    C:\Tools\WL9F\WL_F_Monitor_APP\Project\..\Libraries\STM3 #
+#                    2F4xx_StdPeriph_Driver\inc\ -Oh --use_c++_inline -I      #
+#                    "C:\Tools\IAR Systems\Embedded Workbench                 #
+#                    6.5\arm\CMSIS\Include\"                                  #
+#    List file    =  C:\Tools\WL9F\WL_F_Monitor_APP\Project\Debug\List\KeySwi #
+#                    tch.lst                                                  #
+#    Object file  =  C:\Tools\WL9F\WL_F_Monitor_APP\Project\Debug\Obj\KeySwit #
+#                    ch.o                                                     #
 #                                                                             #
 #                                                                             #
 ###############################################################################
 
-C:\Users\1\Desktop\141007 울산\CAN Update\SRC\WL_F_Monitor_APP_DMA\Platform\TaeHa - ECS\SRC\KeySwitch.c
+C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\KeySwitch.c
       1          /**
       2            ******************************************************************************
       3            * @file    KeySwitch.c 
@@ -88,506 +80,520 @@ C:\Users\1\Desktop\141007 울산\CAN Update\SRC\WL_F_Monitor_APP_DMA\Platform\TaeH
      45          #define	Key_Reserved1		0x90
      46          #define	Key_Reserved2		0xa0
      47          
-     48          
-     49          #define Bank1_SRAM1_ADDR  ((uint32_t)0x60000000) 
-     50          
+     48          #define	KEYSwitchSendCountMax	50
+     49          
+     50          #define Bank1_SRAM1_ADDR  ((uint32_t)0x60000000) 
      51          
-     52          /* Private macro -------------------------------------------------------------*/
-     53          /* Private variables ---------------------------------------------------------*/
-     54          //  KeySwitch.h -> KeySwitch Scan, Input GPIO Port array
-     55          GPIO_TypeDef*  KEYSWITCH_SCANPORT[MAXSCAN]	=   {  
-     56                                                          KeySWXX_PORT, 
+     52          
+     53          /* Private macro -------------------------------------------------------------*/
+     54          /* Private variables ---------------------------------------------------------*/
+     55          //  KeySwitch.h -> KeySwitch Scan, Input GPIO Port array
+     56          GPIO_TypeDef*  KEYSWITCH_SCANPORT[MAXSCAN]	=   {  
      57                                                          KeySWXX_PORT, 
      58                                                          KeySWXX_PORT, 
-     59                                                      };
-     60          
-     61          GPIO_TypeDef*  KEYSWITCH_INPUTPORT[MAXINPUT]	=   {  
-     62                                                          KeySWXX_PORT, 
+     59                                                          KeySWXX_PORT, 
+     60                                                      };
+     61          
+     62          GPIO_TypeDef*  KEYSWITCH_INPUTPORT[MAXINPUT]	=   {  
      63                                                          KeySWXX_PORT, 
      64                                                          KeySWXX_PORT, 
      65                                                          KeySWXX_PORT, 
-     66                                                          KeySWXX_PORT,
-     67                                                          KeySWXX_PORT,                                                
-     68                                                      };
-     69          
-     70          //  KeySwitch.h -> KeySwitch Scan, Input GPIO Pin array
-     71          const uint16_t KEYSWITCH_SCAN[MAXSCAN]  =   { 
-     72                                                          KeySCAN0, 
-     73                                                          KeySCAN1, 
-     74                                                          KeySCAN2, 
-     75                                                      };
-     76          
-     77          const uint16_t KEYSWITCH_INPUT[MAXINPUT]  =   { 
-     78                                                          KeyInput0, 
-     79                                                          KeyInput1, 
-     80                                                          KeyInput2, 
-     81                                                          KeyInput3,
-     82                                                          KeyInput4,
-     83                                                          KeyInput5,
-     84                                                      };
-     85          
-     86          //  KeySwitch.h -> Press Input KeySwitch Value array
-     87          const uint8_t KEYSWITCH_VALUE[MAXSWITCH]   =   {
-     88                                                          KEYSWITCH_MENU,    
-     89                                                          KEYSWITCH_LEFT,    
-     90                                                          KEYSWITCH_ESC,    
-     91                                                          KEYSWITCH_RIGHT,    
-     92                                                          KEYSWITCH_ENTER,    
-     93                                                      };                                                
-     94          uint8_t     KeySwitchScan;
-     95          uint32_t    Temp_Value1, Temp_Value2, Temp_Value3,Temp_Value4, Temp_Cnt;
-     96          uint32_t	New_Value;
-     97          
-     98          uint8_t		Test1 = 0, Test2 = 0;	
-     99          uint16_t		test_buf[10];
-    100          uint16_t		test_rx_buf[10];
-    101          
-    102          unsigned char rear_wiper_oper=0;
+     66                                                          KeySWXX_PORT, 
+     67                                                          KeySWXX_PORT,
+     68                                                          KeySWXX_PORT,                                                
+     69                                                      };
+     70          
+     71          //  KeySwitch.h -> KeySwitch Scan, Input GPIO Pin array
+     72          const uint16_t KEYSWITCH_SCAN[MAXSCAN]  =   { 
+     73                                                          KeySCAN0, 
+     74                                                          KeySCAN1, 
+     75                                                          KeySCAN2, 
+     76                                                      };
+     77          
+     78          const uint16_t KEYSWITCH_INPUT[MAXINPUT]  =   { 
+     79                                                          KeyInput0, 
+     80                                                          KeyInput1, 
+     81                                                          KeyInput2, 
+     82                                                          KeyInput3,
+     83                                                          KeyInput4,
+     84                                                          KeyInput5,
+     85                                                      };
+     86          
+     87          //  KeySwitch.h -> Press Input KeySwitch Value array
+     88          const uint8_t KEYSWITCH_VALUE[MAXSWITCH]   =   {
+     89                                                          KEYSWITCH_MENU,    
+     90                                                          KEYSWITCH_LEFT,    
+     91                                                          KEYSWITCH_ESC,    
+     92                                                          KEYSWITCH_RIGHT,    
+     93                                                          KEYSWITCH_ENTER,    
+     94                                                      };                                                
+     95          uint8_t     KeySwitchScan;
+     96          uint32_t    Temp_Value1, Temp_Value2, Temp_Value3,Temp_Value4, Temp_Cnt;
+     97          uint32_t	New_Value;
+     98          uint32_t	KeySwitchSendCount = 0;
+     99          
+    100          uint8_t		Test1 = 0, Test2 = 0;	
+    101          uint16_t		test_buf[10];
+    102          uint16_t		test_rx_buf[10];
     103          
-    104          extern Realy_Control		rx_Realy_Control;
-    105          /* Private function prototypes -----------------------------------------------*/
-    106          /* Private functions ---------------------------------------------------------*/
-    107          
-    108          void KeySwitch_SendToEXYNOS(uint32_t KeyValue, uint8_t LongKey)
-    109          {
-    110          	uint8_t KeyValueBuffer[Serial_COM4_TxSize];
-    111          	uint8_t KeyValue_temp;
-    112          
-    113          	
-    114          	memset(KeyValueBuffer, 0, Serial_COM4_TxSize * sizeof(uint8_t));
-    115          
-    116          	
-    117          	KeyValueBuffer[0] = 0x02;				//	STX
-    118          	KeyValueBuffer[1] = KeyRES;				//	KeyValue Command, 
-    119          	KeyValueBuffer[2] = KeyValue & 0x000000FF;
-    120          	KeyValueBuffer[3] = ((KeyValue & 0x0000FF00) >> 8);
-    121          	KeyValueBuffer[4] = ((KeyValue & 0x00FF0000) >> 16);
-    122          	KeyValueBuffer[5] = LongKey ;			//	Key Value Short/Long Key, 
-    123          	
-    124          	KeyValueBuffer[Serial_COM4_TxSize-1] = 0x03;				//	ETX
+    104          unsigned char rear_wiper_oper=0;
+    105          
+    106          extern Realy_Control		rx_Realy_Control;
+    107          /* Private function prototypes -----------------------------------------------*/
+    108          /* Private functions ---------------------------------------------------------*/
+    109          
+    110          void KeySwitch_SendToEXYNOS(uint32_t KeyValue, uint8_t LongKey)
+    111          {
+    112          	uint8_t KeyValueBuffer[Serial_COM4_TxSize];
+    113          	uint8_t KeyValue_temp;
+    114          
+    115          	
+    116          	memset(KeyValueBuffer, 0, Serial_COM4_TxSize * sizeof(uint8_t));
+    117          
+    118          	
+    119          	KeyValueBuffer[0] = 0x02;				//	STX
+    120          	KeyValueBuffer[1] = KeyRES;				//	KeyValue Command, 
+    121          	KeyValueBuffer[2] = KeyValue & 0x000000FF;
+    122          	KeyValueBuffer[3] = ((KeyValue & 0x0000FF00) >> 8);
+    123          	KeyValueBuffer[4] = ((KeyValue & 0x00FF0000) >> 16);
+    124          	KeyValueBuffer[5] = LongKey ;			//	Key Value Short/Long Key, 
     125          	
-    126             
-    127          ////////////////////////// DPRAM TEST /////////////////////
-    128          #if 0
-    129          	else if( KeyValue_temp == KEYSWITCH_MENU) 
-    130          	{
-    131          		if(Test2==0)
-    132          		{
-    133          			for(Test1=0;Test1<10;Test1++)
-    134          			{
-    135          				test_buf[Test1]=Test1+0x30;
-    136          				test_rx_buf[Test1]=0;
-    137          			}
-    138          		}
-    139          		else if(Test2==1)
-    140          		{
-    141          			for(Test1=0;Test1<10;Test1++)
-    142          			{
-    143          				test_buf[Test1]=Test1+0x40;
-    144          				test_rx_buf[Test1]=0;
-    145          			}
-    146          		}
-    147          		else if(Test2==2)
-    148          		{
-    149          			for(Test1=0;Test1<10;Test1++)
-    150          			{
-    151          				test_buf[Test1]=Test1+0x50;
-    152          				test_rx_buf[Test1]=0;
-    153          			}
-    154          		}
-    155          		if(Test2++>2)	Test2=0;
-    156          		DPRAM_WriteBuffer(&test_buf[0],0x00,10);
-    157          
-    158          		//memcpy(&test_buf[0], Bank1_SRAM1_ADDR,10);
-    159          		//*(uint16_t *) (Bank1_SRAM1_ADDR + 0) = 0x0505;
-    160                          
-    161                          //test_rx_buf[0]=*(uint16_t *) (Bank1_SRAM1_ADDR + 0);
+    126          	KeyValueBuffer[Serial_COM4_TxSize-1] = 0x03;				//	ETX
+    127          	
+    128             
+    129          ////////////////////////// DPRAM TEST /////////////////////
+    130          #if 0
+    131          	else if( KeyValue_temp == KEYSWITCH_MENU) 
+    132          	{
+    133          		if(Test2==0)
+    134          		{
+    135          			for(Test1=0;Test1<10;Test1++)
+    136          			{
+    137          				test_buf[Test1]=Test1+0x30;
+    138          				test_rx_buf[Test1]=0;
+    139          			}
+    140          		}
+    141          		else if(Test2==1)
+    142          		{
+    143          			for(Test1=0;Test1<10;Test1++)
+    144          			{
+    145          				test_buf[Test1]=Test1+0x40;
+    146          				test_rx_buf[Test1]=0;
+    147          			}
+    148          		}
+    149          		else if(Test2==2)
+    150          		{
+    151          			for(Test1=0;Test1<10;Test1++)
+    152          			{
+    153          				test_buf[Test1]=Test1+0x50;
+    154          				test_rx_buf[Test1]=0;
+    155          			}
+    156          		}
+    157          		if(Test2++>2)	Test2=0;
+    158          		DPRAM_WriteBuffer(&test_buf[0],0x00,10);
+    159          
+    160          		//memcpy(&test_buf[0], Bank1_SRAM1_ADDR,10);
+    161          		//*(uint16_t *) (Bank1_SRAM1_ADDR + 0) = 0x0505;
     162                          
-    163                          
-    164          		
-    165          
-    166          	}
-    167          	else if( KeyValue_temp == KEYSWITCH_LEFT) 
-    168          	{
-    169          		DPRAM_ReadBuffer(&test_rx_buf[0],0x00,10);
-    170          		for(Test1=0;Test1<10;Test1++)
-    171          		{
-    172          			test_buf[Test1]=0;
-    173          		}
-    174          		//*(uint16_t *) (Bank1_SRAM1_ADDR + 0x02) = 0x0404;
-    175                          //test_rx_buf[1]=*(uint16_t *) (Bank1_SRAM1_ADDR + 2);
-    176          
-    177          	}
-    178          #endif
-    179          	if(Change_UART4_for_Download==0)
-    180          		USARTx_EXYNOS(COM4, (char *)KeyValueBuffer);	
-    181          
-    182              DebugMsg_printf("KEYSWITCH %x\r\n", KeyValueBuffer[2]);
-    183          }
-    184          
-    185          void SMK_SendToExynos(uint8_t SMK_Auth, uint8_t SMK_Msg, uint8_t SMK_Count)
-    186          {
-    187          	uint8_t KeyValueBuffer[Serial_COM4_TxSize];
-    188          
-    189          	KeyValueBuffer[0] = 0x02;				//	STX
-    190          	KeyValueBuffer[1] = SMKRES;				
-    191          	KeyValueBuffer[2] = SMK_Auth;	
-    192          	KeyValueBuffer[3] = SMK_Msg;	
-    193          	KeyValueBuffer[4] = SMK_Count;	
-    194          	KeyValueBuffer[Serial_COM4_TxSize-1] = 0x03;				//	ETX
-    195          
-    196          	if(Change_UART4_for_Download==0)
-    197          		USARTx_EXYNOS(COM4, (char *)KeyValueBuffer);	
-    198          }
-    199          
-    200          void KeyTest_TEST(uint8_t value)
-    201          {
-    202          #if 1
-    203          	switch (value)
-    204          	{
-    205          
-    206          		case 0x01:
-    207          			CameraMode(0,1);
-    208          			break;
-    209          		case 0x02:
-    210          			CameraMode(1,1);
-    211          			break;
-    212          		case 0x04:
-    213          			CameraMode(2,1);
-    214          			break;
-    215          		case 0x08:
-    216          			CameraMode(3,1);
-    217          			break;
-    218          		case 0x10:
-    219          			CameraMode(4,1);
-    220          			break;
-    221          		case 0x20:
-    222          			CameraMode(5,1);
-    223          			break;	
-    224          	}
-    225          #endif
-    226          }
-    227          
-    228          #if 0
-    229          void KeySwitch_Process(void)
-    230          {
-    231          	uint8_t i, j, k;
-    232          	uint32_t New_Value,temp_Value;
-    233          
-    234          	temp_Value = 0;
+    163                          //test_rx_buf[0]=*(uint16_t *) (Bank1_SRAM1_ADDR + 0);
+    164                          
+    165                          
+    166          		
+    167          
+    168          	}
+    169          	else if( KeyValue_temp == KEYSWITCH_LEFT) 
+    170          	{
+    171          		DPRAM_ReadBuffer(&test_rx_buf[0],0x00,10);
+    172          		for(Test1=0;Test1<10;Test1++)
+    173          		{
+    174          			test_buf[Test1]=0;
+    175          		}
+    176          		//*(uint16_t *) (Bank1_SRAM1_ADDR + 0x02) = 0x0404;
+    177                          //test_rx_buf[1]=*(uint16_t *) (Bank1_SRAM1_ADDR + 2);
+    178          
+    179          	}
+    180          #endif
+    181          	if(Change_UART4_for_Download==0)
+    182          		USARTx_EXYNOS(COM4, (char *)KeyValueBuffer);	
+    183          
+    184              DebugMsg_printf("KEYSWITCH %x\r\n", KeyValueBuffer[2]);
+    185          }
+    186          
+    187          void SMK_SendToExynos(uint8_t SMK_Auth, uint8_t SMK_Msg, uint8_t SMK_Count)
+    188          {
+    189          	uint8_t KeyValueBuffer[Serial_COM4_TxSize];
+    190          
+    191          	KeyValueBuffer[0] = 0x02;				//	STX
+    192          	KeyValueBuffer[1] = SMKRES;				
+    193          	KeyValueBuffer[2] = SMK_Auth;	
+    194          	KeyValueBuffer[3] = SMK_Msg;	
+    195          	KeyValueBuffer[4] = SMK_Count;	
+    196          	KeyValueBuffer[Serial_COM4_TxSize-1] = 0x03;				//	ETX
+    197          
+    198          	if(Change_UART4_for_Download==0)
+    199          		USARTx_EXYNOS(COM4, (char *)KeyValueBuffer);	
+    200          }
+    201          
+    202          void KeyTest_TEST(uint8_t value)
+    203          {
+    204          #if 1
+    205          	switch (value)
+    206          	{
+    207          
+    208          		case 0x01:
+    209          			CameraMode(0,1);
+    210          			break;
+    211          		case 0x02:
+    212          			CameraMode(1,1);
+    213          			break;
+    214          		case 0x04:
+    215          			CameraMode(2,1);
+    216          			break;
+    217          		case 0x08:
+    218          			CameraMode(3,1);
+    219          			break;
+    220          		case 0x10:
+    221          			CameraMode(4,1);
+    222          			break;
+    223          		case 0x20:
+    224          			CameraMode(5,1);
+    225          			break;	
+    226          	}
+    227          #endif
+    228          }
+    229          
+    230          #if 0
+    231          void KeySwitch_Process(void)
+    232          {
+    233          	uint8_t i, j, k;
+    234          	uint32_t New_Value,temp_Value;
     235          
-    236          	GPIO_WriteBit(KEYSWITCH_SCANPORT[0], KEYSWITCH_SCAN[0], Bit_RESET);
-    237          	GPIO_WriteBit(KEYSWITCH_SCANPORT[1], KEYSWITCH_SCAN[1], Bit_RESET);
-    238          	GPIO_WriteBit(KEYSWITCH_SCANPORT[2], KEYSWITCH_SCAN[2], Bit_RESET);	
-    239          
-    240          	for (i = 0; i < MAXSWITCH; i++)
-    241          	{
-    242          		k = 0;	  
-    243          		k = GPIO_ReadInputDataBit(KEYSWITCH_INPUTPORT[i], KEYSWITCH_INPUT[i]); //  Read KeySwitch Input 
-    244          
-    245          		if (k == 0) j = 1;	  
-    246          		else		j = 0;
-    247          
-    248          		temp_Value <<= 1;	//	1Bit씩 Shitf하여 총 5Bit를 만든다.
-    249          		temp_Value  += j;	//	0 or 1
-    250          	}
-    251          
-    252          	if( temp_Value !=0)
-    253          	{
-    254          		if (KeySwitchScan == 0) 
-    255          		{
-    256          			GPIO_WriteBit(KEYSWITCH_SCANPORT[0], KEYSWITCH_SCAN[0], Bit_RESET);
-    257          			GPIO_WriteBit(KEYSWITCH_SCANPORT[1], KEYSWITCH_SCAN[1], Bit_SET);
-    258          			GPIO_WriteBit(KEYSWITCH_SCANPORT[2], KEYSWITCH_SCAN[2], Bit_SET);	
-    259          
-    260          			for (i = 0; i < MAXSWITCH; i++)
-    261          			{
-    262          				k = 0;	  
-    263          				k = GPIO_ReadInputDataBit(KEYSWITCH_INPUTPORT[i], KEYSWITCH_INPUT[i]); //  Read KeySwitch Input 
-    264          		
-    265          				if (k == 0) j = 1;	  
-    266          				else		j = 0;
-    267          		
-    268          				New_Value <<= 1;	//	1Bit씩 Shitf하여 총 5Bit를 만든다.
-    269          				New_Value  += j;	//	0 or 1
-    270          			}
-    271          		}
-    272          		else if (KeySwitchScan == 1) 
-    273          		{
-    274          			GPIO_WriteBit(KEYSWITCH_SCANPORT[0], KEYSWITCH_SCAN[0], Bit_SET);
-    275          			GPIO_WriteBit(KEYSWITCH_SCANPORT[1], KEYSWITCH_SCAN[1], Bit_RESET);
-    276          			GPIO_WriteBit(KEYSWITCH_SCANPORT[2], KEYSWITCH_SCAN[2], Bit_SET);		
-    277          			for (i = 0; i < MAXSWITCH; i++)
-    278          			{
-    279          				k = 0;	  
-    280          				k = GPIO_ReadInputDataBit(KEYSWITCH_INPUTPORT[i], KEYSWITCH_INPUT[i]); //  Read KeySwitch Input 
-    281          		
-    282          				if (k == 0) j = 1;	  
-    283          				else		j = 0;
-    284          		
-    285          				New_Value <<= 1;	//	1Bit씩 Shitf하여 총 5Bit를 만든다.
-    286          				New_Value  += j;	//	0 or 1
-    287          			}
-    288          		}	
-    289          		else if (KeySwitchScan == 2) 
-    290          		{
-    291          
-    292          			GPIO_WriteBit(KEYSWITCH_SCANPORT[0], KEYSWITCH_SCAN[0], Bit_SET);
-    293          			GPIO_WriteBit(KEYSWITCH_SCANPORT[1], KEYSWITCH_SCAN[1], Bit_SET);
-    294          			GPIO_WriteBit(KEYSWITCH_SCANPORT[2], KEYSWITCH_SCAN[2], Bit_RESET);
-    295          			for (i = 0; i < MAXSWITCH; i++)
-    296          			{
-    297          				k = 0;	  
-    298          				k = GPIO_ReadInputDataBit(KEYSWITCH_INPUTPORT[i], KEYSWITCH_INPUT[i]); //  Read KeySwitch Input 
-    299          		
-    300          				if (k == 0) j = 1;	  
-    301          				else		j = 0;
-    302          		
-    303          				New_Value <<= 1;	//	1Bit씩 Shitf하여 총 5Bit를 만든다.
-    304          				New_Value  += j;	//	0 or 1
-    305          			}
-    306          		}	
-    307          		
-    308          		//	KeySwitch Press Check
+    236          	temp_Value = 0;
+    237          
+    238          	GPIO_WriteBit(KEYSWITCH_SCANPORT[0], KEYSWITCH_SCAN[0], Bit_RESET);
+    239          	GPIO_WriteBit(KEYSWITCH_SCANPORT[1], KEYSWITCH_SCAN[1], Bit_RESET);
+    240          	GPIO_WriteBit(KEYSWITCH_SCANPORT[2], KEYSWITCH_SCAN[2], Bit_RESET);	
+    241          
+    242          	for (i = 0; i < MAXSWITCH; i++)
+    243          	{
+    244          		k = 0;	  
+    245          		k = GPIO_ReadInputDataBit(KEYSWITCH_INPUTPORT[i], KEYSWITCH_INPUT[i]); //  Read KeySwitch Input 
+    246          
+    247          		if (k == 0) j = 1;	  
+    248          		else		j = 0;
+    249          
+    250          		temp_Value <<= 1;	//	1Bit씩 Shitf하여 총 5Bit를 만든다.
+    251          		temp_Value  += j;	//	0 or 1
+    252          	}
+    253          
+    254          	if( temp_Value !=0)
+    255          	{
+    256          		if (KeySwitchScan == 0) 
+    257          		{
+    258          			GPIO_WriteBit(KEYSWITCH_SCANPORT[0], KEYSWITCH_SCAN[0], Bit_RESET);
+    259          			GPIO_WriteBit(KEYSWITCH_SCANPORT[1], KEYSWITCH_SCAN[1], Bit_SET);
+    260          			GPIO_WriteBit(KEYSWITCH_SCANPORT[2], KEYSWITCH_SCAN[2], Bit_SET);	
+    261          
+    262          			for (i = 0; i < MAXSWITCH; i++)
+    263          			{
+    264          				k = 0;	  
+    265          				k = GPIO_ReadInputDataBit(KEYSWITCH_INPUTPORT[i], KEYSWITCH_INPUT[i]); //  Read KeySwitch Input 
+    266          		
+    267          				if (k == 0) j = 1;	  
+    268          				else		j = 0;
+    269          		
+    270          				New_Value <<= 1;	//	1Bit씩 Shitf하여 총 5Bit를 만든다.
+    271          				New_Value  += j;	//	0 or 1
+    272          			}
+    273          		}
+    274          		else if (KeySwitchScan == 1) 
+    275          		{
+    276          			GPIO_WriteBit(KEYSWITCH_SCANPORT[0], KEYSWITCH_SCAN[0], Bit_SET);
+    277          			GPIO_WriteBit(KEYSWITCH_SCANPORT[1], KEYSWITCH_SCAN[1], Bit_RESET);
+    278          			GPIO_WriteBit(KEYSWITCH_SCANPORT[2], KEYSWITCH_SCAN[2], Bit_SET);		
+    279          			for (i = 0; i < MAXSWITCH; i++)
+    280          			{
+    281          				k = 0;	  
+    282          				k = GPIO_ReadInputDataBit(KEYSWITCH_INPUTPORT[i], KEYSWITCH_INPUT[i]); //  Read KeySwitch Input 
+    283          		
+    284          				if (k == 0) j = 1;	  
+    285          				else		j = 0;
+    286          		
+    287          				New_Value <<= 1;	//	1Bit씩 Shitf하여 총 5Bit를 만든다.
+    288          				New_Value  += j;	//	0 or 1
+    289          			}
+    290          		}	
+    291          		else if (KeySwitchScan == 2) 
+    292          		{
+    293          
+    294          			GPIO_WriteBit(KEYSWITCH_SCANPORT[0], KEYSWITCH_SCAN[0], Bit_SET);
+    295          			GPIO_WriteBit(KEYSWITCH_SCANPORT[1], KEYSWITCH_SCAN[1], Bit_SET);
+    296          			GPIO_WriteBit(KEYSWITCH_SCANPORT[2], KEYSWITCH_SCAN[2], Bit_RESET);
+    297          			for (i = 0; i < MAXSWITCH; i++)
+    298          			{
+    299          				k = 0;	  
+    300          				k = GPIO_ReadInputDataBit(KEYSWITCH_INPUTPORT[i], KEYSWITCH_INPUT[i]); //  Read KeySwitch Input 
+    301          		
+    302          				if (k == 0) j = 1;	  
+    303          				else		j = 0;
+    304          		
+    305          				New_Value <<= 1;	//	1Bit씩 Shitf하여 총 5Bit를 만든다.
+    306          				New_Value  += j;	//	0 or 1
+    307          			}
+    308          		}	
     309          		
-    310          
-    311          		if ( (Temp_Value1 == 0) && (New_Value != 0) ) 
-    312          		{
-    313          			Temp_Value1 = New_Value+(KeySwitchScan<<6);
-    314          		}
-    315          	
-    316          		//if (KeySwitchScan == 2)    //  15msec
-    317          		{
-    318          			if (Temp_Value1 == 0) 
-    319          			{
-    320          				Temp_Value3 = Temp_Cnt = 0;
-    321          			}
-    322          			else
-    323          	        	{
-    324          		            if (Temp_Value3 == Temp_Value1) //  눌려있던 키?
-    325          		            {
-    326          	                		Temp_Cnt++;                 //  계속 눌려 있는가?
-    327          	                
-    328          					if (Temp_Cnt ==2)          //  3번 연속 체크 되었을 때, 45msec
-    329          					{
-    330          						KeySwitch_Value = Temp_Value1;   
-    331          
-    332          						//  STM32 BUZZER를 사용할 경우.. 버튼 클릭 
-    333          						#ifdef STM32_BUZZER
-    334          						Buzzer_Set(10);
-    335          						#endif
-    336          
-    337          						KeySwitch_SendToEXYNOS(KeySwitch_Value,1);
-    338          					}
-    339          					if (Temp_Cnt == 120)         //  10번 연속 체크 되었을 때
-    340          					{
-    341          						//  연속 스위치 루틴..                              
-    342          						KeySwitch_Value = Temp_Value1;   
-    343          						Temp_Cnt -= 5;
-    344          						
-    345          						if(KeySwitch_Value<0x20)
-    346          						{
-    347          							#ifdef STM32_BUZZER
-    348          								Buzzer_Set(10);
-    349          							#endif
-    350          							KeySwitch_SendToEXYNOS(KeySwitch_Value,0);
-    351          						}
-    352          					}
-    353          				}
-    354          				else    //  순간적으로 눌렸는가?
-    355          				{
-    356          					Temp_Cnt    = 0;
-    357          					Temp_Value3 = Temp_Value1;
-    358          				}
-    359          			}
-    360          		}        
-    361          
-    362          		if (++KeySwitchScan > 2) KeySwitchScan = 0;
-    363          	}
-    364          	else
-    365          	{
-    366          		Temp_Value1 = Temp_Value3 = Temp_Cnt =KeySwitchScan= 0;
-    367          	}
-    368          	//  KeySwitch Value 생성
-    369          	        
-    370          }
-    371          #endif 
-    372          
-    373          #if 1
+    310          		//	KeySwitch Press Check
+    311          		
+    312          
+    313          		if ( (Temp_Value1 == 0) && (New_Value != 0) ) 
+    314          		{
+    315          			Temp_Value1 = New_Value+(KeySwitchScan<<6);
+    316          		}
+    317          	
+    318          		//if (KeySwitchScan == 2)    //  15msec
+    319          		{
+    320          			if (Temp_Value1 == 0) 
+    321          			{
+    322          				Temp_Value3 = Temp_Cnt = 0;
+    323          			}
+    324          			else
+    325          	        	{
+    326          		            if (Temp_Value3 == Temp_Value1) //  눌려있던 키?
+    327          		            {
+    328          	                		Temp_Cnt++;                 //  계속 눌려 있는가?
+    329          	                
+    330          					if (Temp_Cnt ==2)          //  3번 연속 체크 되었을 때, 45msec
+    331          					{
+    332          						KeySwitch_Value = Temp_Value1;   
+    333          
+    334          						//  STM32 BUZZER를 사용할 경우.. 버튼 클릭 
+    335          						#ifdef STM32_BUZZER
+    336          						Buzzer_Set(10);
+    337          						#endif
+    338          
+    339          						KeySwitch_SendToEXYNOS(KeySwitch_Value,1);
+    340          					}
+    341          					if (Temp_Cnt == 120)         //  10번 연속 체크 되었을 때
+    342          					{
+    343          						//  연속 스위치 루틴..                              
+    344          						KeySwitch_Value = Temp_Value1;   
+    345          						Temp_Cnt -= 5;
+    346          						
+    347          						if(KeySwitch_Value<0x20)
+    348          						{
+    349          							#ifdef STM32_BUZZER
+    350          								Buzzer_Set(10);
+    351          							#endif
+    352          							KeySwitch_SendToEXYNOS(KeySwitch_Value,0);
+    353          						}
+    354          					}
+    355          				}
+    356          				else    //  순간적으로 눌렸는가?
+    357          				{
+    358          					Temp_Cnt    = 0;
+    359          					Temp_Value3 = Temp_Value1;
+    360          				}
+    361          			}
+    362          		}        
+    363          
+    364          		if (++KeySwitchScan > 2) KeySwitchScan = 0;
+    365          	}
+    366          	else
+    367          	{
+    368          		Temp_Value1 = Temp_Value3 = Temp_Cnt =KeySwitchScan= 0;
+    369          	}
+    370          	//  KeySwitch Value 생성
+    371          	        
+    372          }
+    373          #endif 
     374          
-    375          
-    376          void KeySwitch_Process(void)
-    377          {
-    378          	uint8_t i, j, k;
-    379          	uint32_t New_Value;
-    380          	
-    381          	if (KeySwitchScan == 0) 
-    382          	{
-    383          		Temp_Value1 = 0;
-    384          
-    385          		GPIO_WriteBit(KEYSWITCH_SCANPORT[0], KEYSWITCH_SCAN[0], Bit_RESET); //R
-    386          		GPIO_WriteBit(KEYSWITCH_SCANPORT[1], KEYSWITCH_SCAN[1], Bit_SET);
-    387          		GPIO_WriteBit(KEYSWITCH_SCANPORT[2], KEYSWITCH_SCAN[2], Bit_SET);					
-    388          	}
-    389          	else if (KeySwitchScan == 1) 
-    390          	{
-    391          
-    392          		GPIO_WriteBit(KEYSWITCH_SCANPORT[0], KEYSWITCH_SCAN[0], Bit_SET);
-    393          		GPIO_WriteBit(KEYSWITCH_SCANPORT[1], KEYSWITCH_SCAN[1], Bit_RESET); //R
-    394          		GPIO_WriteBit(KEYSWITCH_SCANPORT[2], KEYSWITCH_SCAN[2], Bit_SET);					
-    395          	}	
-    396          	else if (KeySwitchScan == 2) 
-    397          	{
-    398          
-    399          		GPIO_WriteBit(KEYSWITCH_SCANPORT[0], KEYSWITCH_SCAN[0], Bit_SET);
-    400          		GPIO_WriteBit(KEYSWITCH_SCANPORT[1], KEYSWITCH_SCAN[1], Bit_SET);
-    401          		GPIO_WriteBit(KEYSWITCH_SCANPORT[2], KEYSWITCH_SCAN[2], Bit_RESET);//R				
-    402          	}	
-    403          	
-    404          	New_Value = 0;
+    375          #if 1
+    376          
+    377          
+    378          void KeySwitch_Process(void)
+    379          {
+    380          	uint8_t i, j, k;
+    381          	uint32_t New_Value;
+    382          	
+    383          	if (KeySwitchScan == 0) 
+    384          	{
+    385          		Temp_Value1 = 0;
+    386          
+    387          		GPIO_WriteBit(KEYSWITCH_SCANPORT[0], KEYSWITCH_SCAN[0], Bit_RESET); //R
+    388          		GPIO_WriteBit(KEYSWITCH_SCANPORT[1], KEYSWITCH_SCAN[1], Bit_SET);
+    389          		GPIO_WriteBit(KEYSWITCH_SCANPORT[2], KEYSWITCH_SCAN[2], Bit_SET);					
+    390          	}
+    391          	else if (KeySwitchScan == 1) 
+    392          	{
+    393          
+    394          		GPIO_WriteBit(KEYSWITCH_SCANPORT[0], KEYSWITCH_SCAN[0], Bit_SET);
+    395          		GPIO_WriteBit(KEYSWITCH_SCANPORT[1], KEYSWITCH_SCAN[1], Bit_RESET); //R
+    396          		GPIO_WriteBit(KEYSWITCH_SCANPORT[2], KEYSWITCH_SCAN[2], Bit_SET);					
+    397          	}	
+    398          	else if (KeySwitchScan == 2) 
+    399          	{
+    400          
+    401          		GPIO_WriteBit(KEYSWITCH_SCANPORT[0], KEYSWITCH_SCAN[0], Bit_SET);
+    402          		GPIO_WriteBit(KEYSWITCH_SCANPORT[1], KEYSWITCH_SCAN[1], Bit_SET);
+    403          		GPIO_WriteBit(KEYSWITCH_SCANPORT[2], KEYSWITCH_SCAN[2], Bit_RESET);//R				
+    404          	}	
     405          	
-    406          	//  KeySwitch Press Check
-    407          	//Delay(100);
-    408          	
-    409          	for (i = 0; i < MAXSWITCH; i++)
-    410          	{
-    411          		k = 0;    
-    412          		k = GPIO_ReadInputDataBit(KEYSWITCH_INPUTPORT[i], KEYSWITCH_INPUT[i]); //  Read KeySwitch Input 
-    413          
-    414          		if (k == 0) j = 1;    
-    415          		else        j = 0;
-    416          
-    417          		New_Value <<= 1;    //  1Bit씩 Shitf하여 총 5Bit를 만든다.
-    418          		New_Value  += j;    //  0 or 1
-    419          	}
-    420          
-    421          	
-    422              if ( (Temp_Value1 == 0) && (New_Value != 0) ) 
-    423              //if (New_Value != 0)
-    424              {
-    425                  //Temp_Value1 = New_Value+(KeySwitchScan<<6);
-    426                  Temp_Value1 = New_Value << (KeySwitchScan * 8);
-    427              }
-    428                  
-    429                  
-    430          	if (KeySwitchScan == 2)    //  15msec
-    431          	{
-    432                        //  KeySwitch Value 생성
-    433          		if (Temp_Value1 == 0) 
-    434          		{
-    435          			if(KeySwitch_Value != 0)
-    436          			{
-    437          				KeySwitch_Value = Temp_Value3 = Temp_Cnt = 0;	
-    438          				KeySwitch_SendToEXYNOS(KeySwitch_Value,0);
-    439          			}
-    440          			KeySwitch_Value = Temp_Value3 = Temp_Cnt = 0;		
-    441          		}
-    442          		else
-    443                  {
-    444                      if (Temp_Value3 == Temp_Value1) //  눌려있던 키?
-    445                      {
-    446                      	Temp_Cnt++;                 //  계속 눌려 있는가?
-    447                      
-    448          				if (Temp_Cnt ==3)          //  3번 연속 체크 되었을 때, 45msec
-    449          				{
-    450          					KeySwitch_Value = Temp_Value1;   
-    451          
-    452          					//  STM32 BUZZER를 사용할 경우.. 버튼 클릭 
-    453          					#ifdef STM32_BUZZER
-    454          					Buzzer_Set(10);
-    455          					#endif
+    406          	New_Value = 0;
+    407          	
+    408          	//  KeySwitch Press Check
+    409          	//Delay(100);
+    410          	
+    411          	for (i = 0; i < MAXSWITCH; i++)
+    412          	{
+    413          		k = 0;    
+    414          		k = GPIO_ReadInputDataBit(KEYSWITCH_INPUTPORT[i], KEYSWITCH_INPUT[i]); //  Read KeySwitch Input 
+    415          
+    416          		if (k == 0) j = 1;    
+    417          		else        j = 0;
+    418          
+    419          		New_Value <<= 1;    //  1Bit씩 Shitf하여 총 5Bit를 만든다.
+    420          		New_Value  += j;    //  0 or 1
+    421          	}
+    422          
+    423          	
+    424              if ( (Temp_Value1 == 0) && (New_Value != 0) ) 
+    425              //if (New_Value != 0)
+    426              {
+    427                  //Temp_Value1 = New_Value+(KeySwitchScan<<6);
+    428                  Temp_Value1 = New_Value << (KeySwitchScan * 8);
+    429              }
+    430                  
+    431              if(KeySwitchSendCount < KEYSwitchSendCountMax)
+    432              {
+    433          		KeySwitchSendCount++;
+    434          	}
+    435          	if (KeySwitchScan == 2)    //  15msec
+    436          	{
+    437                        //  KeySwitch Value 생성
+    438          		if (Temp_Value1 == 0) 
+    439          		{
+    440          			if(KeySwitch_Value != 0)
+    441          			{
+    442          				KeySwitch_Value = Temp_Value3 = Temp_Cnt = 0;	
+    443          				KeySwitch_SendToEXYNOS(KeySwitch_Value,0);
+    444          			}
+    445          			KeySwitch_Value = Temp_Value3 = Temp_Cnt = 0;		
+    446          		}
+    447          		else
+    448                  {
+    449                      if (Temp_Value3 == Temp_Value1) //  눌려있던 키?
+    450                      {
+    451                      	Temp_Cnt++;                 //  계속 눌려 있는가?
+    452                      
+    453          				if (Temp_Cnt ==3)          //  3번 연속 체크 되었을 때, 45msec
+    454          				{
+    455          					KeySwitch_Value = Temp_Value1;   
     456          
-    457          					KeySwitch_SendToEXYNOS(KeySwitch_Value,0);
-    458          				}
-    459          				
-    460          				if (Temp_Cnt == 300)         //  10번 연속 체크 되었을 때
-    461          				{
-    462          					//  연속 스위치 루틴..                              
-    463          					KeySwitch_Value = Temp_Value1;   
-    464          					Temp_Cnt -= 50;
-    465          					
-    466          					//if(KeySwitch_Value<0x20)
-    467          					{
-    468          						#ifdef STM32_BUZZER
-    469          							Buzzer_Set(10);
-    470          						#endif
-    471          						KeySwitch_SendToEXYNOS(KeySwitch_Value,1);
-    472          					}
-    473          				}
-    474          			}
-    475          			else    //  순간적으로 눌렸는가?
-    476          			{
-    477          				Temp_Cnt    = 0;
-    478          				Temp_Value3 = Temp_Value1;
-    479          			}
-    480          		}
-    481          	}        
-    482          
-    483          	if (++KeySwitchScan > 2) KeySwitchScan = 0;        
-    484          }
-    485          #endif
-    486          
-    487          
-    488          void KeySwitch_Init(void)
-    489          {
-    490              TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
-    491              NVIC_InitTypeDef        NVIC_InitStructure;
-    492          
-    493              DebugMsg_printf("++ KeySwitch (TIM5 : 5msec), TIM5_IRQn Initialize START\r\n");
-    494          
-    495              //  KeySwitch GPIO는 System_Init.c 에서 설정
-    496              #if 0
-    497          
-    498              GPIO_InitTypeDef    GPIO_InitStructure;
-    499              
-    500          	//	KeySwitch Matrix -> GPIO Output
-    501          	GPIO_InitStructure.GPIO_Pin   = KeySCAN0 | KeySCAN1 | KeySCAN2;
-    502              GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
-    503            	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-    504            	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-    505              GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    506              GPIO_Init(KeySWXX_PORT, &GPIO_InitStructure);
-    507          
-    508          	//	KeySwitch Matrix -> GPIO Input
-    509          	GPIO_InitStructure.GPIO_Pin   = KeyInput0 | KeyInput1 | KeyInput2 | KeyInput3 | KeyInput4 | KeyInput5;
-    510              GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_IN;   
-    511            	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-    512            	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-    513              GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    514              GPIO_Init(KeySWXX_PORT, &GPIO_InitStructure);
-    515          	
-    516              #endif
-    517          
-    518              TIM_TimeBaseStructure.TIM_Period        = 0x9c4;   	//  (1 / 1MHz) * 5000 -> 5msec
-    519          
-    520          	//TIM_TimeBaseStructure.TIM_Period        = 0x4e2;   	//  (1 / 0.5MHz) * 2500 -> 5msec
+    457          					//  STM32 BUZZER를 사용할 경우.. 버튼 클릭 
+    458          					#ifdef STM32_BUZZER
+    459          					Buzzer_Set(10);
+    460          					#endif
+    461          
+    462          					if(KeySwitchSendCount >= KEYSwitchSendCountMax)
+    463          					{
+    464          						KeySwitch_SendToEXYNOS(KeySwitch_Value,0);
+    465          						KeySwitchSendCount = 0;
+    466          					}
+    467          					
+    468          				}
+    469          				
+    470          				if (Temp_Cnt == 300)         //  10번 연속 체크 되었을 때
+    471          				{
+    472          					//  연속 스위치 루틴..                              
+    473          					KeySwitch_Value = Temp_Value1;   
+    474          					Temp_Cnt -= 50;
+    475          					
+    476          					//if(KeySwitch_Value<0x20)
+    477          					{
+    478          						#ifdef STM32_BUZZER
+    479          							Buzzer_Set(10);
+    480          						#endif
+    481          						if(KeySwitchSendCount >= KEYSwitchSendCountMax)
+    482          						{
+    483          							KeySwitch_SendToEXYNOS(KeySwitch_Value,1);
+    484          							KeySwitchSendCount = 0;
+    485          						}
+    486          					}
+    487          				}
+    488          			}
+    489          			else    //  순간적으로 눌렸는가?
+    490          			{
+    491          				Temp_Cnt    = 0;
+    492          				Temp_Value3 = Temp_Value1;
+    493          			}
+    494          		}
+    495          	}        
+    496          
+    497          	if (++KeySwitchScan > 2) KeySwitchScan = 0;        
+    498          }
+    499          #endif
+    500          
+    501          
+    502          void KeySwitch_Init(void)
+    503          {
+    504              TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
+    505              NVIC_InitTypeDef        NVIC_InitStructure;
+    506          
+    507              DebugMsg_printf("++ KeySwitch (TIM5 : 5msec), TIM5_IRQn Initialize START\r\n");
+    508          
+    509              //  KeySwitch GPIO는 System_Init.c 에서 설정
+    510              #if 0
+    511          
+    512              GPIO_InitTypeDef    GPIO_InitStructure;
+    513              
+    514          	//	KeySwitch Matrix -> GPIO Output
+    515          	GPIO_InitStructure.GPIO_Pin   = KeySCAN0 | KeySCAN1 | KeySCAN2;
+    516              GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+    517            	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+    518            	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+    519              GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    520              GPIO_Init(KeySWXX_PORT, &GPIO_InitStructure);
     521          
-    522          	//TIM_TimeBaseStructure.TIM_Period        = 0x271; 
-    523          
-    524          	TIM_TimeBaseStructure.TIM_Prescaler     = 0xA8;     //  84 MHz / 168 = 1MHz
-    525          	TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
-    526          	TIM_TimeBaseStructure.TIM_CounterMode   = TIM_CounterMode_Up;
-    527          	TIM_TimeBaseInit(TIM5, &TIM_TimeBaseStructure);
-    528          
-    529          	//  TIM5 Enable counter
-    530          	TIM_Cmd(TIM5, ENABLE);
+    522          	//	KeySwitch Matrix -> GPIO Input
+    523          	GPIO_InitStructure.GPIO_Pin   = KeyInput0 | KeyInput1 | KeyInput2 | KeyInput3 | KeyInput4 | KeyInput5;
+    524              GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_IN;   
+    525            	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+    526            	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+    527              GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    528              GPIO_Init(KeySWXX_PORT, &GPIO_InitStructure);
+    529          	
+    530              #endif
     531          
-    532          	//  Enable TIM5 Update Interrupt
-    533          	TIM_ITConfig(TIM5, TIM_IT_Update, ENABLE);
-    534          
-    535          	//  Enable the TIM5 Interrupt, KeySwitch
-    536          	NVIC_InitStructure.NVIC_IRQChannel                   = TIM5_IRQn;
-    537          	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
-    538          	NVIC_InitStructure.NVIC_IRQChannelSubPriority        = 0;
-    539          	NVIC_InitStructure.NVIC_IRQChannelCmd                = ENABLE;
-    540          	NVIC_Init(&NVIC_InitStructure);
-    541          
-    542          	DebugMsg_printf("-- KeySwitch (TIM5 : 5msec), TIM5_IRQn Initialize END\r\n");
-    543          
-    544          	KeySwitch_Value = 0;	
-    545          }
-    546          
-    547          /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
+    532              TIM_TimeBaseStructure.TIM_Period        = 0x9c4;   	//  (1 / 1MHz) * 5000 -> 5msec
+    533          
+    534          	//TIM_TimeBaseStructure.TIM_Period        = 0x4e2;   	//  (1 / 0.5MHz) * 2500 -> 5msec
+    535          
+    536          	//TIM_TimeBaseStructure.TIM_Period        = 0x271; 
+    537          
+    538          	TIM_TimeBaseStructure.TIM_Prescaler     = 0xA8;     //  84 MHz / 168 = 1MHz
+    539          	TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
+    540          	TIM_TimeBaseStructure.TIM_CounterMode   = TIM_CounterMode_Up;
+    541          	TIM_TimeBaseInit(TIM5, &TIM_TimeBaseStructure);
+    542          
+    543          	//  TIM5 Enable counter
+    544          	TIM_Cmd(TIM5, ENABLE);
+    545          
+    546          	//  Enable TIM5 Update Interrupt
+    547          	TIM_ITConfig(TIM5, TIM_IT_Update, ENABLE);
+    548          
+    549          	//  Enable the TIM5 Interrupt, KeySwitch
+    550          	NVIC_InitStructure.NVIC_IRQChannel                   = TIM5_IRQn;
+    551          	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+    552          	NVIC_InitStructure.NVIC_IRQChannelSubPriority        = 0;
+    553          	NVIC_InitStructure.NVIC_IRQChannelCmd                = ENABLE;
+    554          	NVIC_Init(&NVIC_InitStructure);
+    555          
+    556          	DebugMsg_printf("-- KeySwitch (TIM5 : 5msec), TIM5_IRQn Initialize END\r\n");
+    557          
+    558          	KeySwitch_Value = 0;	
+    559          }
+    560          
+    561          /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
 
    Maximum stack usage in bytes:
 
@@ -622,14 +628,15 @@ C:\Users\1\Desktop\141007 울산\CAN Update\SRC\WL_F_Monitor_APP_DMA\Platform\TaeH
       12  KEYSWITCH_INPUT
        8  KEYSWITCH_SCAN
        8  KEYSWITCH_VALUE
-      52  KeySwitchScan
+      56  KeySwitchScan
           KEYSWITCH_SCANPORT
           KEYSWITCH_INPUTPORT
           Temp_Value1
           Temp_Value3
           Temp_Cnt
+          KeySwitchSendCount
       92  KeySwitch_Init
-     274  KeySwitch_Process
+     304  KeySwitch_Process
       68  KeySwitch_SendToEXYNOS
       74  KeyTest_TEST
        4  New_Value
@@ -644,13 +651,13 @@ C:\Users\1\Desktop\141007 울산\CAN Update\SRC\WL_F_Monitor_APP_DMA\Platform\TaeH
 
  
   55 bytes in section .bss
-  52 bytes in section .data
+  56 bytes in section .data
   16 bytes in section .rodata
- 584 bytes in section .text
+ 614 bytes in section .text
  
- 584 bytes of CODE  memory
+ 614 bytes of CODE  memory
   16 bytes of CONST memory
- 107 bytes of DATA  memory
+ 111 bytes of DATA  memory
 
 Errors: none
 Warnings: 1
