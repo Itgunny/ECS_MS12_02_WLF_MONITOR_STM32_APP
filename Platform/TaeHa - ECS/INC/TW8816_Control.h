@@ -1,12 +1,12 @@
 /**
   ******************************************************************************
-  * @file    WL9F_Monitor_Variable.h
+  * @file    TW8816_Control.h
   * @author  kutelf (kutelf@taeha.co.kr)
   * @version V1.0.0
   * @date    02/22/2013
-  * @brief   Main Header
+  * @brief   Header for TW8816_Control.c module
   *
-  * Project Name       : WL9F Monitor Common
+  * Project Name       : WL9F Monitor APP
   * Project Enviroment : IAREmbedded Workbench for ARM 6.5x 
   *                      STM32F407ZGT6 Firmware Library
   * Project Workspace  : WL9F_Monitor_APP
@@ -19,37 +19,27 @@
   */ 
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __WL9F_Monitor_Variable_H
-#define __WL9F_Monitor_Variable_H
+#ifndef __TW8816_Control_H
+#define __TW8816_Control_H
 
 /* Includes ------------------------------------------------------------------*/
 #include "WL9F_Monitor_APP.h"	
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
+#define		TW8816_I2C_Addr			0x8A
+
+#define 	TW8816_SCL0				GPIO_ResetBits(TW8816_I2C2_PORT, TW8816_I2C2_SCL)
+#define 	TW8816_SCL1				GPIO_SetBits(TW8816_I2C2_PORT, TW8816_I2C2_SCL)
+#define 	TW8816_SDA_READ			GPIO_ReadInputDataBit(TW8816_I2C2_PORT, TW8816_I2C2_SDA)
+
+#define 	TW8816_SDAIN   			TW8816_PortChange(0)
+#define 	TW8816_SDAOUT  			TW8816_PortChange(1) 
+
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-// EEPROM Clear Variables
-WL9FM_SaveE2PROM1			*SaveE2PROM1;
-WL9FM_SaveE2PROM2			*SaveE2PROM2;
-WL9FM_SaveE2PROM3			*SaveE2PROM3;
 
-WL9FM_SaveE2PROMoniInfo		*SaveE2PROMoniInfo;
-
-WL9FM_DATA_RTC   	   	    WL9FM_RTC;
-WL9FM_TIME_DATA 		    WL9FM_TIME;
-WL9FM_BUZZER_DATA   		WL9FM_BUZZER;
-WL9FM_LCDBL_DATA   		    WL9FM_LCDBL;
-
-USARTx_DATA  				WL9FM_USART_DATA;
-USARTx_INDEX 				WL9FM_USART_INDEX;
-
-USARTx_FILE_RX_DATA			WL9FM_USART_RX_FILE_DATA;
-USARTx_FILE_RX_DATA			WL9FM_USART_FILE_DATA;
-
-uint32_t                    	KeySwitch_Value;            //  GPIO Key Value
-uint32_t 					LAMP_Update_Data;			//	LAMP Value
-uint32_t 					Old_LAMP_Update_Data;			//	LAMP Value
+extern u8  InitCVBSAll_8816[];
 
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
@@ -58,6 +48,24 @@ uint32_t 					Old_LAMP_Update_Data;			//	LAMP Value
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 /* Exported variables --------------------------------------------------------*/
-/* Exported functions ------------------------------------------------------- */
 
-#endif /* __WL9F_Monitor_Variable_H */
+/* Exported functions ------------------------------------------------------- */
+extern void I2C2_Write_8816(u8 WData);
+extern u8 I2C2_Read_8816(void);
+extern void I2C2_ByteWrite_8816(u16 in_AddrVal, u8 in_DataVal);
+extern u8	I2C2_ByteRead_8816(u16 in_AddrVal);
+extern void	WriteTW8816(u8 in_AddrVal, u8 in_DataVal);
+extern u8	ReadTW8816(u8 in_AddrVal);
+
+extern void	InitCVBSRegister_8816(void);
+extern void I2C2DeviceInitialize_8816(u8 *RegSet);
+
+
+extern void TW8816_Control_Init(void);
+extern void TW8816_CameraMode(u8 Mode, u8 OSD);
+extern void TW8816_CheckCamera_Input(u8 Mode);
+
+#endif /* __TW8816_Control_H */
+
+/*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
+

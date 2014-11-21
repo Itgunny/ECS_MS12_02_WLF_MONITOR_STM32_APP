@@ -342,6 +342,10 @@ void SPI_FLASH_WaitForWriteEnd(void)
 {
 	unsigned char FLASH_Status = 0;
 
+    //  ++, kutelf, 140801    
+    //unsigned int TimeOut = 0;
+    //  --, kutelf, 140801
+    
 	// Select the FLASH: Chip Select low 
 	SPI_FLASH_CS_LOW();
 
@@ -354,6 +358,12 @@ void SPI_FLASH_WaitForWriteEnd(void)
 	{
 		// Send a dummy byte to generate the clock needed by the FLASH and put the value of the status register in FLASH_Status variable 
 		FLASH_Status = SPI_Transfer(Dummy_Byte);
+
+        //  ++, kutelf, 140801
+        //  SPI Flash가 문제가 있을 경우 - 무한루프에서 빠져나오지 못할 수 있음. 
+        //if (TimeOut++ > 2000)
+        //  break;
+        //  --, kutelf, 140801
 
 	} while((FLASH_Status & WIP_Flag) == SET); // Write in progress 
 
@@ -392,8 +402,6 @@ uint8_t temp_cmp[1024];
 
 void STM32_Update(unsigned char cmd, unsigned char FactoryInitFlag)
 {
-
-	u16 i=0;
 	unsigned long temp_address;
 	if(FactoryInitFlag == 1)
 	{

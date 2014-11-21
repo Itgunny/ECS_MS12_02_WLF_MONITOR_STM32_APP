@@ -1,12 +1,12 @@
 /**
   ******************************************************************************
-  * @file    WL9F_Monitor_Variable.h
+  * @file    TW8816_OSD.h 
   * @author  kutelf (kutelf@taeha.co.kr)
   * @version V1.0.0
   * @date    02/22/2013
-  * @brief   Main Header
+  * @brief   Header for TW8816_OSD.c module
   *
-  * Project Name       : WL9F Monitor Common
+  * Project Name       : WL9F Monitor APP
   * Project Enviroment : IAREmbedded Workbench for ARM 6.5x 
   *                      STM32F407ZGT6 Firmware Library
   * Project Workspace  : WL9F_Monitor_APP
@@ -19,8 +19,8 @@
   */ 
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __WL9F_Monitor_Variable_H
-#define __WL9F_Monitor_Variable_H
+#ifndef __TW8816_OSD_H
+#define __TW8816_OSD_H
 
 /* Includes ------------------------------------------------------------------*/
 #include "WL9F_Monitor_APP.h"	
@@ -29,28 +29,6 @@
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-// EEPROM Clear Variables
-WL9FM_SaveE2PROM1			*SaveE2PROM1;
-WL9FM_SaveE2PROM2			*SaveE2PROM2;
-WL9FM_SaveE2PROM3			*SaveE2PROM3;
-
-WL9FM_SaveE2PROMoniInfo		*SaveE2PROMoniInfo;
-
-WL9FM_DATA_RTC   	   	    WL9FM_RTC;
-WL9FM_TIME_DATA 		    WL9FM_TIME;
-WL9FM_BUZZER_DATA   		WL9FM_BUZZER;
-WL9FM_LCDBL_DATA   		    WL9FM_LCDBL;
-
-USARTx_DATA  				WL9FM_USART_DATA;
-USARTx_INDEX 				WL9FM_USART_INDEX;
-
-USARTx_FILE_RX_DATA			WL9FM_USART_RX_FILE_DATA;
-USARTx_FILE_RX_DATA			WL9FM_USART_FILE_DATA;
-
-uint32_t                    	KeySwitch_Value;            //  GPIO Key Value
-uint32_t 					LAMP_Update_Data;			//	LAMP Value
-uint32_t 					Old_LAMP_Update_Data;			//	LAMP Value
-
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
@@ -60,4 +38,18 @@ uint32_t 					Old_LAMP_Update_Data;			//	LAMP Value
 /* Exported variables --------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 
-#endif /* __WL9F_Monitor_Variable_H */
+
+extern void SetFontOSDWindow(void);
+extern void SetDisplayCH1(void);
+extern void SetDisplayCH2(void);
+extern void SetDisplayCH3(void);
+extern void SetDisplayCH4(void);
+extern void SetDisplayCHBlank(void);
+extern void SetDisplayNosignal(void);
+extern void SetDisplayNosignalBlank(void);
+
+
+
+#endif /* __TW8816_OSD_H */
+
+/*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/

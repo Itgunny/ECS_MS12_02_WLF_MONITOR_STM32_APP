@@ -38,7 +38,7 @@ void DPRAM_Init(void)
 	FSMC_NORSRAMInitTypeDef  FSMC_NORSRAMInitStructure;
 	FSMC_NORSRAMTimingInitTypeDef  p;
 
-	FSMC_NORSRAMTimingInitTypeDef  p1;
+	//FSMC_NORSRAMTimingInitTypeDef  p1;
 	
 	DebugMsg_printf("++ DPRAM Initialize START\r\n");
 

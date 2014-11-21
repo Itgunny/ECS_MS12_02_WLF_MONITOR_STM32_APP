@@ -49,10 +49,22 @@
 /* Exported variables --------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 extern void WL9FM_EXYNOS_POWER_ONOFF(uint8_t BitData);
-extern void WL9FM_EXYNOS_PMIC_ONOFF(void);
+extern void WL9FM_EXYNOS_PMIC_PWRON(void);
+//	++, kutelf, 140801
+//	RevD.01.01
+//	함수 변경
+extern void WL9FM_EXYNOS_PMIC_PWRONOFF(uint8_t BitData);
+//	--, kutelf, 140801
 extern void WL9FM_CAMERA_nRESET(void);
 extern void WL9FM_PowerIG(uint8_t BitData);
 extern uint8_t WL9FM_GetPowerIG(void);
+//	++, kutelf, 140801
+//	RevD.01.01
+//	PMIC nRESET 추가 
+extern void WL9FM_EXYNOS_PMIC_PWROFF(void);
+extern void WL9FM_EXYNOS_PMIC_nRESET(void);
+extern void WL9FM_EXYNOS_PMIC_nRESET_ONOFF(uint8_t BitData);
+//	--, kutelf, 140801
 
 #endif /* __GPIO_Control_H */
 

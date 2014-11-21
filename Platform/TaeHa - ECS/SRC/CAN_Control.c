@@ -188,6 +188,16 @@ extern Realy_Control rx_Realy_Control;
 extern EHCU_Status rx_EHCU_Status;
 
 extern unsigned long long SerialTXIndex;
+
+// ++, 141118 sys3215
+extern u8 Flag_ESL;
+extern u8 Seed_request;
+extern u8 Seed_received;
+extern u8 ESL_CTS_received;
+extern u8 ESL_ACK_received;
+extern u8 Password_Certification_Result;
+// -- , 141118 sys3215
+
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 /**
@@ -512,10 +522,41 @@ void CAN_RX(CanRxMsg RxMessage)
 	memcpy(&CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Head].RX_DATA[0],&RxMessage.Data[0],8);
 		
 	
+
+
+	// ++, 141118 sys3215
+	if(Flag_ESL==1)
+	{
+		if(CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Head].Rx_ExtID == 0x18EF2847)
+		{
+			if(CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Head].RX_DATA[0]==0x16) // seed received
+			{
+				Seed_received=1;
+			}
+			else if(CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Head].RX_DATA[0]==0x18) // password valid status
+			{
+				if((CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Head].RX_DATA[1] & 0x01)==0x01)
+					Password_Certification_Result=1;
+				else
+					Password_Certification_Result=0;
+			}
+		}
+		if(CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Head].Rx_ExtID == 0x1CEC2847)
+		{
+			if(CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Head].RX_DATA[0]==0x11) // CTS
+			{
+				ESL_CTS_received=1;
+			}
+			else if(CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Head].RX_DATA[0]==0x13) // ACK
+			{
+				ESL_ACK_received=1;
+			}
+		}
+	}
+        
 	if (++(CAN_Message_Ring_Buffer_Rx_Single.Head) >= MAX_CAN_RX_DATA_SINGLE)
 		CAN_Message_Ring_Buffer_Rx_Single.Head = 0;
-
-	
+// --, 141118 sys3215
 }
 void MonitorStatus_CAN_TX(void)
 {
@@ -538,6 +579,96 @@ void MonitorStatus_CAN_TX(void)
 	//}
 }
 
+// ++,141118 sys3215
+void Seed_Request_CAN_TX(void)
+{
+	struct st_CAN_Message1 Send_Message;
 
+	Send_Message.Priority = 0x18;
+	Send_Message.PDU_Format = 0xEF;		
+	Send_Message.PDU_Specific = 0x47;	
+	Send_Message.Source_Address = 0x28;
+	memset(&Send_Message.Data,0xff,8);
+	Send_Message.Data[0]=21;
+	memcpy(&CAN_Message_Ring_Buffer_Tx_Single.Message[CAN_Message_Ring_Buffer_Tx_Single.Head],&Send_Message,12);
+
+	if (++(CAN_Message_Ring_Buffer_Tx_Single.Head) >= MAX_CAN_TX_DATA_SINGLE)
+		CAN_Message_Ring_Buffer_Tx_Single.Head = 0;
+}
+
+void SendMultiPacketRTS_ESL(void)
+{
+	struct st_CAN_Message1 Message;
+	
+	u8 _Temp[8];
+
+	Message.Priority = 0x1c;
+	Message.PDU_Format = 0xEC;
+	Message.PDU_Specific = 0x47;
+	Message.Source_Address = 0x28;
+
+	_Temp[0] = 0x10;
+	_Temp[1] = 0x0d;
+	_Temp[2] = 0;
+	_Temp[3] = 2;
+	_Temp[4] = 0xFF;
+	_Temp[5] = 0;
+	_Temp[6] = 0xef;
+	_Temp[7] = 0x00;
+
+	memcpy((void *)&Message.Data[0],(void *)&_Temp, sizeof(_Temp));
+
+	memcpy(&CAN_Message_Ring_Buffer_Tx_Single.Message[CAN_Message_Ring_Buffer_Tx_Single.Head],&Message,12);
+
+	if (++(CAN_Message_Ring_Buffer_Tx_Single.Head) >= MAX_CAN_TX_DATA_SINGLE)
+		CAN_Message_Ring_Buffer_Tx_Single.Head = 0;
+	
+}
+
+void SendMultiPacketData_ESL(void)
+{
+	struct st_CAN_Message1 Message;
+	
+	u8 _Temp[8];
+
+	Message.Priority = 0x1c;
+	Message.PDU_Format = 0xEB;
+	Message.PDU_Specific = 0x47;
+	Message.Source_Address = 0x28;
+
+	_Temp[0] = 0x01;
+	_Temp[1] = 0x17;
+	_Temp[2] = 0xf8;
+	_Temp[3] = 0xff;
+	_Temp[4] = 0xFF;
+	_Temp[5] = 0xff;
+	_Temp[6] = 0xff;
+	_Temp[7] = 0xff;
+
+	memcpy((void *)&Message.Data[0],(void *)&_Temp, sizeof(_Temp));
+
+	memcpy(&CAN_Message_Ring_Buffer_Tx_Single.Message[CAN_Message_Ring_Buffer_Tx_Single.Head],&Message,12);
+
+	if (++(CAN_Message_Ring_Buffer_Tx_Single.Head) >= MAX_CAN_TX_DATA_SINGLE)
+		CAN_Message_Ring_Buffer_Tx_Single.Head = 0;
+
+	_Temp[0] = 0x02;
+	_Temp[1] = 0xff;
+	_Temp[2] = 0xff;
+	_Temp[3] = 0xff;
+	_Temp[4] = 0xFF;
+	_Temp[5] = 0xff;
+	_Temp[6] = 0xff;
+	_Temp[7] = 0xff;
+
+	memcpy((void *)&Message.Data[0],(void *)&_Temp, sizeof(_Temp));
+
+	memcpy(&CAN_Message_Ring_Buffer_Tx_Single.Message[CAN_Message_Ring_Buffer_Tx_Single.Head],&Message,12);
+
+	if (++(CAN_Message_Ring_Buffer_Tx_Single.Head) >= MAX_CAN_TX_DATA_SINGLE)
+		CAN_Message_Ring_Buffer_Tx_Single.Head = 0;
+	
+}
+// --,141118 sys3215
 
 /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/

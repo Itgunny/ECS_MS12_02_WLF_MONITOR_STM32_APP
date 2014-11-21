@@ -42,11 +42,43 @@ void WL9FM_EXYNOS_PMIC_PWRON(void)
 	GPIO_WriteBit(EXYNOS_PMIC_CTRL_PORT, EXYNOS_PMIC_CTRL, Bit_RESET);
 }
 
+//	++, kutelf, 140801
+//	RevD.01.01
+//	함수 추가
 void WL9FM_EXYNOS_PMIC_PWROFF(void)
 {
+	GPIO_WriteBit(EXYNOS_PMIC_nRESET_PORT, EXYNOS_PMIC_nRESET, Bit_SET);
+	GPIO_WriteBit(EXYNOS_PMIC_CTRL_PORT, EXYNOS_PMIC_CTRL, Bit_SET);
+	TimeDelay_msec(1000);
 	GPIO_WriteBit(EXYNOS_PMIC_CTRL_PORT, EXYNOS_PMIC_CTRL, Bit_RESET);
+	GPIO_WriteBit(EXYNOS_PMIC_nRESET_PORT, EXYNOS_PMIC_nRESET, Bit_RESET);
+}
+//	--, kutelf, 140801
+
+//	++, kutelf, 140801
+//	RevD.01.01
+//	함수 변경 
+void WL9FM_EXYNOS_PMIC_PWRONOFF(uint8_t BitData)
+{
+	GPIO_WriteBit(EXYNOS_PMIC_CTRL_PORT, EXYNOS_PMIC_CTRL, (BitAction) BitData);
+}
+//	--, kutelf, 140801
+
+//	++, kutelf, 140801
+//	RevD.01.01 
+//	PMIC nRESET 추가 
+void WL9FM_EXYNOS_PMIC_nRESET(void)
+{
+	GPIO_WriteBit(EXYNOS_PMIC_nRESET_PORT, EXYNOS_PMIC_nRESET, Bit_SET);
+	TimeDelay_msec(500);
+	GPIO_WriteBit(EXYNOS_PMIC_nRESET_PORT, EXYNOS_PMIC_nRESET, Bit_RESET);
 }
 
+void WL9FM_EXYNOS_PMIC_nRESET_ONOFF(uint8_t BitData)
+{
+	GPIO_WriteBit(EXYNOS_PMIC_nRESET_PORT, EXYNOS_PMIC_nRESET, (BitAction) BitData);
+}
+//	--, kutelf, 140801
 
 void WL9FM_CAMERA_nRESET(void)
 {

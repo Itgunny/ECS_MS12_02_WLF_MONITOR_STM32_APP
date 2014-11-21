@@ -778,9 +778,11 @@ void ClearCheckCamera()
 	WriteOSDBmpX(MASTER,110,165,0x00,0x00,gt_CHANNEL_blank);
 }
 
+//	++, kutelf, 140801
+//	RevD 보드와 호환성을 위하여 함수 이름 변경
 //  ++, kutelf, 131007
 //u8 Temp0, Temp1, Temp2, Temp3;
-void CheckCamera_Input(u8 Mode)
+void TW2835_CheckCamera_Input(u8 Mode)
 {
 
 	//	입력이 없으면, return 0x80
@@ -1015,11 +1017,12 @@ void CheckCamera_Input(u8 Mode)
 
 }
 //  --, kutelf, 131007
+//	--, kutelf, 140801
 
-
-	
+//	++, kutelf, 140801
+//	RevD 보드와 호환성을 위하여 함수 이름 변경
 //  ++, kutelf, 131007
-void CameraMode(u8 Mode, u8 OSD)
+void TW2835_CameraMode(u8 Mode, u8 OSD)
 {
 
 	if(Mode == 0x00)
@@ -1425,6 +1428,7 @@ void CameraMode(u8 Mode, u8 OSD)
 	}
 }
 //  --, kutelf, 131007
+//	--, kutelf, 140801
 
 /**\
   * @brief  None

@@ -300,6 +300,7 @@ typedef struct
 /* Exported macro ------------------------------------------------------------*/
 /* Exported variables --------------------------------------------------------*/
 extern uint32_t LAMP_Update_Data;
+extern uint32_t Old_LAMP_Update_Data;
 /* Exported functions ------------------------------------------------------- */
 extern void Lamp_Update_State(void);
 extern void Lamp_Update_System(void);

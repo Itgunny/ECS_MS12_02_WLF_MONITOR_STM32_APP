@@ -87,12 +87,23 @@
 #define		SFLASH_WP						GPIO_Pin_10
 #define		SFLASH_PORT						GPIOC
 
+//	++, kutelf, 140801
+//	RevD.01.01 
+//	TW8832에서 TW8816 변경 (I2C2 Control)
+#define		TW8816_I2C2_SCL					GPIO_Pin_10
+#define		TW8816_I2C2_SCL_PinSource		GPIO_PinSource10
+#define		TW8816_I2C2_SDA					GPIO_Pin_11
+#define		TW8816_I2C2_SDA_PinSource		GPIO_PinSource11
+#define		TW8816_I2C2_PORT				GPIOB
+
+//	RevD 이하 버젼에서 사용 
 //	TW8832 I2C2 Control
 #define		TW8832_I2C2_SCL					GPIO_Pin_10
 #define		TW8832_I2C2_SCL_PinSource		GPIO_PinSource10
 #define		TW8832_I2C2_SDA					GPIO_Pin_11
 #define		TW8832_I2C2_SDA_PinSource		GPIO_PinSource11
 #define		TW8832_I2C2_PORT				GPIOB
+//	--, kutelf, 140801
 
 //	LAMP GPIO (Serial Data -> Parallel Data
 //	74HC595
@@ -159,7 +170,11 @@
 #define 	FM31X4_I2C1_SDA         		GPIO_Pin_9
 #define 	FM31X4_I2C1_PORT				GPIOB
 
+//	++, kutelf, 140801
+//	RevD.01.01 
+//	TW2835 삭제 
 //	TW2835 -> GPIO
+//	RevD 이하 버젼에서 사용 
 #define 	TW2835_D0						GPIO_Pin_0
 #define 	TW2835_D1						GPIO_Pin_1
 #define 	TW2835_D2						GPIO_Pin_2
@@ -178,14 +193,34 @@
 #define		TW2835_HALE						GPIO_Pin_12
 #define		TW2835_HSPB						GPIO_Pin_13
 #define		TW2835_CTRLPORT					GPIOD
+//	--, kutelf, 140801
 
+//	++, kutelf, 140801
+//	RevD.01.01 
+//	DPRAM 삭제 - FSMC 사용 안함. 
+#if 0
 //	DPRAM -> GPIO
 #define		DPRAM_INT						GPIO_Pin_13
 #define		DPRAM_PORT						GPIOC
+#endif
+//	--, kutelf, 140801
 
 #define		CAMERA_nRESET					GPIO_Pin_15
 #define		CAMERA_nRESET_PORT				GPIOC
 
+//	++, kutelf, 140801
+//	RevD.01.01 
+//	EXYNOS PMIC nRESET 추가 
+#if 1
+#define		EXYNOS_PMIC_nRESET				GPIO_Pin_14
+#define		EXYNOS_PMIC_nRESET_PORT			GPIOC
+#endif
+//	--, kutelf, 140801
+
+//	++, kutelf, 140801
+//	RevD.01.01 
+//	DPRAM 삭제 - FSMC 사용 안함. 
+#if 0
 //  FSMC
 #define		FSMC_nCLK						GPIO_Pin_3
 #define		FSMC_nCLK_PinSource				GPIO_PinSource3
@@ -210,6 +245,8 @@
 #define 	FSMC_nNE1                		GPIO_Pin_7
 #define 	FSMC_nNE1_PinSource        		GPIO_PinSource7
 #define 	FSMC_nNE1_PORT           		GPIOD
+#endif
+//	--, kutelf, 140801
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/

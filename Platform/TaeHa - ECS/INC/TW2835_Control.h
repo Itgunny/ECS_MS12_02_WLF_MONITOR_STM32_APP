@@ -255,11 +255,13 @@ extern void InitVdo(void);
 extern void Port_Change(u8 in_Dir);
 extern void Write_TW2835(u8 Data);
 extern u8 Read_TW2835();
-extern void CameraMode(u8 Mode, u8 OSD);
+//	++, kutelf, 140801
+//	RevD 보드와 호환성을 위하여 함수 이름 변경
+extern void TW2835_CameraMode(u8 Mode, u8 OSD);
 //  ++, kutelf, 131007
-extern void CheckCamera_Input(u8 Mode);
+extern void TW2835_CheckCamera_Input(u8 Mode);
 //  --, kutelf, 131007
-
+//	--, kutelf, 140801
 
 extern unsigned char	tbl_ntsc_pg0_cmn[];
 extern unsigned char	tbl_ntsc_pg0_sfr1[];

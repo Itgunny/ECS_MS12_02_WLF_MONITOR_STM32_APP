@@ -118,6 +118,11 @@ extern void MonitorStatus_CAN_TX(void);
 extern void Write_CAN_Single(struct st_CAN_Message1 Message);
 extern void Write_UART_Single(void);
 
+// ++, 141118 sys3215
+extern void Seed_Request_CAN_TX(void);
+extern void SendMultiPacketRTS_ESL(void);
+extern void SendMultiPacketData_ESL(void);
+// --, 141118 sys3215
 
 #endif /* __CAN_Control_H */
 

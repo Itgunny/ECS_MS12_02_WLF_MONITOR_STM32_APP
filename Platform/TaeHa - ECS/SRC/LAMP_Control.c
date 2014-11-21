@@ -467,26 +467,32 @@ unsigned char Illumination_Lamp_System(void)
 	temp = 0x400000;
 
 	if(Illumination_Sig)	LAMP_Update_Data |= 0x700000;
+
+	if(LAMP_Update_Data != Old_LAMP_Update_Data)
+	{
+		Old_LAMP_Update_Data = LAMP_Update_Data;
+		for ( i = 0 ; i < 23 ; i++)
+		{  
+			if ( LAMP_Update_Data & temp )
+				C_LAMP_SDATA_HIGH();
+			else	
+				C_LAMP_SDATA_LOW();
 	
-	for ( i = 0 ; i < 23 ; i++)
-	{  
-		if ( LAMP_Update_Data & temp )
-			C_LAMP_SDATA_HIGH();
-		else	
-			C_LAMP_SDATA_LOW();
-
-		C_LAMP_SCLK_HIGH();		
+			C_LAMP_SCLK_HIGH(); 	
+			TimeDelay_msec(1);
+			C_LAMP_SCLK_LOW();
+	
+			temp = temp >> 1;
+		}
+	
+		C_LAMP_SLCLK_HIGH();	
 		TimeDelay_msec(1);
-		C_LAMP_SCLK_LOW();
+		C_LAMP_SLCLK_LOW(); 	
+		TimeDelay_msec(1);
+		C_LAMP_SLCLK_HIGH();
 
-		temp = temp >> 1;
 	}
-
-	C_LAMP_SLCLK_HIGH();	
-	TimeDelay_msec(1);
-	C_LAMP_SLCLK_LOW();		
-	TimeDelay_msec(1);
-	C_LAMP_SLCLK_HIGH();
+	
 }
 
 

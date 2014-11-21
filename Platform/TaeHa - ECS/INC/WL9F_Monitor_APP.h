@@ -34,7 +34,13 @@
 
 #include "System_Init.h"
 #include "System_Debug.h"
+//	++, kutelf, 140801
+//	RevD.01.01 
+//	DPRAM 삭제 - FSMS 사용 안함. 
+#if 0
 #include "DPRAM_Control.h"
+#endif
+//	--, kutelf, 140801
 #include "FM31X4.h"
 #include "TimeDelay.h"
 #include "GPIO_Control.h"
@@ -43,16 +49,37 @@
 #include "KeySwitch.h"
 #include "LAMP_Control.h"
 #include "LCD_Control.h"
+
+//	++, kutelf, 140801
+//	RevD.01.01 
+//	Camera Input, LCD Controller 변경
+//		=> TW2835 + TW8832 -> TW8816
+#include "TW8816_Control.h"
+#include "TW8816_OSD.h"
+
+//	RevD 이하 버젼에서 사용 
 #include "TW2835_Control.h"
 #include "TW2835_OSD.h"
 #include "TW8832_Control.h"
 #include "TW8832_OSD.h"
+//	--, kutelf, 140801
+
 #include "UART_Control.h"
 #include "CAN_Control.h"
 #include "M25PXX.h"
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
+
+//	++, kutelf, 140801
+//	RevD.01.01
+//	RevD 부터 이런 기능을 추가..
+//	TW2835, TW8816 호환하기 위하여 수정. 
+//#define BoardVersion_RevA
+#define BoardVersion_RevB
+//#define BoardVersion_RevC
+//#define BoardVersion_RevD
+//	--, kutelf, 140801
 
 //#define     STM32_BUZZER      //  STM32 BUZZER
 
@@ -140,7 +167,7 @@
 #define	VERSION_HIGH		1
 #define	VERSION_LOW			0
 #define	VERSION_SUB_HIGH	1
-#define	VERSION_SUB_LOW		2
+#define	VERSION_SUB_LOW		3
 
 ///////////////////////////////////////////////////
 ////1.0.1.0 (1.0.0.9에서 250kpbs로 CAN2 수정)
@@ -152,6 +179,9 @@
 //OS Update 시 20초간 Key IG Check 안함 (OS Boot Update시 전원이 나가면 안됨) 	2014.10.06
 ////1.0.1.2
 //KeyButton 연속 입력 딜레이 250ms 추가 (Keybutton 입력 후 250ms 동안 Keybutton 데이터 나가지 않음 2014.10.16
+////1.0.1.3 2014.11.21
+//Hardware RevD 와 호환코드로 수정 !!!!!!!!!!!!!!!!!!!
+//SmartKey 인증(MCU 통신) 어플리케이션에서 펌웨어로 이동 2014.11.18
 ///////////////////////////////////////////////////
 
 //=================================================================
@@ -303,6 +333,17 @@ extern void WL9FM_System_Init_Start(void);
 extern void OperateRingBuffer(void);
 extern void RTCSend(void);
 
+//	++, kutelf, 140801
+//	RevD.01.01
+//	RevD 보드와 호환성을 위하여 함수 추가 및 이름 변경
+extern void CameraMode(u8 Mode, u8 OSD);
+extern void CheckCamera_Input(u8 Mode);
+//	--, kutelf, 140801
 
 extern void Init_Smart_Key_valuable(void);
+
+// ++ , 141118 sys3215
+extern void ESL_System(void);
+// --, 141118 sys3215
+
 #endif /* __WL9F_Monitor_APP_H */

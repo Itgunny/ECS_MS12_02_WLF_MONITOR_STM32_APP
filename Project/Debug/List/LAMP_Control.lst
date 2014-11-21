@@ -1,6 +1,6 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      16/Oct/2014  14:31:22 #
+# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      21/Nov/2014  10:33:33 #
 # Copyright 1999-2012 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
@@ -502,119 +502,125 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\LAMP_Control.c
     467          	temp = 0x400000;
     468          
     469          	if(Illumination_Sig)	LAMP_Update_Data |= 0x700000;
-    470          	
-    471          	for ( i = 0 ; i < 23 ; i++)
-    472          	{  
-    473          		if ( LAMP_Update_Data & temp )
-    474          			C_LAMP_SDATA_HIGH();
-    475          		else	
-    476          			C_LAMP_SDATA_LOW();
-    477          
-    478          		C_LAMP_SCLK_HIGH();		
-    479          		TimeDelay_msec(1);
-    480          		C_LAMP_SCLK_LOW();
-    481          
-    482          		temp = temp >> 1;
-    483          	}
-    484          
-    485          	C_LAMP_SLCLK_HIGH();	
-    486          	TimeDelay_msec(1);
-    487          	C_LAMP_SLCLK_LOW();		
-    488          	TimeDelay_msec(1);
-    489          	C_LAMP_SLCLK_HIGH();
-    490          }
-    491          
-    492          
-    493          //	10msec 마다 실행해야된다.
-    494          void Lamp_Update_State(void)
-    495          {
-    496          	unsigned int i;
-    497          	
-    498          	//for (i= 9;  i !=0; i--)
-    499          	//{
-    500          	//	Led_SIG_TEMP[i] 		= Led_SIG_TEMP[i -1];
-    501          	//	Led_BL_TEMP[i] 		= Led_BL_TEMP[i -1];
-    502          	//}
-    503          
-    504          	Led_SIG_TEMP[0]  = 0;
-    505          
-    506          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.MainLight1)?(Main_Light_1_G):(0x00);
-    507          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.MainLight2)?(Main_Light_2_B):(0x00);
-    508          
-    509          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.WorkLight1)?(Work_Light_G1):(0x00);
-    510          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.WorkLight2)?(Work_Light_G2):(0x00);
-    511          	
-    512          
-    513          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.AutoGrease1)?(Auto_Grease_1_G):(0x00);
-    514          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.AutoGrease2)?(Auto_Grease_2_R):(0x00);
-    515          	
-    516          
-    517          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.QuickCoupler1)?(Quick_coupler_1_G):(0x00);
-    518          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.QuickCoupler2)?(Quick_coupler_2_R):(0x00);
-    519          
-    520          	
-    521          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.RideControl1)?(Ride_Control_1_G):(0x00);
-    522          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.RideControl2)?(Ride_Control_2_B):(0x00);
-    523          
-    524          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.WorkLoad1)?(Work_load_1_G):(0x00);
-    525          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.WorkLoad2)?(Work_load_2_B):(0x00);
+    470          
+    471          	if(LAMP_Update_Data != Old_LAMP_Update_Data)
+    472          	{
+    473          		Old_LAMP_Update_Data = LAMP_Update_Data;
+    474          		for ( i = 0 ; i < 23 ; i++)
+    475          		{  
+    476          			if ( LAMP_Update_Data & temp )
+    477          				C_LAMP_SDATA_HIGH();
+    478          			else	
+    479          				C_LAMP_SDATA_LOW();
+    480          	
+    481          			C_LAMP_SCLK_HIGH(); 	
+    482          			TimeDelay_msec(1);
+    483          			C_LAMP_SCLK_LOW();
+    484          	
+    485          			temp = temp >> 1;
+    486          		}
+    487          	
+    488          		C_LAMP_SLCLK_HIGH();	
+    489          		TimeDelay_msec(1);
+    490          		C_LAMP_SLCLK_LOW(); 	
+    491          		TimeDelay_msec(1);
+    492          		C_LAMP_SLCLK_HIGH();
+    493          
+    494          	}
+    495          	
+    496          }
+    497          
+    498          
+    499          //	10msec 마다 실행해야된다.
+    500          void Lamp_Update_State(void)
+    501          {
+    502          	unsigned int i;
+    503          	
+    504          	//for (i= 9;  i !=0; i--)
+    505          	//{
+    506          	//	Led_SIG_TEMP[i] 		= Led_SIG_TEMP[i -1];
+    507          	//	Led_BL_TEMP[i] 		= Led_BL_TEMP[i -1];
+    508          	//}
+    509          
+    510          	Led_SIG_TEMP[0]  = 0;
+    511          
+    512          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.MainLight1)?(Main_Light_1_G):(0x00);
+    513          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.MainLight2)?(Main_Light_2_B):(0x00);
+    514          
+    515          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.WorkLight1)?(Work_Light_G1):(0x00);
+    516          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.WorkLight2)?(Work_Light_G2):(0x00);
+    517          	
+    518          
+    519          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.AutoGrease1)?(Auto_Grease_1_G):(0x00);
+    520          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.AutoGrease2)?(Auto_Grease_2_R):(0x00);
+    521          	
+    522          
+    523          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.QuickCoupler1)?(Quick_coupler_1_G):(0x00);
+    524          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.QuickCoupler2)?(Quick_coupler_2_R):(0x00);
+    525          
     526          	
-    527          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.BeaconLamp)?(Beacon_lamp_G):(0x00);
-    528          
-    529          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.RearWiper)?(Rear_Wiper_G):(0x00);
-    530          	
-    531          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.MirrorHeat)?(Mirror_Heat_1_G):(0x00);
+    527          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.RideControl1)?(Ride_Control_1_G):(0x00);
+    528          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.RideControl2)?(Ride_Control_2_B):(0x00);
+    529          
+    530          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.WorkLoad1)?(Work_load_1_G):(0x00);
+    531          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.WorkLoad2)?(Work_load_2_B):(0x00);
     532          	
-    533          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.AutoPosition1)?(Auto_Position_1_G):(0x00);
-    534          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.AutoPosition2)?(Auto_Position_2_G):(0x00);
-    535          	
-    536          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.FineModulation)?(Fine_Modulation_G):(0x00);
-    537          
-    538          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.FN)?(Function_G):(0x00);
-    539          
-    540          	Led_BL_TEMP[0] = rx_CMD_LAMP.Illumination;
-    541          
-    542          	//if((Led_SIG_TEMP[9] == Led_SIG_TEMP[8]) && (Led_SIG_TEMP[8] == Led_SIG_TEMP[1]) && (Led_SIG_TEMP[1] == Led_SIG_TEMP[0])) 
-    543          	{
-    544          		LAMP_Update_Data = Led_SIG_TEMP[0];
-    545          	}
-    546          	//if((Led_BL_TEMP[9] == Led_BL_TEMP[8]) && (Led_BL_TEMP[8] == Led_BL_TEMP[1]) && (Led_BL_TEMP[1] == Led_BL_TEMP[0]))  
-    547          	{		
-    548          		Illumination_Sig = Led_BL_TEMP[0];
-    549          	}
-    550          }
-    551          
-    552          /**
-    553            * @brief  LAMP Initialize 
-    554            * @param  
-    555            * @retval None
-    556            */
-    557          void LAMP_Control_Init(void)
-    558          {
-    559          	DebugMsg_printf("++ LAMP Initialize START\r\n");
-    560          
-    561          	//  LAMP GPIO는 System_Init.c 에서 설정
-    562          #if 0
-    563          	GPIO_InitStructure.GPIO_Pin   = LAMP_CLR | LAMP_SLCLK | LAMP_SCLK | LAMP_SDATA;
-    564          	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
-    565          	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-    566          	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-    567          	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    568          	GPIO_Init(LAMP_PORT, &GPIO_InitStructure);
-    569          #endif
-    570          
-    571          	GPIO_WriteBit(LAMP_PORT, LAMP_CLR, Bit_SET);
-    572          	TimeDelay_msec(10);
-    573          	GPIO_WriteBit(LAMP_PORT, LAMP_CLR, Bit_RESET);
-    574          
-    575          	LAMP_Update_Data = LAMP_ALL_ON;
+    533          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.BeaconLamp)?(Beacon_lamp_G):(0x00);
+    534          
+    535          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.RearWiper)?(Rear_Wiper_G):(0x00);
+    536          	
+    537          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.MirrorHeat)?(Mirror_Heat_1_G):(0x00);
+    538          	
+    539          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.AutoPosition1)?(Auto_Position_1_G):(0x00);
+    540          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.AutoPosition2)?(Auto_Position_2_G):(0x00);
+    541          	
+    542          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.FineModulation)?(Fine_Modulation_G):(0x00);
+    543          
+    544          	Led_SIG_TEMP[0] += (rx_CMD_LAMP.FN)?(Function_G):(0x00);
+    545          
+    546          	Led_BL_TEMP[0] = rx_CMD_LAMP.Illumination;
+    547          
+    548          	//if((Led_SIG_TEMP[9] == Led_SIG_TEMP[8]) && (Led_SIG_TEMP[8] == Led_SIG_TEMP[1]) && (Led_SIG_TEMP[1] == Led_SIG_TEMP[0])) 
+    549          	{
+    550          		LAMP_Update_Data = Led_SIG_TEMP[0];
+    551          	}
+    552          	//if((Led_BL_TEMP[9] == Led_BL_TEMP[8]) && (Led_BL_TEMP[8] == Led_BL_TEMP[1]) && (Led_BL_TEMP[1] == Led_BL_TEMP[0]))  
+    553          	{		
+    554          		Illumination_Sig = Led_BL_TEMP[0];
+    555          	}
+    556          }
+    557          
+    558          /**
+    559            * @brief  LAMP Initialize 
+    560            * @param  
+    561            * @retval None
+    562            */
+    563          void LAMP_Control_Init(void)
+    564          {
+    565          	DebugMsg_printf("++ LAMP Initialize START\r\n");
+    566          
+    567          	//  LAMP GPIO는 System_Init.c 에서 설정
+    568          #if 0
+    569          	GPIO_InitStructure.GPIO_Pin   = LAMP_CLR | LAMP_SLCLK | LAMP_SCLK | LAMP_SDATA;
+    570          	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+    571          	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+    572          	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+    573          	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    574          	GPIO_Init(LAMP_PORT, &GPIO_InitStructure);
+    575          #endif
     576          
-    577          	Lamp_Update_System();
-    578          
-    579          	DebugMsg_printf("-- LAMP Initialize END\r\n");
-    580          }
-    581          
-    582          /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
+    577          	GPIO_WriteBit(LAMP_PORT, LAMP_CLR, Bit_SET);
+    578          	TimeDelay_msec(10);
+    579          	GPIO_WriteBit(LAMP_PORT, LAMP_CLR, Bit_RESET);
+    580          
+    581          	LAMP_Update_Data = LAMP_ALL_ON;
+    582          
+    583          	Lamp_Update_System();
+    584          
+    585          	DebugMsg_printf("-- LAMP Initialize END\r\n");
+    586          }
+    587          
+    588          /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
 
    Maximum stack usage in bytes:
 
@@ -658,6 +664,7 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\LAMP_Control.c
        4  ??DataTable16_5
        4  ??DataTable16_6
        4  ??DataTable16_7
+       4  ??DataTable16_8
       16  ?Subroutine0
       36  Auto_Grease_LampSystem
        4  Beacon_LampSystem
@@ -667,7 +674,7 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\LAMP_Control.c
        8  Illumination_Lamp_System
       48  LAMP_Control_Init
      282  Lamp_Update_State
-     136  Lamp_Update_System
+     148  Lamp_Update_System
        1  Lamp_Value
        1  Lamp_name
       38  Main_Light_Right_LampSystem
@@ -699,9 +706,9 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\LAMP_Control.c
 
  
  144 bytes in section .bss
- 920 bytes in section .text
+ 936 bytes in section .text
  
- 920 bytes of CODE memory
+ 936 bytes of CODE memory
  144 bytes of DATA memory
 
 Errors: none

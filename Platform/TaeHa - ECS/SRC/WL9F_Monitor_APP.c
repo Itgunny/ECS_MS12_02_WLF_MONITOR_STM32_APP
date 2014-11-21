@@ -76,6 +76,15 @@ WL9FM_flag_data smk_flag_data;
 /* Private variables ---------------------------------------------------------*/
 u8 gAuthentication_Cnt = 0;
 
+// ++ , 141118 sys3215
+u8 Flag_ESL;
+u8 Seed_request;
+u8 Seed_received;
+u8 ESL_CTS_received;
+u8 ESL_ACK_received;
+u8 Password_Certification_Result;
+// -- , 141118 sys3215
+
 u8 AuthResult;
 u8 SMKSuccess;
 u8 SMK_Msg_Send;
@@ -369,6 +378,16 @@ void Init_Smart_Key_valuable(void)
 	SMK_Msg_Send = 0;
 	SMK_Tag_Count = 0;
 	SMKSuccess = 0;
+
+// ++, 141118 sys3215
+	Flag_ESL=0;
+	Seed_request=0;
+	Seed_received=0;
+	ESL_CTS_received=0;
+	ESL_ACK_received=0;
+	Password_Certification_Result=0;
+// --, 141118 sys3215
+
 }
 
 
@@ -509,6 +528,7 @@ void System_CheckPowerIG()
 
 			//	POWER OFF 일 때, LAMP Clear
 			LAMP_Update_Data = LAMP_ALL_OFF;
+			Old_LAMP_Update_Data = LAMP_ALL_OFF;
 		 	Illumination_Sig = 0;
 			Lamp_Update_System();
 			
@@ -522,8 +542,16 @@ void System_CheckPowerIG()
 			LCD_POWER_ONOFF(LCDPWR_OFF);	//  LCD Power Off
 			LED_POWER_ONOFF(LED_OFF);       //  LED Off
 
-			WL9FM_EXYNOS_PMIC_PWRON();
+		//	++, kutelf, 140801
+		//	RevD.01.01 
+		//	Power, PMIC On/Off 방법 변경 
+		#if 0
 
+			WL9FM_EXYNOS_POWER_ONOFF(EXYNOS_PMIC_OFF);	//	->	GPIO_Control.c EXYNOS-4412 Power On..
+			WL9FM_EXYNOS_PMIC_PWRONOFF(EXYNOS_PMIC_OFF);
+			WL9FM_EXYNOS_PMIC_nRESET();
+		#else
+			WL9FM_EXYNOS_PMIC_PWROFF();
 			
 			//	Exynos VDD5V0_4412 Off
 			WL9FM_EXYNOS_POWER_ONOFF(EXYNOS_POWER_OFF);
@@ -542,6 +570,8 @@ void System_CheckPowerIG()
 			}
 
 			WL9FM_PowerIG(PowerIG_OFF);		//  24v Main Power Off	    
+		#endif
+		//	--, kutelf, 140801
 		}
 	}
 }
@@ -910,6 +940,11 @@ void SmartKeyAuthentication(void)
 						smk_flag_data.recv_resp_packet = RESPONSE_SUCCESS;
 						SMKSuccess = SMK_SUCCESS;
 						SendSMKAuthResult(SMK_SUCCESS);
+
+						// ++ , 141118 sys3215
+						Flag_ESL=1;
+						// -- , 141118 sys3215
+						
 					}
 				}
 				else
@@ -962,6 +997,36 @@ void SmartKeyAuthentication(void)
 	}
 }
 #endif
+
+// ++, 141118 sys3215
+void ESL_System(void)
+{
+	if(Seed_request==0)
+	{
+		Seed_request=0xff;
+		Seed_Request_CAN_TX();
+	}
+	if(Seed_received==1)
+	{
+		Seed_received=0xff;
+		SendMultiPacketRTS_ESL();
+	}
+	if(ESL_CTS_received==1)
+	{
+		ESL_CTS_received=0xff;
+		SendMultiPacketData_ESL();
+                Flag_ESL = 0;
+	}
+	if(ESL_ACK_received==1)
+	{
+		Init_Smart_Key_valuable();
+	}
+}
+
+// --, 141118 sys3215
+
+
+
 /**
   * @brief  1msec OperationFunc
   * @param  None
@@ -1008,6 +1073,13 @@ void WL9FM_100mSecOperationFunc(void)
 	//if(Flag_TxE2pRomData == 1)
 		SmartKeyAuthentication();
 #endif
+
+// ++ , 141118 sys3215
+	if(Flag_ESL==1)
+	{
+		ESL_System();
+	}
+// -- , 141118 sys3215
 	
 	if(LCDOffCount < 30)
 	{
@@ -1120,6 +1192,27 @@ void WL9FM_1SecOperationFunc(void)
 	//  --, kutelf, 131007
 }
 
+//	++, kutelf, 140801
+//	RevD.01.01
+//	RevD 보드와 호환성을 위하여 함수 추가 및 이름 변경
+void CameraMode(u8 Mode, u8 OSD)
+{
+	#ifdef BoardVersion_RevD
+		TW8816_CameraMode(Mode, OSD);
+	#else
+		TW2835_CameraMode(Mode, OSD);
+	#endif
+}
+
+void CheckCamera_Input(u8 Mode)
+{
+	#ifdef BoardVersion_RevD
+		TW8816_CheckCamera_Input(Mode);
+	#else
+		TW2835_CheckCamera_Input(Mode);
+	#endif
+}
+//	--, kutelf, 140801
 
 void WL9FM_System_Init_Start(void)
 {
@@ -1128,15 +1221,38 @@ void WL9FM_System_Init_Start(void)
 	{
 		WL9FM_PowerIG(PowerIG_OFF);				//  ->	GPIO_Control.c PowerIG를 OFF로 만들어 놓고
 												//		System_CheckPowerIG() 함수에서 PowerIG 상태에 따라서 설정
-	}	
+	}				
+
+//	++, kutelf, 140801
+//	RevD.01.01
+//	Power, PMIC On/Off 방법 변경 
+#if 0
+	WL9FM_EXYNOS_POWER_ONOFF(EXYNOS_POWER_ON);	//	->	GPIO_Control.c EXYNOS-4412 Power On..
+	WL9FM_EXYNOS_PMIC_nRESET();
+	WL9FM_EXYNOS_PMIC_PWRONOFF(EXYNOS_PMIC_OFF);
+
+#else
 	WL9FM_EXYNOS_POWER_ONOFF(EXYNOS_POWER_ON);	//	->	GPIO_Control.c EXYNOS-4412 Power On..
 	WL9FM_EXYNOS_PMIC_PWRON();
+#endif
+//	--, kutelf, 140801
 	
+//	++, kutelf, 140801
+//	RevD.01.01 
+//	Camera Input, LCD Controller 변경
+//		=> TW2835 + TW8832 -> TW8816
+//	DPRAM 삭제 - FSMC 사용 안함.
+#ifdef BoardVersion_RevD
+	WL9FM_CAMERA_nRESET();						//	-> 	TW8816 Power On..
+	TW8816_Control_Init();
+#else
 	WL9FM_CAMERA_nRESET();						//	-> 	TW2835, TW8832 Power On..
 	TW8832_Control_Init();						//	-> 	TW8832_Control.c (LCD Interface)
 	TW2835_Control_Init();	
-	
-	DPRAM_Init();								//	-> 	DPRAM_Control.c (Dual Port RAM Init)
+	//DPRAM_Init();								//	-> 	DPRAM_Control.c (Dual Port RAM Init)
+#endif
+//	--, kutelf, 140801	
+
 	Hardware_Version_Init();					//  ->  Hardware_Version.c (Hardware Version ADC Start)
 	Buzzer_Init();              				//  ->  Buzzer.c (Buzzer Timer Start)
 	FM3164_Watchdog_Init(0x00);					//  ->  FM31X4.c (Integrated Processor Companion ON)
@@ -1150,8 +1266,9 @@ void WL9FM_System_Init_Start(void)
 
 	LCD_Control_Init();							//	-> 	LCD_Control.c (LCDBL, ON/OFF)
 
-	USART_COMInit_DMA(COMPORT2,Uart2_SerialTxMsg);       				//      COM2 : CAN
-	USART_COMInit(COMPORT4);       				//      COM4 : CMDData
+	//USART_COMInit(COMPORT2);       				//      COM2 : CAN
+	USART_COMInit_DMA(COMPORT2,Uart2_SerialTxMsg);   //      COM2 : CAN
+	USART_COMInit(COMPORT4);       					//      COM4 : CMDData
 
 												
 	CAN_COMInit();								//	-> 	CAN_Control.c
@@ -1161,10 +1278,11 @@ void WL9FM_System_Init_Start(void)
 	M25P32_Init();
 
 	LAMP_Update_Data = LAMP_ALL_OFF;			//	-> 	LAMP ALL OFF	
+	//Old_LAMP_Update_Data = LAMP_ALL_OFF;			//	-> 	LAMP ALL OFF	
 
 	CAN_ITConfig(CAN1, CAN_IT_FMP0,ENABLE);	
 
-
+	SetFontOSDWindow();
 }
 
 /**
@@ -1176,16 +1294,18 @@ void WL9FM_Monitor_APP(void)
 {
 	DebugUART_Init();			//	->	Main.c
 	DebugMsg_printf("== START -> DebugMsg from Exynos-4412 \r\n");    
-	//	System 강제 RESET시키기 위하여 goto lable 추가..	
-	SYSTEM_RESET :
 
+//	++, kutelf, 140925
+//	KeyIG Off에서 무한 RESET 되는 현상 수정 => SYSTEM_RESET 위치 변경
+//	System 강제 RESET시키기 위하여 goto lable 추가..
+SYSTEM_RESET :
+//	--, kutelf, 140925
 	System_Configuration();		//  ->  System_Init.c
 	                    		//      RCC, NVIC, GPIO Initialize
 
 	System_Initialize();		//	-> 	System_Init.c
 
 								//		IAP와 동일한 초기화를 한다. -> 상태 변경 없음.
-	//WL9FM_PowerIG(PowerIG_ON);
 	System_Variable_Init();
 	WL9FM_System_Init_Start();
 	

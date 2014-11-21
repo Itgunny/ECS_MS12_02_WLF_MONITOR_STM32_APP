@@ -221,6 +221,9 @@ unsigned long long SerialTXIndex = 0;
 
 extern u8 LCDOffCount;
 extern u16 OSUpdateCount;
+
+extern u8 Flag_ESL;
+
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 void WL9F_CAN_Buffer_Init(void)
