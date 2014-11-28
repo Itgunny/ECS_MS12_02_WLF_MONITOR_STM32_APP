@@ -1,0 +1,585 @@
+###############################################################################
+#                                                                             #
+# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      28/Nov/2014  14:40:01 #
+# Copyright 1999-2012 IAR Systems AB.                                         #
+#                                                                             #
+#    Cpu mode     =  thumb                                                    #
+#    Endian       =  little                                                   #
+#    Source file  =  C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa -          #
+#                    ECS\SRC\TW8816_OSD.c                                     #
+#    Command line =  "C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa -         #
+#                    ECS\SRC\TW8816_OSD.c" -D USE_STDPERIPH_DRIVER -D         #
+#                    STM32F4XX -D USE_STM324xG_EVAL -D USE_FULL_ASSERT -lcN   #
+#                    C:\Tools\WL9F\WL_F_Monitor_APP\Project\Debug\List\ -o    #
+#                    C:\Tools\WL9F\WL_F_Monitor_APP\Project\Debug\Obj\        #
+#                    --debug --endian=little --cpu=Cortex-M4 -e               #
+#                    --fpu=VFPv4_sp --dlib_config "C:\Tools\IAR               #
+#                    Systems\Embedded Workbench 6.5\arm\INC\c\DLib_Config_Ful #
+#                    l.h" -I C:\Tools\WL9F\WL_F_Monitor_APP\Project\..\Platfo #
+#                    rm\COMMON\INC\ -I "C:\Tools\WL9F\WL_F_Monitor_APP\Projec #
+#                    t\..\Platform\TaeHa - ECS\INC\" -I                       #
+#                    C:\Tools\WL9F\WL_F_Monitor_APP\Project\..\Libraries\CMSI #
+#                    S\Device\ST\STM32F4xx\Include\ -I                        #
+#                    C:\Tools\WL9F\WL_F_Monitor_APP\Project\..\Libraries\STM3 #
+#                    2F4xx_StdPeriph_Driver\inc\ -Oh --use_c++_inline -I      #
+#                    "C:\Tools\IAR Systems\Embedded Workbench                 #
+#                    6.5\arm\CMSIS\Include\"                                  #
+#    List file    =  C:\Tools\WL9F\WL_F_Monitor_APP\Project\Debug\List\TW8816 #
+#                    _OSD.lst                                                 #
+#    Object file  =  C:\Tools\WL9F\WL_F_Monitor_APP\Project\Debug\Obj\TW8816_ #
+#                    OSD.o                                                    #
+#                                                                             #
+#                                                                             #
+###############################################################################
+
+C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\TW8816_OSD.c
+      1          /**
+      2            ******************************************************************************
+      3            * @file    TW8816_OSD.c 
+      4            * @author  kutelf (kutelf@taeha.co.kr)
+      5            * @version V1.0.0
+      6            * @date    02/22/2013
+      7            * @brief   TW8816_OSD.c module
+      8            *
+      9            * Project Name       : WL9F Monitor APP
+     10            * Project Enviroment : IAREmbedded Workbench for ARM 6.5x 
+     11            *                      STM32F407ZGT6 Firmware Library
+     12            * Project Workspace  : WL9F_Monitor_APP
+     13            * MCU Type           : STM32F407ZGT6
+     14            *
+     15            * TAEHA MECHATRONICS Co., Ltd (http://www.taeha.co.kr)				
+     16            * ECS Division R&D Center. / Author by Young-Min Han (kutelf@taeha.co.kr)
+     17            * 
+     18            ******************************************************************************
+     19            */ 
+     20          
+     21          /* Includes ------------------------------------------------------------------*/
+     22          #include "WL9F_Monitor_APP.h"	
+     23          
+     24          /* Private typedef -----------------------------------------------------------*/
+     25          /* Private define ------------------------------------------------------------*/
+     26          /* Private macro -------------------------------------------------------------*/
+     27          /* Private variables ---------------------------------------------------------*/
+     28          /* Private function prototypes -----------------------------------------------*/
+     29          /* Private functions ---------------------------------------------------------*/
+     30          #if 1
+     31          void SetFontOSDWindow(void)
+     32          {
+     33          	WriteTW8816(0xff, 0x00);
+     34          /*
+     35          	WriteTW8816(0x94, 0x00);
+     36          	WriteTW8816(0x9e, 0x00);
+     37          	WriteTW8816(0x9f, 0x01);
+     38          	WriteTW8816(0xa0, 0x00);
+     39          	WriteTW8816(0xa1, 0x00);
+     40          	WriteTW8816(0xa2, 0x00);
+     41          	WriteTW8816(0xa3, 0x22);
+     42          	WriteTW8816(0xa4, 0x0e);
+     43          	WriteTW8816(0xa5, 0x32);
+     44          	WriteTW8816(0xa6, 0x00);
+     45          	WriteTW8816(0xa7, 0x00);
+     46          	WriteTW8816(0xa8, 0x00);
+     47          	WriteTW8816(0xa9, 0x50);
+     48          	WriteTW8816(0xaa, 0x00);
+     49          	WriteTW8816(0xab, 0x55);
+     50          	WriteTW8816(0xac, 0x0f);
+     51          	WriteTW8816(0xad, 0x00);
+     52          	WriteTW8816(0xae, 0x00);
+     53          */
+     54          	WriteTW8816(0x94, 0x11);
+     55          	WriteTW8816(0x94, 0x02);
+     56          	
+     57          }
+     58          
+     59          void SetDisplayCH1(void)
+     60          {
+     61          	WriteTW8816(0xff, 0x00);
+     62          
+     63          	WriteTW8816(0x95, 0x80);
+     64          	WriteTW8816(0x96, 0x1d);
+     65          	WriteTW8816(0x97, 0x43);
+     66          	WriteTW8816(0x98, 0x06);
+     67          
+     68          	WriteTW8816(0x95, 0x80);
+     69          	WriteTW8816(0x96, 0x1e);
+     70          	WriteTW8816(0x97, 0x48);
+     71          	WriteTW8816(0x98, 0x06);
+     72          
+     73          	WriteTW8816(0x95, 0x80);
+     74          	WriteTW8816(0x96, 0x1f);
+     75          	WriteTW8816(0x97, 0x31);
+     76          	WriteTW8816(0x98, 0x06);
+     77          }
+     78          
+     79          void SetDisplayCH2(void)
+     80          {
+     81          	WriteTW8816(0xff, 0x00);
+     82          
+     83          	WriteTW8816(0x95, 0x80);
+     84          	WriteTW8816(0x96, 0x1d);
+     85          	WriteTW8816(0x97, 0x43);
+     86          	WriteTW8816(0x98, 0x06);
+     87          
+     88          	WriteTW8816(0x95, 0x80);
+     89          	WriteTW8816(0x96, 0x1e);
+     90          	WriteTW8816(0x97, 0x48);
+     91          	WriteTW8816(0x98, 0x06);
+     92          
+     93          	WriteTW8816(0x95, 0x80);
+     94          	WriteTW8816(0x96, 0x1f);
+     95          	WriteTW8816(0x97, 0x32);
+     96          	WriteTW8816(0x98, 0x06);
+     97          }
+     98          
+     99          void SetDisplayCH3(void)
+    100          {
+    101          	WriteTW8816(0xff, 0x00);
+    102          
+    103          	WriteTW8816(0x95, 0x80);
+    104          	WriteTW8816(0x96, 0x1d);
+    105          	WriteTW8816(0x97, 0x43);
+    106          	WriteTW8816(0x98, 0x06);
+    107          
+    108          	WriteTW8816(0x95, 0x80);
+    109          	WriteTW8816(0x96, 0x1e);
+    110          	WriteTW8816(0x97, 0x48);
+    111          	WriteTW8816(0x98, 0x06);
+    112          
+    113          	WriteTW8816(0x95, 0x80);
+    114          	WriteTW8816(0x96, 0x1f);
+    115          	WriteTW8816(0x97, 0x33);
+    116          	WriteTW8816(0x98, 0x06);
+    117          }
+    118          
+    119          void SetDisplayCH4(void)
+    120          {
+    121          	WriteTW8816(0xff, 0x00);
+    122          
+    123          	WriteTW8816(0x95, 0x80);
+    124          	WriteTW8816(0x96, 0x1d);
+    125          	WriteTW8816(0x97, 0x43);
+    126          	WriteTW8816(0x98, 0x06);
+    127          
+    128          	WriteTW8816(0x95, 0x80);
+    129          	WriteTW8816(0x96, 0x1e);
+    130          	WriteTW8816(0x97, 0x48);
+    131          	WriteTW8816(0x98, 0x06);
+    132          
+    133          	WriteTW8816(0x95, 0x80);
+    134          	WriteTW8816(0x96, 0x1f);
+    135          	WriteTW8816(0x97, 0x34);
+    136          	WriteTW8816(0x98, 0x06);
+    137          }
+    138          
+    139          void SetDisplayCHBlank(void)
+    140          {
+    141          	WriteTW8816(0xff, 0x00);
+    142          
+    143          	WriteTW8816(0x95, 0x80);
+    144          	WriteTW8816(0x96, 0x1d);
+    145          	WriteTW8816(0x97, 0x20);
+    146          	WriteTW8816(0x98, 0x06);
+    147          
+    148          	WriteTW8816(0x95, 0x80);
+    149          	WriteTW8816(0x96, 0x1e);
+    150          	WriteTW8816(0x97, 0x20);
+    151          	WriteTW8816(0x98, 0x06);
+    152          
+    153          	WriteTW8816(0x95, 0x80);
+    154          	WriteTW8816(0x96, 0x1f);
+    155          	WriteTW8816(0x97, 0x20);
+    156          	WriteTW8816(0x98, 0x06);
+    157          }
+    158          
+    159          void SetDisplayNosignal(void)
+    160          {
+    161          	WriteTW8816(0xff, 0x00);
+    162          
+    163          	WriteTW8816(0x95, 0x80);
+    164          	WriteTW8816(0x96, 0xd8);
+    165          	WriteTW8816(0x97, 0x4e);
+    166          	WriteTW8816(0x98, 0x06);
+    167          
+    168          	WriteTW8816(0x95, 0x80);
+    169          	WriteTW8816(0x96, 0xd9);
+    170          	WriteTW8816(0x97, 0x4f);
+    171          	WriteTW8816(0x98, 0x06);
+    172          
+    173          	WriteTW8816(0x95, 0x80);
+    174          	WriteTW8816(0x96, 0xda);
+    175          	WriteTW8816(0x97, 0x20);
+    176          	WriteTW8816(0x98, 0x06);
+    177          
+    178          	WriteTW8816(0x95, 0x80);
+    179          	WriteTW8816(0x96, 0xdb);
+    180          	WriteTW8816(0x97, 0x53);
+    181          	WriteTW8816(0x98, 0x06);
+    182          
+    183          	WriteTW8816(0x95, 0x80);
+    184          	WriteTW8816(0x96, 0xdc);
+    185          	WriteTW8816(0x97, 0x49);
+    186          	WriteTW8816(0x98, 0x06);
+    187          
+    188          	WriteTW8816(0x95, 0x80);
+    189          	WriteTW8816(0x96, 0xdd);
+    190          	WriteTW8816(0x97, 0x47);
+    191          	WriteTW8816(0x98, 0x06);
+    192          
+    193          	WriteTW8816(0x95, 0x80);
+    194          	WriteTW8816(0x96, 0xde);
+    195          	WriteTW8816(0x97, 0x4e);
+    196          	WriteTW8816(0x98, 0x06);
+    197          
+    198          	WriteTW8816(0x95, 0x80);
+    199          	WriteTW8816(0x96, 0xdf);
+    200          	WriteTW8816(0x97, 0x41);
+    201          	WriteTW8816(0x98, 0x06);
+    202          
+    203          	WriteTW8816(0x95, 0x80);
+    204          	WriteTW8816(0x96, 0xe0);
+    205          	WriteTW8816(0x97, 0x4c);
+    206          	WriteTW8816(0x98, 0x06);
+    207          	
+    208          }
+    209          
+    210          void SetDisplayNosignalBlank(void)
+    211          {
+    212          	WriteTW8816(0xff, 0x00);
+    213          
+    214          	WriteTW8816(0x95, 0x80);
+    215          	WriteTW8816(0x96, 0xd8);
+    216          	WriteTW8816(0x97, 0x20);
+    217          	WriteTW8816(0x98, 0x06);
+    218          
+    219          	WriteTW8816(0x95, 0x80);
+    220          	WriteTW8816(0x96, 0xd9);
+    221          	WriteTW8816(0x97, 0x20);
+    222          	WriteTW8816(0x98, 0x06);
+    223          
+    224          	WriteTW8816(0x95, 0x80);
+    225          	WriteTW8816(0x96, 0xda);
+    226          	WriteTW8816(0x97, 0x20);
+    227          	WriteTW8816(0x98, 0x06);
+    228          
+    229          	WriteTW8816(0x95, 0x80);
+    230          	WriteTW8816(0x96, 0xdb);
+    231          	WriteTW8816(0x97, 0x20);
+    232          	WriteTW8816(0x98, 0x06);
+    233          
+    234          	WriteTW8816(0x95, 0x80);
+    235          	WriteTW8816(0x96, 0xdc);
+    236          	WriteTW8816(0x97, 0x20);
+    237          	WriteTW8816(0x98, 0x06);
+    238          
+    239          	WriteTW8816(0x95, 0x80);
+    240          	WriteTW8816(0x96, 0xdd);
+    241          	WriteTW8816(0x97, 0x20);
+    242          	WriteTW8816(0x98, 0x06);
+    243          
+    244          	WriteTW8816(0x95, 0x80);
+    245          	WriteTW8816(0x96, 0xde);
+    246          	WriteTW8816(0x97, 0x20);
+    247          	WriteTW8816(0x98, 0x06);
+    248          
+    249          	WriteTW8816(0x95, 0x80);
+    250          	WriteTW8816(0x96, 0xdf);
+    251          	WriteTW8816(0x97, 0x20);
+    252          	WriteTW8816(0x98, 0x06);
+    253          
+    254          	WriteTW8816(0x95, 0x80);
+    255          	WriteTW8816(0x96, 0xe0);
+    256          	WriteTW8816(0x97, 0x20);
+    257          	WriteTW8816(0x98, 0x06);
+    258          	
+    259          }
+    260          #else
+    261          
+    262          
+    263          void SetFontOSDWindow(void)
+    264          {
+    265          	I2C2_ByteWrite_8816(0xff, 0x00);
+    266          
+    267          	I2C2_ByteWrite_8816(0x94, 0x00);
+    268          	I2C2_ByteWrite_8816(0x9e, 0x00);
+    269          	I2C2_ByteWrite_8816(0x9f, 0x01);
+    270          	I2C2_ByteWrite_8816(0xa0, 0x00);
+    271          	I2C2_ByteWrite_8816(0xa1, 0x00);
+    272          	I2C2_ByteWrite_8816(0xa2, 0x00);
+    273          	I2C2_ByteWrite_8816(0xa3, 0x22);
+    274          	I2C2_ByteWrite_8816(0xa4, 0x0e);
+    275          	I2C2_ByteWrite_8816(0xa5, 0x32);
+    276          	I2C2_ByteWrite_8816(0xa6, 0x00);
+    277          	I2C2_ByteWrite_8816(0xa7, 0x00);
+    278          	I2C2_ByteWrite_8816(0xa8, 0x00);
+    279          	I2C2_ByteWrite_8816(0xa9, 0x50);
+    280          	I2C2_ByteWrite_8816(0xaa, 0x00);
+    281          	I2C2_ByteWrite_8816(0xab, 0x55);
+    282          	I2C2_ByteWrite_8816(0xac, 0x0f);
+    283          	I2C2_ByteWrite_8816(0xad, 0x00);
+    284          	I2C2_ByteWrite_8816(0xae, 0x00);
+    285          
+    286          	I2C2_ByteWrite_8816(0x94, 0x11);
+    287          	I2C2_ByteWrite_8816(0x94, 0x02);
+    288          	
+    289          }
+    290          
+    291          void SetDisplayCH1(void)
+    292          {
+    293          	I2C2_ByteWrite_8816(0xff, 0x00);
+    294          
+    295          	I2C2_ByteWrite_8816(0x95, 0x80);
+    296          	I2C2_ByteWrite_8816(0x96, 0x1d);
+    297          	I2C2_ByteWrite_8816(0x97, 0x43);
+    298          	I2C2_ByteWrite_8816(0x98, 0x06);
+    299          
+    300          	I2C2_ByteWrite_8816(0x95, 0x80);
+    301          	I2C2_ByteWrite_8816(0x96, 0x1e);
+    302          	I2C2_ByteWrite_8816(0x97, 0x48);
+    303          	I2C2_ByteWrite_8816(0x98, 0x06);
+    304          
+    305          	I2C2_ByteWrite_8816(0x95, 0x80);
+    306          	I2C2_ByteWrite_8816(0x96, 0x1f);
+    307          	I2C2_ByteWrite_8816(0x97, 0x31);
+    308          	I2C2_ByteWrite_8816(0x98, 0x06);
+    309          }
+    310          
+    311          void SetDisplayCH2(void)
+    312          {
+    313          	I2C2_ByteWrite_8816(0xff, 0x00);
+    314          
+    315          	I2C2_ByteWrite_8816(0x95, 0x80);
+    316          	I2C2_ByteWrite_8816(0x96, 0x1d);
+    317          	I2C2_ByteWrite_8816(0x97, 0x43);
+    318          	I2C2_ByteWrite_8816(0x98, 0x06);
+    319          
+    320          	I2C2_ByteWrite_8816(0x95, 0x80);
+    321          	I2C2_ByteWrite_8816(0x96, 0x1e);
+    322          	I2C2_ByteWrite_8816(0x97, 0x48);
+    323          	I2C2_ByteWrite_8816(0x98, 0x06);
+    324          
+    325          	I2C2_ByteWrite_8816(0x95, 0x80);
+    326          	I2C2_ByteWrite_8816(0x96, 0x1f);
+    327          	I2C2_ByteWrite_8816(0x97, 0x32);
+    328          	I2C2_ByteWrite_8816(0x98, 0x06);
+    329          }
+    330          
+    331          void SetDisplayCH3(void)
+    332          {
+    333          	I2C2_ByteWrite_8816(0xff, 0x00);
+    334          
+    335          	I2C2_ByteWrite_8816(0x95, 0x80);
+    336          	I2C2_ByteWrite_8816(0x96, 0x1d);
+    337          	I2C2_ByteWrite_8816(0x97, 0x43);
+    338          	I2C2_ByteWrite_8816(0x98, 0x06);
+    339          
+    340          	I2C2_ByteWrite_8816(0x95, 0x80);
+    341          	I2C2_ByteWrite_8816(0x96, 0x1e);
+    342          	I2C2_ByteWrite_8816(0x97, 0x48);
+    343          	I2C2_ByteWrite_8816(0x98, 0x06);
+    344          
+    345          	I2C2_ByteWrite_8816(0x95, 0x80);
+    346          	I2C2_ByteWrite_8816(0x96, 0x1f);
+    347          	I2C2_ByteWrite_8816(0x97, 0x33);
+    348          	I2C2_ByteWrite_8816(0x98, 0x06);
+    349          }
+    350          
+    351          void SetDisplayCH4(void)
+    352          {
+    353          	I2C2_ByteWrite_8816(0xff, 0x00);
+    354          
+    355          	I2C2_ByteWrite_8816(0x95, 0x80);
+    356          	I2C2_ByteWrite_8816(0x96, 0x1d);
+    357          	I2C2_ByteWrite_8816(0x97, 0x43);
+    358          	I2C2_ByteWrite_8816(0x98, 0x06);
+    359          
+    360          	I2C2_ByteWrite_8816(0x95, 0x80);
+    361          	I2C2_ByteWrite_8816(0x96, 0x1e);
+    362          	I2C2_ByteWrite_8816(0x97, 0x48);
+    363          	I2C2_ByteWrite_8816(0x98, 0x06);
+    364          
+    365          	I2C2_ByteWrite_8816(0x95, 0x80);
+    366          	I2C2_ByteWrite_8816(0x96, 0x1f);
+    367          	I2C2_ByteWrite_8816(0x97, 0x34);
+    368          	I2C2_ByteWrite_8816(0x98, 0x06);
+    369          }
+    370          
+    371          void SetDisplayCHBlank(void)
+    372          {
+    373          	I2C2_ByteWrite_8816(0xff, 0x00);
+    374          
+    375          	I2C2_ByteWrite_8816(0x95, 0x80);
+    376          	I2C2_ByteWrite_8816(0x96, 0x1d);
+    377          	I2C2_ByteWrite_8816(0x97, 0x20);
+    378          	I2C2_ByteWrite_8816(0x98, 0x06);
+    379          
+    380          	I2C2_ByteWrite_8816(0x95, 0x80);
+    381          	I2C2_ByteWrite_8816(0x96, 0x1e);
+    382          	I2C2_ByteWrite_8816(0x97, 0x20);
+    383          	I2C2_ByteWrite_8816(0x98, 0x06);
+    384          
+    385          	I2C2_ByteWrite_8816(0x95, 0x80);
+    386          	I2C2_ByteWrite_8816(0x96, 0x1f);
+    387          	I2C2_ByteWrite_8816(0x97, 0x20);
+    388          	I2C2_ByteWrite_8816(0x98, 0x06);
+    389          }
+    390          
+    391          void SetDisplayNosignal(void)
+    392          {
+    393          	I2C2_ByteWrite_8816(0xff, 0x00);
+    394          
+    395          	I2C2_ByteWrite_8816(0x95, 0x80);
+    396          	I2C2_ByteWrite_8816(0x96, 0xd8);
+    397          	I2C2_ByteWrite_8816(0x97, 0x4e);
+    398          	I2C2_ByteWrite_8816(0x98, 0x06);
+    399          
+    400          	I2C2_ByteWrite_8816(0x95, 0x80);
+    401          	I2C2_ByteWrite_8816(0x96, 0xd9);
+    402          	I2C2_ByteWrite_8816(0x97, 0x4f);
+    403          	I2C2_ByteWrite_8816(0x98, 0x06);
+    404          
+    405          	I2C2_ByteWrite_8816(0x95, 0x80);
+    406          	I2C2_ByteWrite_8816(0x96, 0xda);
+    407          	I2C2_ByteWrite_8816(0x97, 0x20);
+    408          	I2C2_ByteWrite_8816(0x98, 0x06);
+    409          
+    410          	I2C2_ByteWrite_8816(0x95, 0x80);
+    411          	I2C2_ByteWrite_8816(0x96, 0xdb);
+    412          	I2C2_ByteWrite_8816(0x97, 0x53);
+    413          	I2C2_ByteWrite_8816(0x98, 0x06);
+    414          
+    415          	I2C2_ByteWrite_8816(0x95, 0x80);
+    416          	I2C2_ByteWrite_8816(0x96, 0xdc);
+    417          	I2C2_ByteWrite_8816(0x97, 0x49);
+    418          	I2C2_ByteWrite_8816(0x98, 0x06);
+    419          
+    420          	I2C2_ByteWrite_8816(0x95, 0x80);
+    421          	I2C2_ByteWrite_8816(0x96, 0xdd);
+    422          	I2C2_ByteWrite_8816(0x97, 0x47);
+    423          	I2C2_ByteWrite_8816(0x98, 0x06);
+    424          
+    425          	I2C2_ByteWrite_8816(0x95, 0x80);
+    426          	I2C2_ByteWrite_8816(0x96, 0xde);
+    427          	I2C2_ByteWrite_8816(0x97, 0x4e);
+    428          	I2C2_ByteWrite_8816(0x98, 0x06);
+    429          
+    430          	I2C2_ByteWrite_8816(0x95, 0x80);
+    431          	I2C2_ByteWrite_8816(0x96, 0xdf);
+    432          	I2C2_ByteWrite_8816(0x97, 0x41);
+    433          	I2C2_ByteWrite_8816(0x98, 0x06);
+    434          
+    435          	I2C2_ByteWrite_8816(0x95, 0x80);
+    436          	I2C2_ByteWrite_8816(0x96, 0xe0);
+    437          	I2C2_ByteWrite_8816(0x97, 0x4c);
+    438          	I2C2_ByteWrite_8816(0x98, 0x06);
+    439          	
+    440          }
+    441          
+    442          void SetDisplayNosignalBlank(void)
+    443          {
+    444          	I2C2_ByteWrite_8816(0xff, 0x00);
+    445          
+    446          	I2C2_ByteWrite_8816(0x95, 0x80);
+    447          	I2C2_ByteWrite_8816(0x96, 0xd8);
+    448          	I2C2_ByteWrite_8816(0x97, 0x20);
+    449          	I2C2_ByteWrite_8816(0x98, 0x06);
+    450          
+    451          	I2C2_ByteWrite_8816(0x95, 0x80);
+    452          	I2C2_ByteWrite_8816(0x96, 0xd9);
+    453          	I2C2_ByteWrite_8816(0x97, 0x20);
+    454          	I2C2_ByteWrite_8816(0x98, 0x06);
+    455          
+    456          	I2C2_ByteWrite_8816(0x95, 0x80);
+    457          	I2C2_ByteWrite_8816(0x96, 0xda);
+    458          	I2C2_ByteWrite_8816(0x97, 0x20);
+    459          	I2C2_ByteWrite_8816(0x98, 0x06);
+    460          
+    461          	I2C2_ByteWrite_8816(0x95, 0x80);
+    462          	I2C2_ByteWrite_8816(0x96, 0xdb);
+    463          	I2C2_ByteWrite_8816(0x97, 0x20);
+    464          	I2C2_ByteWrite_8816(0x98, 0x06);
+    465          
+    466          	I2C2_ByteWrite_8816(0x95, 0x80);
+    467          	I2C2_ByteWrite_8816(0x96, 0xdc);
+    468          	I2C2_ByteWrite_8816(0x97, 0x20);
+    469          	I2C2_ByteWrite_8816(0x98, 0x06);
+    470          
+    471          	I2C2_ByteWrite_8816(0x95, 0x80);
+    472          	I2C2_ByteWrite_8816(0x96, 0xdd);
+    473          	I2C2_ByteWrite_8816(0x97, 0x20);
+    474          	I2C2_ByteWrite_8816(0x98, 0x06);
+    475          
+    476          	I2C2_ByteWrite_8816(0x95, 0x80);
+    477          	I2C2_ByteWrite_8816(0x96, 0xde);
+    478          	I2C2_ByteWrite_8816(0x97, 0x20);
+    479          	I2C2_ByteWrite_8816(0x98, 0x06);
+    480          
+    481          	I2C2_ByteWrite_8816(0x95, 0x80);
+    482          	I2C2_ByteWrite_8816(0x96, 0xdf);
+    483          	I2C2_ByteWrite_8816(0x97, 0x20);
+    484          	I2C2_ByteWrite_8816(0x98, 0x06);
+    485          
+    486          	I2C2_ByteWrite_8816(0x95, 0x80);
+    487          	I2C2_ByteWrite_8816(0x96, 0xe0);
+    488          	I2C2_ByteWrite_8816(0x97, 0x20);
+    489          	I2C2_ByteWrite_8816(0x98, 0x06);
+    490          	
+    491          }
+    492          
+    493          
+    494          #endif
+    495          
+    496          
+    497          /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       8   SetDisplayCH1
+         0   -> WriteTW8816
+         8   -> WriteTW8816
+       8   SetDisplayCH2
+         0   -> WriteTW8816
+         8   -> WriteTW8816
+       8   SetDisplayCH3
+         0   -> WriteTW8816
+         8   -> WriteTW8816
+       8   SetDisplayCH4
+         0   -> WriteTW8816
+         8   -> WriteTW8816
+       8   SetDisplayCHBlank
+         0   -> WriteTW8816
+         8   -> WriteTW8816
+       8   SetDisplayNosignal
+         0   -> WriteTW8816
+         8   -> WriteTW8816
+       8   SetDisplayNosignalBlank
+         0   -> WriteTW8816
+         8   -> WriteTW8816
+       8   SetFontOSDWindow
+         0   -> WriteTW8816
+         8   -> WriteTW8816
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      18  ??Subroutine1_0
+       8  ?Subroutine0
+      94  SetDisplayCH1
+      94  SetDisplayCH2
+      94  SetDisplayCH3
+      94  SetDisplayCH4
+      86  SetDisplayCHBlank
+     286  SetDisplayNosignal
+     276  SetDisplayNosignalBlank
+      30  SetFontOSDWindow
+
+ 
+ 1 080 bytes in section .text
+ 
+ 1 080 bytes of CODE memory
+
+Errors: none
+Warnings: none
