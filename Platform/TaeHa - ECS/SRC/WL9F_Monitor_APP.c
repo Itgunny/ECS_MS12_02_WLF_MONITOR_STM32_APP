@@ -166,6 +166,7 @@ u8 LCDOffCount;
 u16 OSUpdateCount;
 // --, 141006 fort22
 
+u8 SmartKeyUse;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
@@ -472,6 +473,14 @@ void SaveDataToEEPROM(void)
 		TimeDelay_msec(1);
 	}
 }
+void SaveSMKUseToEEPROM(u8 Use)
+{
+	EEPROM_Write(0,Use);
+}
+u8 LoadSMKUseToEEPROM(void)
+{
+	return EEPROM_Read(0);
+}
 
 
 void System_CheckPowerIG()
@@ -486,7 +495,7 @@ void System_CheckPowerIG()
 	{
 		if(E2PROM_Save == 0)
 		{
-			SaveDataToEEPROM();
+			//SaveDataToEEPROM();
 
 			PwrOffCnt = 0;
 			
@@ -1070,7 +1079,7 @@ void WL9FM_100mSecOperationFunc(void)
 	Lamp_Update_System();	//	체크된 LAMP 상태를 업데이트 한다.
 
 #if 1
-	//if(Flag_TxE2pRomData == 1)
+	if(SmartKeyUse == 1)
 		SmartKeyAuthentication();
 #endif
 
@@ -1143,7 +1152,7 @@ void WL9FM_100mSecOperationFunc(void)
 	if((SystemReset == 1) || (gRebootCmd == 1))
 	{
 		if(gRebootCmd == 1)
-			SaveDataToEEPROM();
+			//SaveDataToEEPROM();
 				
 		//	여기서 WL99F_100mSecOperationFunc() 함수를 빠져나간다.
 		//	WL9F_100mSecOperationFunc() 함수가 종료되는 시점에 SYSTEM RESET을 시킨다.
@@ -1273,8 +1282,8 @@ void WL9FM_System_Init_Start(void)
 												
 	CAN_COMInit();								//	-> 	CAN_Control.c
 	//InitE2PROM();
-	ReadE2PROM_ToSend();						//	->	EEPROM Data Read
-
+	//ReadE2PROM_ToSend();						//	->	EEPROM Data Read
+	SmartKeyUse = LoadSMKUseToEEPROM();
 	M25P32_Init();
 
 	LAMP_Update_Data = LAMP_ALL_OFF;			//	-> 	LAMP ALL OFF	

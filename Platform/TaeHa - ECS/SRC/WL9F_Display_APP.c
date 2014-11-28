@@ -75,6 +75,7 @@ void InitE2PROM(void)
 	SaveE2PROM1->SecondCam 				= 1;
 	SaveE2PROM1->ThirdCam 				= 2;
 	SaveE2PROM1->Reserved1 				= 0;
+	
 
 	SaveE2PROM2->LightMode 				= 0;
 	SaveE2PROM2->JobTimeView 			= 0;

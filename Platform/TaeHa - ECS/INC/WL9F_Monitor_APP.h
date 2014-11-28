@@ -182,6 +182,7 @@
 ////1.0.1.3 2014.11.21
 //Hardware RevD 와 호환코드로 수정 !!!!!!!!!!!!!!!!!!!
 //SmartKey 인증(MCU 통신) 어플리케이션에서 펌웨어로 이동 2014.11.18
+//SmartKey Use EEPROM에 저장 및 로딩 추가 2014.11.18
 ///////////////////////////////////////////////////
 
 //=================================================================
@@ -260,6 +261,8 @@ void CheckResponseMsgComm(void);
 
 void System_CheckPowerIG();
 void SaveDataToEEPROM(void);
+void SaveSMKUseToEEPROM(u8 Use);
+u8 LoadSMKUseToEEPROM(void);
 /* Private functions ---------------------------------------------------------*/
 
 /* Exported types ------------------------------------------------------------*/

@@ -224,6 +224,7 @@ extern u16 OSUpdateCount;
 
 extern u8 Flag_ESL;
 
+extern u8 SmartKeyUse;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 void WL9F_CAN_Buffer_Init(void)
@@ -937,6 +938,10 @@ void UART4_Receive_CMD(void)
 					if(WL9FM_USART_DATA.COM4_RxBuf[2] == 0x00)
 					{
 						SendSMKAuthResult(SMKSuccess);
+					}
+					else if(WL9FM_USART_DATA.COM4_RxBuf[2] == 0x03)
+					{
+						SaveSMKUseToEEPROM(WL9FM_USART_DATA.COM4_RxBuf[3]);
 					}
 					else
 					{
