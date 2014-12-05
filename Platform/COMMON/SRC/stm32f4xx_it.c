@@ -895,7 +895,10 @@ void UART4_Receive_CMD(void)
 					break;
 					
 				case CAMCMD:
-					cam_mode_change(WL9FM_USART_DATA.COM4_RxBuf[2]);
+
+				
+						cam_mode_change(WL9FM_USART_DATA.COM4_RxBuf[2]);
+					
 					break;
 
 				case DOWNCMD:

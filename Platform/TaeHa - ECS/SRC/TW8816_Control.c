@@ -1303,6 +1303,11 @@ void TW8816_CheckCamera_Input(u8 Mode)
 
 void TW8816_CameraMode(u8 Mode, u8 OSD)
 {
+
+	WL9FM_CAMERA_nRESET();
+		
+	InitCVBSRegister_8816();
+	
 	if(Mode == 0x00)
 	{
 		SetDisplayCH1();

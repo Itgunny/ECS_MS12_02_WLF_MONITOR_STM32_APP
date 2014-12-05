@@ -549,7 +549,7 @@ void System_CheckPowerIG()
 			LCDBL_PWM_LEVEL(0);            	//  LCDBL PWM LEVEL0
 			LCDBL_ONOFF(LCDBL_OFF);			//  LCDBL Power On
 			LCD_POWER_ONOFF(LCDPWR_OFF);	//  LCD Power Off
-			LED_POWER_ONOFF(LED_OFF);       //  LED Off
+			//LED_POWER_ONOFF(LED_OFF);       //  LED Off
 
 		//	++, kutelf, 140801
 		//	RevD.01.01 
@@ -1064,9 +1064,13 @@ void WL9FM_1mSecOperationFunc(void)
   * @param  None
   * @retval None
   */
+
+u8 flag_reset=0;
+
 void WL9FM_10mSecOperationFunc(void)
 {
 	//Lamp_Update_State();	//	LAMP Update 상태를 체크한다.
+	
 }
 
 /**
@@ -1076,6 +1080,8 @@ void WL9FM_10mSecOperationFunc(void)
   */
 void WL9FM_100mSecOperationFunc(void)
 {
+	
+	
 	Lamp_Update_System();	//	체크된 LAMP 상태를 업데이트 한다.
 
 #if 1
@@ -1268,7 +1274,7 @@ void WL9FM_System_Init_Start(void)
 	KeySwitch_Init();           				//  ->  KeySwitch.c
 	LAMP_Control_Init();						//	-> 	LAMP_Control.c
 												//		LAMP ALL ON
-	LED_POWER_ONOFF(LED_ON);					//	->	LCD_Control.c (LED On/Off)
+	LED_POWER_ONOFF(LED_OFF);					//	->	LCD_Control.c (LED On/Off)
 	LCD_POWER_ONOFF(LCDPWR_ON);					//	-> 	LCD_Control.c (LCD 12V Power On/Off)
 
 	LCDBL_ONOFF(LCDBL_OFF); 					//	->	 부팅시 LCD에 하얀 화면 나옴
@@ -1317,6 +1323,8 @@ SYSTEM_RESET :
 								//		IAP와 동일한 초기화를 한다. -> 상태 변경 없음.
 	System_Variable_Init();
 	WL9FM_System_Init_Start();
+
+	//RCC_ClearFlag();
 	
 	/* Infinite loop */
 	while (1)
