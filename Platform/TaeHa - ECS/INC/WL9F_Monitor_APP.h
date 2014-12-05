@@ -167,7 +167,7 @@
 #define	VERSION_HIGH		1
 #define	VERSION_LOW			0
 #define	VERSION_SUB_HIGH	1
-#define	VERSION_SUB_LOW		3
+#define	VERSION_SUB_LOW		4
 
 ///////////////////////////////////////////////////
 ////1.0.1.0 (1.0.0.9에서 250kpbs로 CAN2 수정)
@@ -183,6 +183,8 @@
 //Hardware RevD 와 호환코드로 수정 !!!!!!!!!!!!!!!!!!!
 //SmartKey 인증(MCU 통신) 어플리케이션에서 펌웨어로 이동 2014.11.18
 //SmartKey Use EEPROM에 저장 및 로딩 추가 2014.11.18
+////1.0.1.4
+// Camera Mode Change함수 Interrupt 루틴에서 Main문으로 이동 2014.12.05
 ///////////////////////////////////////////////////
 
 //=================================================================

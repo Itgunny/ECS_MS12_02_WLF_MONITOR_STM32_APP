@@ -28,6 +28,7 @@
 extern u8 CANUpdateFlag;
 extern u8 LCDOffCount;
 extern u16 OSUpdateCount;
+extern u8 CameraCommFlag;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
@@ -889,6 +890,7 @@ void System_Variable_Init(void)
 	CANUpdateFlag = 0;
 	LCDOffCount = 30;
 	OSUpdateCount = 200;
+	CameraCommFlag = 0;
 }
 
 /*********(C) COPYRIGHT 2013 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/

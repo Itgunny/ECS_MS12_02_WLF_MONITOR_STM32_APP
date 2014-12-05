@@ -254,7 +254,6 @@ void cam_mode_check(void)
 	
 void cam_mode_change(u8 Mode)
 {
-	Camera_Mode = Mode;
 	if(Mode == 0xFF)
 	{
 		LCD_Display_Change(EXYNOS_DISPLAY);

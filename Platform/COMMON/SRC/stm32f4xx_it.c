@@ -225,6 +225,8 @@ extern u16 OSUpdateCount;
 extern u8 Flag_ESL;
 
 extern u8 SmartKeyUse;
+
+extern u8 CameraCommFlag;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 void WL9F_CAN_Buffer_Init(void)
@@ -604,8 +606,8 @@ void TIM4_IRQHandler(void)  //  10msec Timer / TimeBase UP Counter
 void TIM5_IRQHandler(void)  //  5msec Timer / TimeBase UP Counter    
 {
     TIM_ClearITPendingBit(TIM5, TIM_IT_Update);
-    
-    KeySwitch_Process();    //  KeySwitch.c Func
+
+	KeySwitch_Process();    //  KeySwitch.c Func
 }
 
 /**
@@ -895,10 +897,11 @@ void UART4_Receive_CMD(void)
 					break;
 					
 				case CAMCMD:
-
-				
-						cam_mode_change(WL9FM_USART_DATA.COM4_RxBuf[2]);
-					
+					if(CameraCommFlag == 0)
+					{
+						CameraCommFlag = 1;
+						Camera_Mode = WL9FM_USART_DATA.COM4_RxBuf[2];
+					}					
 					break;
 
 				case DOWNCMD:

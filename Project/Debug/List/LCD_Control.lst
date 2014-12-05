@@ -1,6 +1,6 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      28/Nov/2014  14:51:15 #
+# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      05/Dec/2014  11:19:18 #
 # Copyright 1999-2012 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
@@ -289,39 +289,38 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\LCD_Control.c
     254          	
     255          void cam_mode_change(u8 Mode)
     256          {
-    257          	Camera_Mode = Mode;
-    258          	if(Mode == 0xFF)
-    259          	{
-    260          		LCD_Display_Change(EXYNOS_DISPLAY);
-    261          	}
-    262          	else
-    263          	{
-    264          		CameraMode(Mode, 1);
-    265          		LCD_Display_Change(STM32F4_DISPLAY);
-    266          	}
+    257          	if(Mode == 0xFF)
+    258          	{
+    259          		LCD_Display_Change(EXYNOS_DISPLAY);
+    260          	}
+    261          	else
+    262          	{
+    263          		CameraMode(Mode, 1);
+    264          		LCD_Display_Change(STM32F4_DISPLAY);
+    265          	}
+    266          	
     267          	
-    268          	
-    269          }
-    270          //  --, kutelf, 131007
-    271          
-    272          /**\
-    273            * @brief  None
-    274            * @param  None
-    275            * @retval None
-    276            */
-    277          void LCD_Control_Init(void)
-    278          {
-    279          	TimeDelay_msec(3000); 
-    280          	LCD_Display_Change(EXYNOS_DISPLAY);
-    281          	//LCD_Display_Change(STM32F4_DISPLAY);
-    282          	LCDBL_Init();	
-    283          	LCDBL_ONOFF(LCDBL_ON);	//  LCDBL Power On!!!
-    284          			//	LCDBL PWM 설정 
-    285          	
-    286          	//LCD_Display_Change(STM32F4_DISPLAY);
-    287          }
-    288          
-    289          /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
+    268          }
+    269          //  --, kutelf, 131007
+    270          
+    271          /**\
+    272            * @brief  None
+    273            * @param  None
+    274            * @retval None
+    275            */
+    276          void LCD_Control_Init(void)
+    277          {
+    278          	TimeDelay_msec(3000); 
+    279          	LCD_Display_Change(EXYNOS_DISPLAY);
+    280          	//LCD_Display_Change(STM32F4_DISPLAY);
+    281          	LCDBL_Init();	
+    282          	LCDBL_ONOFF(LCDBL_ON);	//  LCDBL Power On!!!
+    283          			//	LCDBL PWM 설정 
+    284          	
+    285          	//LCD_Display_Change(STM32F4_DISPLAY);
+    286          }
+    287          
+    288          /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
 
    Maximum stack usage in bytes:
 
@@ -365,13 +364,13 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\LCD_Control.c
 
    Bytes  Function/Label
    -----  --------------
-       4  ??DataTable9
-       4  ??DataTable9_1
-       4  ??DataTable9_2
-       4  ??DataTable9_3
-       4  ??DataTable9_4
-       4  ??DataTable9_5
-       4  ??DataTable9_6
+       4  ??DataTable8
+       4  ??DataTable8_1
+       4  ??DataTable8_2
+       4  ??DataTable8_3
+       4  ??DataTable8_4
+       4  ??DataTable8_5
+       4  ??DataTable8_6
        1  Camera_CheckCnt
        1  Camera_CheckFlag
        1  Camera_Mode
@@ -384,15 +383,15 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\LCD_Control.c
       72  LCD_Display_Change
       10  LCD_POWER_ONOFF
       12  LED_POWER_ONOFF
-      28  cam_mode_change
+      24  cam_mode_change
        8  cam_mode_check
 
  
    1 byte  in section .bss
    2 bytes in section .data
- 478 bytes in section .text
+ 474 bytes in section .text
  
- 478 bytes of CODE memory
+ 474 bytes of CODE memory
    3 bytes of DATA memory
 
 Errors: none

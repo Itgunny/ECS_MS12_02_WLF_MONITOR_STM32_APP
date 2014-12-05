@@ -167,6 +167,8 @@ u16 OSUpdateCount;
 // --, 141006 fort22
 
 u8 SmartKeyUse;
+
+u8 CameraCommFlag;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
@@ -1165,6 +1167,13 @@ void WL9FM_100mSecOperationFunc(void)
 		//	WL9F_Monitor_APP() 함수로 이동!!!
 		return;
 	}
+
+	if(CameraCommFlag == 1)
+	{
+		cam_mode_change(Camera_Mode);
+		CameraCommFlag = 0;
+	}
+	
 
 }
 
