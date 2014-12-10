@@ -477,10 +477,11 @@ void CAN1_RX0_IRQHandler(void)
 	// Iden.Source_Address == 221	 -->>	RCU
 	// Iden.Source_Address == 0	 -->>	ECM
 	// Iden.Source_Address == 3	 -->>	TCU
+	// Iden.Source_Address == 25	 -->>	ACU
 	
 	if((Iden.Source_Address == 0x47) || (Iden.Source_Address == 0x17) || (Iden.Source_Address == 0x29) || 
 		(Iden.Source_Address == 0xE4) || (Iden.Source_Address == 0xDD)|| (Iden.Source_Address == 0x4a)|| (Iden.Source_Address == 0xf4)
-		|| (Iden.Source_Address == 0x00)|| (Iden.Source_Address == 0x03) || (Iden.Source_Address == 0x02))
+		|| (Iden.Source_Address == 0x00)|| (Iden.Source_Address == 0x03) || (Iden.Source_Address == 0x02) || (Iden.Source_Address == 0x19))
 		{
 		#if 1
 			
