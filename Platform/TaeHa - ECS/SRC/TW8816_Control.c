@@ -25,6 +25,11 @@
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
+
+// ++, sys3215, 141211
+extern u8 Hardware_Revision;
+// --, sys3215, 141211
+
 #if 0
 u8 InitCVBSAll_8816[] = 
 {
@@ -1348,6 +1353,22 @@ void TW8816_Control_Init(void)
 
 	DebugMsg_printf("-- TW8816_Control_Init (I2C2 & SPI2), ADC Initialize END\r\n");
 }
+
+// ++, sys3215, 141211
+void WL9F_CAMERA_Init(void)
+{
+	if(Hardware_Revision==REVB)
+	{
+		TW8832_Control_Init();						//	-> 	TW8832_Control.c (LCD Interface)
+		TW2835_Control_Init();	
+	}
+	else
+	{
+		TW8816_Control_Init();
+	}
+}
+// --, sys3215, 141211
+
 
 /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
 

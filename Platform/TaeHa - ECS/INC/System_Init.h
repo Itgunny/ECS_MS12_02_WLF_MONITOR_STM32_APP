@@ -267,6 +267,9 @@ extern void System_Initialize(void);
 extern void System_Variable_Init(void);
 extern void WL9F_CAN_Buffer_Init(void);
 
+// ++, sys3215, 141211
+extern void Camera_IO_Init(void);
+// -- , sys3215, 141211
 
 #endif /* __SYSTEM_INIT_H */
 

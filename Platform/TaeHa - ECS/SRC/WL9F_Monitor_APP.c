@@ -169,6 +169,11 @@ u16 OSUpdateCount;
 u8 SmartKeyUse;
 
 u8 CameraCommFlag;
+
+// ++, sys3215, 141211
+extern u8 Hardware_Revision;
+// --, sys3215, 141211
+
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
@@ -1221,20 +1226,46 @@ void WL9FM_1SecOperationFunc(void)
 //	RevD 보드와 호환성을 위하여 함수 추가 및 이름 변경
 void CameraMode(u8 Mode, u8 OSD)
 {
+// ++, sys3215, 141211
+#if 0
 	#ifdef BoardVersion_RevD
 		TW8816_CameraMode(Mode, OSD);
 	#else
 		TW2835_CameraMode(Mode, OSD);
 	#endif
+#endif
+
+	if(Hardware_Revision==REVB)
+	{
+		TW2835_CameraMode(Mode, OSD);
+	}
+	else
+	{
+		TW8816_CameraMode(Mode, OSD);
+	}
+// --, sys3215, 141211
 }
 
 void CheckCamera_Input(u8 Mode)
 {
+// ++, sys3215, 141211
+#if 0
 	#ifdef BoardVersion_RevD
 		TW8816_CheckCamera_Input(Mode);
 	#else
 		TW2835_CheckCamera_Input(Mode);
 	#endif
+#endif
+
+	if(Hardware_Revision==REVB)
+	{
+		TW2835_CheckCamera_Input(Mode);
+	}
+	else
+	{
+		TW8816_CheckCamera_Input(Mode);
+	}
+// --, sys3215, 14121
 }
 //	--, kutelf, 140801
 
@@ -1260,7 +1291,14 @@ void WL9FM_System_Init_Start(void)
 	WL9FM_EXYNOS_PMIC_PWRON();
 #endif
 //	--, kutelf, 140801
-	
+
+	//++,  sys3215 ,141211
+	Hardware_Version_Init();					//  ->  Hardware_Version.c (Hardware Version ADC Start)
+	Camera_IO_Init();
+
+	WL9FM_CAMERA_nRESET();	
+	WL9F_CAMERA_Init();
+#if 0	
 //	++, kutelf, 140801
 //	RevD.01.01 
 //	Camera Input, LCD Controller 변경
@@ -1276,8 +1314,9 @@ void WL9FM_System_Init_Start(void)
 	//DPRAM_Init();								//	-> 	DPRAM_Control.c (Dual Port RAM Init)
 #endif
 //	--, kutelf, 140801	
-
-	Hardware_Version_Init();					//  ->  Hardware_Version.c (Hardware Version ADC Start)
+#endif 
+	//--, sys3215, 141211
+	
 	Buzzer_Init();              				//  ->  Buzzer.c (Buzzer Timer Start)
 	FM3164_Watchdog_Init(0x00);					//  ->  FM31X4.c (Integrated Processor Companion ON)
 	KeySwitch_Init();           				//  ->  KeySwitch.c

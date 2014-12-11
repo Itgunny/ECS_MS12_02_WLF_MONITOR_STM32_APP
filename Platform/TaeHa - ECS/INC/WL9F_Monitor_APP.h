@@ -71,6 +71,11 @@
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 
+// ++, sys3215, 141211
+#define REVB			0
+#define REVD_02_01	1
+// --, sys3215, 141211
+
 //	++, kutelf, 140801
 //	RevD.01.01
 //	RevD 부터 이런 기능을 추가..
@@ -78,7 +83,12 @@
 //#define BoardVersion_RevA
 //#define BoardVersion_RevB
 //#define BoardVersion_RevC
-#define BoardVersion_RevD
+
+// ++ , sys3215 141211
+// revision 저항 추가로 인한 삭제 
+//#define BoardVersion_RevD
+// -- , sys3215 141211
+
 //	--, kutelf, 140801
 
 //#define     STM32_BUZZER      //  STM32 BUZZER

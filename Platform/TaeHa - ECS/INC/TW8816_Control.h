@@ -65,6 +65,9 @@ extern void TW8816_Control_Init(void);
 extern void TW8816_CameraMode(u8 Mode, u8 OSD);
 extern void TW8816_CheckCamera_Input(u8 Mode);
 
+// ++, sys3215 141211
+extern void WL9F_CAMERA_Init(void);
+// --, sys3215 141211
 #endif /* __TW8816_Control_H */
 
 /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/

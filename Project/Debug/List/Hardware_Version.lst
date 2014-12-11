@@ -1,10 +1,6 @@
 ###############################################################################
 #                                                                             #
-<<<<<<< .mine
-# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      03/Dec/2014  17:31:58 #
-=======
-# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      28/Nov/2014  14:51:15 #
->>>>>>> .r64
+# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      11/Dec/2014  17:43:52 #
 # Copyright 1999-2012 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
@@ -64,57 +60,132 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\Hardware_Version.c
      25          /* Private define ------------------------------------------------------------*/
      26          /* Private macro -------------------------------------------------------------*/
      27          /* Private variables ---------------------------------------------------------*/
-     28          
-     29          /* Private function prototypes -----------------------------------------------*/
-     30          /* Private functions ---------------------------------------------------------*/
-     31          
-     32          /*******************************************************************************
-     33          * Function Name  : ADC_Configuration
-     34          * Description    : Configure the ADC.
-     35          * Input          : None
-     36          * Output         : None
-     37          * Return         : None
-     38          *******************************************************************************/
-     39          void ADC_Configuration(void)
-     40          {
-     41          
-     42          }
-     43          
-     44          /**\
-     45            * @brief  None
-     46            * @param  None
-     47            * @retval None
-     48            */
-     49          void Hardware_Version_Init(void)
-     50          {
-     51              DebugMsg_printf("++ Hardware_Version (ADC : IN13), ADC Initialize START\r\n");
-     52          
-     53          	ADC_Configuration();
-     54          	
-     55              DebugMsg_printf("-- Hardware_Version (ADC : IN13), ADC Initialize END\r\n");
-     56          }
-     57          
-     58          /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
+     28          uint16_t ADC3ConvertedValue = 0;
+     29          uint8_t Hardware_Revision=0;
+     30          /* Private function prototypes -----------------------------------------------*/
+     31          /* Private functions ---------------------------------------------------------*/
+     32          
+     33          /*******************************************************************************
+     34          * Function Name  : ADC_Configuration
+     35          * Description    : Configure the ADC.
+     36          * Input          : None
+     37          * Output         : None
+     38          * Return         : None
+     39          *******************************************************************************/
+     40          
+     41          // ++, sys3215, 141211
+     42          void ADC_Configuration(void)
+     43          {
+     44          	ADC_InitTypeDef       ADC_InitStructure;
+     45          	ADC_CommonInitTypeDef ADC_CommonInitStructure;
+     46          
+     47          	ADC_DeInit();
+     48          	
+     49          	/* ADC Common Init **********************************************************/
+     50          	ADC_CommonInitStructure.ADC_Mode = ADC_Mode_Independent;
+     51          	ADC_CommonInitStructure.ADC_Prescaler = ADC_Prescaler_Div2;
+     52          	ADC_CommonInitStructure.ADC_DMAAccessMode = ADC_DMAAccessMode_Disabled;
+     53          	ADC_CommonInitStructure.ADC_TwoSamplingDelay = ADC_TwoSamplingDelay_5Cycles;
+     54          	ADC_CommonInit(&ADC_CommonInitStructure);
+     55          
+     56          
+     57          	/* ADC2 Init ****************************************************************/
+     58          	ADC_InitStructure.ADC_Resolution = ADC_Resolution_12b;
+     59          	ADC_InitStructure.ADC_ScanConvMode = DISABLE;
+     60          	ADC_InitStructure.ADC_ContinuousConvMode = ENABLE;
+     61          	ADC_InitStructure.ADC_ExternalTrigConvEdge = ADC_ExternalTrigConvEdge_None;
+     62          	ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_T1_CC1;
+     63          	ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;
+     64          	ADC_InitStructure.ADC_NbrOfConversion = 1;
+     65          	ADC_Init(ADC1, &ADC_InitStructure);
+     66          
+     67          
+     68          	/* ADC2 regular channel12 configuration *************************************/
+     69          	ADC_RegularChannelConfig(ADC1, ADC_Channel_13, 1, ADC_SampleTime_3Cycles);
+     70          
+     71          
+     72          	/* Enable ADC2 */
+     73          	ADC_Cmd(ADC1, ENABLE);
+     74          
+     75          
+     76          	ADC_SoftwareStartConv(ADC1);
+     77          	while(ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == RESET);
+     78          
+     79          }
+     80          
+     81          
+     82          void Check_Hardware_Revision(void)
+     83          {
+     84          	ADC3ConvertedValue = ADC_GetConversionValue(ADC1) ; //first
+     85          
+     86          	if(ADC3ConvertedValue>390 && ADC3ConvertedValue<420) // R5 = 9.1K RevD.02.01
+     87          	{
+     88          		Hardware_Revision = REVD_02_01;
+     89          	}
+     90          	else //if(ADC3ConvertedValue>357 && ADC3ConvertedValue<387) // R5 = 10K RevB       372
+     91          	{
+     92          		Hardware_Revision = REVB;
+     93          	}
+     94          }
+     95          // --, sys3215, 141211
+     96          
+     97          /**\
+     98            * @brief  None
+     99            * @param  None
+    100            * @retval None
+    101            */
+    102          void Hardware_Version_Init(void)
+    103          {
+    104          	DebugMsg_printf("++ Hardware_Version (ADC : IN13), ADC Initialize START\r\n");
+    105          
+    106          	ADC_Configuration();
+    107          
+    108          	// ++, sys3215, 141211
+    109          	Check_Hardware_Revision();
+    110          	// --, sys3215, 141211
+    111          	
+    112          	DebugMsg_printf("-- Hardware_Version (ADC : IN13), ADC Initialize END\r\n");
+    113          }
+    114          
+    115          /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
 
    Maximum stack usage in bytes:
 
    .cstack Function
    ------- --------
-       0   ADC_Configuration
-       0   Hardware_Version_Init
+      48   ADC_Configuration
+        48   -> ADC_Cmd
+        48   -> ADC_CommonInit
+        48   -> ADC_DeInit
+        48   -> ADC_GetFlagStatus
+        48   -> ADC_Init
+        48   -> ADC_RegularChannelConfig
+        48   -> ADC_SoftwareStartConv
+       8   Check_Hardware_Revision
+         8   -> ADC_GetConversionValue
+       8   Hardware_Version_Init
+         8   -> ADC_Configuration
+         0   -> Check_Hardware_Revision
 
 
    Section sizes:
 
    Bytes  Function/Label
    -----  --------------
-       2  ADC_Configuration
-       2  Hardware_Version_Init
+       4  ??DataTable1
+       4  ??DataTable1_1
+     104  ADC_Configuration
+      26  Check_Hardware_Revision
+       4  Hardware_Revision
+          ADC3ConvertedValue
+      12  Hardware_Version_Init
 
  
- 4 bytes in section .text
+   4 bytes in section .bss
+ 150 bytes in section .text
  
- 4 bytes of CODE memory
+ 150 bytes of CODE memory
+   4 bytes of DATA memory
 
 Errors: none
 Warnings: none

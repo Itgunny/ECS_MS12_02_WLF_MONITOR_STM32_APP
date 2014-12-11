@@ -25,7 +25,8 @@
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-
+uint16_t ADC3ConvertedValue = 0;
+uint8_t Hardware_Revision=0;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
@@ -36,10 +37,62 @@
 * Output         : None
 * Return         : None
 *******************************************************************************/
+
+// ++, sys3215, 141211
 void ADC_Configuration(void)
 {
+	ADC_InitTypeDef       ADC_InitStructure;
+	ADC_CommonInitTypeDef ADC_CommonInitStructure;
+
+	ADC_DeInit();
+	
+	/* ADC Common Init **********************************************************/
+	ADC_CommonInitStructure.ADC_Mode = ADC_Mode_Independent;
+	ADC_CommonInitStructure.ADC_Prescaler = ADC_Prescaler_Div2;
+	ADC_CommonInitStructure.ADC_DMAAccessMode = ADC_DMAAccessMode_Disabled;
+	ADC_CommonInitStructure.ADC_TwoSamplingDelay = ADC_TwoSamplingDelay_5Cycles;
+	ADC_CommonInit(&ADC_CommonInitStructure);
+
+
+	/* ADC2 Init ****************************************************************/
+	ADC_InitStructure.ADC_Resolution = ADC_Resolution_12b;
+	ADC_InitStructure.ADC_ScanConvMode = DISABLE;
+	ADC_InitStructure.ADC_ContinuousConvMode = ENABLE;
+	ADC_InitStructure.ADC_ExternalTrigConvEdge = ADC_ExternalTrigConvEdge_None;
+	ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_T1_CC1;
+	ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;
+	ADC_InitStructure.ADC_NbrOfConversion = 1;
+	ADC_Init(ADC1, &ADC_InitStructure);
+
+
+	/* ADC2 regular channel12 configuration *************************************/
+	ADC_RegularChannelConfig(ADC1, ADC_Channel_13, 1, ADC_SampleTime_3Cycles);
+
+
+	/* Enable ADC2 */
+	ADC_Cmd(ADC1, ENABLE);
+
+
+	ADC_SoftwareStartConv(ADC1);
+	while(ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == RESET);
 
 }
+
+
+void Check_Hardware_Revision(void)
+{
+	ADC3ConvertedValue = ADC_GetConversionValue(ADC1) ; //first
+
+	if(ADC3ConvertedValue>390 && ADC3ConvertedValue<420) // R5 = 9.1K RevD.02.01
+	{
+		Hardware_Revision = REVD_02_01;
+	}
+	else //if(ADC3ConvertedValue>357 && ADC3ConvertedValue<387) // R5 = 10K RevB       372
+	{
+		Hardware_Revision = REVB;
+	}
+}
+// --, sys3215, 141211
 
 /**\
   * @brief  None
@@ -48,11 +101,15 @@ void ADC_Configuration(void)
   */
 void Hardware_Version_Init(void)
 {
-    DebugMsg_printf("++ Hardware_Version (ADC : IN13), ADC Initialize START\r\n");
+	DebugMsg_printf("++ Hardware_Version (ADC : IN13), ADC Initialize START\r\n");
 
 	ADC_Configuration();
+
+	// ++, sys3215, 141211
+	Check_Hardware_Revision();
+	// --, sys3215, 141211
 	
-    DebugMsg_printf("-- Hardware_Version (ADC : IN13), ADC Initialize END\r\n");
+	DebugMsg_printf("-- Hardware_Version (ADC : IN13), ADC Initialize END\r\n");
 }
 
 /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
