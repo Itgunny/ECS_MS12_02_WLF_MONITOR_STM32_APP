@@ -1,6 +1,6 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      11/Dec/2014  17:43:58 #
+# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      12/Dec/2014  14:38:10 #
 # Copyright 1999-2012 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
@@ -262,819 +262,821 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\COMMON\SRC\stm32f4xx_it.c
     227          extern u8 SmartKeyUse;
     228          
     229          extern u8 CameraCommFlag;
-    230          /* Private function prototypes -----------------------------------------------*/
-    231          /* Private functions ---------------------------------------------------------*/
-    232          void WL9F_CAN_Buffer_Init(void)
-    233          {
-    234          	Uart2_SerialTxMsg[0]  = 0x02;	// STX
-    235          	Uart2_SerialTxMsg[1]  = 0xF5;	// ID
-    236          	Uart2_SerialTxMsg[2]  = 8;		// Data Length
-    237          	Uart2_SerialTxMsg[15] = 0;		// CRC
-    238          	Uart2_SerialTxMsg[16] = 0x03;	// ETX
-    239          
-    240          	pWriteBufPos = 0;
+    230          
+    231          extern uint16_t ADC3ConvertedValue;
+    232          /* Private function prototypes -----------------------------------------------*/
+    233          /* Private functions ---------------------------------------------------------*/
+    234          void WL9F_CAN_Buffer_Init(void)
+    235          {
+    236          	Uart2_SerialTxMsg[0]  = 0x02;	// STX
+    237          	Uart2_SerialTxMsg[1]  = 0xF5;	// ID
+    238          	Uart2_SerialTxMsg[2]  = 8;		// Data Length
+    239          	Uart2_SerialTxMsg[15] = 0;		// CRC
+    240          	Uart2_SerialTxMsg[16] = 0x03;	// ETX
     241          
-    242          	TotPacketNum = 0;
-    243          	pgn = 0;
-    244          
-    245          	Uart2_SerialTxCnt = 0;
-    246          	CommErrCnt = 0;
-    247          }
-    248          
-    249          uint16_t test,old_test;
+    242          	pWriteBufPos = 0;
+    243          
+    244          	TotPacketNum = 0;
+    245          	pgn = 0;
+    246          
+    247          	Uart2_SerialTxCnt = 0;
+    248          	CommErrCnt = 0;
+    249          }
     250          
-    251          unsigned char test_temp[8];
+    251          uint16_t test,old_test;
     252          
-    253          void OperateRingBuffer(void)
-    254          {
-    255          	if(pWriteBufPos >= (RING_BUF_SIZE-1))	// End of Ring Buffer
-    256          		pWriteBufPos = 0;
-    257          
-    258          	memcpy(&ring_buf[pWriteBufPos], (u8*)&RxMsg.ExtId, 4);
+    253          unsigned char test_temp[8];
+    254          
+    255          void OperateRingBuffer(void)
+    256          {
+    257          	if(pWriteBufPos >= (RING_BUF_SIZE-1))	// End of Ring Buffer
+    258          		pWriteBufPos = 0;
     259          
-    260          	pWriteBufPos += 4;
+    260          	memcpy(&ring_buf[pWriteBufPos], (u8*)&RxMsg.ExtId, 4);
     261          
-    262          	memcpy(&ring_buf[pWriteBufPos], (u8*)&RxMsg.Data, 8);
-    263          	
-    264          	pWriteBufPos += 8;	
-    265          
-    266          	USART_ITConfig(USART2, USART_IT_TXE, ENABLE);
-    267          	
-    268          }
-    269          void RTCSend(void)
-    270          {
-    271          	if(pWriteBufPos >= (RING_BUF_SIZE-1)) // End of Ring Buffer
-    272          		pWriteBufPos = 0;
-    273          
-    274          	memcpy(&ring_buf[pWriteBufPos], (u8*)&SerialMsgRTC[0], 12);
+    262          	pWriteBufPos += 4;
+    263          
+    264          	memcpy(&ring_buf[pWriteBufPos], (u8*)&RxMsg.Data, 8);
+    265          	
+    266          	pWriteBufPos += 8;	
+    267          
+    268          	USART_ITConfig(USART2, USART_IT_TXE, ENABLE);
+    269          	
+    270          }
+    271          void RTCSend(void)
+    272          {
+    273          	if(pWriteBufPos >= (RING_BUF_SIZE-1)) // End of Ring Buffer
+    274          		pWriteBufPos = 0;
     275          
-    276          	pWriteBufPos += 12;
+    276          	memcpy(&ring_buf[pWriteBufPos], (u8*)&SerialMsgRTC[0], 12);
     277          
-    278          	USART_ITConfig(USART2, USART_IT_TXE, ENABLE);
-    279          }
-    280          
-    281          
-    282          void SendTo_E2PROM(void)
-    283          {
-    284          #if 1
-    285          	if (SendEEPROMDataCnt < 2)	//	2번 보낸다.
-    286          	{
-    287          		memcpy(&Uart2_SerialTxMsg[7], &eepRomReadData1[0], 8);
-    288          		Uart2_SerialTxMsg[15] = 0xE1;
-    289          	}	
-    290          	else if (SendEEPROMDataCnt < 4)	//	2번 보낸다.
-    291          	{
-    292          		memcpy(&Uart2_SerialTxMsg[7], &eepRomReadData1[8], 8);
-    293          		Uart2_SerialTxMsg[15] = 0xE2;
-    294          	}	
-    295          	else
-    296          	{
-    297          		memcpy(&Uart2_SerialTxMsg[7], &eepRomReadData1[16], 8);
-    298          		Uart2_SerialTxMsg[15] = 0xE3;
-    299          	}		
-    300          
-    301          	//  Enable the USART3 Transmit interrupt
-    302          	USART_ITConfig(USART2, USART_IT_TXE, ENABLE);
-    303          #endif
-    304          }
-    305          
-    306          /******************************************************************************/
-    307          /*            Cortex-M4 Processor Exceptions Handlers                         */
+    278          	pWriteBufPos += 12;
+    279          
+    280          	USART_ITConfig(USART2, USART_IT_TXE, ENABLE);
+    281          }
+    282          
+    283          
+    284          void SendTo_E2PROM(void)
+    285          {
+    286          #if 1
+    287          	if (SendEEPROMDataCnt < 2)	//	2번 보낸다.
+    288          	{
+    289          		memcpy(&Uart2_SerialTxMsg[7], &eepRomReadData1[0], 8);
+    290          		Uart2_SerialTxMsg[15] = 0xE1;
+    291          	}	
+    292          	else if (SendEEPROMDataCnt < 4)	//	2번 보낸다.
+    293          	{
+    294          		memcpy(&Uart2_SerialTxMsg[7], &eepRomReadData1[8], 8);
+    295          		Uart2_SerialTxMsg[15] = 0xE2;
+    296          	}	
+    297          	else
+    298          	{
+    299          		memcpy(&Uart2_SerialTxMsg[7], &eepRomReadData1[16], 8);
+    300          		Uart2_SerialTxMsg[15] = 0xE3;
+    301          	}		
+    302          
+    303          	//  Enable the USART3 Transmit interrupt
+    304          	USART_ITConfig(USART2, USART_IT_TXE, ENABLE);
+    305          #endif
+    306          }
+    307          
     308          /******************************************************************************/
-    309          
-    310          /**
-    311            * @brief   This function handles NMI exception.
-    312            * @param  None
-    313            * @retval None
-    314            */
-    315          void NMI_Handler(void)
-    316          {
-    317          }
-    318          
-    319          /**
-    320            * @brief  This function handles Hard Fault exception.
-    321            * @param  None
-    322            * @retval None
-    323            */
-    324          void HardFault_Handler(void)
-    325          {
-    326            /* Go to infinite loop when Hard Fault exception occurs */
-    327            while (1)
-    328            {
-    329            }
-    330          }
-    331          
-    332          /**
-    333            * @brief  This function handles Memory Manage exception.
-    334            * @param  None
-    335            * @retval None
-    336            */
-    337          void MemManage_Handler(void)
-    338          {
-    339            /* Go to infinite loop when Memory Manage exception occurs */
-    340            while (1)
-    341            {
-    342            }
-    343          }
-    344          
-    345          /**
-    346            * @brief  This function handles Bus Fault exception.
-    347            * @param  None
-    348            * @retval None
-    349            */
-    350          void BusFault_Handler(void)
-    351          {
-    352            /* Go to infinite loop when Bus Fault exception occurs */
-    353            while (1)
-    354            {
-    355            }
-    356          }
-    357          
-    358          /**
-    359            * @brief  This function handles Usage Fault exception.
-    360            * @param  None
-    361            * @retval None
-    362            */
-    363          void UsageFault_Handler(void)
-    364          {
-    365            /* Go to infinite loop when Usage Fault exception occurs */
-    366            while (1)
-    367            {
-    368            }
-    369          }
-    370          
-    371          /**
-    372            * @brief  This function handles SVCall exception.
-    373            * @param  None
-    374            * @retval None
-    375            */
-    376          void SVC_Handler(void)
-    377          {
-    378          }
-    379          
-    380          /**
-    381            * @brief  This function handles Debug Monitor exception.
-    382            * @param  None
-    383            * @retval None
-    384            */
-    385          void DebugMon_Handler(void)
-    386          {
-    387          }
-    388          
-    389          /**
-    390            * @brief  This function handles PendSVC exception.
-    391            * @param  None
-    392            * @retval None
-    393            */
-    394          void PendSV_Handler(void)
-    395          {
-    396          }
-    397          
-    398          /**
-    399            * @brief  This function handles SysTick Handler.
-    400            * @param  None
-    401            * @retval None
-    402            */
-    403          void SysTick_Handler(void)
-    404          {
-    405            	TimeDelay_Decrement();
-    406          
-    407              ++WL9FM_TIME.Cnt_1mSec;
+    309          /*            Cortex-M4 Processor Exceptions Handlers                         */
+    310          /******************************************************************************/
+    311          
+    312          /**
+    313            * @brief   This function handles NMI exception.
+    314            * @param  None
+    315            * @retval None
+    316            */
+    317          void NMI_Handler(void)
+    318          {
+    319          }
+    320          
+    321          /**
+    322            * @brief  This function handles Hard Fault exception.
+    323            * @param  None
+    324            * @retval None
+    325            */
+    326          void HardFault_Handler(void)
+    327          {
+    328            /* Go to infinite loop when Hard Fault exception occurs */
+    329            while (1)
+    330            {
+    331            }
+    332          }
+    333          
+    334          /**
+    335            * @brief  This function handles Memory Manage exception.
+    336            * @param  None
+    337            * @retval None
+    338            */
+    339          void MemManage_Handler(void)
+    340          {
+    341            /* Go to infinite loop when Memory Manage exception occurs */
+    342            while (1)
+    343            {
+    344            }
+    345          }
+    346          
+    347          /**
+    348            * @brief  This function handles Bus Fault exception.
+    349            * @param  None
+    350            * @retval None
+    351            */
+    352          void BusFault_Handler(void)
+    353          {
+    354            /* Go to infinite loop when Bus Fault exception occurs */
+    355            while (1)
+    356            {
+    357            }
+    358          }
+    359          
+    360          /**
+    361            * @brief  This function handles Usage Fault exception.
+    362            * @param  None
+    363            * @retval None
+    364            */
+    365          void UsageFault_Handler(void)
+    366          {
+    367            /* Go to infinite loop when Usage Fault exception occurs */
+    368            while (1)
+    369            {
+    370            }
+    371          }
+    372          
+    373          /**
+    374            * @brief  This function handles SVCall exception.
+    375            * @param  None
+    376            * @retval None
+    377            */
+    378          void SVC_Handler(void)
+    379          {
+    380          }
+    381          
+    382          /**
+    383            * @brief  This function handles Debug Monitor exception.
+    384            * @param  None
+    385            * @retval None
+    386            */
+    387          void DebugMon_Handler(void)
+    388          {
+    389          }
+    390          
+    391          /**
+    392            * @brief  This function handles PendSVC exception.
+    393            * @param  None
+    394            * @retval None
+    395            */
+    396          void PendSV_Handler(void)
+    397          {
+    398          }
+    399          
+    400          /**
+    401            * @brief  This function handles SysTick Handler.
+    402            * @param  None
+    403            * @retval None
+    404            */
+    405          void SysTick_Handler(void)
+    406          {
+    407            	TimeDelay_Decrement();
     408          
-    409          	if (WL9FM_TIME.Cnt_1mSec % 1 == 0)                   //  1msec
-    410          	{
-    411                  WL9FM_TIME.Flag_1mSec = 1;
-    412          
-    413          		if (WL9FM_TIME.Cnt_1mSec % 10 == 0)              //  10msec
-    414          		{
-    415          			WL9FM_TIME.Flag_10mSec = 1;
-    416          
-    417          			if (WL9FM_TIME.Cnt_1mSec % 100 == 0)         //  100msec
-    418          			{
-    419          				WL9FM_TIME.Flag_100mSec = 1;
-    420          
-    421          				if(WL9FM_TIME.Cnt_1mSec % 500 == 0)			// 500msec
-    422          				{
-    423          					WL9FM_TIME.Flag_500mSec = 1;
-    424          					if (WL9FM_TIME.Cnt_1mSec % 1000 == 0)    //  1000 msec
-    425          					{
-    426          						WL9FM_TIME.Flag_1Sec = 1;
-    427          						WL9FM_TIME.Cnt_1mSec = 0;
-    428          					}
-    429          				}
-    430          
-    431          				
-    432          			}
-    433          		}
-    434          	}    
-    435          }
-    436          
-    437          /******************************************************************************/
-    438          /*                 STM32F4xx Peripherals Interrupt Handlers                   */
-    439          /*  Add here the Interrupt Handler for the used peripheral(s) (PPP), for the  */
-    440          /*  available peripheral interrupt handler's name please refer to the startup */
-    441          /*  file (startup_stm32f4xx.s).                                               */
-    442          /******************************************************************************/
-    443          
-    444          /**
-    445            * @brief  This function handles PPP interrupt request.
-    446            * @param  None
-    447            * @retval None
-    448            */
-    449          /*void PPP_IRQHandler(void)
-    450          {
-    451          }*/
-    452          
-    453          /**
-    454            * @}
-    455            */ 
-    456          
-    457          /**
-    458            * @brief  This function handles CAN1 global interrupt request.
-    459            * @param  None
-    460            * @retval None
-    461            */
-    462          void CAN1_RX0_IRQHandler(void)
-    463          {
-    464          	u32 PF; 
-    465          	u32 PS;
-    466          	u32 PGN;
-    467          
-    468          	CAN_Receive(CAN1,CAN_FIFO0,&RxMsg);
-    469          				
-    470          	Iden.Source_Address = (RxMsg.ExtId & 0x000000ff)  >> 0;
-    471          	Iden.PDU_Specific = (RxMsg.ExtId  & 0x0000ff00) >> 8;
-    472          	
-    473          	// Iden.Source_Address == 71	 -->>	MCU
-    474          	// Iden.Source_Address == 228	 -->>	EHCU	
-    475          	// Iden.Source_Address == 0x29	 -->>	Smart Key
-    476          	// Iden.Source_Address == 23	 -->>	Cluster
-    477          	// Iden.Source_Address == 221	 -->>	RCU
-    478          	// Iden.Source_Address == 0	 -->>	ECM
-    479          	// Iden.Source_Address == 3	 -->>	TCU
-    480          	// Iden.Source_Address == 25	 -->>	ACU
-    481          	
-    482          	if((Iden.Source_Address == 0x47) || (Iden.Source_Address == 0x17) || (Iden.Source_Address == 0x29) || 
-    483          		(Iden.Source_Address == 0xE4) || (Iden.Source_Address == 0xDD)|| (Iden.Source_Address == 0x4a)|| (Iden.Source_Address == 0xf4)
-    484          		|| (Iden.Source_Address == 0x00)|| (Iden.Source_Address == 0x03) || (Iden.Source_Address == 0x02) || (Iden.Source_Address == 0x19))
-    485          		{
-    486          		#if 1
-    487          			
-    488          			if(CANUpdateFlag == 0)
-    489          			{
-    490          				PF = (RxMsg.ExtId  & 0x00ff0000) >> 16;
-    491          				if((PF == 254) || (PF == 255) || (PF == 239) )
-    492          				{	
-    493          					
-    494          					if(Iden.PDU_Specific == 232)	// Smart Key
-    495          					{
-    496          						smk_flag_data.recv_resp_packet |= RESPONSE_AUTHENTICATION;	
-    497          						//smk_flag_data.recv_resp_packet |= 0x0100; 
-    498          
-    499          						memcpy((u8*)&recv_smartkey, (u8*)&RxMsg.Data[0], 8);
-    500          					}
-    501          					else
-    502          					{
-    503          		
-    504          						//if(Iden.PDU_Specific == 0x9b)
-    505          							CAN_RX(RxMsg);
-    506          					}
-    507          				}
-    508          				
-    509          				else
-    510          				{                    
-    511          	                		CAN_RX(RxMsg);
-    512          				}
-    513          		
-    514          				CommErrCnt = 0;
-    515          			}
-    516          			else if(CANUpdateFlag == 1)
-    517          			{
-    518          				if(Iden.Source_Address == CANUpdateSA)
-    519          				{
-    520          					PF = (RxMsg.ExtId  & 0x00ff0000) >> 16;
-    521          					PS = (RxMsg.ExtId  & 0x0000FF00) >> 8;
-    522          					PGN = (RxMsg.ExtId  & 0x00FFFF00) >> 8;
-    523          					if(PGN == 0xEFFA || PGN  == 0xECFA || PGN  == 0xEBFA)
-    524          					{
-    525          						CAN_RX(RxMsg);
-    526          					}
-    527          
-    528          				}
-    529          				
-    530          			}
-    531          		#else
-    532          			if(CANUpdateFlag == 1)
-    533          			{
-    534          				if(Iden.Source_Address == CANUpdateSA)
-    535          				{
-    536          					PF = (RxMsg.ExtId  & 0x00ff0000) >> 16;
-    537          					PS = (RxMsg.ExtId  & 0x0000FF00) >> 8;
-    538          					PGN = (RxMsg.ExtId  & 0x00FFFF00) >> 8;
-    539          					if(PGN == 0xEFFA || PGN  == 0xECFA || PGN  == 0xEBFA)
-    540          					{
-    541          						//OperateRingBuffer();
-    542          						CAN_RX(RxMsg);
-    543          						CANRXIndex++;
-    544          					}
-    545          
-    546          				}
-    547          				
-    548          			}
-    549          		#endif
-    550          			
-    551          			
-    552          
+    409              ++WL9FM_TIME.Cnt_1mSec;
+    410          
+    411          	if (WL9FM_TIME.Cnt_1mSec % 1 == 0)                   //  1msec
+    412          	{
+    413                  WL9FM_TIME.Flag_1mSec = 1;
+    414          
+    415          		if (WL9FM_TIME.Cnt_1mSec % 10 == 0)              //  10msec
+    416          		{
+    417          			WL9FM_TIME.Flag_10mSec = 1;
+    418          
+    419          			if (WL9FM_TIME.Cnt_1mSec % 100 == 0)         //  100msec
+    420          			{
+    421          				WL9FM_TIME.Flag_100mSec = 1;
+    422          
+    423          				if(WL9FM_TIME.Cnt_1mSec % 500 == 0)			// 500msec
+    424          				{
+    425          					WL9FM_TIME.Flag_500mSec = 1;
+    426          					if (WL9FM_TIME.Cnt_1mSec % 1000 == 0)    //  1000 msec
+    427          					{
+    428          						WL9FM_TIME.Flag_1Sec = 1;
+    429          						WL9FM_TIME.Cnt_1mSec = 0;
+    430          					}
+    431          				}
+    432          
+    433          				
+    434          			}
+    435          		}
+    436          	}    
+    437          }
+    438          
+    439          /******************************************************************************/
+    440          /*                 STM32F4xx Peripherals Interrupt Handlers                   */
+    441          /*  Add here the Interrupt Handler for the used peripheral(s) (PPP), for the  */
+    442          /*  available peripheral interrupt handler's name please refer to the startup */
+    443          /*  file (startup_stm32f4xx.s).                                               */
+    444          /******************************************************************************/
+    445          
+    446          /**
+    447            * @brief  This function handles PPP interrupt request.
+    448            * @param  None
+    449            * @retval None
+    450            */
+    451          /*void PPP_IRQHandler(void)
+    452          {
+    453          }*/
+    454          
+    455          /**
+    456            * @}
+    457            */ 
+    458          
+    459          /**
+    460            * @brief  This function handles CAN1 global interrupt request.
+    461            * @param  None
+    462            * @retval None
+    463            */
+    464          void CAN1_RX0_IRQHandler(void)
+    465          {
+    466          	u32 PF; 
+    467          	u32 PS;
+    468          	u32 PGN;
+    469          
+    470          	CAN_Receive(CAN1,CAN_FIFO0,&RxMsg);
+    471          				
+    472          	Iden.Source_Address = (RxMsg.ExtId & 0x000000ff)  >> 0;
+    473          	Iden.PDU_Specific = (RxMsg.ExtId  & 0x0000ff00) >> 8;
+    474          	
+    475          	// Iden.Source_Address == 71	 -->>	MCU
+    476          	// Iden.Source_Address == 228	 -->>	EHCU	
+    477          	// Iden.Source_Address == 0x29	 -->>	Smart Key
+    478          	// Iden.Source_Address == 23	 -->>	Cluster
+    479          	// Iden.Source_Address == 221	 -->>	RCU
+    480          	// Iden.Source_Address == 0	 -->>	ECM
+    481          	// Iden.Source_Address == 3	 -->>	TCU
+    482          	// Iden.Source_Address == 25	 -->>	ACU
+    483          	
+    484          	if((Iden.Source_Address == 0x47) || (Iden.Source_Address == 0x17) || (Iden.Source_Address == 0x29) || 
+    485          		(Iden.Source_Address == 0xE4) || (Iden.Source_Address == 0xDD)|| (Iden.Source_Address == 0x4a)|| (Iden.Source_Address == 0xf4)
+    486          		|| (Iden.Source_Address == 0x00)|| (Iden.Source_Address == 0x03) || (Iden.Source_Address == 0x02) || (Iden.Source_Address == 0x19))
+    487          		{
+    488          		#if 1
+    489          			
+    490          			if(CANUpdateFlag == 0)
+    491          			{
+    492          				PF = (RxMsg.ExtId  & 0x00ff0000) >> 16;
+    493          				if((PF == 254) || (PF == 255) || (PF == 239) )
+    494          				{	
+    495          					
+    496          					if(Iden.PDU_Specific == 232)	// Smart Key
+    497          					{
+    498          						smk_flag_data.recv_resp_packet |= RESPONSE_AUTHENTICATION;	
+    499          						//smk_flag_data.recv_resp_packet |= 0x0100; 
+    500          
+    501          						memcpy((u8*)&recv_smartkey, (u8*)&RxMsg.Data[0], 8);
+    502          					}
+    503          					else
+    504          					{
+    505          		
+    506          						//if(Iden.PDU_Specific == 0x9b)
+    507          							CAN_RX(RxMsg);
+    508          					}
+    509          				}
+    510          				
+    511          				else
+    512          				{                    
+    513          	                		CAN_RX(RxMsg);
+    514          				}
+    515          		
+    516          				CommErrCnt = 0;
+    517          			}
+    518          			else if(CANUpdateFlag == 1)
+    519          			{
+    520          				if(Iden.Source_Address == CANUpdateSA)
+    521          				{
+    522          					PF = (RxMsg.ExtId  & 0x00ff0000) >> 16;
+    523          					PS = (RxMsg.ExtId  & 0x0000FF00) >> 8;
+    524          					PGN = (RxMsg.ExtId  & 0x00FFFF00) >> 8;
+    525          					if(PGN == 0xEFFA || PGN  == 0xECFA || PGN  == 0xEBFA)
+    526          					{
+    527          						CAN_RX(RxMsg);
+    528          					}
+    529          
+    530          				}
+    531          				
+    532          			}
+    533          		#else
+    534          			if(CANUpdateFlag == 1)
+    535          			{
+    536          				if(Iden.Source_Address == CANUpdateSA)
+    537          				{
+    538          					PF = (RxMsg.ExtId  & 0x00ff0000) >> 16;
+    539          					PS = (RxMsg.ExtId  & 0x0000FF00) >> 8;
+    540          					PGN = (RxMsg.ExtId  & 0x00FFFF00) >> 8;
+    541          					if(PGN == 0xEFFA || PGN  == 0xECFA || PGN  == 0xEBFA)
+    542          					{
+    543          						//OperateRingBuffer();
+    544          						CAN_RX(RxMsg);
+    545          						CANRXIndex++;
+    546          					}
+    547          
+    548          				}
+    549          				
+    550          			}
+    551          		#endif
+    552          			
     553          			
-    554          			
-    555          		}
-    556          
-    557          }
+    554          
+    555          			
+    556          			
+    557          		}
     558          
-    559          /**
-    560            * @brief  This function handles TIM4 global interrupt request.
-    561            * @param  None
-    562            * @retval None
-    563            */
-    564          void TIM4_IRQHandler(void)  //  10msec Timer / TimeBase UP Counter
-    565          {
-    566              TIM_ClearITPendingBit(TIM4, TIM_IT_Update);
-    567              
-    568              //  BUZZER Status가 "2" 일 경우 BUZZER OnTime 만큼 BUZZER On
-    569              if (WL9FM_BUZZER.Status == 2)
-    570              {
-    571                  if (WL9FM_BUZZER.OnCnt++ < WL9FM_BUZZER.OnTime)
-    572                  {
-    573                      Buzzer_On();
-    574                  }
-    575                  else
-    576                  {
-    577                      WL9FM_BUZZER.Status = 0;               
-    578                  }
-    579              }        
-    580              //  BUZZER Status가 "1" 일 경우 UnLimit BUZZER On
-    581              else if (WL9FM_BUZZER.Status == 1)
-    582              {
-    583                  Buzzer_On();    
-    584              }    
-    585              else
-    586              {
-    587                  Buzzer_Off();
-    588                  
-    589                  WL9FM_BUZZER.Status = 0;               
-    590                  WL9FM_BUZZER.OnTime = 0;
-    591                  WL9FM_BUZZER.OnCnt  = 0;
-    592              }
-    593          
-    594          #if 1
-    595          	CommErrCnt++;
-    596          
-    597          	if(CommErrCnt >= 1000)
-    598          		CommErrCnt = 1001;
-    599          #endif
-    600          }
-    601          
-    602          /**
-    603            * @brief  This function handles TIM5 global interrupt request.
-    604            * @param  None
-    605            * @retval None
-    606            */
-    607          void TIM5_IRQHandler(void)  //  5msec Timer / TimeBase UP Counter    
-    608          {
-    609              TIM_ClearITPendingBit(TIM5, TIM_IT_Update);
-    610          
-    611          	KeySwitch_Process();    //  KeySwitch.c Func
-    612          }
-    613          
-    614          /**
-    615            * @brief  This function handles USART3 global interrupt request.
-    616            * @param  None
-    617            * @retval None
-    618            */
-    619            // STM32F407 <-> exynos4412 can_data
-    620          
-    621          unsigned char temp_61184;
+    559          }
+    560          
+    561          /**
+    562            * @brief  This function handles TIM4 global interrupt request.
+    563            * @param  None
+    564            * @retval None
+    565            */
+    566          void TIM4_IRQHandler(void)  //  10msec Timer / TimeBase UP Counter
+    567          {
+    568              TIM_ClearITPendingBit(TIM4, TIM_IT_Update);
+    569              
+    570              //  BUZZER Status가 "2" 일 경우 BUZZER OnTime 만큼 BUZZER On
+    571              if (WL9FM_BUZZER.Status == 2)
+    572              {
+    573                  if (WL9FM_BUZZER.OnCnt++ < WL9FM_BUZZER.OnTime)
+    574                  {
+    575                      Buzzer_On();
+    576                  }
+    577                  else
+    578                  {
+    579                      WL9FM_BUZZER.Status = 0;               
+    580                  }
+    581              }        
+    582              //  BUZZER Status가 "1" 일 경우 UnLimit BUZZER On
+    583              else if (WL9FM_BUZZER.Status == 1)
+    584              {
+    585                  Buzzer_On();    
+    586              }    
+    587              else
+    588              {
+    589                  Buzzer_Off();
+    590                  
+    591                  WL9FM_BUZZER.Status = 0;               
+    592                  WL9FM_BUZZER.OnTime = 0;
+    593                  WL9FM_BUZZER.OnCnt  = 0;
+    594              }
+    595          
+    596          #if 1
+    597          	CommErrCnt++;
+    598          
+    599          	if(CommErrCnt >= 1000)
+    600          		CommErrCnt = 1001;
+    601          #endif
+    602          }
+    603          
+    604          /**
+    605            * @brief  This function handles TIM5 global interrupt request.
+    606            * @param  None
+    607            * @retval None
+    608            */
+    609          void TIM5_IRQHandler(void)  //  5msec Timer / TimeBase UP Counter    
+    610          {
+    611              TIM_ClearITPendingBit(TIM5, TIM_IT_Update);
+    612          
+    613          	KeySwitch_Process();    //  KeySwitch.c Func
+    614          }
+    615          
+    616          /**
+    617            * @brief  This function handles USART3 global interrupt request.
+    618            * @param  None
+    619            * @retval None
+    620            */
+    621            // STM32F407 <-> exynos4412 can_data
     622          
-    623          void USART2_IRQHandler(void)
-    624          {
-    625          	struct st_CAN_Message1 Send_Message;
-    626          	
-    627          	if(USART_GetITStatus(USART2, USART_IT_RXNE) != RESET)
-    628          	{
-    629          		Uart2_SerialRxMsg[Uart2_SerialRxCnt] = (u8)USART_ReceiveData(USART2);
-    630          
-    631          		  //  디버깅할 때만 사용할 것
-    632          		#ifdef DEBUG_CAN_RX
-    633          		DebugMsg_printf("%2x ", Uart2_SerialRxMsg[Uart2_SerialRxCnt]);
-    634          		#endif
-    635          		
-    636          		switch(Uart2_SerialRxCnt)
-    637          		{
-    638          			case 0:
-    639          				if(Uart2_SerialRxMsg[0] == 0x02)		// STX
-    640          					Uart2_SerialRxCnt++;
-    641          				break;
-    642          			case UART2_Rx_BUF_SIZE-1:
-    643          				Uart2_SerialRxCnt = 0;
-    644          
-    645          				if(Uart2_SerialRxMsg[UART2_Rx_BUF_SIZE-1] == 0x03)		// ETX
-    646          				{
-    647          					memcpy(&Send_Message,&Uart2_SerialRxMsg[1],12);	
-    648          					Write_CAN_Single(Send_Message);
-    649          				}
-    650          				else
-    651          				{
-    652          					//  디버깅할 때만 사용할 것
-    653          					//DebugMsg_printf("Protocol Fail\r\n");
-    654          				}
-    655          
-    656          				break;
-    657          			
-    658          			default :
-    659          				Uart2_SerialRxCnt++;
-    660          				break;
-    661          		}
-    662          	}
-    663          
-    664          #if 0
-    665          	if(USART_GetITStatus(USART2, USART_IT_TXE) != RESET)
-    666          	{   
-    667          		if((USART2->SR & 0x80) == RESET)
-    668          			return;
-    669          
-    670          		if (pWriteBufPos == pReadBufPos)
-    671          		{
-    672          			if(Flag_TxE2pRomData == 1)
-    673          			{
-    674          			    USART_ITConfig(USART2, USART_IT_TXE, DISABLE);
-    675          			    return;
-    676          		    }
-    677          		}
-    678          
-    679          		if(pReadBufPos >= (RING_BUF_SIZE-1))
-    680          			pReadBufPos = 0;
-    681          
-    682          		if((Uart2_SerialTxCnt == 0) && (pWriteBufPos != pReadBufPos))
-    683          		{
-    684          			memcpy(&Uart2_SerialTxMsg[3] , &ring_buf[pReadBufPos], 12);
-    685          			
-    686          		}
-    687          		
-    688          		USART_SendData(USART2, (u16)(Uart2_SerialTxMsg[Uart2_SerialTxCnt++]));    
+    623          unsigned char temp_61184;
+    624          
+    625          void USART2_IRQHandler(void)
+    626          {
+    627          	struct st_CAN_Message1 Send_Message;
+    628          	
+    629          	if(USART_GetITStatus(USART2, USART_IT_RXNE) != RESET)
+    630          	{
+    631          		Uart2_SerialRxMsg[Uart2_SerialRxCnt] = (u8)USART_ReceiveData(USART2);
+    632          
+    633          		  //  디버깅할 때만 사용할 것
+    634          		#ifdef DEBUG_CAN_RX
+    635          		DebugMsg_printf("%2x ", Uart2_SerialRxMsg[Uart2_SerialRxCnt]);
+    636          		#endif
+    637          		
+    638          		switch(Uart2_SerialRxCnt)
+    639          		{
+    640          			case 0:
+    641          				if(Uart2_SerialRxMsg[0] == 0x02)		// STX
+    642          					Uart2_SerialRxCnt++;
+    643          				break;
+    644          			case UART2_Rx_BUF_SIZE-1:
+    645          				Uart2_SerialRxCnt = 0;
+    646          
+    647          				if(Uart2_SerialRxMsg[UART2_Rx_BUF_SIZE-1] == 0x03)		// ETX
+    648          				{
+    649          					memcpy(&Send_Message,&Uart2_SerialRxMsg[1],12);	
+    650          					Write_CAN_Single(Send_Message);
+    651          				}
+    652          				else
+    653          				{
+    654          					//  디버깅할 때만 사용할 것
+    655          					//DebugMsg_printf("Protocol Fail\r\n");
+    656          				}
+    657          
+    658          				break;
+    659          			
+    660          			default :
+    661          				Uart2_SerialRxCnt++;
+    662          				break;
+    663          		}
+    664          	}
+    665          
+    666          #if 0
+    667          	if(USART_GetITStatus(USART2, USART_IT_TXE) != RESET)
+    668          	{   
+    669          		if((USART2->SR & 0x80) == RESET)
+    670          			return;
+    671          
+    672          		if (pWriteBufPos == pReadBufPos)
+    673          		{
+    674          			if(Flag_TxE2pRomData == 1)
+    675          			{
+    676          			    USART_ITConfig(USART2, USART_IT_TXE, DISABLE);
+    677          			    return;
+    678          		    }
+    679          		}
+    680          
+    681          		if(pReadBufPos >= (RING_BUF_SIZE-1))
+    682          			pReadBufPos = 0;
+    683          
+    684          		if((Uart2_SerialTxCnt == 0) && (pWriteBufPos != pReadBufPos))
+    685          		{
+    686          			memcpy(&Uart2_SerialTxMsg[3] , &ring_buf[pReadBufPos], 12);
+    687          			
+    688          		}
     689          		
-    690          		if (Uart2_SerialTxCnt >= UART2_Tx_BUF_SIZE)
-    691          		{
-    692          			#if 0
-    693          			//Uart2_SerialTxCnt = 0;
-    694          			//pReadBufPos += 12;
-    695          			//USART_ITConfig(USART2, USART_IT_TXE, DISABLE);
-    696          
-    697          			if(Flag_TxE2pRomData == 0)
-    698          			{
-    699                          //  보내는 횟수 중요하다. 초기에 버그가 생실 수 있으니, 테스트 필요함!!!
-    700          				//	EEPROM Data를 6번 보낸다.
-    701          				if(SendEEPROMDataCnt > 5)	
-    702          				{
-    703          					Uart2_SerialTxCnt = 0;	
-    704          					Uart2_SerialTxMsg[15] = 0;
-    705          					Flag_TxE2pRomData = 1;
-    706          						
-    707          					//	EEPROM Data를 그만 보내고 CAN Data를 보낸다. 
-    708          					Flag_UartTxStart = 0;
-    709          					
-    710          					//  Enable the USART2 Transmit interrupt
-    711          					USART_ITConfig(USART2, USART_IT_TXE, ENABLE);
-    712          					CAN_ITConfig(CAN1, CAN_IT_FMP0,ENABLE);			
-    713          				}
-    714          				else
-    715          				{
-    716          					SendEEPROMDataCnt++;
-    717          			        	Uart2_SerialTxCnt = 0;
-    718          
-    719          					//  Disable the USART3 Transmit interrupt
-    720          					USART_ITConfig(USART2, USART_IT_TXE, DISABLE);
-    721          				}
-    722          			}
-    723          			else
-    724          			{
-    725          				Uart2_SerialTxCnt = 0;
-    726          				pReadBufPos += 12;
-    727          			}
-    728          			#else
-    729          			if(Flag_TxE2pRomData == 0)
-    730          			{
-    731                        
-    732          				Uart2_SerialTxCnt = 0;	
-    733          				Uart2_SerialTxMsg[15] = 0;
-    734          				Flag_TxE2pRomData = 1;
-    735          					
-    736          				//	EEPROM Data를 그만 보내고 CAN Data를 보낸다. 
-    737          				Flag_UartTxStart = 0;
-    738          				
-    739          				//  Enable the USART2 Transmit interrupt
-    740          				USART_ITConfig(USART2, USART_IT_TXE, ENABLE);
-    741          				CAN_ITConfig(CAN1, CAN_IT_FMP0,ENABLE);		
-    742          				
-    743          				
-    744          			}
-    745          			else
-    746          			{
-    747          				Uart2_SerialTxCnt = 0;
-    748          				pReadBufPos += 12;
-    749          				SerialTXIndex++;
-    750          			}
-    751          			#endif
-    752          		}  
-    753          	}
-    754          #else
-    755          	
-    756          
-    757          #endif
+    690          		USART_SendData(USART2, (u16)(Uart2_SerialTxMsg[Uart2_SerialTxCnt++]));    
+    691          		
+    692          		if (Uart2_SerialTxCnt >= UART2_Tx_BUF_SIZE)
+    693          		{
+    694          			#if 0
+    695          			//Uart2_SerialTxCnt = 0;
+    696          			//pReadBufPos += 12;
+    697          			//USART_ITConfig(USART2, USART_IT_TXE, DISABLE);
+    698          
+    699          			if(Flag_TxE2pRomData == 0)
+    700          			{
+    701                          //  보내는 횟수 중요하다. 초기에 버그가 생실 수 있으니, 테스트 필요함!!!
+    702          				//	EEPROM Data를 6번 보낸다.
+    703          				if(SendEEPROMDataCnt > 5)	
+    704          				{
+    705          					Uart2_SerialTxCnt = 0;	
+    706          					Uart2_SerialTxMsg[15] = 0;
+    707          					Flag_TxE2pRomData = 1;
+    708          						
+    709          					//	EEPROM Data를 그만 보내고 CAN Data를 보낸다. 
+    710          					Flag_UartTxStart = 0;
+    711          					
+    712          					//  Enable the USART2 Transmit interrupt
+    713          					USART_ITConfig(USART2, USART_IT_TXE, ENABLE);
+    714          					CAN_ITConfig(CAN1, CAN_IT_FMP0,ENABLE);			
+    715          				}
+    716          				else
+    717          				{
+    718          					SendEEPROMDataCnt++;
+    719          			        	Uart2_SerialTxCnt = 0;
+    720          
+    721          					//  Disable the USART3 Transmit interrupt
+    722          					USART_ITConfig(USART2, USART_IT_TXE, DISABLE);
+    723          				}
+    724          			}
+    725          			else
+    726          			{
+    727          				Uart2_SerialTxCnt = 0;
+    728          				pReadBufPos += 12;
+    729          			}
+    730          			#else
+    731          			if(Flag_TxE2pRomData == 0)
+    732          			{
+    733                        
+    734          				Uart2_SerialTxCnt = 0;	
+    735          				Uart2_SerialTxMsg[15] = 0;
+    736          				Flag_TxE2pRomData = 1;
+    737          					
+    738          				//	EEPROM Data를 그만 보내고 CAN Data를 보낸다. 
+    739          				Flag_UartTxStart = 0;
+    740          				
+    741          				//  Enable the USART2 Transmit interrupt
+    742          				USART_ITConfig(USART2, USART_IT_TXE, ENABLE);
+    743          				CAN_ITConfig(CAN1, CAN_IT_FMP0,ENABLE);		
+    744          				
+    745          				
+    746          			}
+    747          			else
+    748          			{
+    749          				Uart2_SerialTxCnt = 0;
+    750          				pReadBufPos += 12;
+    751          				SerialTXIndex++;
+    752          			}
+    753          			#endif
+    754          		}  
+    755          	}
+    756          #else
+    757          	
     758          
-    759          }
+    759          #endif
     760          
-    761          /*
-    762          void DMA1_Stream6_IRQHandler(void)
-    763          {
-    764          	if (DMA_GetITStatus(DMA1_Stream6, DMA_IT_TCIF6) != RESET) 
-    765              	{
-    766              		if(pReadBufPos >= (RING_BUF_SIZE-1))
-    767          			pReadBufPos = 0;
-    768          
-    769          		if((Uart2_SerialTxCnt == 0) && (pWriteBufPos != pReadBufPos))
-    770          		{
-    771          			memcpy(&Uart2_SerialTxMsg[3] , &ring_buf[pReadBufPos], 12);	
-    772          		}
-    773          		USART_SendData(USART2, (u16)(Uart2_SerialTxMsg[Uart2_SerialTxCnt++]));    
-    774          		
-    775          		if (Uart2_SerialTxCnt >= UART2_Tx_BUF_SIZE)
-    776          		{
-    777          			Uart2_SerialTxCnt = 0;
-    778          			pReadBufPos += 12;
-    779          			SerialTXIndex++;
-    780          		}  
-    781          	}
-    782          }*/
-    783          
-    784          
+    761          }
+    762          
+    763          /*
+    764          void DMA1_Stream6_IRQHandler(void)
+    765          {
+    766          	if (DMA_GetITStatus(DMA1_Stream6, DMA_IT_TCIF6) != RESET) 
+    767              	{
+    768              		if(pReadBufPos >= (RING_BUF_SIZE-1))
+    769          			pReadBufPos = 0;
+    770          
+    771          		if((Uart2_SerialTxCnt == 0) && (pWriteBufPos != pReadBufPos))
+    772          		{
+    773          			memcpy(&Uart2_SerialTxMsg[3] , &ring_buf[pReadBufPos], 12);	
+    774          		}
+    775          		USART_SendData(USART2, (u16)(Uart2_SerialTxMsg[Uart2_SerialTxCnt++]));    
+    776          		
+    777          		if (Uart2_SerialTxCnt >= UART2_Tx_BUF_SIZE)
+    778          		{
+    779          			Uart2_SerialTxCnt = 0;
+    780          			pReadBufPos += 12;
+    781          			SerialTXIndex++;
+    782          		}  
+    783          	}
+    784          }*/
     785          
-    786          void UART4_IRQHandler(void)
-    787          {
-    788          	//  UART4 receive interrupt routine
-    789          	if (USART_GetITStatus(UART4, USART_IT_RXNE) != RESET) 
-    790              	{
-    791              		if(Change_UART4_for_Download==0)
-    792          			UART4_Receive_CMD();
-    793          		else
-    794          			UART4_Receive_File();
-    795          				
-    796          	}
-    797          	//  UART4 transmit interrupt routine
-    798          	if (USART_GetITStatus(UART4, USART_IT_TXE) != RESET)
-    799          	{   
-    800          		UART4_transmit_CMD();
-    801          	}
-    802          }
-    803          
-    804          u8 temp_rx_buf[4];
+    786          
+    787          
+    788          void UART4_IRQHandler(void)
+    789          {
+    790          	//  UART4 receive interrupt routine
+    791          	if (USART_GetITStatus(UART4, USART_IT_RXNE) != RESET) 
+    792              	{
+    793              		if(Change_UART4_for_Download==0)
+    794          			UART4_Receive_CMD();
+    795          		else
+    796          			UART4_Receive_File();
+    797          				
+    798          	}
+    799          	//  UART4 transmit interrupt routine
+    800          	if (USART_GetITStatus(UART4, USART_IT_TXE) != RESET)
+    801          	{   
+    802          		UART4_transmit_CMD();
+    803          	}
+    804          }
     805          
-    806          
-    807          void UART4_Receive_CMD(void)
-    808          {
-    809          	uint8_t Temp[Serial_COM4_TxSize];
-    810          	//  Read one byte to the receive data register
-    811          	WL9FM_USART_DATA.COM4_RxBuf[WL9FM_USART_INDEX.COM4_RxCnt] = USART_ReceiveData(UART4);
-    812          
-    813          	
-    814              	//  디버깅할 때만 사용할 것
-    815          	#ifdef DEBUG_CMD_RX
-    816          	DebugMsg_printf("%2x ", WL9FM_USART_DATA.COM4_RxBuf[WL9FM_USART_INDEX.COM4_RxCnt]);
-    817          	#endif
-    818          
-    819          	
-    820          	switch (WL9FM_USART_INDEX.COM4_RxCnt)
-    821          	{
-    822          		case 0:
-    823          				if (WL9FM_USART_DATA.COM4_RxBuf[0] == STX)
-    824          				{
-    825          					WL9FM_USART_INDEX.COM4_RxCnt++;
-    826          				}	
-    827          				else
-    828          				{
-    829          					WL9FM_USART_INDEX.COM4_RxCnt=0;
-    830          				}
-    831          				
-    832          				break;
-    833          		case 1:
-    834          				if (WL9FM_USART_DATA.COM4_RxBuf[1]      == KeyCMD)		WL9FM_USART_INDEX.COM4_RxCnt++;
-    835          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == LCDBLCMD)	WL9FM_USART_INDEX.COM4_RxCnt++;
-    836          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == BUZZERCMD)	WL9FM_USART_INDEX.COM4_RxCnt++;
-    837          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == LAMPCMD)		WL9FM_USART_INDEX.COM4_RxCnt++;
-    838          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == CAMCMD)		WL9FM_USART_INDEX.COM4_RxCnt++;
-    839          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == DOWNCMD)	WL9FM_USART_INDEX.COM4_RxCnt++;
-    840          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == VersionCMD) WL9FM_USART_INDEX.COM4_RxCnt++;
-    841          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == StartCANCMD) WL9FM_USART_INDEX.COM4_RxCnt++;    
-    842          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == RTCCMD) WL9FM_USART_INDEX.COM4_RxCnt++;
-    843          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == CANUPDATECMD) WL9FM_USART_INDEX.COM4_RxCnt++;
-    844          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == SMKCMD) WL9FM_USART_INDEX.COM4_RxCnt++;
-    845          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == OSUPDATECMD) WL9FM_USART_INDEX.COM4_RxCnt++;
-    846          
-    847          				
+    806          u8 temp_rx_buf[4];
+    807          
+    808          
+    809          void UART4_Receive_CMD(void)
+    810          {
+    811          	uint8_t Temp[Serial_COM4_TxSize];
+    812          	//  Read one byte to the receive data register
+    813          	WL9FM_USART_DATA.COM4_RxBuf[WL9FM_USART_INDEX.COM4_RxCnt] = USART_ReceiveData(UART4);
+    814          
+    815          	
+    816              	//  디버깅할 때만 사용할 것
+    817          	#ifdef DEBUG_CMD_RX
+    818          	DebugMsg_printf("%2x ", WL9FM_USART_DATA.COM4_RxBuf[WL9FM_USART_INDEX.COM4_RxCnt]);
+    819          	#endif
+    820          
+    821          	
+    822          	switch (WL9FM_USART_INDEX.COM4_RxCnt)
+    823          	{
+    824          		case 0:
+    825          				if (WL9FM_USART_DATA.COM4_RxBuf[0] == STX)
+    826          				{
+    827          					WL9FM_USART_INDEX.COM4_RxCnt++;
+    828          				}	
+    829          				else
+    830          				{
+    831          					WL9FM_USART_INDEX.COM4_RxCnt=0;
+    832          				}
+    833          				
+    834          				break;
+    835          		case 1:
+    836          				if (WL9FM_USART_DATA.COM4_RxBuf[1]      == KeyCMD)		WL9FM_USART_INDEX.COM4_RxCnt++;
+    837          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == LCDBLCMD)	WL9FM_USART_INDEX.COM4_RxCnt++;
+    838          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == BUZZERCMD)	WL9FM_USART_INDEX.COM4_RxCnt++;
+    839          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == LAMPCMD)		WL9FM_USART_INDEX.COM4_RxCnt++;
+    840          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == CAMCMD)		WL9FM_USART_INDEX.COM4_RxCnt++;
+    841          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == DOWNCMD)	WL9FM_USART_INDEX.COM4_RxCnt++;
+    842          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == VersionCMD) WL9FM_USART_INDEX.COM4_RxCnt++;
+    843          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == StartCANCMD) WL9FM_USART_INDEX.COM4_RxCnt++;    
+    844          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == RTCCMD) WL9FM_USART_INDEX.COM4_RxCnt++;
+    845          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == CANUPDATECMD) WL9FM_USART_INDEX.COM4_RxCnt++;
+    846          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == SMKCMD) WL9FM_USART_INDEX.COM4_RxCnt++;
+    847          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == OSUPDATECMD) WL9FM_USART_INDEX.COM4_RxCnt++;
     848          
-    849                          else
-    850                          {
-    851                            	WL9FM_USART_INDEX.COM4_RxCnt = 0;
-    852                          }
-    853          				break;
-    854          
-    855          		case Serial_COM4_RxSize-1: 
-    856          				WL9FM_USART_INDEX.COM4_RxCnt = 0;
-    857          				
-    858          				//  디버깅할 때만 사용할 것
-    859          				#ifdef DEBUG_CMD_RX
-    860          				DebugMsg_printf("\r\n");
-    861          				#endif
-    862          
-    863          		if (WL9FM_USART_DATA.COM4_RxBuf[Serial_COM4_RxSize-1] == ETX)
-    864          		{
-    865          			switch (WL9FM_USART_DATA.COM4_RxBuf[1])
-    866          			{
-    867          				case KeyCMD   :		//	Key Command
-    868          
-    869          					break;
-    870          							
-    871          				case LCDBLCMD :		//	LCD BackLight Command
-    872          
-    873          					//	LCD BackLight Level 조절.. Level0 ~ Level8
-    874          					if (WL9FM_USART_DATA.COM4_RxBuf[2] < MaxBackLightLEVEL && (WL9FM_USART_DATA.COM4_RxBuf[2] > 0)) 												
-    875          					{
-    876          						LCDBL_PWM_LEVEL(WL9FM_USART_DATA.COM4_RxBuf[2]);
-    877          					}
-    878          
-    879          					break;
+    849          				
+    850          
+    851                          else
+    852                          {
+    853                            	WL9FM_USART_INDEX.COM4_RxCnt = 0;
+    854                          }
+    855          				break;
+    856          
+    857          		case Serial_COM4_RxSize-1: 
+    858          				WL9FM_USART_INDEX.COM4_RxCnt = 0;
+    859          				
+    860          				//  디버깅할 때만 사용할 것
+    861          				#ifdef DEBUG_CMD_RX
+    862          				DebugMsg_printf("\r\n");
+    863          				#endif
+    864          
+    865          		if (WL9FM_USART_DATA.COM4_RxBuf[Serial_COM4_RxSize-1] == ETX)
+    866          		{
+    867          			switch (WL9FM_USART_DATA.COM4_RxBuf[1])
+    868          			{
+    869          				case KeyCMD   :		//	Key Command
+    870          
+    871          					break;
+    872          							
+    873          				case LCDBLCMD :		//	LCD BackLight Command
+    874          
+    875          					//	LCD BackLight Level 조절.. Level0 ~ Level8
+    876          					if (WL9FM_USART_DATA.COM4_RxBuf[2] < MaxBackLightLEVEL && (WL9FM_USART_DATA.COM4_RxBuf[2] > 0)) 												
+    877          					{
+    878          						LCDBL_PWM_LEVEL(WL9FM_USART_DATA.COM4_RxBuf[2]);
+    879          					}
     880          
-    881          				case BUZZERCMD :	//	Buzzer Command
-    882          					if (WL9FM_USART_DATA.COM4_RxBuf[2] == 0)	//	Buzzer Off
-    883          					{
-    884          						Buzzer_UnLimitOff();
-    885          					}
-    886          					else if(WL9FM_USART_DATA.COM4_RxBuf[2] == 1)					//	Buzzer On
-    887          					{
-    888          						Buzzer_UnLimitOn();
-    889          					}
-    890          					break;
-    891          
-    892          				case LAMPCMD :	//	Buzzer Command
-    893          					Lamp_name = (WL9FM_USART_DATA.COM4_RxBuf[2] & 0xf0)>>4;
-    894          					Lamp_Value = (WL9FM_USART_DATA.COM4_RxBuf[2] & 0x0f);
-    895          					memcpy(&rx_CMD_LAMP , &WL9FM_USART_DATA.COM4_RxBuf[2], 8);	
-    896          					Lamp_Update_State();
-    897          					//Lamp_Update_System();
-    898          					break;
-    899          					
-    900          				case CAMCMD:
-    901          					if(CameraCommFlag == 0)
-    902          					{
-    903          						CameraCommFlag = 1;
-    904          						Camera_Mode = WL9FM_USART_DATA.COM4_RxBuf[2];
-    905          					}					
-    906          					break;
-    907          
-    908          				case DOWNCMD:
-    909          					Stm32_Update_CMD = WL9FM_USART_DATA.COM4_RxBuf[2];
-    910          					FatoryInit_Flag = WL9FM_USART_DATA.COM4_RxBuf[3];
-    911          					ST_Update=1;
-    912          
-    913          					break;
-    914          				case VersionCMD:
-    915          					
-    916          					Temp[0] = 0x02;				
-    917          					Temp[1] = VersionRES;				
-    918          					Temp[2] = ((VERSION_HIGH  << 4) & 0xF0 ) + (VERSION_LOW & 0x0F);	
-    919          					Temp[3] = ((VERSION_SUB_HIGH  << 4) & 0xF0 )+ (VERSION_SUB_LOW & 0x0F);	
-    920          					// HW Version/////
-    921          					Temp[4] = 'A';
-    922          					Temp[5] = 1;
-    923          					Temp[6] = 0;
-    924          					//////////////////
-    925          					Temp[Serial_COM4_RxSize-1] = 0x03;	
-    926          					USARTx_EXYNOS(COM4, (char *)Temp);	
-    927          					break;
-    928          				case StartCANCMD:
-    929          					//Flag_UartTxStart = 1;
-    930          					CAN_ITConfig(CAN1, CAN_IT_FMP0,ENABLE);	
-    931          					break;
-    932          				case RTCCMD:
-    933          					WL9FM_RTC.Year = WL9FM_USART_DATA.COM4_RxBuf[2];
-    934          					WL9FM_RTC.Month = WL9FM_USART_DATA.COM4_RxBuf[3];
-    935          					WL9FM_RTC.Date = WL9FM_USART_DATA.COM4_RxBuf[4];
-    936          					WL9FM_RTC.Day = WL9FM_USART_DATA.COM4_RxBuf[5];
-    937          					WL9FM_RTC.Hour = WL9FM_USART_DATA.COM4_RxBuf[6];
-    938          					WL9FM_RTC.Minute= WL9FM_USART_DATA.COM4_RxBuf[7];
-    939          					WL9FM_RTC.Second= WL9FM_USART_DATA.COM4_RxBuf[8];
-    940          					WRITE_RTC(WL9FM_RTC);
-    941          					break;
-    942          
-    943          				case SMKCMD:
-    944          					
-    945          					if(WL9FM_USART_DATA.COM4_RxBuf[2] == 0x00)
-    946          					{
-    947          						SendSMKAuthResult(SMKSuccess);
-    948          					}
-    949          					else if(WL9FM_USART_DATA.COM4_RxBuf[2] == 0x03)
-    950          					{
-    951          						SaveSMKUseToEEPROM(WL9FM_USART_DATA.COM4_RxBuf[3]);
-    952          					}
-    953          					else
-    954          					{
-    955          						memcpy(&Uart2_RxMsg_Smk_Reg_Eli[0], &WL9FM_USART_DATA.COM4_RxBuf[0], 8);
-    956          					}
-    957          					break;
-    958          				case CANUPDATECMD:
-    959          					CANUpdateFlag = WL9FM_USART_DATA.COM4_RxBuf[2];
-    960          					CANUpdateSA = WL9FM_USART_DATA.COM4_RxBuf[3];
-    961          					break;
-    962          				case OSUPDATECMD:
-    963          					LCDOffCount = 0;
-    964          					OSUpdateCount = 0;
-    965          					break;
-    966          					
-    967          				default :
-    968          					break;								
-    969          			}
-    970                          }						
-    971          
-    972          		//memset(WL9FM_USART_DATA.COM4_RxBuf, 0x0, Serial_COM4_RxSize);					
-    973          				break;
-    974          		
-    975          		default :
-    976          
-    977          			WL9FM_USART_INDEX.COM4_RxCnt++;
-    978          			break;
-    979          	}	
-    980          }
-    981          
-    982          void UART4_Receive_File(void)
-    983          {
-    984          	
-    985          	//  Read one byte to the receive data register
-    986          	WL9FM_USART_RX_FILE_DATA.File_RxBuf[WL9FM_USART_RX_FILE_DATA.File_RxCnt] = USART_ReceiveData(UART4);
-    987          	
-    988          	switch (WL9FM_USART_RX_FILE_DATA.File_RxCnt)
-    989          	{
-    990          		case 0:
-    991          				if (WL9FM_USART_RX_FILE_DATA.File_RxBuf[0] == STX)
-    992          				{
-    993          					WL9FM_USART_RX_FILE_DATA.File_RxCnt++;
-    994          				}						
-    995          				break;
-    996          		case 1029: 
-    997          				WL9FM_USART_RX_FILE_DATA.File_RxCnt = 0;
-    998          					
-    999          				if (WL9FM_USART_RX_FILE_DATA.File_RxBuf[1029] == ETX)
-   1000          				{
-   1001          					memcpy(&WL9FM_USART_FILE_DATA , &WL9FM_USART_RX_FILE_DATA, Serial_file_RxSize);	
-   1002          					ST_Update=1;
-   1003          				}
-   1004          				else if (WL9FM_USART_RX_FILE_DATA.File_RxBuf[1029] == EOT)
-   1005          				{
-   1006          					memcpy(&WL9FM_USART_FILE_DATA , &WL9FM_USART_RX_FILE_DATA, Serial_file_RxSize);	
-   1007          					Change_UART4_for_Download =2;
-   1008          					ST_Update=1;
-   1009          				}
-   1010          				else
-   1011          				{
-   1012          					ACK_NACK_SendToExynos(NAK);
-   1013          				}
-   1014                                          break;
-   1015          		default :
-   1016          
-   1017          			WL9FM_USART_RX_FILE_DATA.File_RxCnt++;
-   1018          			break;
-   1019          	}					
-   1020          }
-   1021          
-   1022          
-   1023          void UART4_transmit_CMD(void)
-   1024          {
-   1025          	//  Write one byte to the transmit data register
-   1026          	USART_SendData(UART4, WL9FM_USART_DATA.COM4_TxBuf[WL9FM_USART_INDEX.COM4_TxCnt++]);
-   1027          
-   1028          	if (WL9FM_USART_INDEX.COM4_TxIdx >= Serial_COM4_TxSize)
-   1029          	{
-   1030          		WL9FM_USART_INDEX.COM4_TxIdx = Serial_COM4_TxSize;
-   1031          	}    
-   1032          	if (WL9FM_USART_INDEX.COM4_TxCnt == WL9FM_USART_INDEX.COM4_TxIdx)
-   1033          	{
-   1034          		//  Disable the UART4 Transmit interrupt
-   1035          		USART_ITConfig(UART4, USART_IT_TXE, DISABLE);
-   1036          
-   1037          		WL9FM_USART_INDEX.COM4_TxIdx = 0; //  transmit buffer Index clear
-   1038          		WL9FM_USART_INDEX.COM4_TxCnt = 0; //  transmit buffer Cnt   clear
-   1039          	}              
-   1040          	
-   1041          }
-   1042          /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+    881          					break;
+    882          
+    883          				case BUZZERCMD :	//	Buzzer Command
+    884          					if (WL9FM_USART_DATA.COM4_RxBuf[2] == 0)	//	Buzzer Off
+    885          					{
+    886          						Buzzer_UnLimitOff();
+    887          					}
+    888          					else if(WL9FM_USART_DATA.COM4_RxBuf[2] == 1)					//	Buzzer On
+    889          					{
+    890          						Buzzer_UnLimitOn();
+    891          					}
+    892          					break;
+    893          
+    894          				case LAMPCMD :	//	Buzzer Command
+    895          					Lamp_name = (WL9FM_USART_DATA.COM4_RxBuf[2] & 0xf0)>>4;
+    896          					Lamp_Value = (WL9FM_USART_DATA.COM4_RxBuf[2] & 0x0f);
+    897          					memcpy(&rx_CMD_LAMP , &WL9FM_USART_DATA.COM4_RxBuf[2], 8);	
+    898          					Lamp_Update_State();
+    899          					//Lamp_Update_System();
+    900          					break;
+    901          					
+    902          				case CAMCMD:
+    903          					if(CameraCommFlag == 0)
+    904          					{
+    905          						CameraCommFlag = 1;
+    906          						Camera_Mode = WL9FM_USART_DATA.COM4_RxBuf[2];
+    907          					}					
+    908          					break;
+    909          
+    910          				case DOWNCMD:
+    911          					Stm32_Update_CMD = WL9FM_USART_DATA.COM4_RxBuf[2];
+    912          					FatoryInit_Flag = WL9FM_USART_DATA.COM4_RxBuf[3];
+    913          					ST_Update=1;
+    914          
+    915          					break;
+    916          				case VersionCMD:
+    917          					
+    918          					Temp[0] = 0x02;				
+    919          					Temp[1] = VersionRES;				
+    920          					Temp[2] = ((VERSION_HIGH  << 4) & 0xF0 ) + (VERSION_LOW & 0x0F);	
+    921          					Temp[3] = ((VERSION_SUB_HIGH  << 4) & 0xF0 )+ (VERSION_SUB_LOW & 0x0F);	
+    922          					// HW Version/////
+    923          					Temp[4] = (ADC3ConvertedValue & 0xFF);
+    924          					Temp[5] = (ADC3ConvertedValue & 0xFF00) >> 8;
+    925          					Temp[6] = 0;
+    926          					//////////////////
+    927          					Temp[Serial_COM4_RxSize-1] = 0x03;	
+    928          					USARTx_EXYNOS(COM4, (char *)Temp);	
+    929          					break;
+    930          				case StartCANCMD:
+    931          					//Flag_UartTxStart = 1;
+    932          					CAN_ITConfig(CAN1, CAN_IT_FMP0,ENABLE);	
+    933          					break;
+    934          				case RTCCMD:
+    935          					WL9FM_RTC.Year = WL9FM_USART_DATA.COM4_RxBuf[2];
+    936          					WL9FM_RTC.Month = WL9FM_USART_DATA.COM4_RxBuf[3];
+    937          					WL9FM_RTC.Date = WL9FM_USART_DATA.COM4_RxBuf[4];
+    938          					WL9FM_RTC.Day = WL9FM_USART_DATA.COM4_RxBuf[5];
+    939          					WL9FM_RTC.Hour = WL9FM_USART_DATA.COM4_RxBuf[6];
+    940          					WL9FM_RTC.Minute= WL9FM_USART_DATA.COM4_RxBuf[7];
+    941          					WL9FM_RTC.Second= WL9FM_USART_DATA.COM4_RxBuf[8];
+    942          					WRITE_RTC(WL9FM_RTC);
+    943          					break;
+    944          
+    945          				case SMKCMD:
+    946          					
+    947          					if(WL9FM_USART_DATA.COM4_RxBuf[2] == 0x00)
+    948          					{
+    949          						SendSMKAuthResult(SMKSuccess);
+    950          					}
+    951          					else if(WL9FM_USART_DATA.COM4_RxBuf[2] == 0x03)
+    952          					{
+    953          						SaveSMKUseToEEPROM(WL9FM_USART_DATA.COM4_RxBuf[3]);
+    954          					}
+    955          					else
+    956          					{
+    957          						memcpy(&Uart2_RxMsg_Smk_Reg_Eli[0], &WL9FM_USART_DATA.COM4_RxBuf[0], 8);
+    958          					}
+    959          					break;
+    960          				case CANUPDATECMD:
+    961          					CANUpdateFlag = WL9FM_USART_DATA.COM4_RxBuf[2];
+    962          					CANUpdateSA = WL9FM_USART_DATA.COM4_RxBuf[3];
+    963          					break;
+    964          				case OSUPDATECMD:
+    965          					LCDOffCount = 0;
+    966          					OSUpdateCount = 0;
+    967          					break;
+    968          					
+    969          				default :
+    970          					break;								
+    971          			}
+    972                          }						
+    973          
+    974          		//memset(WL9FM_USART_DATA.COM4_RxBuf, 0x0, Serial_COM4_RxSize);					
+    975          				break;
+    976          		
+    977          		default :
+    978          
+    979          			WL9FM_USART_INDEX.COM4_RxCnt++;
+    980          			break;
+    981          	}	
+    982          }
+    983          
+    984          void UART4_Receive_File(void)
+    985          {
+    986          	
+    987          	//  Read one byte to the receive data register
+    988          	WL9FM_USART_RX_FILE_DATA.File_RxBuf[WL9FM_USART_RX_FILE_DATA.File_RxCnt] = USART_ReceiveData(UART4);
+    989          	
+    990          	switch (WL9FM_USART_RX_FILE_DATA.File_RxCnt)
+    991          	{
+    992          		case 0:
+    993          				if (WL9FM_USART_RX_FILE_DATA.File_RxBuf[0] == STX)
+    994          				{
+    995          					WL9FM_USART_RX_FILE_DATA.File_RxCnt++;
+    996          				}						
+    997          				break;
+    998          		case 1029: 
+    999          				WL9FM_USART_RX_FILE_DATA.File_RxCnt = 0;
+   1000          					
+   1001          				if (WL9FM_USART_RX_FILE_DATA.File_RxBuf[1029] == ETX)
+   1002          				{
+   1003          					memcpy(&WL9FM_USART_FILE_DATA , &WL9FM_USART_RX_FILE_DATA, Serial_file_RxSize);	
+   1004          					ST_Update=1;
+   1005          				}
+   1006          				else if (WL9FM_USART_RX_FILE_DATA.File_RxBuf[1029] == EOT)
+   1007          				{
+   1008          					memcpy(&WL9FM_USART_FILE_DATA , &WL9FM_USART_RX_FILE_DATA, Serial_file_RxSize);	
+   1009          					Change_UART4_for_Download =2;
+   1010          					ST_Update=1;
+   1011          				}
+   1012          				else
+   1013          				{
+   1014          					ACK_NACK_SendToExynos(NAK);
+   1015          				}
+   1016                                          break;
+   1017          		default :
+   1018          
+   1019          			WL9FM_USART_RX_FILE_DATA.File_RxCnt++;
+   1020          			break;
+   1021          	}					
+   1022          }
+   1023          
+   1024          
+   1025          void UART4_transmit_CMD(void)
+   1026          {
+   1027          	//  Write one byte to the transmit data register
+   1028          	USART_SendData(UART4, WL9FM_USART_DATA.COM4_TxBuf[WL9FM_USART_INDEX.COM4_TxCnt++]);
+   1029          
+   1030          	if (WL9FM_USART_INDEX.COM4_TxIdx >= Serial_COM4_TxSize)
+   1031          	{
+   1032          		WL9FM_USART_INDEX.COM4_TxIdx = Serial_COM4_TxSize;
+   1033          	}    
+   1034          	if (WL9FM_USART_INDEX.COM4_TxCnt == WL9FM_USART_INDEX.COM4_TxIdx)
+   1035          	{
+   1036          		//  Disable the UART4 Transmit interrupt
+   1037          		USART_ITConfig(UART4, USART_IT_TXE, DISABLE);
+   1038          
+   1039          		WL9FM_USART_INDEX.COM4_TxIdx = 0; //  transmit buffer Index clear
+   1040          		WL9FM_USART_INDEX.COM4_TxCnt = 0; //  transmit buffer Cnt   clear
+   1041          	}              
+   1042          	
+   1043          }
+   1044          /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
 
    Maximum stack usage in bytes:
 
@@ -1171,6 +1173,7 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\COMMON\SRC\stm32f4xx_it.c
        4  ??DataTable12_28
        4  ??DataTable12_29
        4  ??DataTable12_3
+       4  ??DataTable12_30
        4  ??DataTable12_4
        4  ??DataTable12_5
        4  ??DataTable12_6
@@ -1212,7 +1215,7 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\COMMON\SRC\stm32f4xx_it.c
       20  TIM5_IRQHandler
        2  TotMsgSize
       56  UART4_IRQHandler
-     530  UART4_Receive_CMD
+     532  UART4_Receive_CMD
      114  UART4_Receive_File
       64  UART4_transmit_CMD
       94  USART2_IRQHandler
@@ -1232,9 +1235,9 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\COMMON\SRC\stm32f4xx_it.c
 
  
    895 bytes in section .bss
- 1 640 bytes in section .text
+ 1 646 bytes in section .text
  
- 1 640 bytes of CODE memory
+ 1 646 bytes of CODE memory
    895 bytes of DATA memory
 
 Errors: none

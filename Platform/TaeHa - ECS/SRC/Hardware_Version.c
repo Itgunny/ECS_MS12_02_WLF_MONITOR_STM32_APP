@@ -83,14 +83,23 @@ void Check_Hardware_Revision(void)
 {
 	ADC3ConvertedValue = ADC_GetConversionValue(ADC1) ; //first
 
-	if(ADC3ConvertedValue>390 && ADC3ConvertedValue<420) // R5 = 9.1K RevD.02.01
-	{
-		Hardware_Revision = REVD_02_01;
-	}
-	else //if(ADC3ConvertedValue>357 && ADC3ConvertedValue<387) // R5 = 10K RevB       372
+//	if(ADC3ConvertedValue>390 && ADC3ConvertedValue<420) // R5 = 9.1K RevD.02.01
+//	{
+//		Hardware_Revision = REVD_02_01;
+//	}
+//	else //if(ADC3ConvertedValue>357 && ADC3ConvertedValue<387) // R5 = 10K RevB       372
+//	{
+//		Hardware_Revision = REVB;
+//	}
+	if(ADC3ConvertedValue>357 && ADC3ConvertedValue<387) // R5 = 10K RevB		372
 	{
 		Hardware_Revision = REVB;
 	}
+	else //if(ADC3ConvertedValue>390 && ADC3ConvertedValue<420) // R5 = 9.1K RevD.02.01
+	{
+		Hardware_Revision = REVD_02_01;
+	}
+	
 }
 // --, sys3215, 141211
 

@@ -1,6 +1,6 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      11/Dec/2014  17:43:52 #
+# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      12/Dec/2014  14:37:39 #
 # Copyright 1999-2012 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
@@ -118,36 +118,45 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\Hardware_Version.c
      83          {
      84          	ADC3ConvertedValue = ADC_GetConversionValue(ADC1) ; //first
      85          
-     86          	if(ADC3ConvertedValue>390 && ADC3ConvertedValue<420) // R5 = 9.1K RevD.02.01
-     87          	{
-     88          		Hardware_Revision = REVD_02_01;
-     89          	}
-     90          	else //if(ADC3ConvertedValue>357 && ADC3ConvertedValue<387) // R5 = 10K RevB       372
-     91          	{
-     92          		Hardware_Revision = REVB;
-     93          	}
-     94          }
-     95          // --, sys3215, 141211
-     96          
-     97          /**\
-     98            * @brief  None
-     99            * @param  None
-    100            * @retval None
-    101            */
-    102          void Hardware_Version_Init(void)
-    103          {
-    104          	DebugMsg_printf("++ Hardware_Version (ADC : IN13), ADC Initialize START\r\n");
+     86          //	if(ADC3ConvertedValue>390 && ADC3ConvertedValue<420) // R5 = 9.1K RevD.02.01
+     87          //	{
+     88          //		Hardware_Revision = REVD_02_01;
+     89          //	}
+     90          //	else //if(ADC3ConvertedValue>357 && ADC3ConvertedValue<387) // R5 = 10K RevB       372
+     91          //	{
+     92          //		Hardware_Revision = REVB;
+     93          //	}
+     94          	if(ADC3ConvertedValue>357 && ADC3ConvertedValue<387) // R5 = 10K RevB		372
+     95          	{
+     96          		Hardware_Revision = REVB;
+     97          	}
+     98          	else //if(ADC3ConvertedValue>390 && ADC3ConvertedValue<420) // R5 = 9.1K RevD.02.01
+     99          	{
+    100          		Hardware_Revision = REVD_02_01;
+    101          	}
+    102          	
+    103          }
+    104          // --, sys3215, 141211
     105          
-    106          	ADC_Configuration();
-    107          
-    108          	// ++, sys3215, 141211
-    109          	Check_Hardware_Revision();
-    110          	// --, sys3215, 141211
-    111          	
-    112          	DebugMsg_printf("-- Hardware_Version (ADC : IN13), ADC Initialize END\r\n");
-    113          }
+    106          /**\
+    107            * @brief  None
+    108            * @param  None
+    109            * @retval None
+    110            */
+    111          void Hardware_Version_Init(void)
+    112          {
+    113          	DebugMsg_printf("++ Hardware_Version (ADC : IN13), ADC Initialize START\r\n");
     114          
-    115          /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
+    115          	ADC_Configuration();
+    116          
+    117          	// ++, sys3215, 141211
+    118          	Check_Hardware_Revision();
+    119          	// --, sys3215, 141211
+    120          	
+    121          	DebugMsg_printf("-- Hardware_Version (ADC : IN13), ADC Initialize END\r\n");
+    122          }
+    123          
+    124          /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
 
    Maximum stack usage in bytes:
 
@@ -175,16 +184,16 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\Hardware_Version.c
        4  ??DataTable1
        4  ??DataTable1_1
      104  ADC_Configuration
-      26  Check_Hardware_Revision
+      28  Check_Hardware_Revision
        4  Hardware_Revision
           ADC3ConvertedValue
       12  Hardware_Version_Init
 
  
    4 bytes in section .bss
- 150 bytes in section .text
+ 152 bytes in section .text
  
- 150 bytes of CODE memory
+ 152 bytes of CODE memory
    4 bytes of DATA memory
 
 Errors: none

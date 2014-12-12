@@ -227,6 +227,8 @@ extern u8 Flag_ESL;
 extern u8 SmartKeyUse;
 
 extern u8 CameraCommFlag;
+
+extern uint16_t ADC3ConvertedValue;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 void WL9F_CAN_Buffer_Init(void)
@@ -918,8 +920,8 @@ void UART4_Receive_CMD(void)
 					Temp[2] = ((VERSION_HIGH  << 4) & 0xF0 ) + (VERSION_LOW & 0x0F);	
 					Temp[3] = ((VERSION_SUB_HIGH  << 4) & 0xF0 )+ (VERSION_SUB_LOW & 0x0F);	
 					// HW Version/////
-					Temp[4] = 'A';
-					Temp[5] = 1;
+					Temp[4] = (ADC3ConvertedValue & 0xFF);
+					Temp[5] = (ADC3ConvertedValue & 0xFF00) >> 8;
 					Temp[6] = 0;
 					//////////////////
 					Temp[Serial_COM4_RxSize-1] = 0x03;	

@@ -177,7 +177,7 @@
 #define	VERSION_HIGH		1
 #define	VERSION_LOW			0
 #define	VERSION_SUB_HIGH	1
-#define	VERSION_SUB_LOW		4
+#define	VERSION_SUB_LOW		5
 
 ///////////////////////////////////////////////////
 ////1.0.1.0 (1.0.0.9에서 250kpbs로 CAN2 수정)
@@ -196,6 +196,9 @@
 ////1.0.1.4
 // Camera Mode Change함수 Interrupt 루틴에서 Main문으로 이동 2014.12.05
 // Source Address 추가 (ACU, 0x19)
+////1.0.1.5
+// Revision 저항 ADC 추가 2014.12.12
+// HardwareVersion 표시를 위한 Revision 저항 ADC 값 어플리케이션으로 보내는 부분  추가2014.12.12
 ///////////////////////////////////////////////////
 
 //=================================================================
