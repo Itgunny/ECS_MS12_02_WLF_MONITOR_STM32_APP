@@ -177,7 +177,7 @@
 #define	VERSION_HIGH		1
 #define	VERSION_LOW			0
 #define	VERSION_SUB_HIGH	1
-#define	VERSION_SUB_LOW		5
+#define	VERSION_SUB_LOW		6
 
 ///////////////////////////////////////////////////
 ////1.0.1.0 (1.0.0.9에서 250kpbs로 CAN2 수정)
@@ -199,6 +199,8 @@
 ////1.0.1.5
 // Revision 저항 ADC 추가 2014.12.12
 // HardwareVersion 표시를 위한 Revision 저항 ADC 값 어플리케이션으로 보내는 부분  추가2014.12.12
+////1.0.1.6
+// Rear Wiper Long Key 시간 단축 (기존 4.5s -> 1.5s) 2014.12.31
 ///////////////////////////////////////////////////
 
 //=================================================================

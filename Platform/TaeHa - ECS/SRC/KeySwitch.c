@@ -466,25 +466,51 @@ void KeySwitch_Process(void)
 					}
 					
 				}
-				
-				if (Temp_Cnt == 300)         //  10번 연속 체크 되었을 때
+
+				if(Temp_Value3 == 0x00020000)
 				{
-					//  연속 스위치 루틴..                              
-					KeySwitch_Value = Temp_Value1;   
-					Temp_Cnt -= 50;
 					
-					//if(KeySwitch_Value<0x20)
+					if (Temp_Cnt == 100)         //  10번 연속 체크 되었을 때
 					{
-						#ifdef STM32_BUZZER
-							Buzzer_Set(10);
-						#endif
-						if(KeySwitchSendCount >= KEYSwitchSendCountMax)
+						//  연속 스위치 루틴..                              
+						KeySwitch_Value = Temp_Value1;   
+						Temp_Cnt -= 50;
+						
+						//if(KeySwitch_Value<0x20)
 						{
-							KeySwitch_SendToEXYNOS(KeySwitch_Value,1);
-							KeySwitchSendCount = 0;
+							#ifdef STM32_BUZZER
+							Buzzer_Set(10);
+							#endif
+							if(KeySwitchSendCount >= KEYSwitchSendCountMax)
+							{
+								KeySwitch_SendToEXYNOS(KeySwitch_Value,1);
+								KeySwitchSendCount = 0;
+							}
 						}
 					}
 				}
+				else
+				{
+					if (Temp_Cnt == 300)         //  10번 연속 체크 되었을 때
+					{
+						//  연속 스위치 루틴..                              
+						KeySwitch_Value = Temp_Value1;   
+						Temp_Cnt -= 50;
+						
+						//if(KeySwitch_Value<0x20)
+						{
+							#ifdef STM32_BUZZER
+								Buzzer_Set(10);
+							#endif
+							if(KeySwitchSendCount >= KEYSwitchSendCountMax)
+							{
+								KeySwitch_SendToEXYNOS(KeySwitch_Value,1);
+								KeySwitchSendCount = 0;
+							}
+						}
+					}
+				}
+				
 			}
 			else    //  순간적으로 눌렸는가?
 			{
