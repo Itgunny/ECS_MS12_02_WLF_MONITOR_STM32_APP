@@ -148,10 +148,16 @@
 #define SMK_MSG_TAG_SECOND_REG_SUCCESS		0x02
 
 #define SMK_MSG_TAG_NO_REALIZE				0x03
-#define SMK_MSG_FAIL							0x04
+#define SMK_MSG_FAIL						0x04
 #define SMK_MSG_TAG_ALREADY_REG				0x05
 
 #define SMK_MSG_TAG_ELIMINATION_SUCCESS		0x06
+
+#define SMK_MSG_TAG_THIRD_REG_SUCCESS		0x07
+#define SMK_MSG_TAG_FOURTH_REG_SUCCESS		0x08
+#define SMK_MSG_TAG_FIFTH_REG_SUCCESS		0x09
+
+
 
 
 #define	VersionCMD		0x05
@@ -201,6 +207,8 @@
 // HardwareVersion 표시를 위한 Revision 저항 ADC 값 어플리케이션으로 보내는 부분  추가2014.12.12
 ////1.0.1.6
 // Rear Wiper Long Key 시간 단축 (기존 4.5s -> 1.5s) 2014.12.31
+// BKCU Source Address 추가 2015.01.07
+// SmartKey Tag 갯수 5개로 증가 2014.01.07
 ///////////////////////////////////////////////////
 
 //=================================================================

@@ -886,6 +886,12 @@ void CheckResponseMsgComm(void)
 							SendSMKMsgResult(SMK_MSG_TAG_FIRST_REG_SUCCESS);
 						else if(recv_smartkey.Registered_Tag_Count == 2)
 							SendSMKMsgResult(SMK_MSG_TAG_SECOND_REG_SUCCESS);
+						else if(recv_smartkey.Registered_Tag_Count == 3)
+							SendSMKMsgResult(SMK_MSG_TAG_THIRD_REG_SUCCESS);
+						else if(recv_smartkey.Registered_Tag_Count == 4)
+							SendSMKMsgResult(SMK_MSG_TAG_FOURTH_REG_SUCCESS);
+						else if(recv_smartkey.Registered_Tag_Count == 5)
+							SendSMKMsgResult(SMK_MSG_TAG_FIFTH_REG_SUCCESS);
 						else
 							SendSMKMsgResult(SMK_MSG_FAIL);
 					}
