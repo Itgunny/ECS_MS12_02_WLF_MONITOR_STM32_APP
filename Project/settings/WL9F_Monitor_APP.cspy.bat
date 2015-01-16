@@ -19,6 +19,6 @@
 @REM 
 
 
-"C:\Tools\IAR Systems\Embedded Workbench 6.5\common\bin\cspybat" "C:\Tools\IAR Systems\Embedded Workbench 6.5\arm\bin\armproc.dll" "C:\Tools\IAR Systems\Embedded Workbench 6.5\arm\bin\armstlink.dll"  %1 --plugin "C:\Tools\IAR Systems\Embedded Workbench 6.5\arm\bin\armbat.dll" --macro "C:\Tools\IAR Systems\Embedded Workbench 6.5\arm\config\debugger\ST\Trace_STM32F4xx.dmac" --flash_loader "C:\Tools\IAR Systems\Embedded Workbench 6.5\arm\config\flashloader\ST\FlashSTM32F4xxx.board" --backend -B "--endian=little" "--cpu=Cortex-M4" "--fpu=VFPv4" "-p" "C:\Tools\IAR Systems\Embedded Workbench 6.5\arm\CONFIG\debugger\ST\STM32F407ZG.ddf" "--drv_verify_download" "--semihosting" "--device=STM32F407ZG" "--stlink_reset_strategy=0,0" "--drv_swo_clock_setup=168000000,0,2000000" 
+"C:\Tools\IAR Systems\common\bin\cspybat" "C:\Tools\IAR Systems\arm\bin\armproc.dll" "C:\Tools\IAR Systems\arm\bin\armstlink.dll"  %1 --plugin "C:\Tools\IAR Systems\arm\bin\armbat.dll" --macro "C:\Tools\IAR Systems\arm\config\debugger\ST\Trace_STM32F4xx.dmac" --flash_loader "C:\Tools\IAR Systems\arm\config\flashloader\ST\FlashSTM32F4xxx.board" --backend -B "--endian=little" "--cpu=Cortex-M4" "--fpu=VFPv4" "-p" "C:\Tools\IAR Systems\arm\CONFIG\debugger\ST\STM32F407ZG.ddf" "--drv_verify_download" "--semihosting" "--device=STM32F407ZG" "--stlink_reset_strategy=0,0" "--drv_swo_clock_setup=168000000,0,2000000" 
 
 

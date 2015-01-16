@@ -542,10 +542,15 @@ void System_CheckPowerIG()
 			USART_ITConfig(USART2, USART_IT_TXE, DISABLE);
 			CAN_ITConfig(CAN1,CAN_IT_FMP0, DISABLE);
 
+
+			Buzzer_UnLimitOff();
+			
 			//	POWER OFF 일 때, LAMP Clear
 			LAMP_Update_Data = LAMP_ALL_OFF;
-			Old_LAMP_Update_Data = LAMP_ALL_OFF;
-		 	Illumination_Sig = 0;
+
+			//Old_LAMP_Update_Data = LAMP_ALL_OFF;
+
+			Illumination_Sig = 0;
 			Lamp_Update_System();
 			
 			//	엔딩화면 딜레이 시간
@@ -870,9 +875,11 @@ void CheckResponseMsgComm(void)
 		{
 			switch(recv_smartkey.Smk_Response_Flag)
 			{
+				
 				case 2 :
 					SendSMKMsgResult(SMK_MSG_TAG_NO_REALIZE);
 					break;
+				case 1:
 				case 3 :
 					SendSMKMsgResult(SMK_MSG_FAIL);
 					break;
@@ -904,7 +911,6 @@ void CheckResponseMsgComm(void)
 					}
 					break;
 			}
-			
 		}
 		else if(recv_smartkey.Smk_Response_Code == 2)
 			SendSMKMsgResult(SMK_MSG_TAG_ELIMINATION_SUCCESS);

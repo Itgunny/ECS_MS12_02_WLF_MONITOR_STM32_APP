@@ -183,7 +183,7 @@
 #define	VERSION_HIGH		1
 #define	VERSION_LOW			0
 #define	VERSION_SUB_HIGH	1
-#define	VERSION_SUB_LOW		6
+#define	VERSION_SUB_LOW		7
 
 ///////////////////////////////////////////////////
 ////1.0.1.0 (1.0.0.9에서 250kpbs로 CAN2 수정)
@@ -209,6 +209,9 @@
 // Rear Wiper Long Key 시간 단축 (기존 4.5s -> 1.5s) 2014.12.31
 // BKCU Source Address 추가 2015.01.07
 // SmartKey Tag 갯수 5개로 증가 2014.01.07
+////1.0.1.7
+// Smart Key Response Flag 1 인 경우 등록 실패 추가 2015.01.14
+// Power Off 로직 Lamp Off 및 부저 Off 추가 2015.01.14
 ///////////////////////////////////////////////////
 
 //=================================================================
@@ -232,13 +235,18 @@ typedef struct
 	u8 ReturnTagLevel:2;
 	u8 ReturnTagCommand:4;
 	u8 ReturnReserved0:2;
+	
 	u8 ReturnReserved1;
+	
 	u16 ReturnVMC;	
+	
 	u8 Smk_Response_Code:4;
 	u8 Smk_Response_Flag:4;
+	
 	u8 Registered_Tag_Count:4;
 	u8 Reserved0:2;
 	u8 TagLevel:2;
+	
 	u16 TagCRC16;
 } WL9FM_receive_smartkey;
 #pragma pack()
