@@ -489,6 +489,16 @@ u8 LoadSMKUseToEEPROM(void)
 	return EEPROM_Read(0);
 }
 
+void SaveTestToEEPROM(u8 Use)
+{
+	EEPROM_Write(1,Use);
+}
+
+u8 LoadTestToEEPROM(void)
+{
+	return EEPROM_Read(1);
+}
+
 
 void System_CheckPowerIG()
 {

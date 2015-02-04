@@ -1,6 +1,6 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      04/Feb/2015  15:56:06 #
+# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      04/Feb/2015  20:26:12 #
 # Copyright 1999-2012 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
@@ -844,243 +844,276 @@ C:\Tools\IAR Systems\Workspace_WL9F\WL_F_Monitor_APP\Platform\COMMON\SRC\stm32f4
     806          
     807          u8 temp_rx_buf[4];
     808          
-    809          
-    810          void UART4_Receive_CMD(void)
-    811          {
-    812          	uint8_t Temp[Serial_COM4_TxSize];
-    813          	//  Read one byte to the receive data register
-    814          	WL9FM_USART_DATA.COM4_RxBuf[WL9FM_USART_INDEX.COM4_RxCnt] = USART_ReceiveData(UART4);
-    815          
-    816          	
-    817              	//  디버깅할 때만 사용할 것
-    818          	#ifdef DEBUG_CMD_RX
-    819          	DebugMsg_printf("%2x ", WL9FM_USART_DATA.COM4_RxBuf[WL9FM_USART_INDEX.COM4_RxCnt]);
-    820          	#endif
-    821          
-    822          	
-    823          	switch (WL9FM_USART_INDEX.COM4_RxCnt)
-    824          	{
-    825          		case 0:
-    826          				if (WL9FM_USART_DATA.COM4_RxBuf[0] == STX)
-    827          				{
-    828          					WL9FM_USART_INDEX.COM4_RxCnt++;
-    829          				}	
-    830          				else
-    831          				{
-    832          					WL9FM_USART_INDEX.COM4_RxCnt=0;
-    833          				}
-    834          				
-    835          				break;
-    836          		case 1:
-    837          				if (WL9FM_USART_DATA.COM4_RxBuf[1]      == KeyCMD)		WL9FM_USART_INDEX.COM4_RxCnt++;
-    838          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == LCDBLCMD)	WL9FM_USART_INDEX.COM4_RxCnt++;
-    839          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == BUZZERCMD)	WL9FM_USART_INDEX.COM4_RxCnt++;
-    840          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == LAMPCMD)		WL9FM_USART_INDEX.COM4_RxCnt++;
-    841          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == CAMCMD)		WL9FM_USART_INDEX.COM4_RxCnt++;
-    842          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == DOWNCMD)	WL9FM_USART_INDEX.COM4_RxCnt++;
-    843          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == VersionCMD) WL9FM_USART_INDEX.COM4_RxCnt++;
-    844          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == StartCANCMD) WL9FM_USART_INDEX.COM4_RxCnt++;    
-    845          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == RTCCMD) WL9FM_USART_INDEX.COM4_RxCnt++;
-    846          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == CANUPDATECMD) WL9FM_USART_INDEX.COM4_RxCnt++;
-    847          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == SMKCMD) WL9FM_USART_INDEX.COM4_RxCnt++;
-    848          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == OSUPDATECMD) WL9FM_USART_INDEX.COM4_RxCnt++;
-    849          
-    850          				
-    851          
-    852                          else
-    853                          {
-    854                            	WL9FM_USART_INDEX.COM4_RxCnt = 0;
-    855                          }
-    856          				break;
-    857          
-    858          		case Serial_COM4_RxSize-1: 
-    859          				WL9FM_USART_INDEX.COM4_RxCnt = 0;
-    860          				
-    861          				//  디버깅할 때만 사용할 것
-    862          				#ifdef DEBUG_CMD_RX
-    863          				DebugMsg_printf("\r\n");
-    864          				#endif
-    865          
-    866          		if (WL9FM_USART_DATA.COM4_RxBuf[Serial_COM4_RxSize-1] == ETX)
-    867          		{
-    868          			switch (WL9FM_USART_DATA.COM4_RxBuf[1])
-    869          			{
-    870          				case KeyCMD   :		//	Key Command
-    871          
-    872          					break;
-    873          							
-    874          				case LCDBLCMD :		//	LCD BackLight Command
-    875          
-    876          					//	LCD BackLight Level 조절.. Level0 ~ Level8
-    877          					if (WL9FM_USART_DATA.COM4_RxBuf[2] < MaxBackLightLEVEL && (WL9FM_USART_DATA.COM4_RxBuf[2] > 0)) 												
-    878          					{
-    879          						LCDBL_PWM_LEVEL(WL9FM_USART_DATA.COM4_RxBuf[2]);
-    880          					}
-    881          
-    882          					break;
-    883          
-    884          				case BUZZERCMD :	//	Buzzer Command
-    885          					if (WL9FM_USART_DATA.COM4_RxBuf[2] == 0)	//	Buzzer Off
-    886          					{
-    887          						Buzzer_UnLimitOff();
-    888          					}
-    889          					else if(WL9FM_USART_DATA.COM4_RxBuf[2] == 1)					//	Buzzer On
-    890          					{
-    891          						Buzzer_UnLimitOn();
-    892          					}
-    893          					break;
-    894          
-    895          				case LAMPCMD :	//	Buzzer Command
-    896          					Lamp_name = (WL9FM_USART_DATA.COM4_RxBuf[2] & 0xf0)>>4;
-    897          					Lamp_Value = (WL9FM_USART_DATA.COM4_RxBuf[2] & 0x0f);
-    898          					memcpy(&rx_CMD_LAMP , &WL9FM_USART_DATA.COM4_RxBuf[2], 8);	
-    899          					Lamp_Update_State();
-    900          					//Lamp_Update_System();
-    901          					break;
-    902          					
-    903          				case CAMCMD:
-    904          					if(CameraCommFlag == 0)
-    905          					{
-    906          						CameraCommFlag = 1;
-    907          						Camera_Mode = WL9FM_USART_DATA.COM4_RxBuf[2];
-    908          					}					
-    909          					break;
-    910          
-    911          				case DOWNCMD:
-    912          					Stm32_Update_CMD = WL9FM_USART_DATA.COM4_RxBuf[2];
-    913          					FatoryInit_Flag = WL9FM_USART_DATA.COM4_RxBuf[3];
-    914          					ST_Update=1;
-    915          
-    916          					break;
-    917          				case VersionCMD:
-    918          					
-    919          					Temp[0] = 0x02;				
-    920          					Temp[1] = VersionRES;				
-    921          					Temp[2] = ((VERSION_HIGH  << 4) & 0xF0 ) + (VERSION_LOW & 0x0F);	
-    922          					Temp[3] = ((VERSION_SUB_HIGH  << 4) & 0xF0 )+ (VERSION_SUB_LOW & 0x0F);	
-    923          					// HW Version/////
-    924          					Temp[4] = (ADC3ConvertedValue & 0xFF);
-    925          					Temp[5] = (ADC3ConvertedValue & 0xFF00) >> 8;
-    926          					Temp[6] = 0;
-    927          					//////////////////
-    928          					Temp[Serial_COM4_RxSize-1] = 0x03;	
-    929          					USARTx_EXYNOS(COM4, (char *)Temp);	
-    930          					break;
-    931          				case StartCANCMD:
-    932          					//Flag_UartTxStart = 1;
-    933          					CAN_ITConfig(CAN1, CAN_IT_FMP0,ENABLE);	
-    934          					break;
-    935          				case RTCCMD:
-    936          					WL9FM_RTC.Year = WL9FM_USART_DATA.COM4_RxBuf[2];
-    937          					WL9FM_RTC.Month = WL9FM_USART_DATA.COM4_RxBuf[3];
-    938          					WL9FM_RTC.Date = WL9FM_USART_DATA.COM4_RxBuf[4];
-    939          					WL9FM_RTC.Day = WL9FM_USART_DATA.COM4_RxBuf[5];
-    940          					WL9FM_RTC.Hour = WL9FM_USART_DATA.COM4_RxBuf[6];
-    941          					WL9FM_RTC.Minute= WL9FM_USART_DATA.COM4_RxBuf[7];
-    942          					WL9FM_RTC.Second= WL9FM_USART_DATA.COM4_RxBuf[8];
-    943          					WRITE_RTC(WL9FM_RTC);
-    944          					break;
-    945          
-    946          				case SMKCMD:
-    947          					
-    948          					if(WL9FM_USART_DATA.COM4_RxBuf[2] == 0x00)
-    949          					{
-    950          						SendSMKAuthResult(SMKSuccess);
-    951          					}
-    952          					else if(WL9FM_USART_DATA.COM4_RxBuf[2] == 0x03)
-    953          					{
-    954          						SaveSMKUseToEEPROM(WL9FM_USART_DATA.COM4_RxBuf[3]);
-    955          					}
-    956          					else
-    957          					{
-    958          						memcpy(&Uart2_RxMsg_Smk_Reg_Eli[0], &WL9FM_USART_DATA.COM4_RxBuf[0], 8);
-    959          					}
-    960          					break;
-    961          				case CANUPDATECMD:
-    962          					CANUpdateFlag = WL9FM_USART_DATA.COM4_RxBuf[2];
-    963          					CANUpdateSA = WL9FM_USART_DATA.COM4_RxBuf[3];
-    964          					break;
-    965          				case OSUPDATECMD:
-    966          					LCDOffCount = 0;
-    967          					OSUpdateCount = 0;
-    968          					break;
-    969          					
-    970          				default :
-    971          					break;								
-    972          			}
-    973                          }						
-    974          
-    975          		//memset(WL9FM_USART_DATA.COM4_RxBuf, 0x0, Serial_COM4_RxSize);					
-    976          				break;
-    977          		
-    978          		default :
-    979          
-    980          			WL9FM_USART_INDEX.COM4_RxCnt++;
-    981          			break;
-    982          	}	
-    983          }
-    984          
-    985          void UART4_Receive_File(void)
-    986          {
-    987          	
-    988          	//  Read one byte to the receive data register
-    989          	WL9FM_USART_RX_FILE_DATA.File_RxBuf[WL9FM_USART_RX_FILE_DATA.File_RxCnt] = USART_ReceiveData(UART4);
-    990          	
-    991          	switch (WL9FM_USART_RX_FILE_DATA.File_RxCnt)
-    992          	{
-    993          		case 0:
-    994          				if (WL9FM_USART_RX_FILE_DATA.File_RxBuf[0] == STX)
-    995          				{
-    996          					WL9FM_USART_RX_FILE_DATA.File_RxCnt++;
-    997          				}						
-    998          				break;
-    999          		case 1029: 
-   1000          				WL9FM_USART_RX_FILE_DATA.File_RxCnt = 0;
-   1001          					
-   1002          				if (WL9FM_USART_RX_FILE_DATA.File_RxBuf[1029] == ETX)
-   1003          				{
-   1004          					memcpy(&WL9FM_USART_FILE_DATA , &WL9FM_USART_RX_FILE_DATA, Serial_file_RxSize);	
-   1005          					ST_Update=1;
-   1006          				}
-   1007          				else if (WL9FM_USART_RX_FILE_DATA.File_RxBuf[1029] == EOT)
-   1008          				{
-   1009          					memcpy(&WL9FM_USART_FILE_DATA , &WL9FM_USART_RX_FILE_DATA, Serial_file_RxSize);	
-   1010          					Change_UART4_for_Download =2;
-   1011          					ST_Update=1;
-   1012          				}
-   1013          				else
-   1014          				{
-   1015          					ACK_NACK_SendToExynos(NAK);
-   1016          				}
-   1017                                          break;
-   1018          		default :
-   1019          
-   1020          			WL9FM_USART_RX_FILE_DATA.File_RxCnt++;
-   1021          			break;
-   1022          	}					
-   1023          }
-   1024          
-   1025          
-   1026          void UART4_transmit_CMD(void)
-   1027          {
-   1028          	//  Write one byte to the transmit data register
-   1029          	USART_SendData(UART4, WL9FM_USART_DATA.COM4_TxBuf[WL9FM_USART_INDEX.COM4_TxCnt++]);
-   1030          
-   1031          	if (WL9FM_USART_INDEX.COM4_TxIdx >= Serial_COM4_TxSize)
-   1032          	{
-   1033          		WL9FM_USART_INDEX.COM4_TxIdx = Serial_COM4_TxSize;
-   1034          	}    
-   1035          	if (WL9FM_USART_INDEX.COM4_TxCnt == WL9FM_USART_INDEX.COM4_TxIdx)
-   1036          	{
-   1037          		//  Disable the UART4 Transmit interrupt
-   1038          		USART_ITConfig(UART4, USART_IT_TXE, DISABLE);
-   1039          
-   1040          		WL9FM_USART_INDEX.COM4_TxIdx = 0; //  transmit buffer Index clear
-   1041          		WL9FM_USART_INDEX.COM4_TxCnt = 0; //  transmit buffer Cnt   clear
-   1042          	}              
-   1043          	
-   1044          }
-   1045          /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+    809          void UART4_Receive_CMD(void)
+    810          {
+    811          	uint8_t Temp[Serial_COM4_TxSize];
+    812          	//  Read one byte to the receive data register
+    813          	WL9FM_USART_DATA.COM4_RxBuf[WL9FM_USART_INDEX.COM4_RxCnt] = USART_ReceiveData(UART4);
+    814          
+    815          	
+    816              	//  디버깅할 때만 사용할 것
+    817          	#ifdef DEBUG_CMD_RX
+    818          	DebugMsg_printf("%2x ", WL9FM_USART_DATA.COM4_RxBuf[WL9FM_USART_INDEX.COM4_RxCnt]);
+    819          	#endif
+    820          
+    821          	
+    822          	switch (WL9FM_USART_INDEX.COM4_RxCnt)
+    823          	{
+    824          		case 0:
+    825          				if (WL9FM_USART_DATA.COM4_RxBuf[0] == STX)
+    826          				{
+    827          					WL9FM_USART_INDEX.COM4_RxCnt++;
+    828          				}	
+    829          				else
+    830          				{
+    831          					WL9FM_USART_INDEX.COM4_RxCnt=0;
+    832          				}
+    833          				
+    834          				break;
+    835          		case 1:
+    836          				if (WL9FM_USART_DATA.COM4_RxBuf[1]      == KeyCMD)		WL9FM_USART_INDEX.COM4_RxCnt++;
+    837          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == LCDBLCMD)	WL9FM_USART_INDEX.COM4_RxCnt++;
+    838          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == BUZZERCMD)	WL9FM_USART_INDEX.COM4_RxCnt++;
+    839          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == LAMPCMD)		WL9FM_USART_INDEX.COM4_RxCnt++;
+    840          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == CAMCMD)		WL9FM_USART_INDEX.COM4_RxCnt++;
+    841          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == DOWNCMD)	WL9FM_USART_INDEX.COM4_RxCnt++;
+    842          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == VersionCMD) WL9FM_USART_INDEX.COM4_RxCnt++;
+    843          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == StartCANCMD) WL9FM_USART_INDEX.COM4_RxCnt++;    
+    844          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == RTCCMD) WL9FM_USART_INDEX.COM4_RxCnt++;
+    845          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == CANUPDATECMD) WL9FM_USART_INDEX.COM4_RxCnt++;
+    846          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == SMKCMD) WL9FM_USART_INDEX.COM4_RxCnt++;
+    847          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == OSUPDATECMD) WL9FM_USART_INDEX.COM4_RxCnt++;
+    848          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == EEPROMTESTCMD) WL9FM_USART_INDEX.COM4_RxCnt++;
+    849          				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == FLASHTESTCMD) WL9FM_USART_INDEX.COM4_RxCnt++;
+    850          
+    851                          else
+    852                          {
+    853                            	WL9FM_USART_INDEX.COM4_RxCnt = 0;
+    854                          }
+    855          				break;
+    856          
+    857          		case Serial_COM4_RxSize-1: 
+    858          				WL9FM_USART_INDEX.COM4_RxCnt = 0;
+    859          				
+    860          				//  디버깅할 때만 사용할 것
+    861          				#ifdef DEBUG_CMD_RX
+    862          				DebugMsg_printf("\r\n");
+    863          				#endif
+    864          
+    865          		if (WL9FM_USART_DATA.COM4_RxBuf[Serial_COM4_RxSize-1] == ETX)
+    866          		{
+    867          			switch (WL9FM_USART_DATA.COM4_RxBuf[1])
+    868          			{
+    869          				case KeyCMD   :		//	Key Command
+    870          
+    871          					break;
+    872          							
+    873          				case LCDBLCMD :		//	LCD BackLight Command
+    874          
+    875          					//	LCD BackLight Level 조절.. Level0 ~ Level8
+    876          					if (WL9FM_USART_DATA.COM4_RxBuf[2] < MaxBackLightLEVEL && (WL9FM_USART_DATA.COM4_RxBuf[2] > 0)) 												
+    877          					{
+    878          						LCDBL_PWM_LEVEL(WL9FM_USART_DATA.COM4_RxBuf[2]);
+    879          					}
+    880          
+    881          					break;
+    882          
+    883          				case BUZZERCMD :	//	Buzzer Command
+    884          					if (WL9FM_USART_DATA.COM4_RxBuf[2] == 0)	//	Buzzer Off
+    885          					{
+    886          						Buzzer_UnLimitOff();
+    887          					}
+    888          					else if(WL9FM_USART_DATA.COM4_RxBuf[2] == 1)					//	Buzzer On
+    889          					{
+    890          						Buzzer_UnLimitOn();
+    891          					}
+    892          					break;
+    893          
+    894          				case LAMPCMD :	//	Buzzer Command
+    895          					Lamp_name = (WL9FM_USART_DATA.COM4_RxBuf[2] & 0xf0)>>4;
+    896          					Lamp_Value = (WL9FM_USART_DATA.COM4_RxBuf[2] & 0x0f);
+    897          					memcpy(&rx_CMD_LAMP , &WL9FM_USART_DATA.COM4_RxBuf[2], 8);	
+    898          					Lamp_Update_State();
+    899          					//Lamp_Update_System();
+    900          					break;
+    901          					
+    902          				case CAMCMD:
+    903          					if(CameraCommFlag == 0)
+    904          					{
+    905          						CameraCommFlag = 1;
+    906          						Camera_Mode = WL9FM_USART_DATA.COM4_RxBuf[2];
+    907          					}					
+    908          					break;
+    909          
+    910          				case DOWNCMD:
+    911          					Stm32_Update_CMD = WL9FM_USART_DATA.COM4_RxBuf[2];
+    912          					FatoryInit_Flag = WL9FM_USART_DATA.COM4_RxBuf[3];
+    913          					ST_Update=1;
+    914          
+    915          					break;
+    916          				case VersionCMD:
+    917          					
+    918          					Temp[0] = 0x02;				
+    919          					Temp[1] = VersionRES;				
+    920          					Temp[2] = ((VERSION_HIGH  << 4) & 0xF0 ) + (VERSION_LOW & 0x0F);	
+    921          					Temp[3] = ((VERSION_SUB_HIGH  << 4) & 0xF0 )+ (VERSION_SUB_LOW & 0x0F);	
+    922          					// HW Version/////
+    923          					Temp[4] = (ADC3ConvertedValue & 0xFF);
+    924          					Temp[5] = (ADC3ConvertedValue & 0xFF00) >> 8;
+    925          					Temp[6] = 0;
+    926          					//////////////////
+    927          					Temp[Serial_COM4_RxSize-1] = 0x03;	
+    928          					USARTx_EXYNOS(COM4, (char *)Temp);	
+    929          					break;
+    930          				case StartCANCMD:
+    931          					//Flag_UartTxStart = 1;
+    932          					CAN_ITConfig(CAN1, CAN_IT_FMP0,ENABLE);	
+    933          					break;
+    934          				case RTCCMD:
+    935          					WL9FM_RTC.Year = WL9FM_USART_DATA.COM4_RxBuf[2];
+    936          					WL9FM_RTC.Month = WL9FM_USART_DATA.COM4_RxBuf[3];
+    937          					WL9FM_RTC.Date = WL9FM_USART_DATA.COM4_RxBuf[4];
+    938          					WL9FM_RTC.Day = WL9FM_USART_DATA.COM4_RxBuf[5];
+    939          					WL9FM_RTC.Hour = WL9FM_USART_DATA.COM4_RxBuf[6];
+    940          					WL9FM_RTC.Minute= WL9FM_USART_DATA.COM4_RxBuf[7];
+    941          					WL9FM_RTC.Second= WL9FM_USART_DATA.COM4_RxBuf[8];
+    942          					WRITE_RTC(WL9FM_RTC);
+    943          					break;
+    944          
+    945          				case SMKCMD:
+    946          					
+    947          					if(WL9FM_USART_DATA.COM4_RxBuf[2] == 0x00)
+    948          					{
+    949          						SendSMKAuthResult(SMKSuccess);
+    950          					}
+    951          					else if(WL9FM_USART_DATA.COM4_RxBuf[2] == 0x03)
+    952          					{
+    953          						SaveSMKUseToEEPROM(WL9FM_USART_DATA.COM4_RxBuf[3]);
+    954          					}
+    955          					else
+    956          					{
+    957          						memcpy(&Uart2_RxMsg_Smk_Reg_Eli[0], &WL9FM_USART_DATA.COM4_RxBuf[0], 8);
+    958          					}
+    959          					break;
+    960          				case CANUPDATECMD:
+    961          					CANUpdateFlag = WL9FM_USART_DATA.COM4_RxBuf[2];
+    962          					CANUpdateSA = WL9FM_USART_DATA.COM4_RxBuf[3];
+    963          					break;
+    964          				case OSUPDATECMD:
+    965          					LCDOffCount = 0;
+    966          					OSUpdateCount = 0;
+    967          					break;
+    968          				case EEPROMTESTCMD:
+    969          					if(WL9FM_USART_DATA.COM4_RxBuf[2] == 1)
+    970          					{
+    971          						InitE2PROM();
+    972          					}
+    973          					else
+    974          					{
+    975          						SaveTestToEEPROM(WL9FM_USART_DATA.COM4_RxBuf[3]);
+    976          					}
+    977          					Temp[0] = 0x02;				
+    978          					Temp[1] = EEPROMTESTRES;	
+    979          					Temp[2] = WL9FM_USART_DATA.COM4_RxBuf[2];	
+    980          					Temp[3] = LoadTestToEEPROM(); 	
+    981          					Temp[Serial_COM4_RxSize-1] = 0x03;	
+    982          					USARTx_EXYNOS(COM4, (char *)Temp);	
+    983          					break;
+    984          				case FLASHTESTCMD:
+    985          					if(WL9FM_USART_DATA.COM4_RxBuf[2] == 1)
+    986          					{
+    987          						SPI_FLASH_BulkErase();
+    988          					}
+    989          					else
+    990          					{
+    991          						SPI_FLASH_SectorErase(0x3d0000);	//Sector60
+    992          						SPI_FLASH_PageWrite(&WL9FM_USART_DATA.COM4_RxBuf[3],0x3d0000,7);
+    993          						SPI_FLASH_BufferRead(&Temp[3],0x3d0000,7);
+    994          						Temp[0] = 0x02;
+    995          						Temp[1] = FLASHTESTRES;
+    996          						Temp[2] = WL9FM_USART_DATA.COM4_RxBuf[2];
+    997          						Temp[Serial_COM4_RxSize-1] = 0x03;	
+    998          						USARTx_EXYNOS(COM4, (char *)Temp);	
+    999          						SPI_FLASH_SectorErase(0x3d0000);	//Sector60
+   1000          					}
+   1001          
+   1002          					break;
+   1003          				default :
+   1004          					break;								
+   1005          			}
+   1006                          }						
+   1007          
+   1008          		//memset(WL9FM_USART_DATA.COM4_RxBuf, 0x0, Serial_COM4_RxSize);					
+   1009          				break;
+   1010          		
+   1011          		default :
+   1012          
+   1013          			WL9FM_USART_INDEX.COM4_RxCnt++;
+   1014          			break;
+   1015          	}	
+   1016          }
+   1017          
+   1018          void UART4_Receive_File(void)
+   1019          {
+   1020          	
+   1021          	//  Read one byte to the receive data register
+   1022          	WL9FM_USART_RX_FILE_DATA.File_RxBuf[WL9FM_USART_RX_FILE_DATA.File_RxCnt] = USART_ReceiveData(UART4);
+   1023          	
+   1024          	switch (WL9FM_USART_RX_FILE_DATA.File_RxCnt)
+   1025          	{
+   1026          		case 0:
+   1027          				if (WL9FM_USART_RX_FILE_DATA.File_RxBuf[0] == STX)
+   1028          				{
+   1029          					WL9FM_USART_RX_FILE_DATA.File_RxCnt++;
+   1030          				}						
+   1031          				break;
+   1032          		case 1029: 
+   1033          				WL9FM_USART_RX_FILE_DATA.File_RxCnt = 0;
+   1034          					
+   1035          				if (WL9FM_USART_RX_FILE_DATA.File_RxBuf[1029] == ETX)
+   1036          				{
+   1037          					memcpy(&WL9FM_USART_FILE_DATA , &WL9FM_USART_RX_FILE_DATA, Serial_file_RxSize);	
+   1038          					ST_Update=1;
+   1039          				}
+   1040          				else if (WL9FM_USART_RX_FILE_DATA.File_RxBuf[1029] == EOT)
+   1041          				{
+   1042          					memcpy(&WL9FM_USART_FILE_DATA , &WL9FM_USART_RX_FILE_DATA, Serial_file_RxSize);	
+   1043          					Change_UART4_for_Download =2;
+   1044          					ST_Update=1;
+   1045          				}
+   1046          				else
+   1047          				{
+   1048          					ACK_NACK_SendToExynos(NAK);
+   1049          				}
+   1050                                          break;
+   1051          		default :
+   1052          
+   1053          			WL9FM_USART_RX_FILE_DATA.File_RxCnt++;
+   1054          			break;
+   1055          	}					
+   1056          }
+   1057          
+   1058          
+   1059          void UART4_transmit_CMD(void)
+   1060          {
+   1061          	//  Write one byte to the transmit data register
+   1062          	USART_SendData(UART4, WL9FM_USART_DATA.COM4_TxBuf[WL9FM_USART_INDEX.COM4_TxCnt++]);
+   1063          
+   1064          	if (WL9FM_USART_INDEX.COM4_TxIdx >= Serial_COM4_TxSize)
+   1065          	{
+   1066          		WL9FM_USART_INDEX.COM4_TxIdx = Serial_COM4_TxSize;
+   1067          	}    
+   1068          	if (WL9FM_USART_INDEX.COM4_TxCnt == WL9FM_USART_INDEX.COM4_TxIdx)
+   1069          	{
+   1070          		//  Disable the UART4 Transmit interrupt
+   1071          		USART_ITConfig(UART4, USART_IT_TXE, DISABLE);
+   1072          
+   1073          		WL9FM_USART_INDEX.COM4_TxIdx = 0; //  transmit buffer Index clear
+   1074          		WL9FM_USART_INDEX.COM4_TxCnt = 0; //  transmit buffer Cnt   clear
+   1075          	}              
+   1076          	
+   1077          }
+   1078          /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
 
    Maximum stack usage in bytes:
 
@@ -1121,18 +1154,25 @@ C:\Tools\IAR Systems\Workspace_WL9F\WL_F_Monitor_APP\Platform\COMMON\SRC\stm32f4
          8   -> UART4_Receive_File
          8   -> UART4_transmit_CMD
          8   -> USART_GetITStatus
-      24   UART4_Receive_CMD
-        24   -> Buzzer_UnLimitOff
-        24   -> Buzzer_UnLimitOn
-        24   -> CAN_ITConfig
-        24   -> LCDBL_PWM_LEVEL
-        24   -> Lamp_Update_State
-        24   -> SaveSMKUseToEEPROM
-        24   -> SendSMKAuthResult
-        24   -> USART_ReceiveData
-        24   -> USARTx_EXYNOS
-        24   -> WRITE_RTC
-        24   -> __aeabi_memcpy
+      32   UART4_Receive_CMD
+        32   -> Buzzer_UnLimitOff
+        32   -> Buzzer_UnLimitOn
+        32   -> CAN_ITConfig
+        32   -> InitE2PROM
+        32   -> LCDBL_PWM_LEVEL
+        32   -> Lamp_Update_State
+        32   -> LoadTestToEEPROM
+        32   -> SPI_FLASH_BufferRead
+        32   -> SPI_FLASH_BulkErase
+        32   -> SPI_FLASH_PageWrite
+        32   -> SPI_FLASH_SectorErase
+        32   -> SaveSMKUseToEEPROM
+        32   -> SaveTestToEEPROM
+        32   -> SendSMKAuthResult
+        32   -> USART_ReceiveData
+        32   -> USARTx_EXYNOS
+        32   -> WRITE_RTC
+        32   -> __aeabi_memcpy
        8   UART4_Receive_File
          0   -> ACK_NACK_SendToExynos
          8   -> USART_ReceiveData
@@ -1218,8 +1258,8 @@ C:\Tools\IAR Systems\Workspace_WL9F\WL_F_Monitor_APP\Platform\COMMON\SRC\stm32f4
       86  TIM4_IRQHandler
       20  TIM5_IRQHandler
        2  TotMsgSize
-      56  UART4_IRQHandler
-     532  UART4_Receive_CMD
+      60  UART4_IRQHandler
+     694  UART4_Receive_CMD
      114  UART4_Receive_File
       64  UART4_transmit_CMD
       94  USART2_IRQHandler
@@ -1239,9 +1279,9 @@ C:\Tools\IAR Systems\Workspace_WL9F\WL_F_Monitor_APP\Platform\COMMON\SRC\stm32f4
 
  
    895 bytes in section .bss
- 1 652 bytes in section .text
+ 1 818 bytes in section .text
  
- 1 652 bytes of CODE memory
+ 1 818 bytes of CODE memory
    895 bytes of DATA memory
 
 Errors: none

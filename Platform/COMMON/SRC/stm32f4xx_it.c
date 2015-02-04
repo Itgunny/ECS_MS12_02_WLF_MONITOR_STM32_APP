@@ -806,7 +806,6 @@ void UART4_IRQHandler(void)
 
 u8 temp_rx_buf[4];
 
-
 void UART4_Receive_CMD(void)
 {
 	uint8_t Temp[Serial_COM4_TxSize];
@@ -846,8 +845,8 @@ void UART4_Receive_CMD(void)
 				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == CANUPDATECMD) WL9FM_USART_INDEX.COM4_RxCnt++;
 				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == SMKCMD) WL9FM_USART_INDEX.COM4_RxCnt++;
 				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == OSUPDATECMD) WL9FM_USART_INDEX.COM4_RxCnt++;
-
-				
+				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == EEPROMTESTCMD) WL9FM_USART_INDEX.COM4_RxCnt++;
+				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == FLASHTESTCMD) WL9FM_USART_INDEX.COM4_RxCnt++;
 
                 else
                 {
@@ -966,7 +965,41 @@ void UART4_Receive_CMD(void)
 					LCDOffCount = 0;
 					OSUpdateCount = 0;
 					break;
-					
+				case EEPROMTESTCMD:
+					if(WL9FM_USART_DATA.COM4_RxBuf[2] == 1)
+					{
+						InitE2PROM();
+					}
+					else
+					{
+						SaveTestToEEPROM(WL9FM_USART_DATA.COM4_RxBuf[3]);
+					}
+					Temp[0] = 0x02;				
+					Temp[1] = EEPROMTESTRES;	
+					Temp[2] = WL9FM_USART_DATA.COM4_RxBuf[2];	
+					Temp[3] = LoadTestToEEPROM(); 	
+					Temp[Serial_COM4_RxSize-1] = 0x03;	
+					USARTx_EXYNOS(COM4, (char *)Temp);	
+					break;
+				case FLASHTESTCMD:
+					if(WL9FM_USART_DATA.COM4_RxBuf[2] == 1)
+					{
+						SPI_FLASH_BulkErase();
+					}
+					else
+					{
+						SPI_FLASH_SectorErase(0x3d0000);	//Sector60
+						SPI_FLASH_PageWrite(&WL9FM_USART_DATA.COM4_RxBuf[3],0x3d0000,7);
+						SPI_FLASH_BufferRead(&Temp[3],0x3d0000,7);
+						Temp[0] = 0x02;
+						Temp[1] = FLASHTESTRES;
+						Temp[2] = WL9FM_USART_DATA.COM4_RxBuf[2];
+						Temp[Serial_COM4_RxSize-1] = 0x03;	
+						USARTx_EXYNOS(COM4, (char *)Temp);	
+						SPI_FLASH_SectorErase(0x3d0000);	//Sector60
+					}
+
+					break;
 				default :
 					break;								
 			}

@@ -178,12 +178,19 @@
 #define	OSUPDATECMD	0x0B
 #define	OSUPDATERES	0x8B
 
+#define	EEPROMTESTCMD 0x0C
+#define	EEPROMTESTRES 0x8C
+
+#define	FLASHTESTCMD	0x0D
+#define	FLASHTESTRES	0x8D
+
+
 
 
 #define	VERSION_HIGH		1
 #define	VERSION_LOW			0
 #define	VERSION_SUB_HIGH	1
-#define	VERSION_SUB_LOW		7
+#define	VERSION_SUB_LOW		8
 
 ///////////////////////////////////////////////////
 ////1.0.1.0 (1.0.0.9에서 250kpbs로 CAN2 수정)
@@ -212,6 +219,8 @@
 ////1.0.1.7
 // Smart Key Response Flag 1 인 경우 등록 실패 추가 2015.01.14
 // Power Off 로직 Lamp Off 및 부저 Off 추가 2015.01.14
+//// 1.0.1.8
+// Hardware Test 용 CMD 추가 (EEPROM, Serial Flash Test) 2015.01.20
 ///////////////////////////////////////////////////
 
 //=================================================================
@@ -297,6 +306,10 @@ void System_CheckPowerIG();
 void SaveDataToEEPROM(void);
 void SaveSMKUseToEEPROM(u8 Use);
 u8 LoadSMKUseToEEPROM(void);
+
+void SaveTestToEEPROM(u8 Use);
+u8 LoadTestToEEPROM(void);
+
 /* Private functions ---------------------------------------------------------*/
 
 /* Exported types ------------------------------------------------------------*/

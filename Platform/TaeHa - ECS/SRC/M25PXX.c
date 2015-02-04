@@ -23,6 +23,7 @@
 
 #define Sector_1 	0x10000
 #define Sector_10 	0xA0000
+#define Sector_60 	0x3c0000
 #define Sector_61 	0x3d0000
 #define Sector_62 	0x3e0000
 #define Sector_63 	0x3f0000
