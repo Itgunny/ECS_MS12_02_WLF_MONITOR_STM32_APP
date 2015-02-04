@@ -24,6 +24,9 @@
 /* Private typedef -----------------------------------------------------------*/
 //#define STM32_BUZZER
 /* Private define ------------------------------------------------------------*/
+
+// ++, 150204 sys3215
+#if 0
 #define	Key_Menu			0x01
 #define	Key_Left			0x02
 #define	Key_Enter			0x04
@@ -44,6 +47,15 @@
 #define	Key_USER			0x88
 #define	Key_Reserved1		0x90
 #define	Key_Reserved2		0xa0
+#endif
+
+#define MENU                        	0x00000001
+#define ESC                        	0x00000002
+#define LEFT                         	0x00000004
+#define RIGHT                        	0x00000008
+#define ENTER                         	0x00000010
+
+// --, 150204 sys3215
 
 #define	KEYSwitchSendCountMax	50
 
@@ -103,6 +115,10 @@ uint16_t		test_rx_buf[10];
 
 unsigned char rear_wiper_oper=0;
 
+// ++, 150204 sys3215
+u8 Input_Key_Value,Key_Status;
+// --, 150204 sys3215
+
 extern Realy_Control		rx_Realy_Control;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
@@ -125,7 +141,11 @@ void KeySwitch_SendToEXYNOS(uint32_t KeyValue, uint8_t LongKey)
 	
 	KeyValueBuffer[Serial_COM4_TxSize-1] = 0x03;				//	ETX
 	
-   
+   	// ++, 150204 sys3215
+
+	Make_Key_Status(KeyValue);
+	
+	// --, 150204 sys3215
 ////////////////////////// DPRAM TEST /////////////////////
 #if 0
 	else if( KeyValue_temp == KEYSWITCH_MENU) 
@@ -183,6 +203,37 @@ void KeySwitch_SendToEXYNOS(uint32_t KeyValue, uint8_t LongKey)
 
     DebugMsg_printf("KEYSWITCH %x\r\n", KeyValueBuffer[2]);
 }
+
+// ++, 150204 sys3215
+
+void Make_Key_Status(uint32_t KeyValue)
+{
+	uint32_t temp_Key_Value;
+	u8 i,temp_Key_Status;
+
+	Input_Key_Value=1;
+
+	temp_Key_Status=0;
+	
+	temp_Key_Value = KeyValue & 0x0000001f;
+
+	for(i=0;i<5;i++)
+	{
+		if(  ((temp_Key_Value>>i)&0x01))
+		{
+			if(i==0)	temp_Key_Status |= 0x01;
+			else if(i==1)	temp_Key_Status |= 0x10;
+			else if(i==2)	temp_Key_Status |= 0x02;
+			else if(i==3)	temp_Key_Status |= 0x04;
+			else if(i==4)	temp_Key_Status |= 0x08;	
+		}
+	}
+
+	Key_Status = temp_Key_Status;
+	
+}
+// --,150204 sys3215
+
 
 void SMK_SendToExynos(uint8_t SMK_Auth, uint8_t SMK_Msg, uint8_t SMK_Count)
 {
@@ -442,7 +493,11 @@ void KeySwitch_Process(void)
 				KeySwitch_Value = Temp_Value3 = Temp_Cnt = 0;	
 				KeySwitch_SendToEXYNOS(KeySwitch_Value,0);
 			}
-			KeySwitch_Value = Temp_Value3 = Temp_Cnt = 0;		
+			KeySwitch_Value = Temp_Value3 = Temp_Cnt = 0;	
+
+			// ++, 150204 sys3215
+			Input_Key_Value=0;
+			// --, 150204 sys3215
 		}
 		else
         {

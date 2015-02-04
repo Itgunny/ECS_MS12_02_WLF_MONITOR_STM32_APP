@@ -1190,8 +1190,10 @@ void WL9FM_100mSecOperationFunc(void)
 		cam_mode_change(Camera_Mode);
 		CameraCommFlag = 0;
 	}
-	
 
+	// ++, 150204 sys3215
+	CAN_TX_Key_Status();
+	// --, 150204 sys3215
 }
 
 void WL9FM_500mSecOperationFunc(void)
@@ -1443,3 +1445,5 @@ SYSTEM_RESET :
 }
 
 /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
+
+

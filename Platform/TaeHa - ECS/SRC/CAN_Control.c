@@ -198,6 +198,11 @@ extern u8 ESL_ACK_received;
 extern u8 Password_Certification_Result;
 // -- , 141118 sys3215
 
+
+// ++, 150204 sys3215
+extern u8 Input_Key_Value,Key_Status;
+// --, 150204 sys3215
+
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 /**
@@ -624,6 +629,40 @@ void SendMultiPacketRTS_ESL(void)
 		CAN_Message_Ring_Buffer_Tx_Single.Head = 0;
 	
 }
+
+// ++, 150204 sys3215
+void CAN_TX_Key_Status(void)
+{
+	struct st_CAN_Message1 Message;
+	
+	u8 _Temp[8];
+
+	Message.Priority = 0x18;
+	Message.PDU_Format = 0xEF;
+	Message.PDU_Specific = 0x47;
+	Message.Source_Address = 0x28;
+
+	_Temp[0] = 0x01;
+	_Temp[1] = 0xFF;
+	_Temp[2] = Key_Status;
+	_Temp[3] = 0xFF;
+	_Temp[4] = 0xFF;
+	_Temp[5] = 0xFF;
+	_Temp[6] = 0xFF;
+	_Temp[7] = 0xFF;
+
+	if(Input_Key_Value)
+	{
+		memcpy((void *)&Message.Data[0],(void *)&_Temp, sizeof(_Temp));
+
+		memcpy(&CAN_Message_Ring_Buffer_Tx_Single.Message[CAN_Message_Ring_Buffer_Tx_Single.Head],&Message,12);
+
+		if (++(CAN_Message_Ring_Buffer_Tx_Single.Head) >= MAX_CAN_TX_DATA_SINGLE)
+			CAN_Message_Ring_Buffer_Tx_Single.Head = 0;
+	}
+}
+// --, 150204 sys3215
+
 
 void SendMultiPacketData_ESL(void)
 {

@@ -89,6 +89,9 @@ extern void KeyTest_TEST(uint8_t value);
 extern void KeySwitch_SendToEXYNOS(uint32_t KeyValue, uint8_t LongKey);
 extern void SMK_SendToExynos(uint8_t SMK_Auth, uint8_t SMK_Msg, uint8_t SMK_Count);
 
+// ++, 150204 sys3215
+void Make_Key_Status(uint32_t KeyValue);
+// --, 150204 sys3215
 
 #endif /* __KeySwitch_H */
 

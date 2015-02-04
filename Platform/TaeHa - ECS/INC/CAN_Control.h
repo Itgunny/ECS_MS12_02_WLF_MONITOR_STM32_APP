@@ -124,6 +124,10 @@ extern void SendMultiPacketRTS_ESL(void);
 extern void SendMultiPacketData_ESL(void);
 // --, 141118 sys3215
 
+// ++, 150204 sys3215
+extern void CAN_TX_Key_Status(void);
+// --, 150204 sys3215
+
 #endif /* __CAN_Control_H */
 
 /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
