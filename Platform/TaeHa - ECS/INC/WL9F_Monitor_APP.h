@@ -190,7 +190,7 @@
 #define	VERSION_HIGH		1
 #define	VERSION_LOW			0
 #define	VERSION_SUB_HIGH	1
-#define	VERSION_SUB_LOW		8
+#define	VERSION_SUB_LOW		9
 
 ///////////////////////////////////////////////////
 ////1.0.1.0 (1.0.0.9에서 250kpbs로 CAN2 수정)
@@ -221,6 +221,9 @@
 // Power Off 로직 Lamp Off 및 부저 Off 추가 2015.01.14
 //// 1.0.1.8
 // Hardware Test 용 CMD 추가 (EEPROM, Serial Flash Test) 2015.01.20
+
+//// 1.0.1.9
+// RMCU 통신 관련 key value add
 ///////////////////////////////////////////////////
 
 //=================================================================
