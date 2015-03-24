@@ -548,6 +548,7 @@ void File_Write_to_SFLAH(unsigned long addr)
 
 	if(temp_crc == WL9FM_USART_FILE_DATA.Bin_Data.CRC_data)
 	{
+		
 		ACK_NACK_SendToExynos(ACK);
 
 		for(i=0;i<4;i++)
@@ -555,9 +556,9 @@ void File_Write_to_SFLAH(unsigned long addr)
 			SPI_FLASH_PageWrite(&WL9FM_USART_FILE_DATA.Bin_Data.data[i*256],addr+(i<<8),256);
 		}
                 
-                
-                SPI_FLASH_BufferRead(temp1024,addr,1024);
-                
+                // ++, 150324 sys
+                //SPI_FLASH_BufferRead(temp1024,addr,1024);
+                // --, 150324 sys
 
 		if(Change_UART4_for_Download==2)	Change_UART4_for_Download=0;
 	}
