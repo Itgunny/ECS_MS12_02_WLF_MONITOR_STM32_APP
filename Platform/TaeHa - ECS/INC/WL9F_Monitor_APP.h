@@ -72,8 +72,10 @@
 /* Private define ------------------------------------------------------------*/
 
 // ++, sys3215, 141211
-#define REVB			0
 #define REVD_02_01	1
+
+#define REVB			0
+
 // --, sys3215, 141211
 
 //	++, kutelf, 140801
@@ -189,8 +191,8 @@
 
 #define	VERSION_HIGH		1
 #define	VERSION_LOW			0
-#define	VERSION_SUB_HIGH	1
-#define	VERSION_SUB_LOW		9
+#define	VERSION_SUB_HIGH	2
+#define	VERSION_SUB_LOW		0
 
 ///////////////////////////////////////////////////
 ////1.0.1.0 (1.0.0.9에서 250kpbs로 CAN2 수정)
@@ -224,6 +226,12 @@
 
 //// 1.0.1.9
 // RMCU 통신 관련 key value add
+
+//// 1.0.2.0
+// can error reset 기능 추가 
+// CAM original view
+
+
 ///////////////////////////////////////////////////
 
 //=================================================================
