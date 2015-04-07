@@ -231,6 +231,8 @@
 // can error reset 기능 추가 
 // CAM original view
 
+//// 1.0.2.1 - 150407
+// Power off siganl 100ms 
 
 ///////////////////////////////////////////////////
 

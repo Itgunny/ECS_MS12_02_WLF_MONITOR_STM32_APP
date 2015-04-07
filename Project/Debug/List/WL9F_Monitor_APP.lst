@@ -1,38 +1,41 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      25/Mar/2015  15:09:03 #
+# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      07/Apr/2015  14:09:49 #
 # Copyright 1999-2012 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
 #    Endian       =  little                                                   #
-#    Source file  =  C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa -          #
-#                    ECS\SRC\WL9F_Monitor_APP.c                               #
-#    Command line =  "C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa -         #
-#                    ECS\SRC\WL9F_Monitor_APP.c" -D USE_STDPERIPH_DRIVER -D   #
-#                    STM32F4XX -D USE_STM324xG_EVAL -D USE_FULL_ASSERT -lcN   #
-#                    C:\Tools\WL9F\WL_F_Monitor_APP\Project\Debug\List\ -o    #
-#                    C:\Tools\WL9F\WL_F_Monitor_APP\Project\Debug\Obj\        #
-#                    --debug --endian=little --cpu=Cortex-M4 -e               #
-#                    --fpu=VFPv4_sp --dlib_config "C:\Tools\IAR               #
-#                    Systems\Embedded Workbench 6.5\arm\INC\c\DLib_Config_Ful #
-#                    l.h" -I C:\Tools\WL9F\WL_F_Monitor_APP\Project\..\Platfo #
-#                    rm\COMMON\INC\ -I "C:\Tools\WL9F\WL_F_Monitor_APP\Projec #
-#                    t\..\Platform\TaeHa - ECS\INC\" -I                       #
-#                    C:\Tools\WL9F\WL_F_Monitor_APP\Project\..\Libraries\CMSI #
-#                    S\Device\ST\STM32F4xx\Include\ -I                        #
-#                    C:\Tools\WL9F\WL_F_Monitor_APP\Project\..\Libraries\STM3 #
-#                    2F4xx_StdPeriph_Driver\inc\ -Oh --use_c++_inline -I      #
+#    Source file  =  C:\Tools\IAR Systems\Workspace_WL9F\WL_F_Monitor_APP\Pla #
+#                    tform\TaeHa - ECS\SRC\WL9F_Monitor_APP.c                 #
+#    Command line =  "C:\Tools\IAR Systems\Workspace_WL9F\WL_F_Monitor_APP\Pl #
+#                    atform\TaeHa - ECS\SRC\WL9F_Monitor_APP.c" -D            #
+#                    USE_STDPERIPH_DRIVER -D STM32F4XX -D USE_STM324xG_EVAL   #
+#                    -D USE_FULL_ASSERT -lcN "C:\Tools\IAR                    #
+#                    Systems\Workspace_WL9F\WL_F_Monitor_APP\Project\Debug\Li #
+#                    st\" -o "C:\Tools\IAR Systems\Workspace_WL9F\WL_F_Monito #
+#                    r_APP\Project\Debug\Obj\" --debug --endian=little        #
+#                    --cpu=Cortex-M4 -e --fpu=VFPv4_sp --dlib_config          #
 #                    "C:\Tools\IAR Systems\Embedded Workbench                 #
-#                    6.5\arm\CMSIS\Include\"                                  #
-#    List file    =  C:\Tools\WL9F\WL_F_Monitor_APP\Project\Debug\List\WL9F_M #
-#                    onitor_APP.lst                                           #
-#    Object file  =  C:\Tools\WL9F\WL_F_Monitor_APP\Project\Debug\Obj\WL9F_Mo #
-#                    nitor_APP.o                                              #
+#                    6.5\arm\INC\c\DLib_Config_Full.h" -I "C:\Tools\IAR       #
+#                    Systems\Workspace_WL9F\WL_F_Monitor_APP\Project\..\Platf #
+#                    orm\COMMON\INC\" -I "C:\Tools\IAR                        #
+#                    Systems\Workspace_WL9F\WL_F_Monitor_APP\Project\..\Platf #
+#                    orm\TaeHa - ECS\INC\" -I "C:\Tools\IAR                   #
+#                    Systems\Workspace_WL9F\WL_F_Monitor_APP\Project\..\Libra #
+#                    ries\CMSIS\Device\ST\STM32F4xx\Include\" -I              #
+#                    "C:\Tools\IAR Systems\Workspace_WL9F\WL_F_Monitor_APP\Pr #
+#                    oject\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\" -Oh  #
+#                    --use_c++_inline -I "C:\Tools\IAR Systems\Embedded       #
+#                    Workbench 6.5\arm\CMSIS\Include\"                        #
+#    List file    =  C:\Tools\IAR Systems\Workspace_WL9F\WL_F_Monitor_APP\Pro #
+#                    ject\Debug\List\WL9F_Monitor_APP.lst                     #
+#    Object file  =  C:\Tools\IAR Systems\Workspace_WL9F\WL_F_Monitor_APP\Pro #
+#                    ject\Debug\Obj\WL9F_Monitor_APP.o                        #
 #                                                                             #
 #                                                                             #
 ###############################################################################
 
-C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\WL9F_Monitor_APP.c
+C:\Tools\IAR Systems\Workspace_WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\WL9F_Monitor_APP.c
       1          /**
       2            ******************************************************************************
       3            * @file    WL9F_Monitor_APP.c 
@@ -580,8 +583,8 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\WL9F_Monitor_APP.c
     545          			Buzzer_Off();
     546          
     547          			//	POWER OFF Code를 3msec 마다 2번 Exynos로 보낸다. 
-    548          			KeySwitch_SendToEXYNOS(KEYSWITCH_POWER_OFF,0);	TimeDelay_msec(3);
-    549          			KeySwitch_SendToEXYNOS(KEYSWITCH_POWER_OFF,0);	TimeDelay_msec(3);
+    548          			KeySwitch_SendToEXYNOS(KEYSWITCH_POWER_OFF,0);	TimeDelay_msec(100);
+    549          			KeySwitch_SendToEXYNOS(KEYSWITCH_POWER_OFF,0);	//TimeDelay_msec(3);
     550          
     551          			//	POWER OFF 일 때, 시리얼과 캔 통신 부분을 죽여놔야지, 정상적으로 RESET 동작을 수행
     552          			USART_ITConfig(USART2, USART_IT_TXE, DISABLE);
@@ -1777,7 +1780,7 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\WL9F_Monitor_APP.c
       20  SetVMC
      260  SmartKeyAuthentication
       22  Srand
-     244  System_CheckPowerIG
+     238  System_CheckPowerIG
        1  TotalPacketNum
        1  UpdateMode
      206  WL9FM_100mSecOperationFunc
@@ -1831,9 +1834,9 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\WL9F_Monitor_APP.c
 
  
  2 849 bytes in section .bss
- 3 970 bytes in section .text
+ 3 964 bytes in section .text
  
- 3 970 bytes of CODE memory
+ 3 964 bytes of CODE memory
  2 849 bytes of DATA memory
 
 Errors: none

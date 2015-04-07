@@ -545,8 +545,8 @@ void System_CheckPowerIG()
 			Buzzer_Off();
 
 			//	POWER OFF Code를 3msec 마다 2번 Exynos로 보낸다. 
-			KeySwitch_SendToEXYNOS(KEYSWITCH_POWER_OFF,0);	TimeDelay_msec(3);
-			KeySwitch_SendToEXYNOS(KEYSWITCH_POWER_OFF,0);	TimeDelay_msec(3);
+			KeySwitch_SendToEXYNOS(KEYSWITCH_POWER_OFF,0);	TimeDelay_msec(100);
+			KeySwitch_SendToEXYNOS(KEYSWITCH_POWER_OFF,0);	//TimeDelay_msec(3);
 
 			//	POWER OFF 일 때, 시리얼과 캔 통신 부분을 죽여놔야지, 정상적으로 RESET 동작을 수행
 			USART_ITConfig(USART2, USART_IT_TXE, DISABLE);
