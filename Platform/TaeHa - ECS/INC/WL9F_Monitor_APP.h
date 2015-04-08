@@ -192,7 +192,7 @@
 #define	VERSION_HIGH		1
 #define	VERSION_LOW			0
 #define	VERSION_SUB_HIGH	2
-#define	VERSION_SUB_LOW		0
+#define	VERSION_SUB_LOW		1
 
 ///////////////////////////////////////////////////
 ////1.0.1.0 (1.0.0.9에서 250kpbs로 CAN2 수정)
