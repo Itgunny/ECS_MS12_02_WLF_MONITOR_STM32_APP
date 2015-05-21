@@ -119,6 +119,10 @@ unsigned char rear_wiper_oper=0;
 u8 Input_Key_Value,Key_Status;
 // --, 150204 sys3215
 
+// ++, 150521 sys
+u32 Rear_wiper_Key_Status;
+// --, 150521 sys
+
 extern Realy_Control		rx_Realy_Control;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
@@ -490,8 +494,20 @@ void KeySwitch_Process(void)
 		{
 			if(KeySwitch_Value != 0)
 			{
+				//++, 150521 sys
+				#if 0
 				KeySwitch_Value = Temp_Value3 = Temp_Cnt = 0;	
 				KeySwitch_SendToEXYNOS(KeySwitch_Value,0);
+				#endif
+				KeySwitch_Value = Temp_Value3 = Temp_Cnt = 0;
+				if(Rear_wiper_Key_Status ==0x00020000)
+				{
+					KeySwitch_SendToEXYNOS(Rear_wiper_Key_Status,0);
+					Rear_wiper_Key_Status=0;
+				}
+				else
+					KeySwitch_SendToEXYNOS(KeySwitch_Value,0);
+				// --,150521 sys
 			}
 			KeySwitch_Value = Temp_Value3 = Temp_Cnt = 0;	
 
@@ -516,8 +532,21 @@ void KeySwitch_Process(void)
 
 					if(KeySwitchSendCount >= KEYSwitchSendCountMax)
 					{
+						// ++, 150521 sys
+						#if 0
 						KeySwitch_SendToEXYNOS(KeySwitch_Value,0);
 						KeySwitchSendCount = 0;
+						#endif
+						if(KeySwitch_Value !=0x00020000)
+						{
+							KeySwitch_SendToEXYNOS(KeySwitch_Value,0);
+						}
+						else
+						{
+							Rear_wiper_Key_Status = KeySwitch_Value;
+						}
+						KeySwitchSendCount = 0;
+						// --, 150521 sys
 					}
 					
 				}
@@ -540,6 +569,9 @@ void KeySwitch_Process(void)
 							{
 								KeySwitch_SendToEXYNOS(KeySwitch_Value,1);
 								KeySwitchSendCount = 0;
+								//++, 150521 sys
+								Rear_wiper_Key_Status=0;
+								//--, 150521 sys
 							}
 						}
 					}

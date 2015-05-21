@@ -189,10 +189,10 @@
 
 
 
-#define	VERSION_HIGH		1
+#define	VERSION_HIGH			1
 #define	VERSION_LOW			0
-#define	VERSION_SUB_HIGH	2
-#define	VERSION_SUB_LOW		2
+#define	VERSION_SUB_HIGH		2
+#define	VERSION_SUB_LOW		3
 
 ///////////////////////////////////////////////////
 ////1.0.1.0 (1.0.0.9에서 250kpbs로 CAN2 수정)
@@ -236,6 +236,9 @@
 
 //// 1.0.2.2 - 150519
 // CAM original view white line delete 
+
+//// 1.0.2.3 - 150521
+// Rear wiper up key event 
 
 ///////////////////////////////////////////////////
 
