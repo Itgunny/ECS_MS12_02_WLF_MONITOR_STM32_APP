@@ -192,7 +192,7 @@
 #define	VERSION_HIGH			1
 #define	VERSION_LOW			0
 #define	VERSION_SUB_HIGH		2
-#define	VERSION_SUB_LOW		3
+#define	VERSION_SUB_LOW		4
 
 ///////////////////////////////////////////////////
 ////1.0.1.0 (1.0.0.9에서 250kpbs로 CAN2 수정)
@@ -239,6 +239,10 @@
 
 //// 1.0.2.3 - 150521
 // Rear wiper up key event 
+
+//// 1.0.2.4 - 150609
+// CAM 전환 시 black -> Color 수정 
+// CAM 전환 시 화면 down -> up 수정 
 
 ///////////////////////////////////////////////////
 
