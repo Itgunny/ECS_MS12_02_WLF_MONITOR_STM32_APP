@@ -70,7 +70,7 @@ u8 fatoryinit_enable_code[6]={0x8d,0x7c,0x6b,0x5a, };
 
 u8 temp3[6];
 uint16_t Index_temp;
-
+u8 Flag_St_Update;
 
 void SPI_FLASH_SectorErase(unsigned long SectorAddr)
 {
@@ -414,7 +414,6 @@ void STM32_Update(unsigned char cmd, unsigned char FactoryInitFlag)
 					SPI_FLASH_SectorErase(Sector_10);
 					Change_UART4_for_Download = 1;
 					CMD_ACK_SendToExynos(FILE_WRITE_ENABLE); 
-
 					// can serial disable
 					//USART_Cmd(Serial_COM2, DISABLE);
 				}
@@ -450,7 +449,6 @@ void STM32_Update(unsigned char cmd, unsigned char FactoryInitFlag)
 				SPI_FLASH_BufferRead(temp3,Sector_62,6);
 				Change_UART4_for_Download=0;
 				CMD_ACK_SendToExynos(FILE_WRITE_FINISH);
-
 				// can serial disable
 				//USART_Cmd(Serial_COM2, ENABLE);
 				
@@ -470,7 +468,7 @@ void STM32_Update(unsigned char cmd, unsigned char FactoryInitFlag)
 					SPI_FLASH_SectorErase(Sector_1);
 					Change_UART4_for_Download = 1;
 					CMD_ACK_SendToExynos(FILE_WRITE_ENABLE); 
-
+					Flag_St_Update=0;
 					// can serial disable
 					//USART_Cmd(Serial_COM2, DISABLE);
 				}
@@ -504,10 +502,7 @@ void STM32_Update(unsigned char cmd, unsigned char FactoryInitFlag)
 				SPI_FLASH_BufferRead(temp3,Sector_63,6);
 				Change_UART4_for_Download=0;
 				CMD_ACK_SendToExynos(FILE_WRITE_FINISH);
-
-				// can serial disable
-				//USART_Cmd(Serial_COM2, ENABLE);
-				
+				Flag_St_Update=1;
 				break;					
 		}
 	}

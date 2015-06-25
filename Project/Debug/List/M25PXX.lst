@@ -1,6 +1,6 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      09/Jun/2015  07:54:38 #
+# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      25/Jun/2015  18:53:17 #
 # Copyright 1999-2012 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
@@ -108,7 +108,7 @@ C:\Tools\IAR Systems\Workspace_WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\M2
      70          
      71          u8 temp3[6];
      72          uint16_t Index_temp;
-     73          
+     73          u8 Flag_St_Update;
      74          
      75          void SPI_FLASH_SectorErase(unsigned long SectorAddr)
      76          {
@@ -452,206 +452,201 @@ C:\Tools\IAR Systems\Workspace_WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\M2
     414          					SPI_FLASH_SectorErase(Sector_10);
     415          					Change_UART4_for_Download = 1;
     416          					CMD_ACK_SendToExynos(FILE_WRITE_ENABLE); 
-    417          
-    418          					// can serial disable
-    419          					//USART_Cmd(Serial_COM2, DISABLE);
-    420          				}
-    421          				else
-    422          				{
-    423          					temp_address = Sector_10 + (WL9FM_USART_FILE_DATA.Bin_Data.index  *1024);
-    424          					File_Write_to_SFLAH(temp_address);
-    425          				}
-    426          				break;
-    427          
-    428          			case FILE_VERIFY :
-    429          
-    430          				if(Change_UART4_for_Download == 0)
-    431          				{
-    432          					Change_UART4_for_Download = 1;
-    433          					CMD_ACK_SendToExynos(FILE_VERIFY);
-    434          				}
-    435          				else
-    436          				{
-    437          					temp_address = Sector_10 + (WL9FM_USART_FILE_DATA.Bin_Data.index  * 1024);
-    438          					Read_File_From_SFLAH(temp_address);
-    439          				}
-    440          				break;
-    441          
-    442          			case FILE_WRITE_FINISH :
-    443          				SPI_FLASH_SectorErase(Sector_61);
-    444          				SPI_FLASH_SectorErase(Sector_62);
-    445          
-    446          				fatoryinit_enable_code[4]=WL9FM_USART_FILE_DATA.Bin_Data.index;
-    447          				fatoryinit_enable_code[5]=WL9FM_USART_FILE_DATA.Bin_Data.index>>8;
-    448          				SPI_FLASH_PageWrite(fatoryinit_enable_code,Sector_61,6);
-    449          				SPI_FLASH_PageWrite(fatoryinit_enable_code,Sector_62,6);
-    450          				SPI_FLASH_BufferRead(temp3,Sector_62,6);
-    451          				Change_UART4_for_Download=0;
-    452          				CMD_ACK_SendToExynos(FILE_WRITE_FINISH);
-    453          
-    454          				// can serial disable
-    455          				//USART_Cmd(Serial_COM2, ENABLE);
-    456          				
-    457          				break;	
-    458          
-    459          				
-    460          		}
-    461          
-    462          	}
-    463          	else
-    464          	{
-    465          		switch(cmd)
-    466          		{
-    467          			case FILE_WRITE_ENABLE :
-    468          				if(Change_UART4_for_Download == 0)
-    469          				{
-    470          					SPI_FLASH_SectorErase(Sector_1);
-    471          					Change_UART4_for_Download = 1;
-    472          					CMD_ACK_SendToExynos(FILE_WRITE_ENABLE); 
-    473          
-    474          					// can serial disable
-    475          					//USART_Cmd(Serial_COM2, DISABLE);
-    476          				}
-    477          				else
-    478          				{
-    479          					temp_address = Sector_1 + (WL9FM_USART_FILE_DATA.Bin_Data.index  *1024);
-    480          					File_Write_to_SFLAH(temp_address);
-    481          				}
-    482          				break;
+    417          					// can serial disable
+    418          					//USART_Cmd(Serial_COM2, DISABLE);
+    419          				}
+    420          				else
+    421          				{
+    422          					temp_address = Sector_10 + (WL9FM_USART_FILE_DATA.Bin_Data.index  *1024);
+    423          					File_Write_to_SFLAH(temp_address);
+    424          				}
+    425          				break;
+    426          
+    427          			case FILE_VERIFY :
+    428          
+    429          				if(Change_UART4_for_Download == 0)
+    430          				{
+    431          					Change_UART4_for_Download = 1;
+    432          					CMD_ACK_SendToExynos(FILE_VERIFY);
+    433          				}
+    434          				else
+    435          				{
+    436          					temp_address = Sector_10 + (WL9FM_USART_FILE_DATA.Bin_Data.index  * 1024);
+    437          					Read_File_From_SFLAH(temp_address);
+    438          				}
+    439          				break;
+    440          
+    441          			case FILE_WRITE_FINISH :
+    442          				SPI_FLASH_SectorErase(Sector_61);
+    443          				SPI_FLASH_SectorErase(Sector_62);
+    444          
+    445          				fatoryinit_enable_code[4]=WL9FM_USART_FILE_DATA.Bin_Data.index;
+    446          				fatoryinit_enable_code[5]=WL9FM_USART_FILE_DATA.Bin_Data.index>>8;
+    447          				SPI_FLASH_PageWrite(fatoryinit_enable_code,Sector_61,6);
+    448          				SPI_FLASH_PageWrite(fatoryinit_enable_code,Sector_62,6);
+    449          				SPI_FLASH_BufferRead(temp3,Sector_62,6);
+    450          				Change_UART4_for_Download=0;
+    451          				CMD_ACK_SendToExynos(FILE_WRITE_FINISH);
+    452          				// can serial disable
+    453          				//USART_Cmd(Serial_COM2, ENABLE);
+    454          				
+    455          				break;	
+    456          
+    457          				
+    458          		}
+    459          
+    460          	}
+    461          	else
+    462          	{
+    463          		switch(cmd)
+    464          		{
+    465          			case FILE_WRITE_ENABLE :
+    466          				if(Change_UART4_for_Download == 0)
+    467          				{
+    468          					SPI_FLASH_SectorErase(Sector_1);
+    469          					Change_UART4_for_Download = 1;
+    470          					CMD_ACK_SendToExynos(FILE_WRITE_ENABLE); 
+    471          					Flag_St_Update=0;
+    472          					// can serial disable
+    473          					//USART_Cmd(Serial_COM2, DISABLE);
+    474          				}
+    475          				else
+    476          				{
+    477          					temp_address = Sector_1 + (WL9FM_USART_FILE_DATA.Bin_Data.index  *1024);
+    478          					File_Write_to_SFLAH(temp_address);
+    479          				}
+    480          				break;
+    481          
+    482          			case FILE_VERIFY :
     483          
-    484          			case FILE_VERIFY :
-    485          
-    486          				if(Change_UART4_for_Download == 0)
-    487          				{
-    488          					Change_UART4_for_Download = 1;
-    489          					CMD_ACK_SendToExynos(FILE_VERIFY);
-    490          				}
-    491          				else
-    492          				{
-    493          					temp_address = Sector_1 + (WL9FM_USART_FILE_DATA.Bin_Data.index  * 1024);
-    494          					Read_File_From_SFLAH(temp_address);
-    495          				}
-    496          				break;
-    497          
-    498          			case FILE_WRITE_FINISH :
-    499          				SPI_FLASH_SectorErase(Sector_63);
-    500          
-    501          				download_enable_code[4]=WL9FM_USART_FILE_DATA.Bin_Data.index;
-    502          				download_enable_code[5]=WL9FM_USART_FILE_DATA.Bin_Data.index>>8;
-    503          				SPI_FLASH_PageWrite(download_enable_code,Sector_63,6);
-    504          				SPI_FLASH_BufferRead(temp3,Sector_63,6);
-    505          				Change_UART4_for_Download=0;
-    506          				CMD_ACK_SendToExynos(FILE_WRITE_FINISH);
-    507          
-    508          				// can serial disable
-    509          				//USART_Cmd(Serial_COM2, ENABLE);
-    510          				
-    511          				break;					
-    512          		}
-    513          	}
-    514          	
-    515          }
-    516          
-    517          void ACK_NACK_SendToExynos(uint8_t data)
-    518          {
-    519          	uint8_t ValueBuffer[Serial_COM4_TxSize];
-    520          
-    521          	ValueBuffer[0] = 0x02;				//	STX
-    522          	ValueBuffer[1] = WL9FM_USART_FILE_DATA.Bin_Data.index ;			//	index L
-    523          	ValueBuffer[2] = WL9FM_USART_FILE_DATA.Bin_Data.index>>8  ; 	//	index H
-    524          	ValueBuffer[Serial_COM4_TxSize-1] = data;				//	ETX
-    525          	
-    526          	USARTx_EXYNOS(COM4, (char *)ValueBuffer);	
-    527          }
-    528          
-    529          void CMD_ACK_SendToExynos(uint8_t data)
-    530          {
-    531          	uint8_t ValueBuffer[Serial_COM4_TxSize];
-    532          
-    533          	ValueBuffer[0] = 0x02;				//	STX
-    534          	ValueBuffer[1] = DOWNRES;			//	KeyValue Command, 0x4B
-    535          	ValueBuffer[2] = data;   			//	Key Value HexCode, 
-    536          	ValueBuffer[Serial_COM4_TxSize-1] = 0x03;				//	ETX
-    537          	
-    538          	USARTx_EXYNOS(COM4, (char *)ValueBuffer);	
-    539          }
-    540          
-    541          
-    542          void File_Write_to_SFLAH(unsigned long addr)
-    543          {
-    544          	uint16_t	temp_crc;
-    545          	uint8_t i=0;
-    546          	
-    547          	temp_crc = MakeCrc16(WL9FM_USART_FILE_DATA.Bin_Data.data, 1024);
+    484          				if(Change_UART4_for_Download == 0)
+    485          				{
+    486          					Change_UART4_for_Download = 1;
+    487          					CMD_ACK_SendToExynos(FILE_VERIFY);
+    488          				}
+    489          				else
+    490          				{
+    491          					temp_address = Sector_1 + (WL9FM_USART_FILE_DATA.Bin_Data.index  * 1024);
+    492          					Read_File_From_SFLAH(temp_address);
+    493          				}
+    494          				break;
+    495          
+    496          			case FILE_WRITE_FINISH :
+    497          				SPI_FLASH_SectorErase(Sector_63);
+    498          
+    499          				download_enable_code[4]=WL9FM_USART_FILE_DATA.Bin_Data.index;
+    500          				download_enable_code[5]=WL9FM_USART_FILE_DATA.Bin_Data.index>>8;
+    501          				SPI_FLASH_PageWrite(download_enable_code,Sector_63,6);
+    502          				SPI_FLASH_BufferRead(temp3,Sector_63,6);
+    503          				Change_UART4_for_Download=0;
+    504          				CMD_ACK_SendToExynos(FILE_WRITE_FINISH);
+    505          				Flag_St_Update=1;
+    506          				break;					
+    507          		}
+    508          	}
+    509          	
+    510          }
+    511          
+    512          void ACK_NACK_SendToExynos(uint8_t data)
+    513          {
+    514          	uint8_t ValueBuffer[Serial_COM4_TxSize];
+    515          
+    516          	ValueBuffer[0] = 0x02;				//	STX
+    517          	ValueBuffer[1] = WL9FM_USART_FILE_DATA.Bin_Data.index ;			//	index L
+    518          	ValueBuffer[2] = WL9FM_USART_FILE_DATA.Bin_Data.index>>8  ; 	//	index H
+    519          	ValueBuffer[Serial_COM4_TxSize-1] = data;				//	ETX
+    520          	
+    521          	USARTx_EXYNOS(COM4, (char *)ValueBuffer);	
+    522          }
+    523          
+    524          void CMD_ACK_SendToExynos(uint8_t data)
+    525          {
+    526          	uint8_t ValueBuffer[Serial_COM4_TxSize];
+    527          
+    528          	ValueBuffer[0] = 0x02;				//	STX
+    529          	ValueBuffer[1] = DOWNRES;			//	KeyValue Command, 0x4B
+    530          	ValueBuffer[2] = data;   			//	Key Value HexCode, 
+    531          	ValueBuffer[Serial_COM4_TxSize-1] = 0x03;				//	ETX
+    532          	
+    533          	USARTx_EXYNOS(COM4, (char *)ValueBuffer);	
+    534          }
+    535          
+    536          
+    537          void File_Write_to_SFLAH(unsigned long addr)
+    538          {
+    539          	uint16_t	temp_crc;
+    540          	uint8_t i=0;
+    541          	
+    542          	temp_crc = MakeCrc16(WL9FM_USART_FILE_DATA.Bin_Data.data, 1024);
+    543          
+    544          	if(temp_crc == WL9FM_USART_FILE_DATA.Bin_Data.CRC_data)
+    545          	{
+    546          		
+    547          		ACK_NACK_SendToExynos(ACK);
     548          
-    549          	if(temp_crc == WL9FM_USART_FILE_DATA.Bin_Data.CRC_data)
-    550          	{
-    551          		
-    552          		ACK_NACK_SendToExynos(ACK);
-    553          
-    554          		for(i=0;i<4;i++)
-    555          		{
-    556          			SPI_FLASH_PageWrite(&WL9FM_USART_FILE_DATA.Bin_Data.data[i*256],addr+(i<<8),256);
-    557          		}
-    558                          
-    559                          // ++, 150324 sys
-    560                          //SPI_FLASH_BufferRead(temp1024,addr,1024);
-    561                          // --, 150324 sys
-    562          
-    563          		if(Change_UART4_for_Download==2)	Change_UART4_for_Download=0;
-    564          	}
-    565          	else
-    566          	{
-    567          		ACK_NACK_SendToExynos(NAK);
-    568          	}
-    569          }
-    570          
-    571          uint16_t	temp_crc;
+    549          		for(i=0;i<4;i++)
+    550          		{
+    551          			SPI_FLASH_PageWrite(&WL9FM_USART_FILE_DATA.Bin_Data.data[i*256],addr+(i<<8),256);
+    552          		}
+    553                          
+    554                          // ++, 150324 sys
+    555                          //SPI_FLASH_BufferRead(temp1024,addr,1024);
+    556                          // --, 150324 sys
+    557          
+    558          		if(Change_UART4_for_Download==2)	Change_UART4_for_Download=0;
+    559          	}
+    560          	else
+    561          	{
+    562          		ACK_NACK_SendToExynos(NAK);
+    563          	}
+    564          }
+    565          
+    566          uint16_t	temp_crc;
+    567          
+    568          void Read_File_From_SFLAH(unsigned long addr)
+    569          {
+    570          		
+    571          	temp_crc = MakeCrc16(WL9FM_USART_FILE_DATA.Bin_Data.data, 1024);
     572          
-    573          void Read_File_From_SFLAH(unsigned long addr)
-    574          {
-    575          		
-    576          	temp_crc = MakeCrc16(WL9FM_USART_FILE_DATA.Bin_Data.data, 1024);
-    577          
-    578          	//if(memcmp(temp_crc,WL9FM_USART_FILE_DATA.Bin_Data.CRC_data,1)==0)
-    579          
-    580          	if(temp_crc == WL9FM_USART_FILE_DATA.Bin_Data.CRC_data)
-    581          	{
-    582          		
-    583          
-    584          		memset(temp1024,0xff,1024);
-    585          		
-    586          		SPI_FLASH_BufferRead(temp1024,addr,1024);
+    573          	//if(memcmp(temp_crc,WL9FM_USART_FILE_DATA.Bin_Data.CRC_data,1)==0)
+    574          
+    575          	if(temp_crc == WL9FM_USART_FILE_DATA.Bin_Data.CRC_data)
+    576          	{
+    577          		
+    578          
+    579          		memset(temp1024,0xff,1024);
+    580          		
+    581          		SPI_FLASH_BufferRead(temp1024,addr,1024);
+    582          
+    583          		if(memcmp(temp1024,WL9FM_USART_FILE_DATA.Bin_Data.data,1024)==0)
+    584          		{
+    585          
+    586          			if(Change_UART4_for_Download==2)	Change_UART4_for_Download=0;
     587          
-    588          		if(memcmp(temp1024,WL9FM_USART_FILE_DATA.Bin_Data.data,1024)==0)
-    589          		{
-    590          
-    591          			if(Change_UART4_for_Download==2)	Change_UART4_for_Download=0;
-    592          
-    593          			ACK_NACK_SendToExynos(ACK);
-    594          		}
-    595          		else
-    596          			ACK_NACK_SendToExynos(NAK);
-    597          	}
-    598          	else
-    599          	{
-    600          		ACK_NACK_SendToExynos(NAK);
-    601          	}
-    602          }
-    603          
-    604          void CMD_DUMMY_SendToExynos(uint8_t data)
-    605          {
-    606          	uint8_t ValueBuffer[Serial_COM4_TxSize];
-    607          
-    608          	ValueBuffer[0] = 0x02;				//	STX
-    609          	ValueBuffer[1] = DUMMYCMD;			//	DUMMYCMD
-    610          	ValueBuffer[2] = data;   			//	Data
-    611          	ValueBuffer[3] = 0x03;				//	ETX
-    612          	
-    613          	USARTx_EXYNOS(COM4, (char *)ValueBuffer);	
-    614          }
-    615          
-    616          
+    588          			ACK_NACK_SendToExynos(ACK);
+    589          		}
+    590          		else
+    591          			ACK_NACK_SendToExynos(NAK);
+    592          	}
+    593          	else
+    594          	{
+    595          		ACK_NACK_SendToExynos(NAK);
+    596          	}
+    597          }
+    598          
+    599          void CMD_DUMMY_SendToExynos(uint8_t data)
+    600          {
+    601          	uint8_t ValueBuffer[Serial_COM4_TxSize];
+    602          
+    603          	ValueBuffer[0] = 0x02;				//	STX
+    604          	ValueBuffer[1] = DUMMYCMD;			//	DUMMYCMD
+    605          	ValueBuffer[2] = data;   			//	Data
+    606          	ValueBuffer[3] = 0x03;				//	ETX
+    607          	
+    608          	USARTx_EXYNOS(COM4, (char *)ValueBuffer);	
+    609          }
+    610          
+    611          
 
    Maximum stack usage in bytes:
 
@@ -729,6 +724,7 @@ C:\Tools\IAR Systems\Workspace_WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\M2
         24   -> GPIO_WriteBit
        8   STM32_Update
          0   -> CMD_ACK_SendToExynos
+         8   -> CMD_ACK_SendToExynos
          0   -> File_Write_to_SFLAH
          0   -> Read_File_From_SFLAH
          8   -> SPI_FLASH_BufferRead
@@ -768,10 +764,11 @@ C:\Tools\IAR Systems\Workspace_WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\M2
      102  SPI_FLASH_WaitForWriteEnd
       26  SPI_FLASH_WriteEnable
       84  SPI_Transfer
-     292  STM32_Update
+     318  STM32_Update
     1052  download_enable_code
           fatoryinit_enable_code
           Change_UART4_for_Download
+          Flag_St_Update
           temp_crc
           temp3
           temp1024
@@ -780,9 +777,9 @@ C:\Tools\IAR Systems\Workspace_WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\M2
  
  1 026 bytes in section .bss
  1 052 bytes in section .data
- 2 144 bytes in section .text
+ 2 170 bytes in section .text
  
- 2 144 bytes of CODE memory
+ 2 170 bytes of CODE memory
  2 078 bytes of DATA memory
 
 Errors: none

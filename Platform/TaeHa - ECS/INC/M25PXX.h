@@ -103,4 +103,6 @@ extern unsigned short MakeCrc16(unsigned char *data, unsigned short nLen);
 
 extern u8 Change_UART4_for_Download;
 
+void JumpIAP(void);
+
 #endif

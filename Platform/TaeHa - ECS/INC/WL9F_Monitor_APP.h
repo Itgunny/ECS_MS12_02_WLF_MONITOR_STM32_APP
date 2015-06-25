@@ -192,7 +192,7 @@
 #define	VERSION_HIGH			1
 #define	VERSION_LOW			0
 #define	VERSION_SUB_HIGH		2
-#define	VERSION_SUB_LOW		4
+#define	VERSION_SUB_LOW		5
 
 ///////////////////////////////////////////////////
 ////1.0.1.0 (1.0.0.9에서 250kpbs로 CAN2 수정)
@@ -243,6 +243,10 @@
 //// 1.0.2.4 - 150609
 // CAM 전환 시 black -> Color 수정 
 // CAM 전환 시 화면 down -> up 수정 
+
+//// 1.0.2.5 - 150625
+// st update 후, system reset 시, jump_iap 추가 
+
 
 ///////////////////////////////////////////////////
 
@@ -419,4 +423,5 @@ extern void Init_Smart_Key_valuable(void);
 extern void ESL_System(void);
 // --, 141118 sys3215
 
+extern void JumpIAP(void);
 #endif /* __WL9F_Monitor_APP_H */

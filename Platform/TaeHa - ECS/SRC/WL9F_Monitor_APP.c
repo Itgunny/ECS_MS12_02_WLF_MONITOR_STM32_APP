@@ -174,6 +174,8 @@ u8 CameraCommFlag;
 extern u8 Hardware_Revision;
 // --, sys3215, 141211
 
+extern u8 Flag_St_Update;
+
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
@@ -593,7 +595,14 @@ void System_CheckPowerIG()
 			if(!WL9FM_GetPowerIG())
 			{
 				WL9FM_PowerIG(PowerIG_ON);	// 	PowerIG Set
-				SystemReset = 1;			//	Software RESET
+
+				if(Flag_St_Update==1)
+				{
+					gRebootCmd=1;
+					Flag_St_Update=0;
+				}
+				else
+					SystemReset = 1;			//	Software RESET
 
 				USART_ITConfig(USART2, USART_IT_TXE, DISABLE);
 				CAN_ITConfig(CAN1,CAN_IT_FMP0, DISABLE);
@@ -605,6 +614,30 @@ void System_CheckPowerIG()
 		//	--, kutelf, 140801
 		}
 	}
+}
+
+
+void JumpIAP(void)
+{
+	//#ifdef USE_WATCH_DOG
+	/* IWDG timeout equal to 280 ms (the timeout may varies due to LSI frequency
+	dispersion) -------------------------------------------------------------*/
+	/* Enable write access to IWDG_PR and IWDG_RLR registers */
+	IWDG_WriteAccessCmd(IWDG_WriteAccess_Enable);
+
+	/* IWDG counter clock: 40KHz(LSI) / 32 = 156.25 Hz */
+	IWDG_SetPrescaler(IWDG_Prescaler_256);
+
+	/* Set counter reload value to 150   about 1sec */
+	IWDG_SetReload(1);
+
+	/* Reload IWDG counter */
+	IWDG_ReloadCounter();
+
+	IWDG_Enable();
+		
+	while(1);
+	//#endif		
 }
 
 /*******************************************************************************
@@ -1431,7 +1464,9 @@ SYSTEM_RESET :
 			//	WL9F Monitor RESET Code
 			if((SystemReset == 1) || (gRebootCmd == 1))
 			{
-				goto SYSTEM_RESET;
+				if(gRebootCmd)		JumpIAP();
+				else
+					goto SYSTEM_RESET;
 			}
 			#endif
 		}
