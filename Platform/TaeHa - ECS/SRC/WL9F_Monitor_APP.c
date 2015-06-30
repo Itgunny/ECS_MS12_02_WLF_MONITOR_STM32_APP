@@ -648,19 +648,11 @@ void JumpIAP(void)
 #if 1
 void SendSMKAuthResult(u8 result)
 {
-	// ++, 150630 bwk
-	recv_smartkey.Reserved0 = result;
-	// --, 150630 bwk
-
 	SMK_SendToExynos( result,0xFF, SMK_Tag_Count );
 }
 
 void SendSMKMsgResult(u8 result)
 {
-	// ++, 150630 bwk
-	recv_smartkey.Reserved0 = result;
-	// --, 150630 bwk
-	
 	SMK_SendToExynos( 0xFF, result, recv_smartkey.Registered_Tag_Count );
 }
 

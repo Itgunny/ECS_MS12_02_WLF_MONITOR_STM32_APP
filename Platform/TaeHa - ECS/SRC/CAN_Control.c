@@ -203,9 +203,6 @@ extern u8 Password_Certification_Result;
 extern u8 Input_Key_Value,Key_Status;
 // --, 150204 sys3215
 
-extern WL9FM_receive_smartkey recv_smartkey;	// ++, --, 150630 bwk
-extern u8 Recv_Smartkey_Flag;				// ++, --, 150630 bwk
-
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 /**
@@ -667,19 +664,6 @@ void CAN_TX_Key_Status(void)
 		if (++(CAN_Message_Ring_Buffer_Tx_Single.Head) >= MAX_CAN_TX_DATA_SINGLE)
 			CAN_Message_Ring_Buffer_Tx_Single.Head = 0;
 	}
-	// ++, 150630 bwk 
-	else if(Recv_Smartkey_Flag)
-	{
-		memcpy((void *)&Message.Data[0],(u8*)&recv_smartkey, sizeof(recv_smartkey));
-
-		memcpy(&CAN_Message_Ring_Buffer_Tx_Single.Message[CAN_Message_Ring_Buffer_Tx_Single.Head],&Message,12);
-
-		if (++(CAN_Message_Ring_Buffer_Tx_Single.Head) >= MAX_CAN_TX_DATA_SINGLE)
-			CAN_Message_Ring_Buffer_Tx_Single.Head = 0;
-
-		Recv_Smartkey_Flag = 0;
-	}
-	// --, 150630 bwk
 }
 // --, 150204 sys3215
 

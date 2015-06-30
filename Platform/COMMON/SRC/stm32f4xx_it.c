@@ -230,7 +230,6 @@ extern u8 CameraCommFlag;
 
 extern uint16_t ADC3ConvertedValue;
 
-U8 Recv_Smartkey_Flag= 0;		// ++, --, 150630 bwk
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 void WL9F_CAN_Buffer_Init(void)
@@ -500,7 +499,6 @@ void CAN1_RX0_IRQHandler(void)
 					{
 						smk_flag_data.recv_resp_packet |= RESPONSE_AUTHENTICATION;	
 						//smk_flag_data.recv_resp_packet |= 0x0100; 
-						Recv_Smartkey_Flag = 1;	// ++, --, 150630 bwk
 						memcpy((u8*)&recv_smartkey, (u8*)&RxMsg.Data[0], 8);
 					}
 					else
