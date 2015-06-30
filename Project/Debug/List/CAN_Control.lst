@@ -1,41 +1,38 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      25/Jun/2015  18:53:18 #
+# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      30/Jun/2015  18:26:29 #
 # Copyright 1999-2012 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
 #    Endian       =  little                                                   #
-#    Source file  =  C:\Tools\IAR Systems\Workspace_WL9F\WL_F_Monitor_APP\Pla #
-#                    tform\TaeHa - ECS\SRC\CAN_Control.c                      #
-#    Command line =  "C:\Tools\IAR Systems\Workspace_WL9F\WL_F_Monitor_APP\Pl #
-#                    atform\TaeHa - ECS\SRC\CAN_Control.c" -D                 #
-#                    USE_STDPERIPH_DRIVER -D STM32F4XX -D USE_STM324xG_EVAL   #
-#                    -D USE_FULL_ASSERT -lcN "C:\Tools\IAR                    #
-#                    Systems\Workspace_WL9F\WL_F_Monitor_APP\Project\Debug\Li #
-#                    st\" -o "C:\Tools\IAR Systems\Workspace_WL9F\WL_F_Monito #
-#                    r_APP\Project\Debug\Obj\" --debug --endian=little        #
-#                    --cpu=Cortex-M4 -e --fpu=VFPv4_sp --dlib_config          #
+#    Source file  =  C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa -          #
+#                    ECS\SRC\CAN_Control.c                                    #
+#    Command line =  "C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa -         #
+#                    ECS\SRC\CAN_Control.c" -D USE_STDPERIPH_DRIVER -D        #
+#                    STM32F4XX -D USE_STM324xG_EVAL -D USE_FULL_ASSERT -lcN   #
+#                    C:\Tools\WL9F\WL_F_Monitor_APP\Project\Debug\List\ -o    #
+#                    C:\Tools\WL9F\WL_F_Monitor_APP\Project\Debug\Obj\        #
+#                    --debug --endian=little --cpu=Cortex-M4 -e               #
+#                    --fpu=VFPv4_sp --dlib_config "C:\Tools\IAR               #
+#                    Systems\Embedded Workbench 6.5\arm\INC\c\DLib_Config_Ful #
+#                    l.h" -I C:\Tools\WL9F\WL_F_Monitor_APP\Project\..\Platfo #
+#                    rm\COMMON\INC\ -I "C:\Tools\WL9F\WL_F_Monitor_APP\Projec #
+#                    t\..\Platform\TaeHa - ECS\INC\" -I                       #
+#                    C:\Tools\WL9F\WL_F_Monitor_APP\Project\..\Libraries\CMSI #
+#                    S\Device\ST\STM32F4xx\Include\ -I                        #
+#                    C:\Tools\WL9F\WL_F_Monitor_APP\Project\..\Libraries\STM3 #
+#                    2F4xx_StdPeriph_Driver\inc\ -Oh --use_c++_inline -I      #
 #                    "C:\Tools\IAR Systems\Embedded Workbench                 #
-#                    6.5\arm\INC\c\DLib_Config_Full.h" -I "C:\Tools\IAR       #
-#                    Systems\Workspace_WL9F\WL_F_Monitor_APP\Project\..\Platf #
-#                    orm\COMMON\INC\" -I "C:\Tools\IAR                        #
-#                    Systems\Workspace_WL9F\WL_F_Monitor_APP\Project\..\Platf #
-#                    orm\TaeHa - ECS\INC\" -I "C:\Tools\IAR                   #
-#                    Systems\Workspace_WL9F\WL_F_Monitor_APP\Project\..\Libra #
-#                    ries\CMSIS\Device\ST\STM32F4xx\Include\" -I              #
-#                    "C:\Tools\IAR Systems\Workspace_WL9F\WL_F_Monitor_APP\Pr #
-#                    oject\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\" -Oh  #
-#                    --use_c++_inline -I "C:\Tools\IAR Systems\Embedded       #
-#                    Workbench 6.5\arm\CMSIS\Include\"                        #
-#    List file    =  C:\Tools\IAR Systems\Workspace_WL9F\WL_F_Monitor_APP\Pro #
-#                    ject\Debug\List\CAN_Control.lst                          #
-#    Object file  =  C:\Tools\IAR Systems\Workspace_WL9F\WL_F_Monitor_APP\Pro #
-#                    ject\Debug\Obj\CAN_Control.o                             #
+#                    6.5\arm\CMSIS\Include\"                                  #
+#    List file    =  C:\Tools\WL9F\WL_F_Monitor_APP\Project\Debug\List\CAN_Co #
+#                    ntrol.lst                                                #
+#    Object file  =  C:\Tools\WL9F\WL_F_Monitor_APP\Project\Debug\Obj\CAN_Con #
+#                    trol.o                                                   #
 #                                                                             #
 #                                                                             #
 ###############################################################################
 
-C:\Tools\IAR Systems\Workspace_WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\CAN_Control.c
+C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\CAN_Control.c
       1          /**
       2            ******************************************************************************
       3            * @file    UART_Control.c 
@@ -241,501 +238,501 @@ C:\Tools\IAR Systems\Workspace_WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\CA
     203          extern u8 Input_Key_Value,Key_Status;
     204          // --, 150204 sys3215
     205          
-    206          /* Private function prototypes -----------------------------------------------*/
-    207          /* Private functions ---------------------------------------------------------*/
-    208          /**
-    209            * @brief  CAN1, CAN2 Initialize 
-    210            * @param  
-    211            * @retval None
-    212            */
-    213          void CAN_COMInit(void)
-    214          {
-    215          	CAN_InitTypeDef        CAN_InitStructure;
-    216          	CAN_InitTypeDef        CAN_InitStructure2;
-    217          	CAN_FilterInitTypeDef  CAN_FilterInitStructure;
-    218          	NVIC_InitTypeDef        NVIC_InitStructure;
-    219          
-    220          	DebugMsg_printf("++ CAN1, CAN2 Initialize START\r\n");
-    221          
-    222          	CAN_DeInit(CAN1);
-    223          	CAN_DeInit(CAN2);
-    224          	CAN_StructInit(&CAN_InitStructure);
-    225          
-    226          	CAN_InitStructure.CAN_TTCM = DISABLE;
-    227          
-    228          	//++, 150318 sys
-    229          	CAN_InitStructure.CAN_ABOM = ENABLE;
-    230          	//CAN_InitStructure.CAN_ABOM = DISABLE;
-    231          	//--, 150318 sys
-    232          	
-    233          	CAN_InitStructure.CAN_AWUM = DISABLE;
-    234          	CAN_InitStructure.CAN_NART = DISABLE;
-    235          	CAN_InitStructure.CAN_RFLM = DISABLE;
-    236          	CAN_InitStructure.CAN_TXFP = DISABLE;
-    237          	CAN_InitStructure.CAN_Mode = CAN_Mode_Normal;
-    238          	CAN_InitStructure.CAN_SJW = CAN_SJW_1tq;
-    239          	CAN_InitStructure.CAN_BS1 = CAN_BS1_14tq;
-    240          	CAN_InitStructure.CAN_BS2 = CAN_BS2_6tq;  
-    241          	CAN_InitStructure.CAN_Prescaler = 4;   // 2:1M, 4:500k, 8:250k. 16:125k
-    242          	CAN_Init(CAN1, &CAN_InitStructure);
-    243          
-    244          
-    245          	CAN_InitStructure2.CAN_TTCM = DISABLE;
-    246          	//CAN_InitStructure2.CAN_ABOM = ENABLE;
-    247          	CAN_InitStructure2.CAN_ABOM = DISABLE;
-    248          	CAN_InitStructure2.CAN_AWUM = DISABLE;
-    249          	CAN_InitStructure2.CAN_NART = DISABLE;
-    250          	CAN_InitStructure2.CAN_RFLM = DISABLE;
-    251          	CAN_InitStructure2.CAN_TXFP = DISABLE;
-    252          	CAN_InitStructure2.CAN_Mode = CAN_Mode_Normal;
-    253          	CAN_InitStructure2.CAN_SJW = CAN_SJW_1tq;
-    254          	CAN_InitStructure2.CAN_BS1 = CAN_BS1_14tq;
-    255          	CAN_InitStructure2.CAN_BS2 = CAN_BS2_6tq;  
-    256          	CAN_InitStructure2.CAN_Prescaler = 8;   // 2:1M, 4:500k, 8:250k. 16:125k
-    257          	CAN_Init(CAN2, &CAN_InitStructure2);
-    258          
-    259          	//CAN_FilterInitStructure.CAN_FilterNumber = 0;
-    260          	CAN_FilterInitStructure.CAN_FilterNumber = 0;
-    261          	CAN_FilterInitStructure.CAN_FilterMode = CAN_FilterMode_IdMask;
-    262          	CAN_FilterInitStructure.CAN_FilterScale = CAN_FilterScale_32bit;
-    263          	CAN_FilterInitStructure.CAN_FilterIdHigh = 0x0000;
-    264          	CAN_FilterInitStructure.CAN_FilterIdLow = 0x0000;
-    265          	CAN_FilterInitStructure.CAN_FilterMaskIdHigh = 0x0000;
-    266          	CAN_FilterInitStructure.CAN_FilterMaskIdLow = 0x0000;
-    267          	//CAN_FilterInitStructure.CAN_FilterFIFOAssignment = 0;
-    268          	CAN_FilterInitStructure.CAN_FilterFIFOAssignment = CAN_FIFO0;
-    269          	CAN_FilterInitStructure.CAN_FilterActivation = ENABLE;
-    270          	CAN_FilterInit(&CAN_FilterInitStructure);
-    271          
-    272          	// 부팅시 EEPROM Data를 Main CPU에 올리고 나서 ENABLE시킨다.
-    273          	//CAN_ITConfig(CAN_IT_FMP0, ENABLE);		
+    206          extern WL9FM_receive_smartkey recv_smartkey;	// ++, --, 150630 bwk
+    207          extern u8 Recv_Smartkey_Flag;				// ++, --, 150630 bwk
+    208          
+    209          /* Private function prototypes -----------------------------------------------*/
+    210          /* Private functions ---------------------------------------------------------*/
+    211          /**
+    212            * @brief  CAN1, CAN2 Initialize 
+    213            * @param  
+    214            * @retval None
+    215            */
+    216          void CAN_COMInit(void)
+    217          {
+    218          	CAN_InitTypeDef        CAN_InitStructure;
+    219          	CAN_InitTypeDef        CAN_InitStructure2;
+    220          	CAN_FilterInitTypeDef  CAN_FilterInitStructure;
+    221          	NVIC_InitTypeDef        NVIC_InitStructure;
+    222          
+    223          	DebugMsg_printf("++ CAN1, CAN2 Initialize START\r\n");
+    224          
+    225          	CAN_DeInit(CAN1);
+    226          	CAN_DeInit(CAN2);
+    227          	CAN_StructInit(&CAN_InitStructure);
+    228          
+    229          	CAN_InitStructure.CAN_TTCM = DISABLE;
+    230          
+    231          	//++, 150318 sys
+    232          	CAN_InitStructure.CAN_ABOM = ENABLE;
+    233          	//CAN_InitStructure.CAN_ABOM = DISABLE;
+    234          	//--, 150318 sys
+    235          	
+    236          	CAN_InitStructure.CAN_AWUM = DISABLE;
+    237          	CAN_InitStructure.CAN_NART = DISABLE;
+    238          	CAN_InitStructure.CAN_RFLM = DISABLE;
+    239          	CAN_InitStructure.CAN_TXFP = DISABLE;
+    240          	CAN_InitStructure.CAN_Mode = CAN_Mode_Normal;
+    241          	CAN_InitStructure.CAN_SJW = CAN_SJW_1tq;
+    242          	CAN_InitStructure.CAN_BS1 = CAN_BS1_14tq;
+    243          	CAN_InitStructure.CAN_BS2 = CAN_BS2_6tq;  
+    244          	CAN_InitStructure.CAN_Prescaler = 4;   // 2:1M, 4:500k, 8:250k. 16:125k
+    245          	CAN_Init(CAN1, &CAN_InitStructure);
+    246          
+    247          
+    248          	CAN_InitStructure2.CAN_TTCM = DISABLE;
+    249          	//CAN_InitStructure2.CAN_ABOM = ENABLE;
+    250          	CAN_InitStructure2.CAN_ABOM = DISABLE;
+    251          	CAN_InitStructure2.CAN_AWUM = DISABLE;
+    252          	CAN_InitStructure2.CAN_NART = DISABLE;
+    253          	CAN_InitStructure2.CAN_RFLM = DISABLE;
+    254          	CAN_InitStructure2.CAN_TXFP = DISABLE;
+    255          	CAN_InitStructure2.CAN_Mode = CAN_Mode_Normal;
+    256          	CAN_InitStructure2.CAN_SJW = CAN_SJW_1tq;
+    257          	CAN_InitStructure2.CAN_BS1 = CAN_BS1_14tq;
+    258          	CAN_InitStructure2.CAN_BS2 = CAN_BS2_6tq;  
+    259          	CAN_InitStructure2.CAN_Prescaler = 8;   // 2:1M, 4:500k, 8:250k. 16:125k
+    260          	CAN_Init(CAN2, &CAN_InitStructure2);
+    261          
+    262          	//CAN_FilterInitStructure.CAN_FilterNumber = 0;
+    263          	CAN_FilterInitStructure.CAN_FilterNumber = 0;
+    264          	CAN_FilterInitStructure.CAN_FilterMode = CAN_FilterMode_IdMask;
+    265          	CAN_FilterInitStructure.CAN_FilterScale = CAN_FilterScale_32bit;
+    266          	CAN_FilterInitStructure.CAN_FilterIdHigh = 0x0000;
+    267          	CAN_FilterInitStructure.CAN_FilterIdLow = 0x0000;
+    268          	CAN_FilterInitStructure.CAN_FilterMaskIdHigh = 0x0000;
+    269          	CAN_FilterInitStructure.CAN_FilterMaskIdLow = 0x0000;
+    270          	//CAN_FilterInitStructure.CAN_FilterFIFOAssignment = 0;
+    271          	CAN_FilterInitStructure.CAN_FilterFIFOAssignment = CAN_FIFO0;
+    272          	CAN_FilterInitStructure.CAN_FilterActivation = ENABLE;
+    273          	CAN_FilterInit(&CAN_FilterInitStructure);
     274          
-    275          	//  Enable the CAN1_RX0_IRQn  Interrupt
-    276          	NVIC_InitStructure.NVIC_IRQChannel                   = CAN1_RX0_IRQn;
-    277          	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
-    278          	NVIC_InitStructure.NVIC_IRQChannelSubPriority        = 0;
-    279          	NVIC_InitStructure.NVIC_IRQChannelCmd                = ENABLE;
-    280          	NVIC_Init(&NVIC_InitStructure);
-    281          
-    282          
-    283          	
-    284          	//CAN_ITConfig(CAN1, CAN_IT_FMP0,ENABLE);		
-    285          	
-    286              DebugMsg_printf("++ CAN1, CAN2 Initialize END\r\n");
-    287          }
-    288          
-    289          
-    290          
+    275          	// 부팅시 EEPROM Data를 Main CPU에 올리고 나서 ENABLE시킨다.
+    276          	//CAN_ITConfig(CAN_IT_FMP0, ENABLE);		
+    277          
+    278          	//  Enable the CAN1_RX0_IRQn  Interrupt
+    279          	NVIC_InitStructure.NVIC_IRQChannel                   = CAN1_RX0_IRQn;
+    280          	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+    281          	NVIC_InitStructure.NVIC_IRQChannelSubPriority        = 0;
+    282          	NVIC_InitStructure.NVIC_IRQChannelCmd                = ENABLE;
+    283          	NVIC_Init(&NVIC_InitStructure);
+    284          
+    285          
+    286          	
+    287          	//CAN_ITConfig(CAN1, CAN_IT_FMP0,ENABLE);		
+    288          	
+    289              DebugMsg_printf("++ CAN1, CAN2 Initialize END\r\n");
+    290          }
     291          
-    292          void WL9F_CAN_Variables_Init(void)
-    293          {
-    294          	check_as_data_len = 0;
-    295          	Flag_SerialRxMsg = 0;
-    296          
-    297          	Identifier.Priority = 6;
-    298          	Identifier.Data_Page = 0;
-    299          	Identifier.PDU_Format = 255;	
-    300          	Identifier.Source_Address = 40;		
-    301          
-    302          	flag_skip_multi_packet = 0;
-    303          	TotMsgSize = 0;
-    304          	RecvMachInfo = 0;
-    305          	TotalRequestCnt = 0;
-    306          	CompareAsterisk = 0;
-    307          	CanRecvCnt = 0;
-    308          
-    309          
-    310          
-    311          	tp_cm_bam = (TP_CM*)&tmpBuf[0];
-    312          	
-    313          	memset((u8*)&Uart2_RxMsg_Save_Data1[0], 0xff, sizeof(Uart2_RxMsg_Save_Data1));
-    314          	memset((u8*)&Uart2_RxMsg_Save_Data2[0], 0xff, sizeof(Uart2_RxMsg_Save_Data2));
-    315          	memset((u8*)&Uart2_RxMsg_AS_Phone_Data[0], 0xff, sizeof(Uart2_RxMsg_AS_Phone_Data));
-    316          	memset((u8*)&Uart2_RxMsg_Smk_Reg_Eli[0], 0xff, sizeof(Uart2_RxMsg_Smk_Reg_Eli));	
-    317          	memset((u8*)&Uart2_RxMsg_Single_46[0], 0xff, sizeof(Uart2_RxMsg_Single_46));
-    318          	memset((u8*)&Uart2_RxMsg_Single_69[0], 0xff, sizeof(Uart2_RxMsg_Single_69));
-    319          	memset((u8*)&Uart2_RxMsg_Single_160[0], 0xff, sizeof(Uart2_RxMsg_Single_160));
-    320          	memset((u8*)&Uart2_RxMsg_Single_162[0], 0xff, sizeof(Uart2_RxMsg_Single_162));
-    321          	Uart2_RxMsg_Single_162[4] = 0;		// Monitor Switch Status
-    322          	memset((u8*)&Uart2_RxMsg_Single_163[0], 0xff, sizeof(Uart2_RxMsg_Single_163));
-    323          	memset((u8*)&Uart2_RxMsg_Single_174[0], 0xff, sizeof(Uart2_RxMsg_Single_174));
-    324          	memset((u8*)&Uart2_RxMsg_Single_251[0], 0xff, sizeof(Uart2_RxMsg_Single_251));
-    325          	memset((u8*)&Uart2_RxMsg_Single_252[0], 0xff, sizeof(Uart2_RxMsg_Single_252));
-    326          	memset((u8*)&Uart2_RxMsg_Single_253[0], 0xff, sizeof(Uart2_RxMsg_Single_253));
-    327          
-    328          	memset((u8*)&Uart2_RxMsg_Single_239[0], 0xff, sizeof(Uart2_RxMsg_Single_239));
-    329          
-    330          	memset((u8*)&Uart2_RxMsg_Single_239_121[0], 0xff, sizeof(Uart2_RxMsg_Single_239_121));
-    331          
-    332          	
-    333          	memset((u8*)&Uart2_RxMsg_Single_247[0], 0xff, sizeof(Uart2_RxMsg_Single_247));
+    292          
+    293          
+    294          
+    295          void WL9F_CAN_Variables_Init(void)
+    296          {
+    297          	check_as_data_len = 0;
+    298          	Flag_SerialRxMsg = 0;
+    299          
+    300          	Identifier.Priority = 6;
+    301          	Identifier.Data_Page = 0;
+    302          	Identifier.PDU_Format = 255;	
+    303          	Identifier.Source_Address = 40;		
+    304          
+    305          	flag_skip_multi_packet = 0;
+    306          	TotMsgSize = 0;
+    307          	RecvMachInfo = 0;
+    308          	TotalRequestCnt = 0;
+    309          	CompareAsterisk = 0;
+    310          	CanRecvCnt = 0;
+    311          
+    312          
+    313          
+    314          	tp_cm_bam = (TP_CM*)&tmpBuf[0];
+    315          	
+    316          	memset((u8*)&Uart2_RxMsg_Save_Data1[0], 0xff, sizeof(Uart2_RxMsg_Save_Data1));
+    317          	memset((u8*)&Uart2_RxMsg_Save_Data2[0], 0xff, sizeof(Uart2_RxMsg_Save_Data2));
+    318          	memset((u8*)&Uart2_RxMsg_AS_Phone_Data[0], 0xff, sizeof(Uart2_RxMsg_AS_Phone_Data));
+    319          	memset((u8*)&Uart2_RxMsg_Smk_Reg_Eli[0], 0xff, sizeof(Uart2_RxMsg_Smk_Reg_Eli));	
+    320          	memset((u8*)&Uart2_RxMsg_Single_46[0], 0xff, sizeof(Uart2_RxMsg_Single_46));
+    321          	memset((u8*)&Uart2_RxMsg_Single_69[0], 0xff, sizeof(Uart2_RxMsg_Single_69));
+    322          	memset((u8*)&Uart2_RxMsg_Single_160[0], 0xff, sizeof(Uart2_RxMsg_Single_160));
+    323          	memset((u8*)&Uart2_RxMsg_Single_162[0], 0xff, sizeof(Uart2_RxMsg_Single_162));
+    324          	Uart2_RxMsg_Single_162[4] = 0;		// Monitor Switch Status
+    325          	memset((u8*)&Uart2_RxMsg_Single_163[0], 0xff, sizeof(Uart2_RxMsg_Single_163));
+    326          	memset((u8*)&Uart2_RxMsg_Single_174[0], 0xff, sizeof(Uart2_RxMsg_Single_174));
+    327          	memset((u8*)&Uart2_RxMsg_Single_251[0], 0xff, sizeof(Uart2_RxMsg_Single_251));
+    328          	memset((u8*)&Uart2_RxMsg_Single_252[0], 0xff, sizeof(Uart2_RxMsg_Single_252));
+    329          	memset((u8*)&Uart2_RxMsg_Single_253[0], 0xff, sizeof(Uart2_RxMsg_Single_253));
+    330          
+    331          	memset((u8*)&Uart2_RxMsg_Single_239[0], 0xff, sizeof(Uart2_RxMsg_Single_239));
+    332          
+    333          	memset((u8*)&Uart2_RxMsg_Single_239_121[0], 0xff, sizeof(Uart2_RxMsg_Single_239_121));
     334          
     335          	
-    336          	memset((u8*)&Uart2_RxMsg_Multi_161[0], 0xff, sizeof(Uart2_RxMsg_Multi_161));
-    337          	memset((u8*)&Uart2_RxMsg_Multi_69[0], 0xff, sizeof(Uart2_RxMsg_Multi_69));
-    338          
-    339          
-    340          
+    336          	memset((u8*)&Uart2_RxMsg_Single_247[0], 0xff, sizeof(Uart2_RxMsg_Single_247));
+    337          
+    338          	
+    339          	memset((u8*)&Uart2_RxMsg_Multi_161[0], 0xff, sizeof(Uart2_RxMsg_Multi_161));
+    340          	memset((u8*)&Uart2_RxMsg_Multi_69[0], 0xff, sizeof(Uart2_RxMsg_Multi_69));
     341          
-    342          	memset((u8*)&Uart2_RxMsg_Single_11[0], 0xff, sizeof(Uart2_RxMsg_Single_11));
-    343          	memset((u8*)&Uart2_RxMsg_Single_12[0], 0xff, sizeof(Uart2_RxMsg_Multi_69));
-    344          	memset((u8*)&Uart2_RxMsg_Single_21[0], 0xff, sizeof(Uart2_RxMsg_Single_21));
-    345          	memset((u8*)&Uart2_RxMsg_Multi_23[0], 0xff, sizeof(Uart2_RxMsg_Multi_23));
-    346          	memset((u8*)&Uart2_RxMsg_Single_61[0], 0xff, sizeof(Uart2_RxMsg_Single_61));
-    347          	memset((u8*)&Uart2_RxMsg_Single_62[0], 0xff, sizeof(Uart2_RxMsg_Single_62));
-    348          	memset((u8*)&Uart2_RxMsg_Single_101[0], 0xff, sizeof(Uart2_RxMsg_Single_101));
-    349          	memset((u8*)&Uart2_RxMsg_Single_104[0], 0xff, sizeof(Uart2_RxMsg_Single_104));
-    350          	memset((u8*)&Uart2_RxMsg_Single_105[0], 0xff, sizeof(Uart2_RxMsg_Single_105));
-    351          	memset((u8*)&Uart2_RxMsg_Single_109[0], 0xff, sizeof(Uart2_RxMsg_Single_109));
-    352          	memset((u8*)&Uart2_RxMsg_Single_121[0], 0xff, sizeof(Uart2_RxMsg_Single_121));
-    353          	memset((u8*)&Uart2_RxMsg_Single_123[0], 0xff, sizeof(Uart2_RxMsg_Single_123));
-    354          	memset((u8*)&Uart2_RxMsg_Single_201[0], 0xff, sizeof(Uart2_RxMsg_Single_201));
-    355          	memset((u8*)&Uart2_RxMsg_Single_203[0], 0xff, sizeof(Uart2_RxMsg_Single_203));
-    356          	memset((u8*)&Uart2_RxMsg_Single_47[0], 0xff, sizeof(Uart2_RxMsg_Single_47));
-    357          	memset((u8*)&Uart2_RxMsg_Multi_145[0], 0xff, sizeof(Uart2_RxMsg_Multi_145));
-    358          	memset((u8*)&Uart2_RxMsg_Single_247[0], 0xff, sizeof(Uart2_RxMsg_Single_247));
-    359          
-    360          
-    361          
-    362          	memset((u8*)&rx_Realy_Control, 0xff, sizeof(rx_Realy_Control));
+    342          
+    343          
+    344          
+    345          	memset((u8*)&Uart2_RxMsg_Single_11[0], 0xff, sizeof(Uart2_RxMsg_Single_11));
+    346          	memset((u8*)&Uart2_RxMsg_Single_12[0], 0xff, sizeof(Uart2_RxMsg_Multi_69));
+    347          	memset((u8*)&Uart2_RxMsg_Single_21[0], 0xff, sizeof(Uart2_RxMsg_Single_21));
+    348          	memset((u8*)&Uart2_RxMsg_Multi_23[0], 0xff, sizeof(Uart2_RxMsg_Multi_23));
+    349          	memset((u8*)&Uart2_RxMsg_Single_61[0], 0xff, sizeof(Uart2_RxMsg_Single_61));
+    350          	memset((u8*)&Uart2_RxMsg_Single_62[0], 0xff, sizeof(Uart2_RxMsg_Single_62));
+    351          	memset((u8*)&Uart2_RxMsg_Single_101[0], 0xff, sizeof(Uart2_RxMsg_Single_101));
+    352          	memset((u8*)&Uart2_RxMsg_Single_104[0], 0xff, sizeof(Uart2_RxMsg_Single_104));
+    353          	memset((u8*)&Uart2_RxMsg_Single_105[0], 0xff, sizeof(Uart2_RxMsg_Single_105));
+    354          	memset((u8*)&Uart2_RxMsg_Single_109[0], 0xff, sizeof(Uart2_RxMsg_Single_109));
+    355          	memset((u8*)&Uart2_RxMsg_Single_121[0], 0xff, sizeof(Uart2_RxMsg_Single_121));
+    356          	memset((u8*)&Uart2_RxMsg_Single_123[0], 0xff, sizeof(Uart2_RxMsg_Single_123));
+    357          	memset((u8*)&Uart2_RxMsg_Single_201[0], 0xff, sizeof(Uart2_RxMsg_Single_201));
+    358          	memset((u8*)&Uart2_RxMsg_Single_203[0], 0xff, sizeof(Uart2_RxMsg_Single_203));
+    359          	memset((u8*)&Uart2_RxMsg_Single_47[0], 0xff, sizeof(Uart2_RxMsg_Single_47));
+    360          	memset((u8*)&Uart2_RxMsg_Multi_145[0], 0xff, sizeof(Uart2_RxMsg_Multi_145));
+    361          	memset((u8*)&Uart2_RxMsg_Single_247[0], 0xff, sizeof(Uart2_RxMsg_Single_247));
+    362          
     363          
     364          
-    365          	memset((u8*)&SerialMsgRTC[0], 0xA5, 2);
-    366          	memset((u8*)&SerialMsgRTC[2], 0xF0, 2);
-    367          }
-    368          
-    369          u8 can_data_temp[255];
-    370          u8 old_can_data;
+    365          	memset((u8*)&rx_Realy_Control, 0xff, sizeof(rx_Realy_Control));
+    366          
+    367          
+    368          	memset((u8*)&SerialMsgRTC[0], 0xA5, 2);
+    369          	memset((u8*)&SerialMsgRTC[2], 0xF0, 2);
+    370          }
     371          
-    372          void Write_CAN_Single(struct st_CAN_Message1 Message)
-    373          {
-    374          	if(Message.PDU_Specific != 47)  // 비주기 테이터 
-    375          	{
-    376          		memcpy(&CAN_Message_Ring_Buffer_Tx_Single.Message[CAN_Message_Ring_Buffer_Tx_Single.Head],&Message,12);
-    377          		
-    378          		if (++(CAN_Message_Ring_Buffer_Tx_Single.Head) >= MAX_CAN_TX_DATA_SINGLE)
-    379          			CAN_Message_Ring_Buffer_Tx_Single.Head = 0;
-    380          	}
-    381          	else  // 주기 데이터  PS = 47
-    382          	{
-    383          		if(Message.PDU_Specific == 47)
-    384          			memcpy(&Uart2_RxMsg_Single_47,&Message.Data,8);
-    385          	}
-    386          }
-    387          
-    388          void Write_UART_Single(void)
-    389          {
-    390          	static unsigned short Tx_Rountine_Count_UART;
-    391          
-    392          	/*
-    393          	if((++Tx_Rountine_Count_UART%3)==0)
-    394          	{
-    395          		Tx_Rountine_Count_UART = 0;
-    396          		if (CAN_Message_Ring_Buffer_Rx_Single.Head != CAN_Message_Ring_Buffer_Rx_Single.Tail)
-    397          		{
-    398          			int i;
-    399          			u8 UARTTxMessage[17];
-    400          			memcpy(&UARTTxMessage[0],(u8*)&CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Tail],17);
-    401          			for(i = 0; i < 17; i++)
-    402          				USARTx_PutChar(2,(uint8_t)UARTTxMessage[i]);
-    403          			//	USART_SendData(USART2, UARTTxMessage[i]);	 
-    404           			
-    405          			SerialTXIndex++;
-    406          			if (++(CAN_Message_Ring_Buffer_Rx_Single.Tail) >= MAX_CAN_RX_DATA_SINGLE)
-    407          				CAN_Message_Ring_Buffer_Rx_Single.Tail = 0;
-    408          		}
-    409          
-    410          	}
-    411          	*/
+    372          u8 can_data_temp[255];
+    373          u8 old_can_data;
+    374          
+    375          void Write_CAN_Single(struct st_CAN_Message1 Message)
+    376          {
+    377          	if(Message.PDU_Specific != 47)  // 비주기 테이터 
+    378          	{
+    379          		memcpy(&CAN_Message_Ring_Buffer_Tx_Single.Message[CAN_Message_Ring_Buffer_Tx_Single.Head],&Message,12);
+    380          		
+    381          		if (++(CAN_Message_Ring_Buffer_Tx_Single.Head) >= MAX_CAN_TX_DATA_SINGLE)
+    382          			CAN_Message_Ring_Buffer_Tx_Single.Head = 0;
+    383          	}
+    384          	else  // 주기 데이터  PS = 47
+    385          	{
+    386          		if(Message.PDU_Specific == 47)
+    387          			memcpy(&Uart2_RxMsg_Single_47,&Message.Data,8);
+    388          	}
+    389          }
+    390          
+    391          void Write_UART_Single(void)
+    392          {
+    393          	static unsigned short Tx_Rountine_Count_UART;
+    394          
+    395          	/*
+    396          	if((++Tx_Rountine_Count_UART%3)==0)
+    397          	{
+    398          		Tx_Rountine_Count_UART = 0;
+    399          		if (CAN_Message_Ring_Buffer_Rx_Single.Head != CAN_Message_Ring_Buffer_Rx_Single.Tail)
+    400          		{
+    401          			int i;
+    402          			u8 UARTTxMessage[17];
+    403          			memcpy(&UARTTxMessage[0],(u8*)&CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Tail],17);
+    404          			for(i = 0; i < 17; i++)
+    405          				USARTx_PutChar(2,(uint8_t)UARTTxMessage[i]);
+    406          			//	USART_SendData(USART2, UARTTxMessage[i]);	 
+    407           			
+    408          			SerialTXIndex++;
+    409          			if (++(CAN_Message_Ring_Buffer_Rx_Single.Tail) >= MAX_CAN_RX_DATA_SINGLE)
+    410          				CAN_Message_Ring_Buffer_Rx_Single.Tail = 0;
+    411          		}
     412          
-    413          	if((++Tx_Rountine_Count_UART%5)==0)
-    414          	{
-    415          		Tx_Rountine_Count_UART = 0;
-    416          		if (CAN_Message_Ring_Buffer_Rx_Single.Head != CAN_Message_Ring_Buffer_Rx_Single.Tail)
-    417          		{
-    418          			int i;
-    419          			//u8 UARTTxMessage[17];
-    420          
-    421          			DMA_UART_SendFrame(&Uart2_SerialTxMsg[0],(u8*)&CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Tail],17);
-    422          			
-    423          			SerialTXIndex++;
-    424          			if (++(CAN_Message_Ring_Buffer_Rx_Single.Tail) >= MAX_CAN_RX_DATA_SINGLE)
-    425          				CAN_Message_Ring_Buffer_Rx_Single.Tail = 0;
-    426          		}
-    427          
-    428          	}
-    429          
-    430          }
-    431          
+    413          	}
+    414          	*/
+    415          
+    416          	if((++Tx_Rountine_Count_UART%5)==0)
+    417          	{
+    418          		Tx_Rountine_Count_UART = 0;
+    419          		if (CAN_Message_Ring_Buffer_Rx_Single.Head != CAN_Message_Ring_Buffer_Rx_Single.Tail)
+    420          		{
+    421          			int i;
+    422          			//u8 UARTTxMessage[17];
+    423          
+    424          			DMA_UART_SendFrame(&Uart2_SerialTxMsg[0],(u8*)&CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Tail],17);
+    425          			
+    426          			SerialTXIndex++;
+    427          			if (++(CAN_Message_Ring_Buffer_Rx_Single.Tail) >= MAX_CAN_RX_DATA_SINGLE)
+    428          				CAN_Message_Ring_Buffer_Rx_Single.Tail = 0;
+    429          		}
+    430          
+    431          	}
     432          
-    433          void SetCanID(u8 PF, u8 PS, u8 Priority)
-    434          {
-    435          	if(PF != 0)
-    436          		Identifier.PDU_Format = PF;	
-    437          
-    438          	if(PS != 0)
-    439          		Identifier.PDU_Specific = PS;	
+    433          }
+    434          
+    435          
+    436          void SetCanID(u8 PF, u8 PS, u8 Priority)
+    437          {
+    438          	if(PF != 0)
+    439          		Identifier.PDU_Format = PF;	
     440          
-    441          	if(Priority != 0)
-    442          		Identifier.Priority = Priority;	
-    443          }
-    444          
-    445          void CAN_TX_Data(u8* Data)
-    446          {
-    447          	//u8 TransmitMailbox;
-    448          	CanTxMsg TxMessage;
-    449          	
-    450          	TxMessage.ExtId=((unsigned long)(Identifier.Priority) << 26)+((unsigned long)(Identifier.Data_Page) << 24)+((unsigned long)(Identifier.PDU_Format) << 16)
-    451          				                      + ((unsigned long)(Identifier.PDU_Specific) << 8) + ((unsigned long)(Identifier.Source_Address) << 0) ;
-    452          			
-    453          	TxMessage.IDE = CAN_ID_EXT;
-    454          	TxMessage.RTR = CAN_RTR_DATA;
-    455          	TxMessage.DLC = 8;
-    456          
-    457          	memcpy((u8*)&TxMessage.Data[0], (u8*)&Data[0], 8);
-    458          
-    459          	
-    460          	CAN_Transmit(CAN1,&TxMessage);
-    461          }
-    462          u8 can_status;
-    463          u8 can_status_buf[100];
-    464          u8 can_tx_error_count;
-    465          
-    466          void CAN_TX(void)
-    467          {
-    468          	CanTxMsg TxMessage;
-    469          	unsigned char i;
-    470          	static unsigned short Tx_Rountine_Count_CAN;
-    471          
-    472          	
-    473          	if((++Tx_Rountine_Count_CAN%2)==0)
-    474          	{
-    475          		if (CAN_Message_Ring_Buffer_Tx_Single.Head != CAN_Message_Ring_Buffer_Tx_Single.Tail)
-    476          		{
-    477          			
-    478          			TxMessage.ExtId = (CAN_Message_Ring_Buffer_Tx_Single.Message[CAN_Message_Ring_Buffer_Tx_Single.Tail].Priority<<24)+
-    479          							(CAN_Message_Ring_Buffer_Tx_Single.Message[CAN_Message_Ring_Buffer_Tx_Single.Tail].PDU_Format<<16)+
-    480          							(CAN_Message_Ring_Buffer_Tx_Single.Message[CAN_Message_Ring_Buffer_Tx_Single.Tail].PDU_Specific<<8)+
-    481          							CAN_Message_Ring_Buffer_Tx_Single.Message[CAN_Message_Ring_Buffer_Tx_Single.Tail].Source_Address;
-    482          			TxMessage.IDE = CAN_ID_EXT;
-    483          			TxMessage.RTR = CAN_RTR_DATA;
-    484          			TxMessage.DLC = 8;
-    485          
-    486          			
-    487          			for (i = 0; i < 8; i++)
-    488          			{
-    489          				TxMessage.Data[i] = CAN_Message_Ring_Buffer_Tx_Single.Message[CAN_Message_Ring_Buffer_Tx_Single.Tail].Data[i];
-    490          			}
-    491          
-    492          			can_status = CAN_Transmit(CAN1,&TxMessage);
-    493          			
+    441          	if(PS != 0)
+    442          		Identifier.PDU_Specific = PS;	
+    443          
+    444          	if(Priority != 0)
+    445          		Identifier.Priority = Priority;	
+    446          }
+    447          
+    448          void CAN_TX_Data(u8* Data)
+    449          {
+    450          	//u8 TransmitMailbox;
+    451          	CanTxMsg TxMessage;
+    452          	
+    453          	TxMessage.ExtId=((unsigned long)(Identifier.Priority) << 26)+((unsigned long)(Identifier.Data_Page) << 24)+((unsigned long)(Identifier.PDU_Format) << 16)
+    454          				                      + ((unsigned long)(Identifier.PDU_Specific) << 8) + ((unsigned long)(Identifier.Source_Address) << 0) ;
+    455          			
+    456          	TxMessage.IDE = CAN_ID_EXT;
+    457          	TxMessage.RTR = CAN_RTR_DATA;
+    458          	TxMessage.DLC = 8;
+    459          
+    460          	memcpy((u8*)&TxMessage.Data[0], (u8*)&Data[0], 8);
+    461          
+    462          	
+    463          	CAN_Transmit(CAN1,&TxMessage);
+    464          }
+    465          u8 can_status;
+    466          u8 can_status_buf[100];
+    467          u8 can_tx_error_count;
+    468          
+    469          void CAN_TX(void)
+    470          {
+    471          	CanTxMsg TxMessage;
+    472          	unsigned char i;
+    473          	static unsigned short Tx_Rountine_Count_CAN;
+    474          
+    475          	
+    476          	if((++Tx_Rountine_Count_CAN%2)==0)
+    477          	{
+    478          		if (CAN_Message_Ring_Buffer_Tx_Single.Head != CAN_Message_Ring_Buffer_Tx_Single.Tail)
+    479          		{
+    480          			
+    481          			TxMessage.ExtId = (CAN_Message_Ring_Buffer_Tx_Single.Message[CAN_Message_Ring_Buffer_Tx_Single.Tail].Priority<<24)+
+    482          							(CAN_Message_Ring_Buffer_Tx_Single.Message[CAN_Message_Ring_Buffer_Tx_Single.Tail].PDU_Format<<16)+
+    483          							(CAN_Message_Ring_Buffer_Tx_Single.Message[CAN_Message_Ring_Buffer_Tx_Single.Tail].PDU_Specific<<8)+
+    484          							CAN_Message_Ring_Buffer_Tx_Single.Message[CAN_Message_Ring_Buffer_Tx_Single.Tail].Source_Address;
+    485          			TxMessage.IDE = CAN_ID_EXT;
+    486          			TxMessage.RTR = CAN_RTR_DATA;
+    487          			TxMessage.DLC = 8;
+    488          
+    489          			
+    490          			for (i = 0; i < 8; i++)
+    491          			{
+    492          				TxMessage.Data[i] = CAN_Message_Ring_Buffer_Tx_Single.Message[CAN_Message_Ring_Buffer_Tx_Single.Tail].Data[i];
+    493          			}
     494          
-    495          							
-    496          			if(can_status !=CAN_TxStatus_NoMailBox)
-    497          			{
-    498          				if (++(CAN_Message_Ring_Buffer_Tx_Single.Tail) >= MAX_CAN_TX_DATA_SINGLE)
-    499          					CAN_Message_Ring_Buffer_Tx_Single.Tail = 0;
-    500          			}
-    501          			else
-    502          			{
-    503          				can_status_buf[can_tx_error_count++] = can_status;
-    504          				if(can_tx_error_count>100)	can_tx_error_count=0;
-    505          			}
-    506          
-    507          
-    508          		}
-    509          		
-    510          	}
-    511          
-    512          
-    513          	 //if(Tx_Rountine_Count_CAN++ > 500)
-    514          	 //{
-    515          	//		Tx_Rountine_Count_CAN = 0;
-    516          	 //}
-    517                 	
-    518          }
-    519          
-    520          void CAN_RX(CanRxMsg RxMessage)
-    521          {
-    522          	
-    523          	CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Head].RX_STX = 0x02;
-    524          	CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Head].RX_ID = 0xF5;
-    525          	CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Head].RX_LEN = 0x08;
-    526          	CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Head].RX_SAVE_DATA = 0x00;
-    527          	CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Head].RX_ETX = 0x03;
-    528          
-    529          	CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Head].Rx_ExtID = RxMessage.ExtId;
-    530          
-    531          	memcpy(&CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Head].RX_DATA[0],&RxMessage.Data[0],8);
-    532          		
-    533          	
-    534          
-    535          
-    536          	// ++, 141118 sys3215
-    537          	if(Flag_ESL==1)
-    538          	{
-    539          		if(CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Head].Rx_ExtID == 0x18EF2847)
-    540          		{
-    541          			if(CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Head].RX_DATA[0]==0x16) // seed received
-    542          			{
-    543          				Seed_received=1;
-    544          			}
-    545          			else if(CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Head].RX_DATA[0]==0x18) // password valid status
-    546          			{
-    547          				if((CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Head].RX_DATA[1] & 0x01)==0x01)
-    548          					Password_Certification_Result=1;
-    549          				else
-    550          					Password_Certification_Result=0;
-    551          			}
-    552          		}
-    553          		if(CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Head].Rx_ExtID == 0x1CEC2847)
-    554          		{
-    555          			if(CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Head].RX_DATA[0]==0x11) // CTS
-    556          			{
-    557          				ESL_CTS_received=1;
-    558          			}
-    559          			else if(CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Head].RX_DATA[0]==0x13) // ACK
-    560          			{
-    561          				ESL_ACK_received=1;
-    562          			}
-    563          		}
-    564          	}
-    565                  
-    566          	if (++(CAN_Message_Ring_Buffer_Rx_Single.Head) >= MAX_CAN_RX_DATA_SINGLE)
-    567          		CAN_Message_Ring_Buffer_Rx_Single.Head = 0;
-    568          // --, 141118 sys3215
-    569          }
-    570          void MonitorStatus_CAN_TX(void)
-    571          {
-    572          	struct st_CAN_Message1 Send_Message;
-    573          
-    574          
-    575          	Send_Message.Priority = 0x18;
-    576          	Send_Message.PDU_Format = 0xFF;		// 255
-    577          	Send_Message.PDU_Specific = 0x2F;	// 47
-    578          	Send_Message.Source_Address = 0x28;
-    579          	memcpy(&Send_Message.Data,&Uart2_RxMsg_Single_47,8);
-    580          	memcpy(&CAN_Message_Ring_Buffer_Tx_Single.Message[CAN_Message_Ring_Buffer_Tx_Single.Head],&Send_Message,12);
-    581          
-    582          	if (++(CAN_Message_Ring_Buffer_Tx_Single.Head) >= MAX_CAN_TX_DATA_SINGLE)
-    583          		CAN_Message_Ring_Buffer_Tx_Single.Head = 0;
-    584          	//if( (Uart2_RxMsg_Single_47[4] & 0x10 ) == 0x10 )
-    585          	//{
-    586          	//	if( WL9FM_BUZZER.Status == 0 )
-    587          	//		Uart2_RxMsg_Single_47[4] = Uart2_RxMsg_Single_47[4] & 0xCF;
-    588          	//}
-    589          }
-    590          
-    591          // ++,141118 sys3215
-    592          void Seed_Request_CAN_TX(void)
-    593          {
-    594          	struct st_CAN_Message1 Send_Message;
-    595          
-    596          	Send_Message.Priority = 0x18;
-    597          	Send_Message.PDU_Format = 0xEF;		
-    598          	Send_Message.PDU_Specific = 0x47;	
-    599          	Send_Message.Source_Address = 0x28;
-    600          	memset(&Send_Message.Data,0xff,8);
-    601          	Send_Message.Data[0]=21;
-    602          	memcpy(&CAN_Message_Ring_Buffer_Tx_Single.Message[CAN_Message_Ring_Buffer_Tx_Single.Head],&Send_Message,12);
-    603          
-    604          	if (++(CAN_Message_Ring_Buffer_Tx_Single.Head) >= MAX_CAN_TX_DATA_SINGLE)
-    605          		CAN_Message_Ring_Buffer_Tx_Single.Head = 0;
-    606          }
-    607          
-    608          void SendMultiPacketRTS_ESL(void)
-    609          {
-    610          	struct st_CAN_Message1 Message;
-    611          	
-    612          	u8 _Temp[8];
-    613          
-    614          	Message.Priority = 0x1c;
-    615          	Message.PDU_Format = 0xEC;
-    616          	Message.PDU_Specific = 0x47;
-    617          	Message.Source_Address = 0x28;
-    618          
-    619          	_Temp[0] = 0x10;
-    620          	_Temp[1] = 0x0d;
-    621          	_Temp[2] = 0;
-    622          	_Temp[3] = 2;
-    623          	_Temp[4] = 0xFF;
-    624          	_Temp[5] = 0;
-    625          	_Temp[6] = 0xef;
-    626          	_Temp[7] = 0x00;
-    627          
-    628          	memcpy((void *)&Message.Data[0],(void *)&_Temp, sizeof(_Temp));
-    629          
-    630          	memcpy(&CAN_Message_Ring_Buffer_Tx_Single.Message[CAN_Message_Ring_Buffer_Tx_Single.Head],&Message,12);
-    631          
-    632          	if (++(CAN_Message_Ring_Buffer_Tx_Single.Head) >= MAX_CAN_TX_DATA_SINGLE)
-    633          		CAN_Message_Ring_Buffer_Tx_Single.Head = 0;
-    634          	
-    635          }
-    636          
-    637          // ++, 150204 sys3215
-    638          void CAN_TX_Key_Status(void)
-    639          {
-    640          	struct st_CAN_Message1 Message;
-    641          	
-    642          	u8 _Temp[8];
-    643          
-    644          	Message.Priority = 0x18;
-    645          	Message.PDU_Format = 0xEF;
-    646          	Message.PDU_Specific = 0x47;
-    647          	Message.Source_Address = 0x28;
-    648          
-    649          	_Temp[0] = 0x01;
-    650          	_Temp[1] = 0xFF;
-    651          	_Temp[2] = Key_Status;
-    652          	_Temp[3] = 0xFF;
-    653          	_Temp[4] = 0xFF;
-    654          	_Temp[5] = 0xFF;
-    655          	_Temp[6] = 0xFF;
-    656          	_Temp[7] = 0xFF;
-    657          
-    658          	if(Input_Key_Value)
-    659          	{
-    660          		memcpy((void *)&Message.Data[0],(void *)&_Temp, sizeof(_Temp));
-    661          
-    662          		memcpy(&CAN_Message_Ring_Buffer_Tx_Single.Message[CAN_Message_Ring_Buffer_Tx_Single.Head],&Message,12);
-    663          
-    664          		if (++(CAN_Message_Ring_Buffer_Tx_Single.Head) >= MAX_CAN_TX_DATA_SINGLE)
-    665          			CAN_Message_Ring_Buffer_Tx_Single.Head = 0;
-    666          	}
-    667          }
-    668          // --, 150204 sys3215
-    669          
-    670          
-    671          void SendMultiPacketData_ESL(void)
-    672          {
-    673          	struct st_CAN_Message1 Message;
-    674          	
-    675          	u8 _Temp[8];
+    495          			can_status = CAN_Transmit(CAN1,&TxMessage);
+    496          			
+    497          
+    498          							
+    499          			if(can_status !=CAN_TxStatus_NoMailBox)
+    500          			{
+    501          				if (++(CAN_Message_Ring_Buffer_Tx_Single.Tail) >= MAX_CAN_TX_DATA_SINGLE)
+    502          					CAN_Message_Ring_Buffer_Tx_Single.Tail = 0;
+    503          			}
+    504          			else
+    505          			{
+    506          				can_status_buf[can_tx_error_count++] = can_status;
+    507          				if(can_tx_error_count>100)	can_tx_error_count=0;
+    508          			}
+    509          
+    510          
+    511          		}
+    512          		
+    513          	}
+    514          
+    515          
+    516          	 //if(Tx_Rountine_Count_CAN++ > 500)
+    517          	 //{
+    518          	//		Tx_Rountine_Count_CAN = 0;
+    519          	 //}
+    520                 	
+    521          }
+    522          
+    523          void CAN_RX(CanRxMsg RxMessage)
+    524          {
+    525          	
+    526          	CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Head].RX_STX = 0x02;
+    527          	CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Head].RX_ID = 0xF5;
+    528          	CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Head].RX_LEN = 0x08;
+    529          	CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Head].RX_SAVE_DATA = 0x00;
+    530          	CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Head].RX_ETX = 0x03;
+    531          
+    532          	CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Head].Rx_ExtID = RxMessage.ExtId;
+    533          
+    534          	memcpy(&CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Head].RX_DATA[0],&RxMessage.Data[0],8);
+    535          		
+    536          	
+    537          
+    538          
+    539          	// ++, 141118 sys3215
+    540          	if(Flag_ESL==1)
+    541          	{
+    542          		if(CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Head].Rx_ExtID == 0x18EF2847)
+    543          		{
+    544          			if(CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Head].RX_DATA[0]==0x16) // seed received
+    545          			{
+    546          				Seed_received=1;
+    547          			}
+    548          			else if(CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Head].RX_DATA[0]==0x18) // password valid status
+    549          			{
+    550          				if((CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Head].RX_DATA[1] & 0x01)==0x01)
+    551          					Password_Certification_Result=1;
+    552          				else
+    553          					Password_Certification_Result=0;
+    554          			}
+    555          		}
+    556          		if(CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Head].Rx_ExtID == 0x1CEC2847)
+    557          		{
+    558          			if(CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Head].RX_DATA[0]==0x11) // CTS
+    559          			{
+    560          				ESL_CTS_received=1;
+    561          			}
+    562          			else if(CAN_Message_Ring_Buffer_Rx_Single.Message[CAN_Message_Ring_Buffer_Rx_Single.Head].RX_DATA[0]==0x13) // ACK
+    563          			{
+    564          				ESL_ACK_received=1;
+    565          			}
+    566          		}
+    567          	}
+    568                  
+    569          	if (++(CAN_Message_Ring_Buffer_Rx_Single.Head) >= MAX_CAN_RX_DATA_SINGLE)
+    570          		CAN_Message_Ring_Buffer_Rx_Single.Head = 0;
+    571          // --, 141118 sys3215
+    572          }
+    573          void MonitorStatus_CAN_TX(void)
+    574          {
+    575          	struct st_CAN_Message1 Send_Message;
+    576          
+    577          
+    578          	Send_Message.Priority = 0x18;
+    579          	Send_Message.PDU_Format = 0xFF;		// 255
+    580          	Send_Message.PDU_Specific = 0x2F;	// 47
+    581          	Send_Message.Source_Address = 0x28;
+    582          	memcpy(&Send_Message.Data,&Uart2_RxMsg_Single_47,8);
+    583          	memcpy(&CAN_Message_Ring_Buffer_Tx_Single.Message[CAN_Message_Ring_Buffer_Tx_Single.Head],&Send_Message,12);
+    584          
+    585          	if (++(CAN_Message_Ring_Buffer_Tx_Single.Head) >= MAX_CAN_TX_DATA_SINGLE)
+    586          		CAN_Message_Ring_Buffer_Tx_Single.Head = 0;
+    587          	//if( (Uart2_RxMsg_Single_47[4] & 0x10 ) == 0x10 )
+    588          	//{
+    589          	//	if( WL9FM_BUZZER.Status == 0 )
+    590          	//		Uart2_RxMsg_Single_47[4] = Uart2_RxMsg_Single_47[4] & 0xCF;
+    591          	//}
+    592          }
+    593          
+    594          // ++,141118 sys3215
+    595          void Seed_Request_CAN_TX(void)
+    596          {
+    597          	struct st_CAN_Message1 Send_Message;
+    598          
+    599          	Send_Message.Priority = 0x18;
+    600          	Send_Message.PDU_Format = 0xEF;		
+    601          	Send_Message.PDU_Specific = 0x47;	
+    602          	Send_Message.Source_Address = 0x28;
+    603          	memset(&Send_Message.Data,0xff,8);
+    604          	Send_Message.Data[0]=21;
+    605          	memcpy(&CAN_Message_Ring_Buffer_Tx_Single.Message[CAN_Message_Ring_Buffer_Tx_Single.Head],&Send_Message,12);
+    606          
+    607          	if (++(CAN_Message_Ring_Buffer_Tx_Single.Head) >= MAX_CAN_TX_DATA_SINGLE)
+    608          		CAN_Message_Ring_Buffer_Tx_Single.Head = 0;
+    609          }
+    610          
+    611          void SendMultiPacketRTS_ESL(void)
+    612          {
+    613          	struct st_CAN_Message1 Message;
+    614          	
+    615          	u8 _Temp[8];
+    616          
+    617          	Message.Priority = 0x1c;
+    618          	Message.PDU_Format = 0xEC;
+    619          	Message.PDU_Specific = 0x47;
+    620          	Message.Source_Address = 0x28;
+    621          
+    622          	_Temp[0] = 0x10;
+    623          	_Temp[1] = 0x0d;
+    624          	_Temp[2] = 0;
+    625          	_Temp[3] = 2;
+    626          	_Temp[4] = 0xFF;
+    627          	_Temp[5] = 0;
+    628          	_Temp[6] = 0xef;
+    629          	_Temp[7] = 0x00;
+    630          
+    631          	memcpy((void *)&Message.Data[0],(void *)&_Temp, sizeof(_Temp));
+    632          
+    633          	memcpy(&CAN_Message_Ring_Buffer_Tx_Single.Message[CAN_Message_Ring_Buffer_Tx_Single.Head],&Message,12);
+    634          
+    635          	if (++(CAN_Message_Ring_Buffer_Tx_Single.Head) >= MAX_CAN_TX_DATA_SINGLE)
+    636          		CAN_Message_Ring_Buffer_Tx_Single.Head = 0;
+    637          	
+    638          }
+    639          
+    640          // ++, 150204 sys3215
+    641          void CAN_TX_Key_Status(void)
+    642          {
+    643          	struct st_CAN_Message1 Message;
+    644          	
+    645          	u8 _Temp[8];
+    646          
+    647          	Message.Priority = 0x18;
+    648          	Message.PDU_Format = 0xEF;
+    649          	Message.PDU_Specific = 0x47;
+    650          	Message.Source_Address = 0x28;
+    651          
+    652          	_Temp[0] = 0x01;
+    653          	_Temp[1] = 0xFF;
+    654          	_Temp[2] = Key_Status;
+    655          	_Temp[3] = 0xFF;
+    656          	_Temp[4] = 0xFF;
+    657          	_Temp[5] = 0xFF;
+    658          	_Temp[6] = 0xFF;
+    659          	_Temp[7] = 0xFF;
+    660          
+    661          	if(Input_Key_Value)
+    662          	{
+    663          		memcpy((void *)&Message.Data[0],(void *)&_Temp, sizeof(_Temp));
+    664          
+    665          		memcpy(&CAN_Message_Ring_Buffer_Tx_Single.Message[CAN_Message_Ring_Buffer_Tx_Single.Head],&Message,12);
+    666          
+    667          		if (++(CAN_Message_Ring_Buffer_Tx_Single.Head) >= MAX_CAN_TX_DATA_SINGLE)
+    668          			CAN_Message_Ring_Buffer_Tx_Single.Head = 0;
+    669          	}
+    670          	// ++, 150630 bwk 
+    671          	else if(Recv_Smartkey_Flag)
+    672          	{
+    673          		memcpy((void *)&Message.Data[0],(u8*)&recv_smartkey, sizeof(recv_smartkey));
+    674          
+    675          		memcpy(&CAN_Message_Ring_Buffer_Tx_Single.Message[CAN_Message_Ring_Buffer_Tx_Single.Head],&Message,12);
     676          
-    677          	Message.Priority = 0x1c;
-    678          	Message.PDU_Format = 0xEB;
-    679          	Message.PDU_Specific = 0x47;
-    680          	Message.Source_Address = 0x28;
-    681          
-    682          	_Temp[0] = 0x01;
-    683          	_Temp[1] = 0x17;
-    684          	_Temp[2] = 0xf8;
-    685          	_Temp[3] = 0xff;
-    686          	_Temp[4] = 0xFF;
-    687          	_Temp[5] = 0xff;
-    688          	_Temp[6] = 0xff;
-    689          	_Temp[7] = 0xff;
-    690          
-    691          	memcpy((void *)&Message.Data[0],(void *)&_Temp, sizeof(_Temp));
+    677          		if (++(CAN_Message_Ring_Buffer_Tx_Single.Head) >= MAX_CAN_TX_DATA_SINGLE)
+    678          			CAN_Message_Ring_Buffer_Tx_Single.Head = 0;
+    679          
+    680          		Recv_Smartkey_Flag = 0;
+    681          	}
+    682          	// --, 150630 bwk
+    683          }
+    684          // --, 150204 sys3215
+    685          
+    686          
+    687          void SendMultiPacketData_ESL(void)
+    688          {
+    689          	struct st_CAN_Message1 Message;
+    690          	
+    691          	u8 _Temp[8];
     692          
-    693          	memcpy(&CAN_Message_Ring_Buffer_Tx_Single.Message[CAN_Message_Ring_Buffer_Tx_Single.Head],&Message,12);
-    694          
-    695          	if (++(CAN_Message_Ring_Buffer_Tx_Single.Head) >= MAX_CAN_TX_DATA_SINGLE)
-    696          		CAN_Message_Ring_Buffer_Tx_Single.Head = 0;
+    693          	Message.Priority = 0x1c;
+    694          	Message.PDU_Format = 0xEB;
+    695          	Message.PDU_Specific = 0x47;
+    696          	Message.Source_Address = 0x28;
     697          
-    698          	_Temp[0] = 0x02;
-    699          	_Temp[1] = 0xff;
-    700          	_Temp[2] = 0xff;
+    698          	_Temp[0] = 0x01;
+    699          	_Temp[1] = 0x17;
+    700          	_Temp[2] = 0xf8;
     701          	_Temp[3] = 0xff;
     702          	_Temp[4] = 0xFF;
     703          	_Temp[5] = 0xff;
@@ -748,11 +745,27 @@ C:\Tools\IAR Systems\Workspace_WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\CA
     710          
     711          	if (++(CAN_Message_Ring_Buffer_Tx_Single.Head) >= MAX_CAN_TX_DATA_SINGLE)
     712          		CAN_Message_Ring_Buffer_Tx_Single.Head = 0;
-    713          	
-    714          }
-    715          // --,141118 sys3215
-    716          
-    717          /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
+    713          
+    714          	_Temp[0] = 0x02;
+    715          	_Temp[1] = 0xff;
+    716          	_Temp[2] = 0xff;
+    717          	_Temp[3] = 0xff;
+    718          	_Temp[4] = 0xFF;
+    719          	_Temp[5] = 0xff;
+    720          	_Temp[6] = 0xff;
+    721          	_Temp[7] = 0xff;
+    722          
+    723          	memcpy((void *)&Message.Data[0],(void *)&_Temp, sizeof(_Temp));
+    724          
+    725          	memcpy(&CAN_Message_Ring_Buffer_Tx_Single.Message[CAN_Message_Ring_Buffer_Tx_Single.Head],&Message,12);
+    726          
+    727          	if (++(CAN_Message_Ring_Buffer_Tx_Single.Head) >= MAX_CAN_TX_DATA_SINGLE)
+    728          		CAN_Message_Ring_Buffer_Tx_Single.Head = 0;
+    729          	
+    730          }
+    731          // --,141118 sys3215
+    732          
+    733          /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
 
    Maximum stack usage in bytes:
 
@@ -771,8 +784,8 @@ C:\Tools\IAR Systems\Workspace_WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\CA
       24   CAN_TX_Data
         24   -> CAN_Transmit
         24   -> __aeabi_memcpy
-      28   CAN_TX_Key_Status
-        28   -> __aeabi_memcpy
+      32   CAN_TX_Key_Status
+        32   -> __aeabi_memcpy
       20   MonitorStatus_CAN_TX
         20   -> __aeabi_memcpy
       20   Seed_Request_CAN_TX
@@ -816,6 +829,8 @@ C:\Tools\IAR Systems\Workspace_WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\CA
        4  ??DataTable11_20
        4  ??DataTable11_21
        4  ??DataTable11_22
+       4  ??DataTable11_23
+       4  ??DataTable11_24
        4  ??DataTable11_3
        4  ??DataTable11_4
        4  ??DataTable11_5
@@ -831,7 +846,7 @@ C:\Tools\IAR Systems\Workspace_WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\CA
      212  CAN_RX
      156  CAN_TX
       80  CAN_TX_Data
-     118  CAN_TX_Key_Status
+     178  CAN_TX_Key_Status
      344  Identifier
           Uart2_RxMsg_Single_162
           check_as_data_len
@@ -900,9 +915,9 @@ C:\Tools\IAR Systems\Workspace_WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\CA
 
  
  8 380 bytes in section .bss
- 2 014 bytes in section .text
+ 2 082 bytes in section .text
  
- 1 994 bytes of CODE memory (+ 20 bytes shared)
+ 2 062 bytes of CODE memory (+ 20 bytes shared)
  8 380 bytes of DATA memory
 
 Errors: none

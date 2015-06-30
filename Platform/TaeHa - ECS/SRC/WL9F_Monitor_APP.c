@@ -648,11 +648,19 @@ void JumpIAP(void)
 #if 1
 void SendSMKAuthResult(u8 result)
 {
+	// ++, 150630 bwk
+	recv_smartkey.Reserved0 = result;
+	// --, 150630 bwk
+
 	SMK_SendToExynos( result,0xFF, SMK_Tag_Count );
 }
 
 void SendSMKMsgResult(u8 result)
 {
+	// ++, 150630 bwk
+	recv_smartkey.Reserved0 = result;
+	// --, 150630 bwk
+	
 	SMK_SendToExynos( 0xFF, result, recv_smartkey.Registered_Tag_Count );
 }
 
@@ -880,8 +888,7 @@ u8 CheckResponseAuthentication(u8 Auth)
 	decode((u8*)&recv_smartkey, 8, (u8*)&output_buf[0], 8);
 
 	memcpy((u8*)&recv_smartkey, (u8*)&output_buf[0], 8);
-	
-	
+
 	if((send_smartkey.TagLevel == recv_smartkey.ReturnTagLevel) && (send_smartkey.TagCommand == recv_smartkey.ReturnTagCommand) 
 		&& (send_smartkey.VMC == recv_smartkey.ReturnVMC))
 	{

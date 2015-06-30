@@ -192,8 +192,8 @@
 #define	VERSION_HIGH			1
 #define	VERSION_LOW			0
 #define	VERSION_SUB_HIGH		2
-#define	VERSION_SUB_LOW		5
-
+#define	VERSION_SUB_LOW		4
+#define	VERSION_HIDDEN		1
 ///////////////////////////////////////////////////
 ////1.0.1.0 (1.0.0.9에서 250kpbs로 CAN2 수정)
 ////1.0.1.1 (1.0.0.9에서 수정, 500kbps) 2014.10.08
@@ -247,6 +247,9 @@
 //// 1.0.2.5 - 150625
 // st update 후, system reset 시, jump_iap 추가 
 
+//// 1.0.2.41 - 150630
+// FW Hidden Version 추가
+// SmartKey -> Key Data Logging
 
 ///////////////////////////////////////////////////
 
