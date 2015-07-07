@@ -648,12 +648,24 @@ void JumpIAP(void)
 #if 1
 void SendSMKAuthResult(u8 result)
 {
+	// ++, 150707 bwk
+	#if 0
 	SMK_SendToExynos( result,0xFF, SMK_Tag_Count );
+	#else
+	SMK_SendToExynos( result,0xFF, SMK_Tag_Count , 0xff, 0xff);
+	#endif
+	// --, 150707 bwk
 }
 
 void SendSMKMsgResult(u8 result)
 {
+	// ++, 150707 bwk
+	#if 0
 	SMK_SendToExynos( 0xFF, result, recv_smartkey.Registered_Tag_Count );
+	#else
+	SMK_SendToExynos( 0xFF, result, recv_smartkey.Registered_Tag_Count, recv_smartkey.Smk_Response_Code, recv_smartkey.Smk_Response_Flag);
+	#endif
+	// --, 150707 bwk
 }
 
 void SetTagLevel(u8 level)
@@ -956,6 +968,7 @@ void CheckResponseMsgComm(void)
 				case 2 :
 					SendSMKMsgResult(SMK_MSG_TAG_NO_REALIZE);
 					break;
+				
 				case 1:
 				case 3 :
 					SendSMKMsgResult(SMK_MSG_FAIL);
@@ -995,6 +1008,10 @@ void CheckResponseMsgComm(void)
 		}
 		else if(recv_smartkey.Smk_Response_Code == 2)
 			SendSMKMsgResult(SMK_MSG_TAG_ELIMINATION_SUCCESS);
+		// ++, 150707 bwk		
+		else if(recv_smartkey.Smk_Response_Code == 3)
+			SendSMKMsgResult(SMK_MSG_TAG_AUTHENTICATION);
+		// --, 150707 bwk
 		else
 			SendSMKMsgResult(SMK_MSG_FAIL);
 	}

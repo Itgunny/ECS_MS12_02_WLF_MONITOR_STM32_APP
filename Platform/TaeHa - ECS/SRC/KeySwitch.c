@@ -238,8 +238,13 @@ void Make_Key_Status(uint32_t KeyValue)
 }
 // --,150204 sys3215
 
-
+// ++, 150707 bwk
+#if 0
 void SMK_SendToExynos(uint8_t SMK_Auth, uint8_t SMK_Msg, uint8_t SMK_Count)
+#else
+void SMK_SendToExynos(uint8_t SMK_Auth, uint8_t SMK_Msg, uint8_t SMK_Count, uint8_t Response_Code, uint8_t Response_Flag)
+#endif
+// --, 150707 bwk
 {
 	uint8_t KeyValueBuffer[Serial_COM4_TxSize];
 
@@ -248,6 +253,8 @@ void SMK_SendToExynos(uint8_t SMK_Auth, uint8_t SMK_Msg, uint8_t SMK_Count)
 	KeyValueBuffer[2] = SMK_Auth;	
 	KeyValueBuffer[3] = SMK_Msg;	
 	KeyValueBuffer[4] = SMK_Count;	
+	KeyValueBuffer[5] = Response_Code;
+	KeyValueBuffer[6] = Response_Flag;	
 	KeyValueBuffer[Serial_COM4_TxSize-1] = 0x03;				//	ETX
 
 	if(Change_UART4_for_Download==0)

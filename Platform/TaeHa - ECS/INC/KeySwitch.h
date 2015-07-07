@@ -87,7 +87,13 @@ extern void KeySwitch_Process(void);
 extern void KeyTest_TEST(uint8_t value);
 
 extern void KeySwitch_SendToEXYNOS(uint32_t KeyValue, uint8_t LongKey);
+// ++, 150707 bwk
+#if 0
 extern void SMK_SendToExynos(uint8_t SMK_Auth, uint8_t SMK_Msg, uint8_t SMK_Count);
+#else
+extern void SMK_SendToExynos(uint8_t SMK_Auth, uint8_t SMK_Msg, uint8_t SMK_Count, uint8_t Response_Code, uint8_t Response_Flag);
+#endif
+// --, 150707 bwk
 
 // ++, 150204 sys3215
 void Make_Key_Status(uint32_t KeyValue);

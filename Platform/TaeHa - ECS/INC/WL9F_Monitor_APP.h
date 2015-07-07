@@ -158,7 +158,7 @@
 #define SMK_MSG_TAG_THIRD_REG_SUCCESS		0x07
 #define SMK_MSG_TAG_FOURTH_REG_SUCCESS		0x08
 #define SMK_MSG_TAG_FIFTH_REG_SUCCESS		0x09
-
+#define SMK_MSG_TAG_AUTHENTICATION			0x0a	// ++, --, 150707 bwk
 
 
 
@@ -258,6 +258,9 @@
 // smart key 인증 요구 추가
 // CMD ring buffer 구현 
 
+//// 1.0.2.50 - 150707 
+// smart key 인증 요구 응답 구현(실차 확인 필요)
+// CMD SMK 암호화 풀린 코드 추가(디버깅용) 
 ///////////////////////////////////////////////////
 
 //=================================================================
