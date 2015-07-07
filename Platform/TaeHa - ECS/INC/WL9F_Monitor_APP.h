@@ -192,8 +192,8 @@
 #define	VERSION_HIGH			1
 #define	VERSION_LOW			0
 #define	VERSION_SUB_HIGH		2
-#define	VERSION_SUB_LOW		4
-#define	VERSION_HIDDEN		2
+#define	VERSION_SUB_LOW		5
+#define	VERSION_HIDDEN		0
 ///////////////////////////////////////////////////
 ////1.0.1.0 (1.0.0.9에서 250kpbs로 CAN2 수정)
 ////1.0.1.1 (1.0.0.9에서 수정, 500kbps) 2014.10.08
@@ -253,6 +253,10 @@
 
 //// 1.0.2.42 - 150630(양산적용)
 // 1.0.2.5에다가 FW Hidden Version 추가
+
+//// 1.0.2.50 - 150707
+// smart key 인증 요구 추가
+// CMD ring buffer 구현 
 
 ///////////////////////////////////////////////////
 
