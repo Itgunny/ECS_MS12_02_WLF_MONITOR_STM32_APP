@@ -946,9 +946,13 @@ void CheckResponseMsgComm(void)
 					}
 					else
 					{
+						// ++, 150707 sys
+						#if 0
 						if(SMK_Tag_Count != 0)
 							SMK_Tag_Count--;
-
+						#endif
+						// --, 150707 sys
+						
 						SendSMKMsgResult(SMK_MSG_FAIL);
 					}
 					break;
