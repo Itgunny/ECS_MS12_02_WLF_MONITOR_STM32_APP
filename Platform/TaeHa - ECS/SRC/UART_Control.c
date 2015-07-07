@@ -25,6 +25,7 @@
 /* Private define ------------------------------------------------------------*/
 #define UART2_Rx_BUF_SIZE		14			
 #define UART2_Tx_BUF_SIZE		17
+#define RING_BUF_SIZE			768
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
@@ -83,6 +84,10 @@ const uint16_t Serial_IRQ_Channel[5]= { 0,
                                         0,
                                         UART4_IRQn,
                                         };
+
+extern u16 pWriteBufPos;
+extern u8 ring_buf[RING_BUF_SIZE];
+extern u16 pWriteBufPos;
 
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
@@ -430,18 +435,32 @@ void USARTx_printk(uint8_t COM, char *fmt,...)
   * @retval None
   */
 //  
+
+
 void USARTx_EXYNOS(uint8_t COM, char *TmpBuffer)
 {
-
+//++, 150707 sys
+#if 0
 	memcpy((char *)WL9FM_USART_DATA.COM4_TxBuf, TmpBuffer, Serial_COM4_TxSize);
 						
 	WL9FM_USART_INDEX.COM4_TxCnt = 0;
 	WL9FM_USART_INDEX.COM4_TxIdx = Serial_COM4_TxSize;
 	    
 	USART_ITConfig(Serial_USART[COM], USART_IT_TXE, ENABLE);
-	
-	
+#endif
 
+#if 1
+	if(pWriteBufPos >= (RING_BUF_SIZE-1))	// End of Ring Buffer
+		pWriteBufPos = 0;
+
+	memcpy(&ring_buf[pWriteBufPos], TmpBuffer, Serial_COM4_TxSize);
+
+	pWriteBufPos += Serial_COM4_TxSize;
+
+	USART_ITConfig(Serial_USART[COM], USART_IT_TXE, ENABLE);
+#endif
+
+// --, 150707 sys
 }
 
 /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/

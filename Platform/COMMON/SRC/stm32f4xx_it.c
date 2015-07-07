@@ -230,6 +230,11 @@ extern u8 CameraCommFlag;
 
 extern uint16_t ADC3ConvertedValue;
 
+
+extern u16 pWriteBufPos;
+
+
+
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 void WL9F_CAN_Buffer_Init(void)
@@ -253,6 +258,7 @@ uint16_t test,old_test;
 
 unsigned char test_temp[8];
 
+#if 0
 void OperateRingBuffer(void)
 {
 	if(pWriteBufPos >= (RING_BUF_SIZE-1))	// End of Ring Buffer
@@ -269,6 +275,8 @@ void OperateRingBuffer(void)
 	USART_ITConfig(USART2, USART_IT_TXE, ENABLE);
 	
 }
+#endif
+
 void RTCSend(void)
 {
 	if(pWriteBufPos >= (RING_BUF_SIZE-1)) // End of Ring Buffer
@@ -1058,6 +1066,8 @@ void UART4_Receive_File(void)
 
 void UART4_transmit_CMD(void)
 {
+// ++, 150707 sys
+#if 0
 	//  Write one byte to the transmit data register
 	USART_SendData(UART4, WL9FM_USART_DATA.COM4_TxBuf[WL9FM_USART_INDEX.COM4_TxCnt++]);
 
@@ -1072,7 +1082,32 @@ void UART4_transmit_CMD(void)
 
 		WL9FM_USART_INDEX.COM4_TxIdx = 0; //  transmit buffer Index clear
 		WL9FM_USART_INDEX.COM4_TxCnt = 0; //  transmit buffer Cnt   clear
-	}              
-	
+	}      
+#endif
+
+	if((UART4->SR & 0x80) == RESET)
+		return;
+
+	if (pWriteBufPos == pReadBufPos)
+	{
+		    USART_ITConfig(UART4, USART_IT_TXE, DISABLE);
+		    return;
+	}
+
+	if(pReadBufPos >= (RING_BUF_SIZE-1))
+			pReadBufPos = 0;
+
+
+	if((pWriteBufPos != pReadBufPos) && (WL9FM_USART_INDEX.COM4_TxCnt == 0))
+		memcpy(&WL9FM_USART_DATA.COM4_TxBuf[0] , &ring_buf[pReadBufPos], Serial_COM4_TxSize);
+
+	USART_SendData(UART4, WL9FM_USART_DATA.COM4_TxBuf[WL9FM_USART_INDEX.COM4_TxCnt++]);
+
+	if (WL9FM_USART_INDEX.COM4_TxCnt >= Serial_COM4_TxSize)
+	{
+		WL9FM_USART_INDEX.COM4_TxCnt = 0;
+		pReadBufPos += Serial_COM4_TxSize;
+	}
+// --, 150707 sys
 }
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -413,7 +413,11 @@ extern void WL9FM_100mSecOperationFunc(void);
 extern void WL9FM_500mSecOperationFunc(void);
 extern void WL9FM_1SecOperationFunc(void);
 extern void WL9FM_System_Init_Start(void);
+
+#if 0
 extern void OperateRingBuffer(void);
+#endif
+
 extern void RTCSend(void);
 
 //	++, kutelf, 140801

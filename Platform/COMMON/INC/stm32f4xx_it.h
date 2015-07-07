@@ -57,7 +57,10 @@ void TIM5_IRQHandler(void);
 void USART2_IRQHandler(void);
 void UART4_IRQHandler(void);
 
+#if 0
 void OperateRingBuffer(void);
+#endif
+
 void RTCSend(void);
 
 void UART4_Receive_CMD(void);
