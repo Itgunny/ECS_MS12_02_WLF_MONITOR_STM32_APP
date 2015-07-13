@@ -1033,10 +1033,10 @@ void SmartKeyAuthentication(void)
 					{
 						gAuthentication_Cnt = 0;
 						smk_flag_data.recv_resp_packet = REQUEST_SECOND_AUTHENTICATION;
-#if 0
+                                                // ++, 150713 bwk
 						SMK_Tag_Count = recv_smartkey.Registered_Tag_Count;		// ++, --, 150709 bwk
 						SendSMKCountResult();
-#endif
+                                                // --, 150713 bwk
 					}
 					else if(smk_flag_data.recv_resp_packet & REQUEST_SECOND_AUTHENTICATION)
 					{

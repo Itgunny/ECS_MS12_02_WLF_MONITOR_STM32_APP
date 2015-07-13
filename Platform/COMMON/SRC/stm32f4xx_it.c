@@ -960,14 +960,12 @@ void UART4_Receive_CMD(void)
 					{
 						SaveSMKUseToEEPROM(WL9FM_USART_DATA.COM4_RxBuf[3]);
 					}
-					// ++, 150709 bwk
-#if 0
+					// ++, 150713 bwk
 					else if(WL9FM_USART_DATA.COM4_RxBuf[2] == RESPONSE_AUTHENTICATION)
 					{
 						SendSMKCountResult();	
 					}
-#endif
-					// --, 150709 bwk
+					// --, 150713 bwk
 					else
 					{
 						memcpy(&Uart2_RxMsg_Smk_Reg_Eli[0], &WL9FM_USART_DATA.COM4_RxBuf[0], 8);
