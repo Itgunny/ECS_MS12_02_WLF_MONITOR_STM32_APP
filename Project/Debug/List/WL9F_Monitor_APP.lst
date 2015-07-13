@@ -1,6 +1,6 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      07/Jul/2015  20:54:24 #
+# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      10/Jul/2015  10:58:37 #
 # Copyright 1999-2012 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
@@ -692,897 +692,872 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\WL9F_Monitor_APP.c
     657          	// --, 150707 bwk
     658          }
     659          
-    660          void SendSMKMsgResult(u8 result)
-    661          {
-    662          	// ++, 150707 bwk
-    663          	#if 0
-    664          	SMK_SendToExynos( 0xFF, result, recv_smartkey.Registered_Tag_Count );
-    665          	#else
-    666          	SMK_SendToExynos( 0xFF, result, recv_smartkey.Registered_Tag_Count, recv_smartkey.Smk_Response_Code, recv_smartkey.Smk_Response_Flag);
-    667          	#endif
-    668          	// --, 150707 bwk
-    669          }
-    670          
-    671          void SetTagLevel(u8 level)
-    672          {
-    673          	if((level == TAG_LEVEL_NORMAL) || (level == TAG_LEVEL_MASTER_TAG))
-    674          		send_smartkey.TagLevel = level;
-    675          	else
-    676          		send_smartkey.TagLevel = 3;
-    677          }
-    678          
-    679          void SetTagCmd(u8 cmd)
-    680          {
-    681          	if(cmd <= TAG_CMD_COMM_AUTHENTICATION)
-    682          		send_smartkey.TagCommand = cmd;
-    683          	else
-    684          		send_smartkey.TagCommand = 0xf;
-    685          }
-    686          
-    687          void SetVMC(void)
-    688          {
-    689          	if(rand_value.rand_vmc <= 64255)
-    690          		send_smartkey.VMC = rand_value.rand_vmc;
-    691          	else
-    692          		send_smartkey.VMC = 0xffff;
-    693          }
-    694          
-    695          void SetCPK(void)
-    696          {
-    697          #if 1
-    698          	if(rand_value.rand_cpk <= 0xfaffffff)
-    699          		send_smartkey.CPK = rand_value.rand_cpk;
-    700          	else
-    701          		send_smartkey.CPK = 0xffffffff;
-    702          #else
-    703          	send_smartkey.CPK = 0x11223344;
-    704          #endif
-    705          }
-    706          
-    707          void Srand()
-    708          {
-    709          	READ_RTC(&WL9FM_RTC);
-    710          	srand((u32)WL9FM_RTC.Second);
-    711          }
-    712          
-    713          void GetRandValue(u8 random)
-    714          {
-    715          	if(random == GET_VMC)	
-    716          		rand_value.rand_vmc = (rand() % 64255);
-    717          	else if(random == GET_CPK)	
-    718          		rand_value.rand_cpk = (rand() % 0xfaffffff);
-    719          	else if(random == GET_VMC_CPK)		
-    720          	{
-    721          		rand_value.rand_vmc = (rand() % 64255);
-    722          		rand_value.rand_cpk = (rand() % 0xfaffffff);
-    723          	}	
-    724          }
-    725          
-    726          void RequestFirstAuthentication(void)
-    727          {
-    728          	unsigned int temp;
-    729          	
-    730          	SetTagLevel(TAG_LEVEL_NORMAL);
-    731          	SetTagCmd(TAG_CMD_COMM_AUTHENTICATION);
-    732          	GetRandValue(GET_VMC_CPK);
-    733          	SetVMC();
-    734          	SetCPK();
+    660          // ++, 150710 bwk
+    661          void SendSMKCountResult()
+    662          {
+    663          	SMK_SendToExynos( 0xFF,SMK_RESPONSE_FLAG_DUPLICATION_REG, SMK_Tag_Count , 0xff, 0xff);
+    664          }
+    665          // --, 150710 bwk
+    666          
+    667          void SendSMKMsgResult(u8 result)
+    668          {
+    669          	// ++, 150707 bwk
+    670          	#if 0
+    671          	SMK_SendToExynos( 0xFF, result, recv_smartkey.Registered_Tag_Count );
+    672          	#else
+    673          	SMK_SendToExynos( 0xFF, result, recv_smartkey.Registered_Tag_Count, recv_smartkey.Smk_Response_Code, recv_smartkey.Smk_Response_Flag);
+    674          	#endif
+    675          	// --, 150707 bwk
+    676          }
+    677          
+    678          void SetTagLevel(u8 level)
+    679          {
+    680          	if((level == TAG_LEVEL_NORMAL) || (level == TAG_LEVEL_MASTER_TAG))
+    681          		send_smartkey.TagLevel = level;
+    682          	else
+    683          		send_smartkey.TagLevel = 3;
+    684          }
+    685          
+    686          void SetTagCmd(u8 cmd)
+    687          {
+    688          	if(cmd <= TAG_CMD_COMM_AUTHENTICATION)
+    689          		send_smartkey.TagCommand = cmd;
+    690          	else
+    691          		send_smartkey.TagCommand = 0xf;
+    692          }
+    693          
+    694          void SetVMC(void)
+    695          {
+    696          	if(rand_value.rand_vmc <= 64255)
+    697          		send_smartkey.VMC = rand_value.rand_vmc;
+    698          	else
+    699          		send_smartkey.VMC = 0xffff;
+    700          }
+    701          
+    702          void SetCPK(void)
+    703          {
+    704          #if 1
+    705          	if(rand_value.rand_cpk <= 0xfaffffff)
+    706          		send_smartkey.CPK = rand_value.rand_cpk;
+    707          	else
+    708          		send_smartkey.CPK = 0xffffffff;
+    709          #else
+    710          	send_smartkey.CPK = 0x11223344;
+    711          #endif
+    712          }
+    713          
+    714          void Srand()
+    715          {
+    716          	READ_RTC(&WL9FM_RTC);
+    717          	srand((u32)WL9FM_RTC.Second);
+    718          }
+    719          
+    720          void GetRandValue(u8 random)
+    721          {
+    722          	if(random == GET_VMC)	
+    723          	{
+    724          		return;
+    725          		//rand_value.rand_vmc = (rand() % 64255);
+    726          	}
+    727          	else if(random == GET_CPK)	
+    728          		rand_value.rand_cpk = (rand() % 0xfaffffff);
+    729          	else if(random == GET_VMC_CPK)		
+    730          	{
+    731          		rand_value.rand_vmc = (rand() % 64255);
+    732          		rand_value.rand_cpk = (rand() % 0xfaffffff);
+    733          	}	
+    734          }
     735          
-    736          	setCipherParam(0x8085, 0x8087);
-    737          	encode((u8*)&send_smartkey.CPK, 4, (u8*)&temp, 4);
-    738          	
-    739          	send_smartkey.CPK = temp;
-    740          
-    741          	// CPK 암호화 Function 추가 필요
-    742          	TimeDelay_msec(10);
-    743          
-    744          	struct st_CAN_Message1 Send_Message;
-    745          	memcpy(&Send_Message.Data,&send_smartkey,8);	
-    746          	Send_Message.Priority= 0x18;
-    747          	Send_Message.PDU_Format= 0xFF;
-    748          	Send_Message.PDU_Specific= 0xE7;
-    749          	Send_Message.Source_Address= 0x28;
-    750          	Write_CAN_Single(Send_Message);
-    751          }
-    752          
-    753          void RequestSecondAuthentication(void)
-    754          {
-    755          	unsigned short upper_cpk, lower_cpk;
-    756          	unsigned int temp;
-    757          
-    758          	upper_cpk = (rand_value.rand_cpk & 0xffff0000) >> 16;
-    759          	lower_cpk = rand_value.rand_cpk & 0x0000ffff;
-    760          	
-    761          	SetTagLevel(TAG_LEVEL_NORMAL);
-    762          	SetTagCmd(TAG_CMD_AUTHENTICATON);
-    763          	GetRandValue(GET_VMC);
-    764          	SetVMC();
-    765          
-    766          	setCipherParam(upper_cpk, lower_cpk);
-    767          	//setCipherParam(0x1122, 0x3344);
-    768          	encode((u8*)&send_smartkey.CPK, 4, (u8*)&temp, 4);
-    769          
-    770          	send_smartkey.CPK = temp;
-    771          	
-    772          	TimeDelay_msec(10);
-    773          
-    774          	struct st_CAN_Message1 Send_Message;
-    775          	memcpy(&Send_Message.Data,&send_smartkey,8);	
-    776          	Send_Message.Priority= 0x18;
-    777          	Send_Message.PDU_Format= 0xFF;
-    778          	Send_Message.PDU_Specific= 0xE7;
-    779          	Send_Message.Source_Address= 0x28;
-    780          	Write_CAN_Single(Send_Message);
-    781          
-    782          	//smk_flag_data.recv_resp_packet = REQUEST_SECOND_AUTHENTICATION;
-    783          }
-    784          
-    785          void RequestSMKRegistration(void)
-    786          {
-    787          	unsigned short upper_cpk, lower_cpk;
-    788          	unsigned int temp;
-    789          
-    790          	upper_cpk = (rand_value.rand_cpk & 0xffff0000) >> 16;
-    791          	lower_cpk = rand_value.rand_cpk & 0x0000ffff;
-    792          	
-    793          	SetTagLevel(TAG_LEVEL_NORMAL);
-    794          	SetTagCmd(TAG_CMD_REGISTRATION);
-    795          	GetRandValue(GET_VMC);
-    796          	SetVMC();
-    797          
-    798          	setCipherParam(upper_cpk, lower_cpk);
-    799          	//setCipherParam(0x1122, 0x3344);
-    800          	encode((u8*)&send_smartkey.CPK, 4, (u8*)&temp, 4);
-    801          
-    802          	send_smartkey.CPK = temp;
-    803          
-    804          	struct st_CAN_Message1 Send_Message;
-    805          	memcpy(&Send_Message.Data,&send_smartkey,8);	
-    806          	Send_Message.Priority= 0x18;
-    807          	Send_Message.PDU_Format= 0xFF;
-    808          	Send_Message.PDU_Specific= 0xE7;
-    809          	Send_Message.Source_Address= 0x28;
-    810          	Write_CAN_Single(Send_Message);
-    811          
+    736          void RequestFirstAuthentication(void)
+    737          {
+    738          	unsigned int temp;
+    739          	
+    740          	SetTagLevel(TAG_LEVEL_NORMAL);
+    741          	SetTagCmd(TAG_CMD_COMM_AUTHENTICATION);
+    742          	GetRandValue(GET_VMC_CPK);
+    743          	SetVMC();
+    744          	SetCPK();
+    745          
+    746          	setCipherParam(0x8085, 0x8087);
+    747          	encode((u8*)&send_smartkey.CPK, 4, (u8*)&temp, 4);
+    748          	
+    749          	send_smartkey.CPK = temp;
+    750          
+    751          	// CPK 암호화 Function 추가 필요
+    752          	TimeDelay_msec(10);
+    753          
+    754          	struct st_CAN_Message1 Send_Message;
+    755          	memcpy(&Send_Message.Data,&send_smartkey,8);	
+    756          	Send_Message.Priority= 0x18;
+    757          	Send_Message.PDU_Format= 0xFF;
+    758          	Send_Message.PDU_Specific= 0xE7;
+    759          	Send_Message.Source_Address= 0x28;
+    760          	Write_CAN_Single(Send_Message);
+    761          }
+    762          
+    763          void RequestSecondAuthentication(void)
+    764          {
+    765          	unsigned short upper_cpk, lower_cpk;
+    766          	unsigned int temp;
+    767          
+    768          	upper_cpk = (rand_value.rand_cpk & 0xffff0000) >> 16;
+    769          	lower_cpk = rand_value.rand_cpk & 0x0000ffff;
+    770          	
+    771          	SetTagLevel(TAG_LEVEL_NORMAL);
+    772          	SetTagCmd(TAG_CMD_AUTHENTICATON);
+    773          	GetRandValue(GET_VMC);
+    774          	SetVMC();
+    775          
+    776          	setCipherParam(upper_cpk, lower_cpk);
+    777          	//setCipherParam(0x1122, 0x3344);
+    778          	encode((u8*)&send_smartkey.CPK, 4, (u8*)&temp, 4);
+    779          
+    780          	send_smartkey.CPK = temp;
+    781          	
+    782          	TimeDelay_msec(10);
+    783          
+    784          	struct st_CAN_Message1 Send_Message;
+    785          	memcpy(&Send_Message.Data,&send_smartkey,8);	
+    786          	Send_Message.Priority= 0x18;
+    787          	Send_Message.PDU_Format= 0xFF;
+    788          	Send_Message.PDU_Specific= 0xE7;
+    789          	Send_Message.Source_Address= 0x28;
+    790          	Write_CAN_Single(Send_Message);
+    791          
+    792          	//smk_flag_data.recv_resp_packet = REQUEST_SECOND_AUTHENTICATION;
+    793          }
+    794          
+    795          void RequestSMKRegistration(void)
+    796          {
+    797          	unsigned short upper_cpk, lower_cpk;
+    798          	unsigned int temp;
+    799          
+    800          	upper_cpk = (rand_value.rand_cpk & 0xffff0000) >> 16;
+    801          	lower_cpk = rand_value.rand_cpk & 0x0000ffff;
+    802          	
+    803          	SetTagLevel(TAG_LEVEL_NORMAL);
+    804          	SetTagCmd(TAG_CMD_REGISTRATION);
+    805          	GetRandValue(GET_VMC);
+    806          	SetVMC();
+    807          
+    808          	setCipherParam(upper_cpk, lower_cpk);
+    809          	encode((u8*)&send_smartkey.CPK, 4, (u8*)&temp, 4);
+    810          
+    811          	send_smartkey.CPK = temp;
     812          
     813          
-    814          	//smk_flag_data.recv_resp_packet = REQUEST_SECOND_AUTHENTICATION;
-    815          }
-    816          
-    817          void RequestSMKElimination(void)
-    818          {
-    819          	unsigned short upper_cpk, lower_cpk;
-    820          	unsigned int temp;
+    814          	struct st_CAN_Message1 Send_Message;
+    815          	memcpy(&Send_Message.Data,&send_smartkey,8);	
+    816          	Send_Message.Priority= 0x18;
+    817          	Send_Message.PDU_Format= 0xFF;
+    818          	Send_Message.PDU_Specific= 0xE7;
+    819          	Send_Message.Source_Address= 0x28;
+    820          	Write_CAN_Single(Send_Message);
     821          
-    822          	upper_cpk = (rand_value.rand_cpk & 0xffff0000) >> 16;
-    823          	lower_cpk = rand_value.rand_cpk & 0x0000ffff;
-    824          	
-    825          	SetTagLevel(TAG_LEVEL_NORMAL);
-    826          	SetTagCmd(TAG_CMD_ELIMINATION);
-    827          	GetRandValue(GET_VMC);
-    828          	SetVMC();
-    829          
-    830          	setCipherParam(upper_cpk, lower_cpk);
-    831          	//setCipherParam(0x1122, 0x3344);
-    832          	encode((u8*)&send_smartkey.CPK, 4, (u8*)&temp, 4);
-    833          
-    834          	send_smartkey.CPK = temp;
-    835          
-    836          	struct st_CAN_Message1 Send_Message;
-    837          	memcpy(&Send_Message.Data,&send_smartkey,8);	
-    838          	Send_Message.Priority= 0x18;
-    839          	Send_Message.PDU_Format= 0xFF;
-    840          	Send_Message.PDU_Specific= 0xE7;
-    841          	Send_Message.Source_Address= 0x28;
-    842          	Write_CAN_Single(Send_Message);
-    843          
+    822          
+    823          
+    824          	//smk_flag_data.recv_resp_packet = REQUEST_SECOND_AUTHENTICATION;
+    825          }
+    826          
+    827          void RequestSMKElimination(void)
+    828          {
+    829          	unsigned short upper_cpk, lower_cpk;
+    830          	unsigned int temp;
+    831          
+    832          	upper_cpk = (rand_value.rand_cpk & 0xffff0000) >> 16;
+    833          	lower_cpk = rand_value.rand_cpk & 0x0000ffff;
+    834          	
+    835          	SetTagLevel(TAG_LEVEL_NORMAL);
+    836          	SetTagCmd(TAG_CMD_ELIMINATION);
+    837          	GetRandValue(GET_VMC);
+    838          	SetVMC();
+    839          
+    840          	setCipherParam(upper_cpk, lower_cpk);
+    841          	encode((u8*)&send_smartkey.CPK, 4, (u8*)&temp, 4);
+    842          
+    843          	send_smartkey.CPK = temp;
     844          
-    845          	//smk_flag_data.recv_resp_packet = REQUEST_SECOND_AUTHENTICATION;
-    846          }
-    847          
-    848          // ++, 150707 sys
-    849          void RequestSMKAUTHENTICATION(void)
-    850          {
-    851          	unsigned short upper_cpk, lower_cpk;
-    852          	unsigned int temp;
+    845          	struct st_CAN_Message1 Send_Message;
+    846          	memcpy(&Send_Message.Data,&send_smartkey,8);	
+    847          	Send_Message.Priority= 0x18;
+    848          	Send_Message.PDU_Format= 0xFF;
+    849          	Send_Message.PDU_Specific= 0xE7;
+    850          	Send_Message.Source_Address= 0x28;
+    851          	Write_CAN_Single(Send_Message);
+    852          
     853          
-    854          	upper_cpk = (rand_value.rand_cpk & 0xffff0000) >> 16;
-    855          	lower_cpk = rand_value.rand_cpk & 0x0000ffff;
-    856          	
-    857          	SetTagLevel(TAG_LEVEL_NORMAL);
-    858          	SetTagCmd(TAG_CMD_COMM_AUTHENTICATION);
-    859          	GetRandValue(GET_VMC);
-    860          	SetVMC();
-    861          
-    862          	setCipherParam(upper_cpk, lower_cpk);
-    863          	encode((u8*)&send_smartkey.CPK, 4, (u8*)&temp, 4);
+    854          	//smk_flag_data.recv_resp_packet = REQUEST_SECOND_AUTHENTICATION;
+    855          }
+    856          
+    857          void RequestSMKMessage(u8 Msg)
+    858          {
+    859          	if(Msg == 1)
+    860          		RequestSMKRegistration();
+    861          	else if(Msg == 2)
+    862          		RequestSMKElimination();
+    863          }
     864          
-    865          	send_smartkey.CPK = temp;
-    866          
-    867          	struct st_CAN_Message1 Send_Message;
-    868          	memcpy(&Send_Message.Data,&send_smartkey,8);	
-    869          	Send_Message.Priority= 0x18;
-    870          	Send_Message.PDU_Format= 0xFF;
-    871          	Send_Message.PDU_Specific= 0xE7;
-    872          	Send_Message.Source_Address= 0x28;
-    873          	Write_CAN_Single(Send_Message);
-    874          }
-    875          // --, 150707 sys
-    876          
-    877          
-    878          void RequestSMKMessage(u8 Msg)
-    879          {
-    880          	if(Msg == 1)
-    881          		RequestSMKRegistration();
-    882          	else if(Msg == 2)
-    883          		RequestSMKElimination();
-    884          
-    885          	//++, 150707 sys
-    886          	else if(Msg == 4) //Authentication
-    887          		RequestSMKAUTHENTICATION();
-    888          	//--, 150707 sys
+    865          void RequestSMKComm(void)
+    866          {
+    867          	SetTagLevel(TAG_LEVEL_NORMAL);
+    868          	SetTagCmd(TAG_CMD_COMM_AUTHENTICATION);
+    869          	GetRandValue(GET_VMC);
+    870          	SetVMC();
+    871          
+    872          	struct st_CAN_Message1 Send_Message;
+    873          	memcpy(&Send_Message.Data,&send_smartkey,8);	
+    874          	Send_Message.Priority= 0x18;
+    875          	Send_Message.PDU_Format= 0xFF;
+    876          	Send_Message.PDU_Specific= 0xE7;
+    877          	Send_Message.Source_Address= 0x28;
+    878          	Write_CAN_Single(Send_Message);
+    879          
+    880          	//smk_flag_data.recv_resp_packet = REQUEST_SECOND_AUTHENTICATION;
+    881          }
+    882          
+    883          u8 CheckResponseVMC(void)
+    884          {
+    885          	if(send_smartkey.VMC == recv_smartkey.ReturnVMC)
+    886          		return RETURN_VMC_OK;
+    887          	else
+    888          		return RETURN_VMC_NOT_OK;
     889          }
     890          
-    891          void RequestSMKComm(void)
+    891          u8 CheckResponseAuthentication(u8 Auth)
     892          {
-    893          	SetTagLevel(TAG_LEVEL_NORMAL);
-    894          	SetTagCmd(TAG_CMD_COMM_AUTHENTICATION);
-    895          	GetRandValue(GET_VMC);
-    896          	SetVMC();
-    897          
-    898          	struct st_CAN_Message1 Send_Message;
-    899          	memcpy(&Send_Message.Data,&send_smartkey,8);	
-    900          	Send_Message.Priority= 0x18;
-    901          	Send_Message.PDU_Format= 0xFF;
-    902          	Send_Message.PDU_Specific= 0xE7;
-    903          	Send_Message.Source_Address= 0x28;
-    904          	Write_CAN_Single(Send_Message);
-    905          
-    906          	//smk_flag_data.recv_resp_packet = REQUEST_SECOND_AUTHENTICATION;
-    907          }
-    908          
-    909          u8 CheckResponseVMC(void)
-    910          {
-    911          	if(send_smartkey.VMC == recv_smartkey.ReturnVMC)
-    912          		return RETURN_VMC_OK;
-    913          	else
-    914          		return RETURN_VMC_NOT_OK;
-    915          }
-    916          
-    917          u8 CheckResponseAuthentication(u8 Auth)
-    918          {
-    919          	u8 output_buf[8];
-    920          	u16 upper_cpk, lower_cpk;
-    921          
-    922          	upper_cpk = (rand_value.rand_cpk & 0xffff0000) >> 16;
-    923          	lower_cpk = rand_value.rand_cpk & 0x0000ffff;
-    924          	
-    925          	setCipherParam(upper_cpk, lower_cpk);
-    926          	//setCipherParam(0x1122, 0x3344);	// 임시
-    927          	decode((u8*)&recv_smartkey, 8, (u8*)&output_buf[0], 8);
-    928          
-    929          	memcpy((u8*)&recv_smartkey, (u8*)&output_buf[0], 8);
-    930          
-    931          	if((send_smartkey.TagLevel == recv_smartkey.ReturnTagLevel) && (send_smartkey.TagCommand == recv_smartkey.ReturnTagCommand) 
-    932          		&& (send_smartkey.VMC == recv_smartkey.ReturnVMC))
-    933          	{
-    934          		if((recv_smartkey.Smk_Response_Code == Auth) && 
-    935          			(recv_smartkey.Smk_Response_Flag == SMK_RESPONSE_FLAG_SUCCESS))
-    936          		{
-    937          			return SMK_RESPONSE_FLAG_SUCCESS;
-    938          		}
-    939          		else
-    940          			return recv_smartkey.Smk_Response_Flag;
-    941          	}
-    942          	else
-    943          		return SMK_RESPONSE_CODE_NOT_MATCH;
-    944          }
-    945          
-    946          void CheckResponseMsgComm(void)
-    947          {
-    948          	u8 output_buf[8];
-    949          	u16 upper_cpk, lower_cpk;
-    950          
-    951          	upper_cpk = (rand_value.rand_cpk & 0xffff0000) >> 16;
-    952          	lower_cpk = rand_value.rand_cpk & 0x0000ffff;
-    953          	
-    954          	setCipherParam(upper_cpk, lower_cpk);
-    955          	//setCipherParam(0x1122, 0x3344);	// 임시
-    956          	decode((u8*)&recv_smartkey, 8, (u8*)&output_buf[0], 8);
-    957          
-    958          	memcpy((u8*)&recv_smartkey, (u8*)&output_buf[0], 8);
-    959          
-    960          	if((send_smartkey.TagLevel == recv_smartkey.ReturnTagLevel) && (send_smartkey.TagCommand == recv_smartkey.ReturnTagCommand) 
-    961          		&& (send_smartkey.VMC == recv_smartkey.ReturnVMC))
-    962          	{
-    963          		if(recv_smartkey.Smk_Response_Code == 1)
-    964          		{
-    965          			switch(recv_smartkey.Smk_Response_Flag)
-    966          			{
-    967          				
-    968          				case 2 :
-    969          					SendSMKMsgResult(SMK_MSG_TAG_NO_REALIZE);
-    970          					break;
-    971          				
-    972          				case 1:
-    973          				case 3 :
-    974          					SendSMKMsgResult(SMK_MSG_FAIL);
-    975          					break;
-    976          				case 4 :
-    977          					SendSMKMsgResult(SMK_MSG_TAG_ALREADY_REG);
-    978          					break;
-    979          				default :
-    980          					if(recv_smartkey.ReturnTagCommand == SMK_RESPONSE_CODE_REGISTRATION)
-    981          					{
-    982          						if(recv_smartkey.Registered_Tag_Count == 1)
-    983          							SendSMKMsgResult(SMK_MSG_TAG_FIRST_REG_SUCCESS);
-    984          						else if(recv_smartkey.Registered_Tag_Count == 2)
-    985          							SendSMKMsgResult(SMK_MSG_TAG_SECOND_REG_SUCCESS);
-    986          						else if(recv_smartkey.Registered_Tag_Count == 3)
-    987          							SendSMKMsgResult(SMK_MSG_TAG_THIRD_REG_SUCCESS);
-    988          						else if(recv_smartkey.Registered_Tag_Count == 4)
-    989          							SendSMKMsgResult(SMK_MSG_TAG_FOURTH_REG_SUCCESS);
-    990          						else if(recv_smartkey.Registered_Tag_Count == 5)
-    991          							SendSMKMsgResult(SMK_MSG_TAG_FIFTH_REG_SUCCESS);
-    992          						else
-    993          							SendSMKMsgResult(SMK_MSG_FAIL);
-    994          					}
-    995          					else
-    996          					{
-    997          						// ++, 150707 sys
-    998          						#if 0
-    999          						if(SMK_Tag_Count != 0)
-   1000          							SMK_Tag_Count--;
-   1001          						#endif
-   1002          						// --, 150707 sys
-   1003          						
-   1004          						SendSMKMsgResult(SMK_MSG_FAIL);
-   1005          					}
-   1006          					break;
-   1007          			}
-   1008          		}
-   1009          		else if(recv_smartkey.Smk_Response_Code == 2)
-   1010          			SendSMKMsgResult(SMK_MSG_TAG_ELIMINATION_SUCCESS);
-   1011          		// ++, 150707 bwk		
-   1012          		else if(recv_smartkey.Smk_Response_Code == 3)
-   1013          			SendSMKMsgResult(SMK_MSG_TAG_AUTHENTICATION);
-   1014          		// --, 150707 bwk
-   1015          		else
-   1016          			SendSMKMsgResult(SMK_MSG_FAIL);
-   1017          	}
-   1018          	else
-   1019          		SendSMKMsgResult(SMK_MSG_FAIL);
-   1020          }
-   1021          
-   1022          
-   1023          void SmartKeyAuthentication(void)
-   1024          {
-   1025          	u8  Auth = 0;
-   1026          	u8 returnvalue;
-   1027          
-   1028          	if(AuthResult != 1)
-   1029          	{
-   1030          		if((smk_flag_data.recv_resp_packet != RESPONSE_SUCCESS) && (smk_flag_data.recv_resp_packet != RESPONSE_TIME_OUT))
-   1031          		{
-   1032          			if(smk_flag_data.recv_resp_packet == REQUEST_FIRST_AUTHENTICATION)
-   1033          			{
-   1034          				smk_flag_data.recv_resp_packet |= RESPONSE_WAIT;
-   1035          				RequestFirstAuthentication();
-   1036          			}
-   1037          			else if(smk_flag_data.recv_resp_packet == REQUEST_SECOND_AUTHENTICATION)
-   1038          			{
-   1039          				smk_flag_data.recv_resp_packet |= RESPONSE_WAIT;
-   1040          				RequestSecondAuthentication();
-   1041          			}
-   1042          			else if(smk_flag_data.recv_resp_packet & RESPONSE_AUTHENTICATION)
-   1043          			{
-   1044          				//smk_flag_data.recv_resp_packet &= (~(RESPONSE_AUTHENTICATION));
-   1045          				smk_flag_data.recv_resp_packet = (smk_flag_data.recv_resp_packet & (~(RESPONSE_AUTHENTICATION)));
-   1046          
-   1047          				if(smk_flag_data.recv_resp_packet & REQUEST_FIRST_AUTHENTICATION)
-   1048          					Auth = SMK_RESPOSEN_CODE_COMM_AUTHENTICATION;
-   1049          				else if(smk_flag_data.recv_resp_packet & REQUEST_SECOND_AUTHENTICATION)
-   1050          					Auth = SMK_RESPONSE_CODE_AUTHENTICATION;
-   1051          					
-   1052          				returnvalue = CheckResponseAuthentication(Auth);
-   1053          					
-   1054          				if(returnvalue == SMK_RESPONSE_FLAG_SUCCESS)	// Success
-   1055          				{
-   1056          					if(smk_flag_data.recv_resp_packet & REQUEST_FIRST_AUTHENTICATION)
-   1057          					{
-   1058          						gAuthentication_Cnt = 0;
-   1059          						smk_flag_data.recv_resp_packet = REQUEST_SECOND_AUTHENTICATION;
-   1060          					}
-   1061          					else if(smk_flag_data.recv_resp_packet & REQUEST_SECOND_AUTHENTICATION)
-   1062          					{
-   1063          						gAuthentication_Cnt = 0;
-   1064          						AuthResult = 1;
-   1065          						SMK_Tag_Count = recv_smartkey.Registered_Tag_Count;
-   1066          						smk_flag_data.recv_resp_packet = RESPONSE_SUCCESS;
-   1067          						SMKSuccess = SMK_SUCCESS;
-   1068          						SendSMKAuthResult(SMK_SUCCESS);
-   1069          
-   1070          						// ++ , 141118 sys3215
-   1071          						Flag_ESL=1;
-   1072          						// -- , 141118 sys3215
-   1073          						
-   1074          					}
-   1075          				}
-   1076          				else
-   1077          				{
-   1078          					if(++gAuthentication_Cnt >= TIME_OUT_COUNT)
-   1079          					{
-   1080          						//AuthResult = 2;
-   1081          						AuthResult = 1;
-   1082          						smk_flag_data.recv_resp_packet = RESPONSE_TIME_OUT;
-   1083          						SMKSuccess = SMK_FAIL;
-   1084          						SendSMKAuthResult(SMK_FAIL);
-   1085          						return;
-   1086          					}
-   1087          
-   1088          					if(smk_flag_data.recv_resp_packet & REQUEST_FIRST_AUTHENTICATION)
-   1089          						smk_flag_data.recv_resp_packet = REQUEST_FIRST_AUTHENTICATION;
-   1090          					else if(smk_flag_data.recv_resp_packet & REQUEST_SECOND_AUTHENTICATION)
-   1091          						smk_flag_data.recv_resp_packet = REQUEST_SECOND_AUTHENTICATION;
-   1092          				}
-   1093          			}
-   1094          			else if(smk_flag_data.recv_resp_packet == (REQUEST_FIRST_AUTHENTICATION | RESPONSE_WAIT))
-   1095          			{
-   1096          				//RequestFirstAuthentication();
+    893          	u8 output_buf[8];
+    894          	u16 upper_cpk, lower_cpk;
+    895          
+    896          	upper_cpk = (rand_value.rand_cpk & 0xffff0000) >> 16;
+    897          	lower_cpk = rand_value.rand_cpk & 0x0000ffff;
+    898          	
+    899          	setCipherParam(upper_cpk, lower_cpk);
+    900          	//setCipherParam(0x1122, 0x3344);	// 임시
+    901          	decode((u8*)&recv_smartkey, 8, (u8*)&output_buf[0], 8);
+    902          
+    903          	memcpy((u8*)&recv_smartkey, (u8*)&output_buf[0], 8);
+    904          
+    905          	if((send_smartkey.TagLevel == recv_smartkey.ReturnTagLevel) && (send_smartkey.TagCommand == recv_smartkey.ReturnTagCommand) 
+    906          		&& (send_smartkey.VMC == recv_smartkey.ReturnVMC))
+    907          	{
+    908          		if((recv_smartkey.Smk_Response_Code == Auth) && 
+    909          			(recv_smartkey.Smk_Response_Flag == SMK_RESPONSE_FLAG_SUCCESS))
+    910          		{
+    911          			return SMK_RESPONSE_FLAG_SUCCESS;
+    912          		}
+    913          		else
+    914          			return recv_smartkey.Smk_Response_Flag;
+    915          	}
+    916          	else
+    917          		return SMK_RESPONSE_CODE_NOT_MATCH;
+    918          }
+    919          
+    920          void CheckResponseMsgComm(void)
+    921          {
+    922          	u8 output_buf[8];
+    923          	u16 upper_cpk, lower_cpk;
+    924          
+    925          	upper_cpk = (rand_value.rand_cpk & 0xffff0000) >> 16;
+    926          	lower_cpk = rand_value.rand_cpk & 0x0000ffff;
+    927          	
+    928          	setCipherParam(upper_cpk, lower_cpk);
+    929          	//setCipherParam(0x1122, 0x3344);	// 임시
+    930          	decode((u8*)&recv_smartkey, 8, (u8*)&output_buf[0], 8);
+    931          
+    932          	memcpy((u8*)&recv_smartkey, (u8*)&output_buf[0], 8);
+    933          
+    934          	if((send_smartkey.TagLevel == recv_smartkey.ReturnTagLevel) && (send_smartkey.TagCommand == recv_smartkey.ReturnTagCommand) 
+    935          		&& (send_smartkey.VMC == recv_smartkey.ReturnVMC))
+    936          	{
+    937          		if(recv_smartkey.Smk_Response_Code == 1)
+    938          		{
+    939          			switch(recv_smartkey.Smk_Response_Flag)
+    940          			{
+    941          				
+    942          				case 2 :
+    943          					SendSMKMsgResult(SMK_MSG_TAG_NO_REALIZE);
+    944          					break;
+    945          				
+    946          				case 1:
+    947          				case 3 :
+    948          					SendSMKMsgResult(SMK_MSG_FAIL);
+    949          					break;
+    950          				case 4 :
+    951          					SendSMKMsgResult(SMK_MSG_TAG_ALREADY_REG);
+    952          					break;
+    953          				default :
+    954          					if(recv_smartkey.ReturnTagCommand == SMK_RESPONSE_CODE_REGISTRATION)
+    955          					{
+    956          						if(recv_smartkey.Registered_Tag_Count == 1)
+    957          							SendSMKMsgResult(SMK_MSG_TAG_FIRST_REG_SUCCESS);
+    958          						else if(recv_smartkey.Registered_Tag_Count == 2)
+    959          							SendSMKMsgResult(SMK_MSG_TAG_SECOND_REG_SUCCESS);
+    960          						else if(recv_smartkey.Registered_Tag_Count == 3)
+    961          							SendSMKMsgResult(SMK_MSG_TAG_THIRD_REG_SUCCESS);
+    962          						else if(recv_smartkey.Registered_Tag_Count == 4)
+    963          							SendSMKMsgResult(SMK_MSG_TAG_FOURTH_REG_SUCCESS);
+    964          						else if(recv_smartkey.Registered_Tag_Count == 5)
+    965          							SendSMKMsgResult(SMK_MSG_TAG_FIFTH_REG_SUCCESS);
+    966          						else
+    967          							SendSMKMsgResult(SMK_MSG_FAIL);
+    968          					}
+    969          					else
+    970          					{
+    971          						// ++, 150707 sys
+    972          						#if 0
+    973          						if(SMK_Tag_Count != 0)
+    974          							SMK_Tag_Count--;
+    975          						#endif
+    976          						// --, 150707 sys
+    977          						
+    978          						SendSMKMsgResult(SMK_MSG_FAIL);
+    979          					}
+    980          					break;
+    981          			}
+    982          		}
+    983          		else if(recv_smartkey.Smk_Response_Code == 2)
+    984          			SendSMKMsgResult(SMK_MSG_TAG_ELIMINATION_SUCCESS);
+    985          		else
+    986          			SendSMKMsgResult(SMK_MSG_FAIL);
+    987          	}
+    988          	else
+    989          		SendSMKMsgResult(SMK_MSG_FAIL);
+    990          }
+    991          
+    992          
+    993          void SmartKeyAuthentication(void)
+    994          {
+    995          	u8  Auth = 0;
+    996          	u8 returnvalue;
+    997          
+    998          	if(AuthResult != 1)
+    999          	{
+   1000          		if((smk_flag_data.recv_resp_packet != RESPONSE_SUCCESS) && (smk_flag_data.recv_resp_packet != RESPONSE_TIME_OUT))
+   1001          		{
+   1002          			if(smk_flag_data.recv_resp_packet == REQUEST_FIRST_AUTHENTICATION)
+   1003          			{
+   1004          				smk_flag_data.recv_resp_packet |= RESPONSE_WAIT;
+   1005          				RequestFirstAuthentication();
+   1006          			}
+   1007          			else if(smk_flag_data.recv_resp_packet == REQUEST_SECOND_AUTHENTICATION)
+   1008          			{
+   1009          				smk_flag_data.recv_resp_packet |= RESPONSE_WAIT;
+   1010          				RequestSecondAuthentication();
+   1011          			}
+   1012          			else if(smk_flag_data.recv_resp_packet & RESPONSE_AUTHENTICATION)
+   1013          			{
+   1014          
+   1015          				//smk_flag_data.recv_resp_packet &= (~(RESPONSE_AUTHENTICATION));
+   1016          				smk_flag_data.recv_resp_packet = (smk_flag_data.recv_resp_packet & (~(RESPONSE_AUTHENTICATION)));
+   1017          
+   1018          				if(smk_flag_data.recv_resp_packet & REQUEST_FIRST_AUTHENTICATION)
+   1019          					Auth = SMK_RESPOSEN_CODE_COMM_AUTHENTICATION;
+   1020          				else if(smk_flag_data.recv_resp_packet & REQUEST_SECOND_AUTHENTICATION)
+   1021          					Auth = SMK_RESPONSE_CODE_AUTHENTICATION;
+   1022          					
+   1023          				returnvalue = CheckResponseAuthentication(Auth);
+   1024          					
+   1025          				if(returnvalue == SMK_RESPONSE_FLAG_SUCCESS)	// Success
+   1026          				{
+   1027          					if(smk_flag_data.recv_resp_packet & REQUEST_FIRST_AUTHENTICATION)
+   1028          					{
+   1029          						gAuthentication_Cnt = 0;
+   1030          						smk_flag_data.recv_resp_packet = REQUEST_SECOND_AUTHENTICATION;
+   1031          #if 0
+   1032          						SMK_Tag_Count = recv_smartkey.Registered_Tag_Count;		// ++, --, 150709 bwk
+   1033          						SendSMKCountResult();
+   1034          #endif
+   1035          					}
+   1036          					else if(smk_flag_data.recv_resp_packet & REQUEST_SECOND_AUTHENTICATION)
+   1037          					{
+   1038          						gAuthentication_Cnt = 0;
+   1039          						AuthResult = 1;
+   1040          						SMK_Tag_Count = recv_smartkey.Registered_Tag_Count;
+   1041          						smk_flag_data.recv_resp_packet = RESPONSE_SUCCESS;
+   1042          						SMKSuccess = SMK_SUCCESS;
+   1043          						SendSMKAuthResult(SMK_SUCCESS);
+   1044          
+   1045          						// ++ , 141118 sys3215
+   1046          						Flag_ESL=1;
+   1047          						// -- , 141118 sys3215
+   1048          						
+   1049          					}
+   1050          				}
+   1051          				else
+   1052          				{
+   1053          					if(++gAuthentication_Cnt >= TIME_OUT_COUNT)
+   1054          					{
+   1055          						//AuthResult = 2;
+   1056          						AuthResult = 1;
+   1057          						smk_flag_data.recv_resp_packet = RESPONSE_TIME_OUT;
+   1058          						SMKSuccess = SMK_FAIL;
+   1059          						SendSMKAuthResult(SMK_FAIL);
+   1060          						return;
+   1061          					}
+   1062          
+   1063          					if(smk_flag_data.recv_resp_packet & REQUEST_FIRST_AUTHENTICATION)
+   1064          						smk_flag_data.recv_resp_packet = REQUEST_FIRST_AUTHENTICATION;
+   1065          					else if(smk_flag_data.recv_resp_packet & REQUEST_SECOND_AUTHENTICATION)
+   1066          						smk_flag_data.recv_resp_packet = REQUEST_SECOND_AUTHENTICATION;
+   1067          				}
+   1068          			}
+   1069          			else if(smk_flag_data.recv_resp_packet == (REQUEST_FIRST_AUTHENTICATION | RESPONSE_WAIT))
+   1070          			{
+   1071          				//RequestFirstAuthentication();
+   1072          			}
+   1073          			else if(smk_flag_data.recv_resp_packet == (REQUEST_SECOND_AUTHENTICATION | RESPONSE_WAIT))
+   1074          			{
+   1075          				//RequestSecondAuthentication();
+   1076          			}
+   1077          		}
+   1078          	}
+   1079          	//else if(AuthResult == 1)
+   1080          	{
+   1081          	
+   1082          		if((Uart2_RxMsg_Smk_Reg_Eli[2] == 1) || (Uart2_RxMsg_Smk_Reg_Eli[2] == 2)) 
+   1083          		{
+   1084          			RequestSMKMessage(Uart2_RxMsg_Smk_Reg_Eli[2]);
+   1085          			SMK_Msg_Send = 1;
+   1086          			smk_flag_data.recv_resp_packet = 0;
+   1087          		//	Uart2_RxMsg_Smk_Reg_Eli[7] = Uart2_RxMsg_Smk_Reg_Eli[0];
+   1088          			Uart2_RxMsg_Smk_Reg_Eli[2] = 0xff;
+   1089          		}
+   1090          		
+   1091          		if(SMK_Msg_Send == 1)
+   1092          		{
+   1093          			if(smk_flag_data.recv_resp_packet == RESPONSE_AUTHENTICATION)
+   1094          			{
+   1095          				SMK_Msg_Send = 0;
+   1096          				CheckResponseMsgComm();
    1097          			}
-   1098          			else if(smk_flag_data.recv_resp_packet == (REQUEST_SECOND_AUTHENTICATION | RESPONSE_WAIT))
-   1099          			{
-   1100          				//RequestSecondAuthentication();
-   1101          			}
-   1102          		}
-   1103          	}
-   1104          	//else if(AuthResult == 1)
-   1105          	{
-   1106          	
-   1107          		if((Uart2_RxMsg_Smk_Reg_Eli[2] == 1) || (Uart2_RxMsg_Smk_Reg_Eli[2] == 2) || (Uart2_RxMsg_Smk_Reg_Eli[2] == 4)) 
-   1108          		{
-   1109          			RequestSMKMessage(Uart2_RxMsg_Smk_Reg_Eli[2]);
-   1110          			SMK_Msg_Send = 1;
-   1111          			smk_flag_data.recv_resp_packet = 0;
-   1112          		//	Uart2_RxMsg_Smk_Reg_Eli[7] = Uart2_RxMsg_Smk_Reg_Eli[0];
-   1113          			Uart2_RxMsg_Smk_Reg_Eli[2] = 0xff;
-   1114          		}
-   1115          
-   1116          		if(SMK_Msg_Send == 1)
-   1117          		{
-   1118          			if(smk_flag_data.recv_resp_packet == RESPONSE_AUTHENTICATION)
-   1119          			{
-   1120          				SMK_Msg_Send = 0;
-   1121          				CheckResponseMsgComm();
-   1122          			}
-   1123          		}
-   1124          	}
-   1125          }
-   1126          #endif
+   1098          		}
+   1099          	}
+   1100          }
+   1101          #endif
+   1102          
+   1103          // ++, 141118 sys3215
+   1104          void ESL_System(void)
+   1105          {
+   1106          	if(Seed_request==0)
+   1107          	{
+   1108          		Seed_request=0xff;
+   1109          		Seed_Request_CAN_TX();
+   1110          	}
+   1111          	if(Seed_received==1)
+   1112          	{
+   1113          		Seed_received=0xff;
+   1114          		SendMultiPacketRTS_ESL();
+   1115          	}
+   1116          	if(ESL_CTS_received==1)
+   1117          	{
+   1118          		ESL_CTS_received=0xff;
+   1119          		SendMultiPacketData_ESL();
+   1120                          Flag_ESL = 0;
+   1121          	}
+   1122          	if(ESL_ACK_received==1)
+   1123          	{
+   1124          		Init_Smart_Key_valuable();
+   1125          	}
+   1126          }
    1127          
-   1128          // ++, 141118 sys3215
-   1129          void ESL_System(void)
-   1130          {
-   1131          	if(Seed_request==0)
-   1132          	{
-   1133          		Seed_request=0xff;
-   1134          		Seed_Request_CAN_TX();
-   1135          	}
-   1136          	if(Seed_received==1)
-   1137          	{
-   1138          		Seed_received=0xff;
-   1139          		SendMultiPacketRTS_ESL();
-   1140          	}
-   1141          	if(ESL_CTS_received==1)
-   1142          	{
-   1143          		ESL_CTS_received=0xff;
-   1144          		SendMultiPacketData_ESL();
-   1145                          Flag_ESL = 0;
-   1146          	}
-   1147          	if(ESL_ACK_received==1)
-   1148          	{
-   1149          		Init_Smart_Key_valuable();
-   1150          	}
-   1151          }
-   1152          
-   1153          // --, 141118 sys3215
+   1128          // --, 141118 sys3215
+   1129          
+   1130          
+   1131          
+   1132          /**
+   1133            * @brief  1msec OperationFunc
+   1134            * @param  None
+   1135            * @retval None
+   1136            */
+   1137          void WL9FM_1mSecOperationFunc(void)
+   1138          {
+   1139          #if 1
+   1140          	if( Flag_UartTxStart == 1 )
+   1141          	{
+   1142          		if (SendTime_E2PROM++ > 3) //	25msec
+   1143          		{
+   1144          			SendTime_E2PROM = 0;
+   1145          			SendTo_E2PROM();
+   1146          			KeySwitch_SendToEXYNOS(KEYSWITCH_NONE,0);
+   1147          		}			
+   1148          	}
+   1149          	// CAN_TX Routine
+   1150          	CAN_TX();
+   1151          	Write_UART_Single();
+   1152          #endif
+   1153          }
    1154          
-   1155          
-   1156          
-   1157          /**
-   1158            * @brief  1msec OperationFunc
-   1159            * @param  None
-   1160            * @retval None
-   1161            */
-   1162          void WL9FM_1mSecOperationFunc(void)
-   1163          {
-   1164          #if 1
-   1165          	if( Flag_UartTxStart == 1 )
-   1166          	{
-   1167          		if (SendTime_E2PROM++ > 3) //	25msec
-   1168          		{
-   1169          			SendTime_E2PROM = 0;
-   1170          			SendTo_E2PROM();
-   1171          			KeySwitch_SendToEXYNOS(KEYSWITCH_NONE,0);
-   1172          		}			
-   1173          	}
-   1174          	// CAN_TX Routine
-   1175          	CAN_TX();
-   1176          	Write_UART_Single();
-   1177          #endif
-   1178          }
+   1155          /**
+   1156            * @brief  10msec OperationFunc
+   1157            * @param  None
+   1158            * @retval None
+   1159            */
+   1160          
+   1161          u8 flag_reset=0;
+   1162          
+   1163          void WL9FM_10mSecOperationFunc(void)
+   1164          {
+   1165          	//Lamp_Update_State();	//	LAMP Update 상태를 체크한다.
+   1166          	
+   1167          }
+   1168          
+   1169          /**
+   1170            * @brief  100msec OperationFunc
+   1171            * @param  None
+   1172            * @retval None
+   1173            */
+   1174          void WL9FM_100mSecOperationFunc(void)
+   1175          {
+   1176          	
+   1177          	
+   1178          	Lamp_Update_System();	//	체크된 LAMP 상태를 업데이트 한다.
    1179          
-   1180          /**
-   1181            * @brief  10msec OperationFunc
-   1182            * @param  None
-   1183            * @retval None
-   1184            */
-   1185          
-   1186          u8 flag_reset=0;
-   1187          
-   1188          void WL9FM_10mSecOperationFunc(void)
-   1189          {
-   1190          	//Lamp_Update_State();	//	LAMP Update 상태를 체크한다.
+   1180          #if 1
+   1181          	if(SmartKeyUse == 1)
+   1182          		SmartKeyAuthentication();
+   1183          #endif
+   1184          
+   1185          // ++ , 141118 sys3215
+   1186          	if(Flag_ESL==1)
+   1187          	{
+   1188          		ESL_System();
+   1189          	}
+   1190          // -- , 141118 sys3215
    1191          	
-   1192          }
-   1193          
-   1194          /**
-   1195            * @brief  100msec OperationFunc
-   1196            * @param  None
-   1197            * @retval None
-   1198            */
-   1199          void WL9FM_100mSecOperationFunc(void)
-   1200          {
-   1201          	
-   1202          	
-   1203          	Lamp_Update_System();	//	체크된 LAMP 상태를 업데이트 한다.
-   1204          
-   1205          #if 1
-   1206          	if(SmartKeyUse == 1)
-   1207          		SmartKeyAuthentication();
-   1208          #endif
-   1209          
-   1210          // ++ , 141118 sys3215
-   1211          	if(Flag_ESL==1)
-   1212          	{
-   1213          		ESL_System();
-   1214          	}
-   1215          // -- , 141118 sys3215
-   1216          	
-   1217          	if(LCDOffCount < 30)
-   1218          	{
-   1219          		LCDOffCount++;
-   1220          		LCDBL_ONOFF(LCDBL_OFF);
-   1221          	}
-   1222          	else if(LCDOffCount == 30)
-   1223          	{
-   1224          		LCDOffCount++;
-   1225          		LCDBL_ONOFF(LCDBL_ON);
+   1192          	if(LCDOffCount < 30)
+   1193          	{
+   1194          		LCDOffCount++;
+   1195          		LCDBL_ONOFF(LCDBL_OFF);
+   1196          	}
+   1197          	else if(LCDOffCount == 30)
+   1198          	{
+   1199          		LCDOffCount++;
+   1200          		LCDBL_ONOFF(LCDBL_ON);
+   1201          	}
+   1202          	else
+   1203          	{
+   1204          		LCDBL_ONOFF(LCDBL_ON);
+   1205          	}
+   1206          	
+   1207          	if(CommErrCnt > 1000)
+   1208             	{
+   1209             		if( Flag_TxE2pRomData == 1 )
+   1210          	   	{
+   1211          	   		CAN_COMInit();
+   1212             			CAN_ITConfig(CAN1, CAN_IT_FMP0,ENABLE);	
+   1213          
+   1214          			Buz1 = 0;
+   1215                      //RTCSend();
+   1216          			if(++SendRTCnt >= 10)
+   1217          			{
+   1218          				SendRTCnt = 0;
+   1219          				
+   1220          			}
+   1221          	   	}
+   1222          	}	
+   1223          	if(OSUpdateCount < 200)
+   1224          	{
+   1225          		OSUpdateCount++;
    1226          	}
-   1227          	else
+   1227          	else if(OSUpdateCount == 200)
    1228          	{
-   1229          		LCDBL_ONOFF(LCDBL_ON);
-   1230          	}
-   1231          	
-   1232          	if(CommErrCnt > 1000)
-   1233             	{
-   1234             		if( Flag_TxE2pRomData == 1 )
-   1235          	   	{
-   1236          	   		CAN_COMInit();
-   1237             			CAN_ITConfig(CAN1, CAN_IT_FMP0,ENABLE);	
-   1238          
-   1239          			Buz1 = 0;
-   1240                      //RTCSend();
-   1241          			if(++SendRTCnt >= 10)
-   1242          			{
-   1243          				SendRTCnt = 0;
-   1244          				
-   1245          			}
-   1246          	   	}
-   1247          	}	
-   1248          	if(OSUpdateCount < 200)
-   1249          	{
-   1250          		OSUpdateCount++;
-   1251          	}
-   1252          	else if(OSUpdateCount == 200)
-   1253          	{
-   1254          		OSUpdateCount++;
-   1255          		System_CheckPowerIG();
-   1256          	}
-   1257          	else
-   1258          	{
-   1259          		System_CheckPowerIG();
+   1229          		OSUpdateCount++;
+   1230          		System_CheckPowerIG();
+   1231          	}
+   1232          	else
+   1233          	{
+   1234          		System_CheckPowerIG();
+   1235          	}
+   1236          	
+   1237          
+   1238          	if(ST_Update)
+   1239          	{
+   1240          		if(UpdateMode < 10)
+   1241          			UpdateMode++;
+   1242          
+   1243          		if(UpdateMode >= 10)
+   1244          		{
+   1245          			STM32_Update(Stm32_Update_CMD,FatoryInit_Flag); 
+   1246          			ST_Update=0;
+   1247          		}
+   1248          	}
+   1249          		
+   1250          	//	WL9A Monitor RESET Code
+   1251          	if((SystemReset == 1) || (gRebootCmd == 1))
+   1252          	{
+   1253          		if(gRebootCmd == 1)
+   1254          			//SaveDataToEEPROM();
+   1255          				
+   1256          		//	여기서 WL99F_100mSecOperationFunc() 함수를 빠져나간다.
+   1257          		//	WL9F_100mSecOperationFunc() 함수가 종료되는 시점에 SYSTEM RESET을 시킨다.
+   1258          		//	WL9F_Monitor_APP() 함수로 이동!!!
+   1259          		return;
    1260          	}
-   1261          	
-   1262          
-   1263          	if(ST_Update)
-   1264          	{
-   1265          		if(UpdateMode < 10)
-   1266          			UpdateMode++;
+   1261          
+   1262          	if(CameraCommFlag == 1)
+   1263          	{
+   1264          		cam_mode_change(Camera_Mode);
+   1265          		CameraCommFlag = 0;
+   1266          	}
    1267          
-   1268          		if(UpdateMode >= 10)
-   1269          		{
-   1270          			STM32_Update(Stm32_Update_CMD,FatoryInit_Flag); 
-   1271          			ST_Update=0;
-   1272          		}
-   1273          	}
-   1274          		
-   1275          	//	WL9A Monitor RESET Code
-   1276          	if((SystemReset == 1) || (gRebootCmd == 1))
-   1277          	{
-   1278          		if(gRebootCmd == 1)
-   1279          			//SaveDataToEEPROM();
-   1280          				
-   1281          		//	여기서 WL99F_100mSecOperationFunc() 함수를 빠져나간다.
-   1282          		//	WL9F_100mSecOperationFunc() 함수가 종료되는 시점에 SYSTEM RESET을 시킨다.
-   1283          		//	WL9F_Monitor_APP() 함수로 이동!!!
-   1284          		return;
-   1285          	}
-   1286          
-   1287          	if(CameraCommFlag == 1)
-   1288          	{
-   1289          		cam_mode_change(Camera_Mode);
-   1290          		CameraCommFlag = 0;
-   1291          	}
+   1268          	// ++, 150204 sys3215
+   1269          	CAN_TX_Key_Status();
+   1270          	// --, 150204 sys3215
+   1271          }
+   1272          
+   1273          void WL9FM_500mSecOperationFunc(void)
+   1274          {
+   1275          	if(CANUpdateFlag != 1)
+   1276          		MonitorStatus_CAN_TX();
+   1277          
+   1278          }
+   1279          
+   1280          
+   1281          
+   1282          /**
+   1283            * @brief  1sec OperationFunc
+   1284            * @param  None
+   1285            * @retval None
+   1286            */
+   1287          void WL9FM_1SecOperationFunc(void)
+   1288          {
+   1289          	if(UpdateMode < 10)
+   1290          		read_clock();
+   1291          
    1292          
-   1293          	// ++, 150204 sys3215
-   1294          	CAN_TX_Key_Status();
-   1295          	// --, 150204 sys3215
-   1296          }
-   1297          
-   1298          void WL9FM_500mSecOperationFunc(void)
-   1299          {
-   1300          	if(CANUpdateFlag != 1)
-   1301          		MonitorStatus_CAN_TX();
-   1302          
-   1303          }
-   1304          
-   1305          
-   1306          
-   1307          /**
-   1308            * @brief  1sec OperationFunc
-   1309            * @param  None
-   1310            * @retval None
-   1311            */
-   1312          void WL9FM_1SecOperationFunc(void)
-   1313          {
-   1314          	if(UpdateMode < 10)
-   1315          		read_clock();
-   1316          
-   1317          
-   1318          	//  ++, kutelf, 131007
-   1319          	//	카메라 동작 모드 일 경우, 3초 마다 한번씩 각 채널의
-   1320          	//	상태를 체크하여, Video가 없으면 No Video 띄워준다.
-   1321          	if (Camera_CheckFlag == 1 && Camera_Mode != 0xFF)
-   1322          	{
-   1323          		if (++Camera_CheckCnt == 6) Camera_CheckCnt = 0;
-   1324          			
-   1325          		if ((Camera_CheckCnt % 3) == 0)
-   1326          		{
-   1327          			cam_mode_check();
-   1328          		}
+   1293          	//  ++, kutelf, 131007
+   1294          	//	카메라 동작 모드 일 경우, 3초 마다 한번씩 각 채널의
+   1295          	//	상태를 체크하여, Video가 없으면 No Video 띄워준다.
+   1296          	if (Camera_CheckFlag == 1 && Camera_Mode != 0xFF)
+   1297          	{
+   1298          		if (++Camera_CheckCnt == 6) Camera_CheckCnt = 0;
+   1299          			
+   1300          		if ((Camera_CheckCnt % 3) == 0)
+   1301          		{
+   1302          			cam_mode_check();
+   1303          		}
+   1304          	}
+   1305          	else
+   1306          	{
+   1307          		Camera_CheckCnt = 0;
+   1308          	}
+   1309          	//  --, kutelf, 131007
+   1310          }
+   1311          
+   1312          //	++, kutelf, 140801
+   1313          //	RevD.01.01
+   1314          //	RevD 보드와 호환성을 위하여 함수 추가 및 이름 변경
+   1315          void CameraMode(u8 Mode, u8 OSD)
+   1316          {
+   1317          // ++, sys3215, 141211
+   1318          #if 0
+   1319          	#ifdef BoardVersion_RevD
+   1320          		TW8816_CameraMode(Mode, OSD);
+   1321          	#else
+   1322          		TW2835_CameraMode(Mode, OSD);
+   1323          	#endif
+   1324          #endif
+   1325          
+   1326          	if(Hardware_Revision==REVB)
+   1327          	{
+   1328          		TW2835_CameraMode(Mode, OSD);
    1329          	}
    1330          	else
    1331          	{
-   1332          		Camera_CheckCnt = 0;
+   1332          		TW8816_CameraMode(Mode, OSD);
    1333          	}
-   1334          	//  --, kutelf, 131007
+   1334          // --, sys3215, 141211
    1335          }
    1336          
-   1337          //	++, kutelf, 140801
-   1338          //	RevD.01.01
-   1339          //	RevD 보드와 호환성을 위하여 함수 추가 및 이름 변경
-   1340          void CameraMode(u8 Mode, u8 OSD)
-   1341          {
-   1342          // ++, sys3215, 141211
-   1343          #if 0
-   1344          	#ifdef BoardVersion_RevD
-   1345          		TW8816_CameraMode(Mode, OSD);
-   1346          	#else
-   1347          		TW2835_CameraMode(Mode, OSD);
-   1348          	#endif
-   1349          #endif
-   1350          
-   1351          	if(Hardware_Revision==REVB)
-   1352          	{
-   1353          		TW2835_CameraMode(Mode, OSD);
-   1354          	}
-   1355          	else
-   1356          	{
-   1357          		TW8816_CameraMode(Mode, OSD);
-   1358          	}
-   1359          // --, sys3215, 141211
-   1360          }
-   1361          
-   1362          void CheckCamera_Input(u8 Mode)
-   1363          {
-   1364          // ++, sys3215, 141211
-   1365          #if 0
-   1366          	#ifdef BoardVersion_RevD
-   1367          		TW8816_CheckCamera_Input(Mode);
-   1368          	#else
-   1369          		TW2835_CheckCamera_Input(Mode);
-   1370          	#endif
-   1371          #endif
-   1372          
-   1373          	if(Hardware_Revision==REVB)
-   1374          	{
-   1375          		TW2835_CheckCamera_Input(Mode);
-   1376          	}
-   1377          	else
-   1378          	{
-   1379          		TW8816_CheckCamera_Input(Mode);
-   1380          	}
-   1381          // --, sys3215, 14121
-   1382          }
-   1383          //	--, kutelf, 140801
-   1384          
-   1385          void WL9FM_System_Init_Start(void)
-   1386          {
-   1387          	//	만약에 Software RESET 일 경우, 이미 PowerIG_ON을 한 상태이므로 PowerIG_OFF를 수행하지 않는다. 
-   1388          	if (SystemReset != 1)
-   1389          	{
-   1390          		WL9FM_PowerIG(PowerIG_OFF);				//  ->	GPIO_Control.c PowerIG를 OFF로 만들어 놓고
-   1391          												//		System_CheckPowerIG() 함수에서 PowerIG 상태에 따라서 설정
-   1392          	}				
-   1393          
-   1394          //	++, kutelf, 140801
-   1395          //	RevD.01.01
-   1396          //	Power, PMIC On/Off 방법 변경 
-   1397          #if 0
-   1398          	WL9FM_EXYNOS_POWER_ONOFF(EXYNOS_POWER_ON);	//	->	GPIO_Control.c EXYNOS-4412 Power On..
-   1399          	WL9FM_EXYNOS_PMIC_nRESET();
-   1400          	WL9FM_EXYNOS_PMIC_PWRONOFF(EXYNOS_PMIC_OFF);
-   1401          
-   1402          #else
-   1403          	WL9FM_EXYNOS_POWER_ONOFF(EXYNOS_POWER_ON);	//	->	GPIO_Control.c EXYNOS-4412 Power On..
-   1404          	WL9FM_EXYNOS_PMIC_PWRON();
-   1405          #endif
-   1406          //	--, kutelf, 140801
-   1407          
-   1408          	//++,  sys3215 ,141211
-   1409          	Hardware_Version_Init();					//  ->  Hardware_Version.c (Hardware Version ADC Start)
-   1410          	Camera_IO_Init();
-   1411          
-   1412          	WL9FM_CAMERA_nRESET();	
-   1413          	WL9F_CAMERA_Init();
-   1414          #if 0	
-   1415          //	++, kutelf, 140801
-   1416          //	RevD.01.01 
-   1417          //	Camera Input, LCD Controller 변경
-   1418          //		=> TW2835 + TW8832 -> TW8816
-   1419          //	DPRAM 삭제 - FSMC 사용 안함.
-   1420          #ifdef BoardVersion_RevD
-   1421          	WL9FM_CAMERA_nRESET();						//	-> 	TW8816 Power On..
-   1422          	TW8816_Control_Init();
-   1423          #else
-   1424          	WL9FM_CAMERA_nRESET();						//	-> 	TW2835, TW8832 Power On..
-   1425          	TW8832_Control_Init();						//	-> 	TW8832_Control.c (LCD Interface)
-   1426          	TW2835_Control_Init();	
-   1427          	//DPRAM_Init();								//	-> 	DPRAM_Control.c (Dual Port RAM Init)
-   1428          #endif
-   1429          //	--, kutelf, 140801	
-   1430          #endif 
-   1431          	//--, sys3215, 141211
-   1432          	
-   1433          	Buzzer_Init();              				//  ->  Buzzer.c (Buzzer Timer Start)
-   1434          	FM3164_Watchdog_Init(0x00);					//  ->  FM31X4.c (Integrated Processor Companion ON)
-   1435          	KeySwitch_Init();           				//  ->  KeySwitch.c
-   1436          	LAMP_Control_Init();						//	-> 	LAMP_Control.c
-   1437          												//		LAMP ALL ON
-   1438          	LED_POWER_ONOFF(LED_OFF);					//	->	LCD_Control.c (LED On/Off)
-   1439          	LCD_POWER_ONOFF(LCDPWR_ON);					//	-> 	LCD_Control.c (LCD 12V Power On/Off)
-   1440          
-   1441          	LCDBL_ONOFF(LCDBL_OFF); 					//	->	 부팅시 LCD에 하얀 화면 나옴
-   1442          
-   1443          	LCD_Control_Init();							//	-> 	LCD_Control.c (LCDBL, ON/OFF)
-   1444          
-   1445          	//USART_COMInit(COMPORT2);       				//      COM2 : CAN
-   1446          	USART_COMInit_DMA(COMPORT2,Uart2_SerialTxMsg);   //      COM2 : CAN
-   1447          	USART_COMInit(COMPORT4);       					//      COM4 : CMDData
+   1337          void CheckCamera_Input(u8 Mode)
+   1338          {
+   1339          // ++, sys3215, 141211
+   1340          #if 0
+   1341          	#ifdef BoardVersion_RevD
+   1342          		TW8816_CheckCamera_Input(Mode);
+   1343          	#else
+   1344          		TW2835_CheckCamera_Input(Mode);
+   1345          	#endif
+   1346          #endif
+   1347          
+   1348          	if(Hardware_Revision==REVB)
+   1349          	{
+   1350          		TW2835_CheckCamera_Input(Mode);
+   1351          	}
+   1352          	else
+   1353          	{
+   1354          		TW8816_CheckCamera_Input(Mode);
+   1355          	}
+   1356          // --, sys3215, 14121
+   1357          }
+   1358          //	--, kutelf, 140801
+   1359          
+   1360          void WL9FM_System_Init_Start(void)
+   1361          {
+   1362          	//	만약에 Software RESET 일 경우, 이미 PowerIG_ON을 한 상태이므로 PowerIG_OFF를 수행하지 않는다. 
+   1363          	if (SystemReset != 1)
+   1364          	{
+   1365          		WL9FM_PowerIG(PowerIG_OFF);				//  ->	GPIO_Control.c PowerIG를 OFF로 만들어 놓고
+   1366          												//		System_CheckPowerIG() 함수에서 PowerIG 상태에 따라서 설정
+   1367          	}				
+   1368          
+   1369          //	++, kutelf, 140801
+   1370          //	RevD.01.01
+   1371          //	Power, PMIC On/Off 방법 변경 
+   1372          #if 0
+   1373          	WL9FM_EXYNOS_POWER_ONOFF(EXYNOS_POWER_ON);	//	->	GPIO_Control.c EXYNOS-4412 Power On..
+   1374          	WL9FM_EXYNOS_PMIC_nRESET();
+   1375          	WL9FM_EXYNOS_PMIC_PWRONOFF(EXYNOS_PMIC_OFF);
+   1376          
+   1377          #else
+   1378          	WL9FM_EXYNOS_POWER_ONOFF(EXYNOS_POWER_ON);	//	->	GPIO_Control.c EXYNOS-4412 Power On..
+   1379          	WL9FM_EXYNOS_PMIC_PWRON();
+   1380          #endif
+   1381          //	--, kutelf, 140801
+   1382          
+   1383          	//++,  sys3215 ,141211
+   1384          	Hardware_Version_Init();					//  ->  Hardware_Version.c (Hardware Version ADC Start)
+   1385          	Camera_IO_Init();
+   1386          
+   1387          	WL9FM_CAMERA_nRESET();	
+   1388          	WL9F_CAMERA_Init();
+   1389          #if 0	
+   1390          //	++, kutelf, 140801
+   1391          //	RevD.01.01 
+   1392          //	Camera Input, LCD Controller 변경
+   1393          //		=> TW2835 + TW8832 -> TW8816
+   1394          //	DPRAM 삭제 - FSMC 사용 안함.
+   1395          #ifdef BoardVersion_RevD
+   1396          	WL9FM_CAMERA_nRESET();						//	-> 	TW8816 Power On..
+   1397          	TW8816_Control_Init();
+   1398          #else
+   1399          	WL9FM_CAMERA_nRESET();						//	-> 	TW2835, TW8832 Power On..
+   1400          	TW8832_Control_Init();						//	-> 	TW8832_Control.c (LCD Interface)
+   1401          	TW2835_Control_Init();	
+   1402          	//DPRAM_Init();								//	-> 	DPRAM_Control.c (Dual Port RAM Init)
+   1403          #endif
+   1404          //	--, kutelf, 140801	
+   1405          #endif 
+   1406          	//--, sys3215, 141211
+   1407          	
+   1408          	Buzzer_Init();              				//  ->  Buzzer.c (Buzzer Timer Start)
+   1409          	FM3164_Watchdog_Init(0x00);					//  ->  FM31X4.c (Integrated Processor Companion ON)
+   1410          	KeySwitch_Init();           				//  ->  KeySwitch.c
+   1411          	LAMP_Control_Init();						//	-> 	LAMP_Control.c
+   1412          												//		LAMP ALL ON
+   1413          	LED_POWER_ONOFF(LED_OFF);					//	->	LCD_Control.c (LED On/Off)
+   1414          	LCD_POWER_ONOFF(LCDPWR_ON);					//	-> 	LCD_Control.c (LCD 12V Power On/Off)
+   1415          
+   1416          	LCDBL_ONOFF(LCDBL_OFF); 					//	->	 부팅시 LCD에 하얀 화면 나옴
+   1417          
+   1418          	LCD_Control_Init();							//	-> 	LCD_Control.c (LCDBL, ON/OFF)
+   1419          
+   1420          	//USART_COMInit(COMPORT2);       				//      COM2 : CAN
+   1421          	USART_COMInit_DMA(COMPORT2,Uart2_SerialTxMsg);   //      COM2 : CAN
+   1422          	USART_COMInit(COMPORT4);       					//      COM4 : CMDData
+   1423          
+   1424          												
+   1425          	CAN_COMInit();								//	-> 	CAN_Control.c
+   1426          	//InitE2PROM();
+   1427          	//ReadE2PROM_ToSend();						//	->	EEPROM Data Read
+   1428          	SmartKeyUse = LoadSMKUseToEEPROM();
+   1429          	M25P32_Init();
+   1430          
+   1431          	LAMP_Update_Data = LAMP_ALL_OFF;			//	-> 	LAMP ALL OFF	
+   1432          	//Old_LAMP_Update_Data = LAMP_ALL_OFF;			//	-> 	LAMP ALL OFF	
+   1433          
+   1434          	CAN_ITConfig(CAN1, CAN_IT_FMP0,ENABLE);	
+   1435          
+   1436          	SetFontOSDWindow();
+   1437          }
+   1438          
+   1439          /**
+   1440            * @brief  Application Program Start Point.
+   1441            * @param  None
+   1442            * @retval None
+   1443            */
+   1444          void WL9FM_Monitor_APP(void)
+   1445          {
+   1446          	DebugUART_Init();			//	->	Main.c
+   1447          	DebugMsg_printf("== START -> DebugMsg from Exynos-4412 \r\n");    
    1448          
-   1449          												
-   1450          	CAN_COMInit();								//	-> 	CAN_Control.c
-   1451          	//InitE2PROM();
-   1452          	//ReadE2PROM_ToSend();						//	->	EEPROM Data Read
-   1453          	SmartKeyUse = LoadSMKUseToEEPROM();
-   1454          	M25P32_Init();
-   1455          
-   1456          	LAMP_Update_Data = LAMP_ALL_OFF;			//	-> 	LAMP ALL OFF	
-   1457          	//Old_LAMP_Update_Data = LAMP_ALL_OFF;			//	-> 	LAMP ALL OFF	
+   1449          //	++, kutelf, 140925
+   1450          //	KeyIG Off에서 무한 RESET 되는 현상 수정 => SYSTEM_RESET 위치 변경
+   1451          //	System 강제 RESET시키기 위하여 goto lable 추가..
+   1452          SYSTEM_RESET :
+   1453          //	--, kutelf, 140925
+   1454          	System_Configuration();		//  ->  System_Init.c
+   1455          	                    		//      RCC, NVIC, GPIO Initialize
+   1456          
+   1457          	System_Initialize();		//	-> 	System_Init.c
    1458          
-   1459          	CAN_ITConfig(CAN1, CAN_IT_FMP0,ENABLE);	
-   1460          
-   1461          	SetFontOSDWindow();
-   1462          }
-   1463          
-   1464          /**
-   1465            * @brief  Application Program Start Point.
-   1466            * @param  None
-   1467            * @retval None
-   1468            */
-   1469          void WL9FM_Monitor_APP(void)
-   1470          {
-   1471          	DebugUART_Init();			//	->	Main.c
-   1472          	DebugMsg_printf("== START -> DebugMsg from Exynos-4412 \r\n");    
-   1473          
-   1474          //	++, kutelf, 140925
-   1475          //	KeyIG Off에서 무한 RESET 되는 현상 수정 => SYSTEM_RESET 위치 변경
-   1476          //	System 강제 RESET시키기 위하여 goto lable 추가..
-   1477          SYSTEM_RESET :
-   1478          //	--, kutelf, 140925
-   1479          	System_Configuration();		//  ->  System_Init.c
-   1480          	                    		//      RCC, NVIC, GPIO Initialize
-   1481          
-   1482          	System_Initialize();		//	-> 	System_Init.c
-   1483          
-   1484          								//		IAP와 동일한 초기화를 한다. -> 상태 변경 없음.
-   1485          	System_Variable_Init();
-   1486          	WL9FM_System_Init_Start();
-   1487          
-   1488          	//RCC_ClearFlag();
-   1489          	
-   1490          	/* Infinite loop */
-   1491          	while (1)
-   1492          	{  
-   1493          		if (WL9FM_TIME.Flag_1mSec == 1)     //  1msec
-   1494          		{
-   1495          			WL9FM_TIME.Flag_1mSec = 0;
-   1496          
-   1497          			//  WL9F_1mSecOperationState -> Func 실행..
-   1498          			//  if (WL9F_1mSecOperationState != 0) WL9F_1mSecOperationFunc[WL9F_1mSecOperationState]();    
-   1499          			WL9FM_1mSecOperationFunc();
-   1500          		}            
-   1501          		
-   1502          		if (WL9FM_TIME.Flag_10mSec == 1)    //  10msec
-   1503          		{
-   1504          			WL9FM_TIME.Flag_10mSec = 0;
-   1505          
-   1506          			//  WL9F_10mSecOperationState -> Func 실행..
-   1507          			//  if (WL9F_10mSecOperationState != 0) WL9F_10mSecOperationFunc[WL9F_10mSecOperationState]();    
-   1508          			WL9FM_10mSecOperationFunc();
+   1459          								//		IAP와 동일한 초기화를 한다. -> 상태 변경 없음.
+   1460          	System_Variable_Init();
+   1461          	WL9FM_System_Init_Start();
+   1462          
+   1463          	//RCC_ClearFlag();
+   1464          	
+   1465          	/* Infinite loop */
+   1466          	while (1)
+   1467          	{  
+   1468          		if (WL9FM_TIME.Flag_1mSec == 1)     //  1msec
+   1469          		{
+   1470          			WL9FM_TIME.Flag_1mSec = 0;
+   1471          
+   1472          			//  WL9F_1mSecOperationState -> Func 실행..
+   1473          			//  if (WL9F_1mSecOperationState != 0) WL9F_1mSecOperationFunc[WL9F_1mSecOperationState]();    
+   1474          			WL9FM_1mSecOperationFunc();
+   1475          		}            
+   1476          		
+   1477          		if (WL9FM_TIME.Flag_10mSec == 1)    //  10msec
+   1478          		{
+   1479          			WL9FM_TIME.Flag_10mSec = 0;
+   1480          
+   1481          			//  WL9F_10mSecOperationState -> Func 실행..
+   1482          			//  if (WL9F_10mSecOperationState != 0) WL9F_10mSecOperationFunc[WL9F_10mSecOperationState]();    
+   1483          			WL9FM_10mSecOperationFunc();
+   1484          		}
+   1485          		
+   1486          		if (WL9FM_TIME.Flag_100mSec == 1)   //  100 msec
+   1487          		{
+   1488          			WL9FM_TIME.Flag_100mSec = 0;
+   1489          
+   1490          			//  WL9F_100mSecOperationState -> Func 실행..
+   1491          			//  if (WL9F_100mSecOperationState != 0) WL9F_100mSecOperationFunc[WL9F_100mSecOperationState]();    
+   1492          			WL9FM_100mSecOperationFunc();
+   1493          
+   1494          			#if 1
+   1495          			//	WL9F Monitor RESET Code
+   1496          			if((SystemReset == 1) || (gRebootCmd == 1))
+   1497          			{
+   1498          				if(gRebootCmd)		JumpIAP();
+   1499          				else
+   1500          					goto SYSTEM_RESET;
+   1501          			}
+   1502          			#endif
+   1503          		}
+   1504          
+   1505          		if(WL9FM_TIME.Flag_500mSec == 1)
+   1506          		{
+   1507          			WL9FM_TIME.Flag_500mSec = 0;
+   1508          			WL9FM_500mSecOperationFunc();
    1509          		}
    1510          		
-   1511          		if (WL9FM_TIME.Flag_100mSec == 1)   //  100 msec
+   1511          		if (WL9FM_TIME.Flag_1Sec == 1)      //  1000 msec
    1512          		{
-   1513          			WL9FM_TIME.Flag_100mSec = 0;
+   1513          			WL9FM_TIME.Flag_1Sec = 0;
    1514          
-   1515          			//  WL9F_100mSecOperationState -> Func 실행..
-   1516          			//  if (WL9F_100mSecOperationState != 0) WL9F_100mSecOperationFunc[WL9F_100mSecOperationState]();    
-   1517          			WL9FM_100mSecOperationFunc();
-   1518          
-   1519          			#if 1
-   1520          			//	WL9F Monitor RESET Code
-   1521          			if((SystemReset == 1) || (gRebootCmd == 1))
-   1522          			{
-   1523          				if(gRebootCmd)		JumpIAP();
-   1524          				else
-   1525          					goto SYSTEM_RESET;
-   1526          			}
-   1527          			#endif
-   1528          		}
-   1529          
-   1530          		if(WL9FM_TIME.Flag_500mSec == 1)
-   1531          		{
-   1532          			WL9FM_TIME.Flag_500mSec = 0;
-   1533          			WL9FM_500mSecOperationFunc();
-   1534          		}
-   1535          		
-   1536          		if (WL9FM_TIME.Flag_1Sec == 1)      //  1000 msec
-   1537          		{
-   1538          			WL9FM_TIME.Flag_1Sec = 0;
-   1539          
-   1540          			//  WL9F_1SecOperationState -> Func 실행..
-   1541          			//  if (WL9F_1SecOperationState != 0) WL9F_1SecOperationFunc[WL9F_1SecOperationState]();    
-   1542          			WL9FM_1SecOperationFunc();
-   1543                                  
-   1544          		}
-   1545          	}
-   1546          }
-   1547          
-   1548          /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
-   1549          
-   1550          
+   1515          			//  WL9F_1SecOperationState -> Func 실행..
+   1516          			//  if (WL9F_1SecOperationState != 0) WL9F_1SecOperationFunc[WL9F_1SecOperationState]();    
+   1517          			WL9FM_1SecOperationFunc();
+   1518                                  
+   1519          		}
+   1520          	}
+   1521          }
+   1522          
+   1523          /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
+   1524          
+   1525          
 
    Maximum stack usage in bytes:
 
@@ -1638,13 +1613,6 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\WL9F_Monitor_APP.c
         24   -> Write_CAN_Single
         24   -> encode
         24   -> setCipherParam
-      32   RequestSMKAUTHENTICATION
-        32   -> GetRandValue
-        32   -> SetTagCmd
-        32   -> SetTagLevel
-        32   -> Write_CAN_Single
-        32   -> encode
-        32   -> setCipherParam
       16   RequestSMKComm
         16   -> GetRandValue
         16   -> SetTagCmd
@@ -1658,7 +1626,6 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\WL9F_Monitor_APP.c
         32   -> encode
         32   -> setCipherParam
        0   RequestSMKMessage
-         0   -> RequestSMKAUTHENTICATION
          0   -> RequestSMKElimination
          0   -> RequestSMKRegistration
       32   RequestSMKRegistration
@@ -1687,6 +1654,8 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\WL9F_Monitor_APP.c
          0   -> EEPROM_Write
        8   SendSMKAuthResult
          8   -> SMK_SendToExynos
+       8   SendSMKCountResult
+         8   -> SMK_SendToExynos
        8   SendSMKMsgResult
          8   -> SMK_SendToExynos
        0   SetCPK
@@ -1697,7 +1666,8 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\WL9F_Monitor_APP.c
         16   -> CheckResponseAuthentication
          0   -> CheckResponseMsgComm
         16   -> RequestFirstAuthentication
-        16   -> RequestSMKMessage
+        16   -> RequestSMKElimination
+        16   -> RequestSMKRegistration
         16   -> RequestSecondAuthentication
         16   -> SMK_SendToExynos
        8   Srand
@@ -1793,15 +1763,15 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\WL9F_Monitor_APP.c
 
    Bytes  Function/Label
    -----  --------------
-       4  ??DataTable25
        4  ??DataTable26
+       4  ??DataTable26_1
        4  ??DataTable29
        4  ??DataTable29_1
-       4  ??DataTable29_2
        4  ??DataTable30
        4  ??DataTable30_1
        4  ??DataTable30_2
        4  ??DataTable30_3
+       4  ??DataTable30_4
        4  ??DataTable31
        4  ??DataTable31_1
        4  ??DataTable31_10
@@ -1830,13 +1800,13 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\WL9F_Monitor_APP.c
       16  CameraMode
       16  CheckCamera_Input
       88  CheckResponseAuthentication
-     176  CheckResponseMsgComm
+     168  CheckResponseMsgComm
       20  CheckResponseVMC
       64  ESL_System
        2  Flag_1Min
        2  Flag_1Sec_MachInfo
        1  Flag_200mSec
-     118  GetRandValue
+      92  GetRandValue
      458  InitE2PROM
       50  Init_RTC
       34  Init_Smart_Key_valuable
@@ -1861,10 +1831,9 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\WL9F_Monitor_APP.c
      326  ReadE2PROM_ToSend
        1  RecvTotalPacket_61184
      136  RequestFirstAuthentication
-      42  RequestSMKAUTHENTICATION
       84  RequestSMKComm
       40  RequestSMKElimination
-      26  RequestSMKMessage
+      18  RequestSMKMessage
       42  RequestSMKRegistration
       88  RequestSecondAuthentication
      632  SaveDataToEEPROM
@@ -1875,13 +1844,14 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\WL9F_Monitor_APP.c
        8  SaveSMKUseToEEPROM
        8  SaveTestToEEPROM
       18  SendSMKAuthResult
-      26  SendSMKMsgResult
+      18  SendSMKCountResult
+      28  SendSMKMsgResult
       16  SerialMsgRTC
       20  SetCPK
       28  SetTagCmd
       36  SetTagLevel
       20  SetVMC
-     268  SmartKeyAuthentication
+     280  SmartKeyAuthentication
       22  Srand
      248  System_CheckPowerIG
        1  TotalPacketNum
@@ -1939,10 +1909,10 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\WL9F_Monitor_APP.c
 
  
  2 850 bytes in section .bss
- 4 206 bytes in section .text
+ 4 154 bytes in section .text
  
- 4 206 bytes of CODE memory
+ 4 154 bytes of CODE memory
  2 850 bytes of DATA memory
 
 Errors: none
-Warnings: 5
+Warnings: 4

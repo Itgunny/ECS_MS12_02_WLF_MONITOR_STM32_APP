@@ -657,6 +657,13 @@ void SendSMKAuthResult(u8 result)
 	// --, 150707 bwk
 }
 
+// ++, 150710 bwk
+void SendSMKCountResult()
+{
+	SMK_SendToExynos( 0xFF,SMK_RESPONSE_FLAG_DUPLICATION_REG, SMK_Tag_Count , 0xff, 0xff);
+}
+// --, 150710 bwk
+
 void SendSMKMsgResult(u8 result)
 {
 	// ++, 150707 bwk
@@ -713,7 +720,15 @@ void Srand()
 void GetRandValue(u8 random)
 {
 	if(random == GET_VMC)	
+	{
+		// ++, 150710 bwk
+#if 0
 		rand_value.rand_vmc = (rand() % 64255);
+#else
+		return;
+#endif
+		// --, 150710 bwk 
+	}
 	else if(random == GET_CPK)	
 		rand_value.rand_cpk = (rand() % 0xfaffffff);
 	else if(random == GET_VMC_CPK)		
@@ -796,10 +811,10 @@ void RequestSMKRegistration(void)
 	SetVMC();
 
 	setCipherParam(upper_cpk, lower_cpk);
-	//setCipherParam(0x1122, 0x3344);
 	encode((u8*)&send_smartkey.CPK, 4, (u8*)&temp, 4);
 
 	send_smartkey.CPK = temp;
+
 
 	struct st_CAN_Message1 Send_Message;
 	memcpy(&Send_Message.Data,&send_smartkey,8);	
@@ -828,7 +843,6 @@ void RequestSMKElimination(void)
 	SetVMC();
 
 	setCipherParam(upper_cpk, lower_cpk);
-	//setCipherParam(0x1122, 0x3344);
 	encode((u8*)&send_smartkey.CPK, 4, (u8*)&temp, 4);
 
 	send_smartkey.CPK = temp;
@@ -845,47 +859,12 @@ void RequestSMKElimination(void)
 	//smk_flag_data.recv_resp_packet = REQUEST_SECOND_AUTHENTICATION;
 }
 
-// ++, 150707 sys
-void RequestSMKAUTHENTICATION(void)
-{
-	unsigned short upper_cpk, lower_cpk;
-	unsigned int temp;
-
-	upper_cpk = (rand_value.rand_cpk & 0xffff0000) >> 16;
-	lower_cpk = rand_value.rand_cpk & 0x0000ffff;
-	
-	SetTagLevel(TAG_LEVEL_NORMAL);
-	SetTagCmd(TAG_CMD_COMM_AUTHENTICATION);
-	GetRandValue(GET_VMC);
-	SetVMC();
-
-	setCipherParam(upper_cpk, lower_cpk);
-	encode((u8*)&send_smartkey.CPK, 4, (u8*)&temp, 4);
-
-	send_smartkey.CPK = temp;
-
-	struct st_CAN_Message1 Send_Message;
-	memcpy(&Send_Message.Data,&send_smartkey,8);	
-	Send_Message.Priority= 0x18;
-	Send_Message.PDU_Format= 0xFF;
-	Send_Message.PDU_Specific= 0xE7;
-	Send_Message.Source_Address= 0x28;
-	Write_CAN_Single(Send_Message);
-}
-// --, 150707 sys
-
-
 void RequestSMKMessage(u8 Msg)
 {
 	if(Msg == 1)
 		RequestSMKRegistration();
 	else if(Msg == 2)
 		RequestSMKElimination();
-
-	//++, 150707 sys
-	else if(Msg == 4) //Authentication
-		RequestSMKAUTHENTICATION();
-	//--, 150707 sys
 }
 
 void RequestSMKComm(void)
@@ -1008,10 +987,6 @@ void CheckResponseMsgComm(void)
 		}
 		else if(recv_smartkey.Smk_Response_Code == 2)
 			SendSMKMsgResult(SMK_MSG_TAG_ELIMINATION_SUCCESS);
-		// ++, 150707 bwk		
-		else if(recv_smartkey.Smk_Response_Code == 3)
-			SendSMKMsgResult(SMK_MSG_TAG_AUTHENTICATION);
-		// --, 150707 bwk
 		else
 			SendSMKMsgResult(SMK_MSG_FAIL);
 	}
@@ -1041,6 +1016,7 @@ void SmartKeyAuthentication(void)
 			}
 			else if(smk_flag_data.recv_resp_packet & RESPONSE_AUTHENTICATION)
 			{
+
 				//smk_flag_data.recv_resp_packet &= (~(RESPONSE_AUTHENTICATION));
 				smk_flag_data.recv_resp_packet = (smk_flag_data.recv_resp_packet & (~(RESPONSE_AUTHENTICATION)));
 
@@ -1057,6 +1033,10 @@ void SmartKeyAuthentication(void)
 					{
 						gAuthentication_Cnt = 0;
 						smk_flag_data.recv_resp_packet = REQUEST_SECOND_AUTHENTICATION;
+#if 0
+						SMK_Tag_Count = recv_smartkey.Registered_Tag_Count;		// ++, --, 150709 bwk
+						SendSMKCountResult();
+#endif
 					}
 					else if(smk_flag_data.recv_resp_packet & REQUEST_SECOND_AUTHENTICATION)
 					{
@@ -1104,7 +1084,7 @@ void SmartKeyAuthentication(void)
 	//else if(AuthResult == 1)
 	{
 	
-		if((Uart2_RxMsg_Smk_Reg_Eli[2] == 1) || (Uart2_RxMsg_Smk_Reg_Eli[2] == 2) || (Uart2_RxMsg_Smk_Reg_Eli[2] == 4)) 
+		if((Uart2_RxMsg_Smk_Reg_Eli[2] == 1) || (Uart2_RxMsg_Smk_Reg_Eli[2] == 2)) 
 		{
 			RequestSMKMessage(Uart2_RxMsg_Smk_Reg_Eli[2]);
 			SMK_Msg_Send = 1;
@@ -1112,7 +1092,7 @@ void SmartKeyAuthentication(void)
 		//	Uart2_RxMsg_Smk_Reg_Eli[7] = Uart2_RxMsg_Smk_Reg_Eli[0];
 			Uart2_RxMsg_Smk_Reg_Eli[2] = 0xff;
 		}
-
+		
 		if(SMK_Msg_Send == 1)
 		{
 			if(smk_flag_data.recv_resp_packet == RESPONSE_AUTHENTICATION)

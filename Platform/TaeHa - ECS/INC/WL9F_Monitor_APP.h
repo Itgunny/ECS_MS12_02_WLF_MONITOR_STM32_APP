@@ -193,7 +193,7 @@
 #define	VERSION_LOW			0
 #define	VERSION_SUB_HIGH		2
 #define	VERSION_SUB_LOW		5
-#define	VERSION_HIDDEN		0
+#define	VERSION_HIDDEN		1
 ///////////////////////////////////////////////////
 ////1.0.1.0 (1.0.0.9에서 250kpbs로 CAN2 수정)
 ////1.0.1.1 (1.0.0.9에서 수정, 500kbps) 2014.10.08
@@ -258,8 +258,10 @@
 // smart key 인증 요구 추가
 // CMD ring buffer 구현 
 
-//// 1.0.2.50 - 150707 
+//// 1.0.2.51 - 150710 
 // smart key 인증 요구 응답 구현(실차 확인 필요)
+//  -> 태그 인증 시가 아니라 초기 통신인증 시 스마트 태그 개수를 받아야 함(경우)
+// -> 실차 확인 완료 -> 미적용 SendSMKCountResult
 // CMD SMK 암호화 풀린 코드 추가(디버깅용) 
 ///////////////////////////////////////////////////
 
@@ -324,6 +326,7 @@ typedef struct
 
 
 void SendSMKAuthResult(u8 result);
+void SendSMKCountResult();
 void SendSMKMsgResult(u8 result);
 void SetTagLevel(u8 level);
 void SetTagCmd(u8 cmd);
