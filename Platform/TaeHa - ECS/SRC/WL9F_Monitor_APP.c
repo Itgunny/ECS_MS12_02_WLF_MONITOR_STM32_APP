@@ -1266,9 +1266,18 @@ void WL9FM_100mSecOperationFunc(void)
 
 	if(CameraCommFlag == 1)
 	{
+                // ++, 150715 bwk
+#if 0
 		cam_mode_change(Camera_Mode);
 		CameraCommFlag = 0;
+#else
+		CameraCommFlag = 0;
+		cam_mode_change(Camera_Mode);
+                cam_mode_check();
+#endif
+                // --, 150715 bwk
 	}
+
 
 	// ++, 150204 sys3215
 	CAN_TX_Key_Status();

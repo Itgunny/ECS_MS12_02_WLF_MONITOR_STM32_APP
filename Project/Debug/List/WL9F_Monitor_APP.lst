@@ -1,6 +1,6 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      13/Jul/2015  10:35:11 #
+# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      15/Jul/2015  19:01:05 #
 # Copyright 1999-2012 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
@@ -1301,268 +1301,277 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\WL9F_Monitor_APP.c
    1266          
    1267          	if(CameraCommFlag == 1)
    1268          	{
-   1269          		cam_mode_change(Camera_Mode);
-   1270          		CameraCommFlag = 0;
-   1271          	}
-   1272          
-   1273          	// ++, 150204 sys3215
-   1274          	CAN_TX_Key_Status();
-   1275          	// --, 150204 sys3215
-   1276          }
-   1277          
-   1278          void WL9FM_500mSecOperationFunc(void)
-   1279          {
-   1280          	if(CANUpdateFlag != 1)
-   1281          		MonitorStatus_CAN_TX();
-   1282          
-   1283          }
-   1284          
-   1285          
+   1269                          // ++, 150715 bwk
+   1270          #if 0
+   1271          		cam_mode_change(Camera_Mode);
+   1272          		CameraCommFlag = 0;
+   1273          #else
+   1274          		CameraCommFlag = 0;
+   1275          		cam_mode_change(Camera_Mode);
+   1276                          cam_mode_check();
+   1277          #endif
+   1278                          // --, 150715 bwk
+   1279          	}
+   1280          
+   1281          
+   1282          	// ++, 150204 sys3215
+   1283          	CAN_TX_Key_Status();
+   1284          	// --, 150204 sys3215
+   1285          }
    1286          
-   1287          /**
-   1288            * @brief  1sec OperationFunc
-   1289            * @param  None
-   1290            * @retval None
-   1291            */
-   1292          void WL9FM_1SecOperationFunc(void)
-   1293          {
-   1294          	if(UpdateMode < 10)
-   1295          		read_clock();
-   1296          
-   1297          
-   1298          	//  ++, kutelf, 131007
-   1299          	//	카메라 동작 모드 일 경우, 3초 마다 한번씩 각 채널의
-   1300          	//	상태를 체크하여, Video가 없으면 No Video 띄워준다.
-   1301          	if (Camera_CheckFlag == 1 && Camera_Mode != 0xFF)
-   1302          	{
-   1303          		if (++Camera_CheckCnt == 6) Camera_CheckCnt = 0;
-   1304          			
-   1305          		if ((Camera_CheckCnt % 3) == 0)
-   1306          		{
-   1307          			cam_mode_check();
-   1308          		}
-   1309          	}
-   1310          	else
+   1287          void WL9FM_500mSecOperationFunc(void)
+   1288          {
+   1289          	if(CANUpdateFlag != 1)
+   1290          		MonitorStatus_CAN_TX();
+   1291          
+   1292          }
+   1293          
+   1294          
+   1295          
+   1296          /**
+   1297            * @brief  1sec OperationFunc
+   1298            * @param  None
+   1299            * @retval None
+   1300            */
+   1301          void WL9FM_1SecOperationFunc(void)
+   1302          {
+   1303          	if(UpdateMode < 10)
+   1304          		read_clock();
+   1305          
+   1306          
+   1307          	//  ++, kutelf, 131007
+   1308          	//	카메라 동작 모드 일 경우, 3초 마다 한번씩 각 채널의
+   1309          	//	상태를 체크하여, Video가 없으면 No Video 띄워준다.
+   1310          	if (Camera_CheckFlag == 1 && Camera_Mode != 0xFF)
    1311          	{
-   1312          		Camera_CheckCnt = 0;
-   1313          	}
-   1314          	//  --, kutelf, 131007
-   1315          }
-   1316          
-   1317          //	++, kutelf, 140801
-   1318          //	RevD.01.01
-   1319          //	RevD 보드와 호환성을 위하여 함수 추가 및 이름 변경
-   1320          void CameraMode(u8 Mode, u8 OSD)
-   1321          {
-   1322          // ++, sys3215, 141211
-   1323          #if 0
-   1324          	#ifdef BoardVersion_RevD
-   1325          		TW8816_CameraMode(Mode, OSD);
-   1326          	#else
-   1327          		TW2835_CameraMode(Mode, OSD);
-   1328          	#endif
-   1329          #endif
-   1330          
-   1331          	if(Hardware_Revision==REVB)
-   1332          	{
-   1333          		TW2835_CameraMode(Mode, OSD);
-   1334          	}
-   1335          	else
-   1336          	{
-   1337          		TW8816_CameraMode(Mode, OSD);
-   1338          	}
-   1339          // --, sys3215, 141211
-   1340          }
-   1341          
-   1342          void CheckCamera_Input(u8 Mode)
-   1343          {
-   1344          // ++, sys3215, 141211
-   1345          #if 0
-   1346          	#ifdef BoardVersion_RevD
-   1347          		TW8816_CheckCamera_Input(Mode);
-   1348          	#else
-   1349          		TW2835_CheckCamera_Input(Mode);
-   1350          	#endif
-   1351          #endif
-   1352          
-   1353          	if(Hardware_Revision==REVB)
-   1354          	{
-   1355          		TW2835_CheckCamera_Input(Mode);
-   1356          	}
-   1357          	else
-   1358          	{
-   1359          		TW8816_CheckCamera_Input(Mode);
-   1360          	}
-   1361          // --, sys3215, 14121
-   1362          }
-   1363          //	--, kutelf, 140801
-   1364          
-   1365          void WL9FM_System_Init_Start(void)
-   1366          {
-   1367          	//	만약에 Software RESET 일 경우, 이미 PowerIG_ON을 한 상태이므로 PowerIG_OFF를 수행하지 않는다. 
-   1368          	if (SystemReset != 1)
-   1369          	{
-   1370          		WL9FM_PowerIG(PowerIG_OFF);				//  ->	GPIO_Control.c PowerIG를 OFF로 만들어 놓고
-   1371          												//		System_CheckPowerIG() 함수에서 PowerIG 상태에 따라서 설정
-   1372          	}				
+   1312          		if (++Camera_CheckCnt == 6) Camera_CheckCnt = 0;
+   1313          			
+   1314          		if ((Camera_CheckCnt % 3) == 0)
+   1315          		{
+   1316          			cam_mode_check();
+   1317          		}
+   1318          	}
+   1319          	else
+   1320          	{
+   1321          		Camera_CheckCnt = 0;
+   1322          	}
+   1323          	//  --, kutelf, 131007
+   1324          }
+   1325          
+   1326          //	++, kutelf, 140801
+   1327          //	RevD.01.01
+   1328          //	RevD 보드와 호환성을 위하여 함수 추가 및 이름 변경
+   1329          void CameraMode(u8 Mode, u8 OSD)
+   1330          {
+   1331          // ++, sys3215, 141211
+   1332          #if 0
+   1333          	#ifdef BoardVersion_RevD
+   1334          		TW8816_CameraMode(Mode, OSD);
+   1335          	#else
+   1336          		TW2835_CameraMode(Mode, OSD);
+   1337          	#endif
+   1338          #endif
+   1339          
+   1340          	if(Hardware_Revision==REVB)
+   1341          	{
+   1342          		TW2835_CameraMode(Mode, OSD);
+   1343          	}
+   1344          	else
+   1345          	{
+   1346          		TW8816_CameraMode(Mode, OSD);
+   1347          	}
+   1348          // --, sys3215, 141211
+   1349          }
+   1350          
+   1351          void CheckCamera_Input(u8 Mode)
+   1352          {
+   1353          // ++, sys3215, 141211
+   1354          #if 0
+   1355          	#ifdef BoardVersion_RevD
+   1356          		TW8816_CheckCamera_Input(Mode);
+   1357          	#else
+   1358          		TW2835_CheckCamera_Input(Mode);
+   1359          	#endif
+   1360          #endif
+   1361          
+   1362          	if(Hardware_Revision==REVB)
+   1363          	{
+   1364          		TW2835_CheckCamera_Input(Mode);
+   1365          	}
+   1366          	else
+   1367          	{
+   1368          		TW8816_CheckCamera_Input(Mode);
+   1369          	}
+   1370          // --, sys3215, 14121
+   1371          }
+   1372          //	--, kutelf, 140801
    1373          
-   1374          //	++, kutelf, 140801
-   1375          //	RevD.01.01
-   1376          //	Power, PMIC On/Off 방법 변경 
-   1377          #if 0
-   1378          	WL9FM_EXYNOS_POWER_ONOFF(EXYNOS_POWER_ON);	//	->	GPIO_Control.c EXYNOS-4412 Power On..
-   1379          	WL9FM_EXYNOS_PMIC_nRESET();
-   1380          	WL9FM_EXYNOS_PMIC_PWRONOFF(EXYNOS_PMIC_OFF);
-   1381          
-   1382          #else
-   1383          	WL9FM_EXYNOS_POWER_ONOFF(EXYNOS_POWER_ON);	//	->	GPIO_Control.c EXYNOS-4412 Power On..
-   1384          	WL9FM_EXYNOS_PMIC_PWRON();
-   1385          #endif
-   1386          //	--, kutelf, 140801
-   1387          
-   1388          	//++,  sys3215 ,141211
-   1389          	Hardware_Version_Init();					//  ->  Hardware_Version.c (Hardware Version ADC Start)
-   1390          	Camera_IO_Init();
-   1391          
-   1392          	WL9FM_CAMERA_nRESET();	
-   1393          	WL9F_CAMERA_Init();
-   1394          #if 0	
-   1395          //	++, kutelf, 140801
-   1396          //	RevD.01.01 
-   1397          //	Camera Input, LCD Controller 변경
-   1398          //		=> TW2835 + TW8832 -> TW8816
-   1399          //	DPRAM 삭제 - FSMC 사용 안함.
-   1400          #ifdef BoardVersion_RevD
-   1401          	WL9FM_CAMERA_nRESET();						//	-> 	TW8816 Power On..
-   1402          	TW8816_Control_Init();
-   1403          #else
-   1404          	WL9FM_CAMERA_nRESET();						//	-> 	TW2835, TW8832 Power On..
-   1405          	TW8832_Control_Init();						//	-> 	TW8832_Control.c (LCD Interface)
-   1406          	TW2835_Control_Init();	
-   1407          	//DPRAM_Init();								//	-> 	DPRAM_Control.c (Dual Port RAM Init)
-   1408          #endif
-   1409          //	--, kutelf, 140801	
-   1410          #endif 
-   1411          	//--, sys3215, 141211
-   1412          	
-   1413          	Buzzer_Init();              				//  ->  Buzzer.c (Buzzer Timer Start)
-   1414          	FM3164_Watchdog_Init(0x00);					//  ->  FM31X4.c (Integrated Processor Companion ON)
-   1415          	KeySwitch_Init();           				//  ->  KeySwitch.c
-   1416          	LAMP_Control_Init();						//	-> 	LAMP_Control.c
-   1417          												//		LAMP ALL ON
-   1418          	LED_POWER_ONOFF(LED_OFF);					//	->	LCD_Control.c (LED On/Off)
-   1419          	LCD_POWER_ONOFF(LCDPWR_ON);					//	-> 	LCD_Control.c (LCD 12V Power On/Off)
-   1420          
-   1421          	LCDBL_ONOFF(LCDBL_OFF); 					//	->	 부팅시 LCD에 하얀 화면 나옴
-   1422          
-   1423          	LCD_Control_Init();							//	-> 	LCD_Control.c (LCDBL, ON/OFF)
-   1424          
-   1425          	//USART_COMInit(COMPORT2);       				//      COM2 : CAN
-   1426          	USART_COMInit_DMA(COMPORT2,Uart2_SerialTxMsg);   //      COM2 : CAN
-   1427          	USART_COMInit(COMPORT4);       					//      COM4 : CMDData
-   1428          
-   1429          												
-   1430          	CAN_COMInit();								//	-> 	CAN_Control.c
-   1431          	//InitE2PROM();
-   1432          	//ReadE2PROM_ToSend();						//	->	EEPROM Data Read
-   1433          	SmartKeyUse = LoadSMKUseToEEPROM();
-   1434          	M25P32_Init();
-   1435          
-   1436          	LAMP_Update_Data = LAMP_ALL_OFF;			//	-> 	LAMP ALL OFF	
-   1437          	//Old_LAMP_Update_Data = LAMP_ALL_OFF;			//	-> 	LAMP ALL OFF	
-   1438          
-   1439          	CAN_ITConfig(CAN1, CAN_IT_FMP0,ENABLE);	
-   1440          
-   1441          	SetFontOSDWindow();
-   1442          }
-   1443          
-   1444          /**
-   1445            * @brief  Application Program Start Point.
-   1446            * @param  None
-   1447            * @retval None
-   1448            */
-   1449          void WL9FM_Monitor_APP(void)
-   1450          {
-   1451          	DebugUART_Init();			//	->	Main.c
-   1452          	DebugMsg_printf("== START -> DebugMsg from Exynos-4412 \r\n");    
-   1453          
-   1454          //	++, kutelf, 140925
-   1455          //	KeyIG Off에서 무한 RESET 되는 현상 수정 => SYSTEM_RESET 위치 변경
-   1456          //	System 강제 RESET시키기 위하여 goto lable 추가..
-   1457          SYSTEM_RESET :
-   1458          //	--, kutelf, 140925
-   1459          	System_Configuration();		//  ->  System_Init.c
-   1460          	                    		//      RCC, NVIC, GPIO Initialize
-   1461          
-   1462          	System_Initialize();		//	-> 	System_Init.c
-   1463          
-   1464          								//		IAP와 동일한 초기화를 한다. -> 상태 변경 없음.
-   1465          	System_Variable_Init();
-   1466          	WL9FM_System_Init_Start();
-   1467          
-   1468          	//RCC_ClearFlag();
-   1469          	
-   1470          	/* Infinite loop */
-   1471          	while (1)
-   1472          	{  
-   1473          		if (WL9FM_TIME.Flag_1mSec == 1)     //  1msec
-   1474          		{
-   1475          			WL9FM_TIME.Flag_1mSec = 0;
+   1374          void WL9FM_System_Init_Start(void)
+   1375          {
+   1376          	//	만약에 Software RESET 일 경우, 이미 PowerIG_ON을 한 상태이므로 PowerIG_OFF를 수행하지 않는다. 
+   1377          	if (SystemReset != 1)
+   1378          	{
+   1379          		WL9FM_PowerIG(PowerIG_OFF);				//  ->	GPIO_Control.c PowerIG를 OFF로 만들어 놓고
+   1380          												//		System_CheckPowerIG() 함수에서 PowerIG 상태에 따라서 설정
+   1381          	}				
+   1382          
+   1383          //	++, kutelf, 140801
+   1384          //	RevD.01.01
+   1385          //	Power, PMIC On/Off 방법 변경 
+   1386          #if 0
+   1387          	WL9FM_EXYNOS_POWER_ONOFF(EXYNOS_POWER_ON);	//	->	GPIO_Control.c EXYNOS-4412 Power On..
+   1388          	WL9FM_EXYNOS_PMIC_nRESET();
+   1389          	WL9FM_EXYNOS_PMIC_PWRONOFF(EXYNOS_PMIC_OFF);
+   1390          
+   1391          #else
+   1392          	WL9FM_EXYNOS_POWER_ONOFF(EXYNOS_POWER_ON);	//	->	GPIO_Control.c EXYNOS-4412 Power On..
+   1393          	WL9FM_EXYNOS_PMIC_PWRON();
+   1394          #endif
+   1395          //	--, kutelf, 140801
+   1396          
+   1397          	//++,  sys3215 ,141211
+   1398          	Hardware_Version_Init();					//  ->  Hardware_Version.c (Hardware Version ADC Start)
+   1399          	Camera_IO_Init();
+   1400          
+   1401          	WL9FM_CAMERA_nRESET();	
+   1402          	WL9F_CAMERA_Init();
+   1403          #if 0	
+   1404          //	++, kutelf, 140801
+   1405          //	RevD.01.01 
+   1406          //	Camera Input, LCD Controller 변경
+   1407          //		=> TW2835 + TW8832 -> TW8816
+   1408          //	DPRAM 삭제 - FSMC 사용 안함.
+   1409          #ifdef BoardVersion_RevD
+   1410          	WL9FM_CAMERA_nRESET();						//	-> 	TW8816 Power On..
+   1411          	TW8816_Control_Init();
+   1412          #else
+   1413          	WL9FM_CAMERA_nRESET();						//	-> 	TW2835, TW8832 Power On..
+   1414          	TW8832_Control_Init();						//	-> 	TW8832_Control.c (LCD Interface)
+   1415          	TW2835_Control_Init();	
+   1416          	//DPRAM_Init();								//	-> 	DPRAM_Control.c (Dual Port RAM Init)
+   1417          #endif
+   1418          //	--, kutelf, 140801	
+   1419          #endif 
+   1420          	//--, sys3215, 141211
+   1421          	
+   1422          	Buzzer_Init();              				//  ->  Buzzer.c (Buzzer Timer Start)
+   1423          	FM3164_Watchdog_Init(0x00);					//  ->  FM31X4.c (Integrated Processor Companion ON)
+   1424          	KeySwitch_Init();           				//  ->  KeySwitch.c
+   1425          	LAMP_Control_Init();						//	-> 	LAMP_Control.c
+   1426          												//		LAMP ALL ON
+   1427          	LED_POWER_ONOFF(LED_OFF);					//	->	LCD_Control.c (LED On/Off)
+   1428          	LCD_POWER_ONOFF(LCDPWR_ON);					//	-> 	LCD_Control.c (LCD 12V Power On/Off)
+   1429          
+   1430          	LCDBL_ONOFF(LCDBL_OFF); 					//	->	 부팅시 LCD에 하얀 화면 나옴
+   1431          
+   1432          	LCD_Control_Init();							//	-> 	LCD_Control.c (LCDBL, ON/OFF)
+   1433          
+   1434          	//USART_COMInit(COMPORT2);       				//      COM2 : CAN
+   1435          	USART_COMInit_DMA(COMPORT2,Uart2_SerialTxMsg);   //      COM2 : CAN
+   1436          	USART_COMInit(COMPORT4);       					//      COM4 : CMDData
+   1437          
+   1438          												
+   1439          	CAN_COMInit();								//	-> 	CAN_Control.c
+   1440          	//InitE2PROM();
+   1441          	//ReadE2PROM_ToSend();						//	->	EEPROM Data Read
+   1442          	SmartKeyUse = LoadSMKUseToEEPROM();
+   1443          	M25P32_Init();
+   1444          
+   1445          	LAMP_Update_Data = LAMP_ALL_OFF;			//	-> 	LAMP ALL OFF	
+   1446          	//Old_LAMP_Update_Data = LAMP_ALL_OFF;			//	-> 	LAMP ALL OFF	
+   1447          
+   1448          	CAN_ITConfig(CAN1, CAN_IT_FMP0,ENABLE);	
+   1449          
+   1450          	SetFontOSDWindow();
+   1451          }
+   1452          
+   1453          /**
+   1454            * @brief  Application Program Start Point.
+   1455            * @param  None
+   1456            * @retval None
+   1457            */
+   1458          void WL9FM_Monitor_APP(void)
+   1459          {
+   1460          	DebugUART_Init();			//	->	Main.c
+   1461          	DebugMsg_printf("== START -> DebugMsg from Exynos-4412 \r\n");    
+   1462          
+   1463          //	++, kutelf, 140925
+   1464          //	KeyIG Off에서 무한 RESET 되는 현상 수정 => SYSTEM_RESET 위치 변경
+   1465          //	System 강제 RESET시키기 위하여 goto lable 추가..
+   1466          SYSTEM_RESET :
+   1467          //	--, kutelf, 140925
+   1468          	System_Configuration();		//  ->  System_Init.c
+   1469          	                    		//      RCC, NVIC, GPIO Initialize
+   1470          
+   1471          	System_Initialize();		//	-> 	System_Init.c
+   1472          
+   1473          								//		IAP와 동일한 초기화를 한다. -> 상태 변경 없음.
+   1474          	System_Variable_Init();
+   1475          	WL9FM_System_Init_Start();
    1476          
-   1477          			//  WL9F_1mSecOperationState -> Func 실행..
-   1478          			//  if (WL9F_1mSecOperationState != 0) WL9F_1mSecOperationFunc[WL9F_1mSecOperationState]();    
-   1479          			WL9FM_1mSecOperationFunc();
-   1480          		}            
-   1481          		
-   1482          		if (WL9FM_TIME.Flag_10mSec == 1)    //  10msec
+   1477          	//RCC_ClearFlag();
+   1478          	
+   1479          	/* Infinite loop */
+   1480          	while (1)
+   1481          	{  
+   1482          		if (WL9FM_TIME.Flag_1mSec == 1)     //  1msec
    1483          		{
-   1484          			WL9FM_TIME.Flag_10mSec = 0;
+   1484          			WL9FM_TIME.Flag_1mSec = 0;
    1485          
-   1486          			//  WL9F_10mSecOperationState -> Func 실행..
-   1487          			//  if (WL9F_10mSecOperationState != 0) WL9F_10mSecOperationFunc[WL9F_10mSecOperationState]();    
-   1488          			WL9FM_10mSecOperationFunc();
-   1489          		}
+   1486          			//  WL9F_1mSecOperationState -> Func 실행..
+   1487          			//  if (WL9F_1mSecOperationState != 0) WL9F_1mSecOperationFunc[WL9F_1mSecOperationState]();    
+   1488          			WL9FM_1mSecOperationFunc();
+   1489          		}            
    1490          		
-   1491          		if (WL9FM_TIME.Flag_100mSec == 1)   //  100 msec
+   1491          		if (WL9FM_TIME.Flag_10mSec == 1)    //  10msec
    1492          		{
-   1493          			WL9FM_TIME.Flag_100mSec = 0;
+   1493          			WL9FM_TIME.Flag_10mSec = 0;
    1494          
-   1495          			//  WL9F_100mSecOperationState -> Func 실행..
-   1496          			//  if (WL9F_100mSecOperationState != 0) WL9F_100mSecOperationFunc[WL9F_100mSecOperationState]();    
-   1497          			WL9FM_100mSecOperationFunc();
-   1498          
-   1499          			#if 1
-   1500          			//	WL9F Monitor RESET Code
-   1501          			if((SystemReset == 1) || (gRebootCmd == 1))
-   1502          			{
-   1503          				if(gRebootCmd)		JumpIAP();
-   1504          				else
-   1505          					goto SYSTEM_RESET;
-   1506          			}
-   1507          			#endif
-   1508          		}
-   1509          
-   1510          		if(WL9FM_TIME.Flag_500mSec == 1)
-   1511          		{
-   1512          			WL9FM_TIME.Flag_500mSec = 0;
-   1513          			WL9FM_500mSecOperationFunc();
-   1514          		}
-   1515          		
-   1516          		if (WL9FM_TIME.Flag_1Sec == 1)      //  1000 msec
-   1517          		{
-   1518          			WL9FM_TIME.Flag_1Sec = 0;
-   1519          
-   1520          			//  WL9F_1SecOperationState -> Func 실행..
-   1521          			//  if (WL9F_1SecOperationState != 0) WL9F_1SecOperationFunc[WL9F_1SecOperationState]();    
-   1522          			WL9FM_1SecOperationFunc();
-   1523                                  
-   1524          		}
-   1525          	}
-   1526          }
-   1527          
-   1528          /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
-   1529          
-   1530          
+   1495          			//  WL9F_10mSecOperationState -> Func 실행..
+   1496          			//  if (WL9F_10mSecOperationState != 0) WL9F_10mSecOperationFunc[WL9F_10mSecOperationState]();    
+   1497          			WL9FM_10mSecOperationFunc();
+   1498          		}
+   1499          		
+   1500          		if (WL9FM_TIME.Flag_100mSec == 1)   //  100 msec
+   1501          		{
+   1502          			WL9FM_TIME.Flag_100mSec = 0;
+   1503          
+   1504          			//  WL9F_100mSecOperationState -> Func 실행..
+   1505          			//  if (WL9F_100mSecOperationState != 0) WL9F_100mSecOperationFunc[WL9F_100mSecOperationState]();    
+   1506          			WL9FM_100mSecOperationFunc();
+   1507          
+   1508          			#if 1
+   1509          			//	WL9F Monitor RESET Code
+   1510          			if((SystemReset == 1) || (gRebootCmd == 1))
+   1511          			{
+   1512          				if(gRebootCmd)		JumpIAP();
+   1513          				else
+   1514          					goto SYSTEM_RESET;
+   1515          			}
+   1516          			#endif
+   1517          		}
+   1518          
+   1519          		if(WL9FM_TIME.Flag_500mSec == 1)
+   1520          		{
+   1521          			WL9FM_TIME.Flag_500mSec = 0;
+   1522          			WL9FM_500mSecOperationFunc();
+   1523          		}
+   1524          		
+   1525          		if (WL9FM_TIME.Flag_1Sec == 1)      //  1000 msec
+   1526          		{
+   1527          			WL9FM_TIME.Flag_1Sec = 0;
+   1528          
+   1529          			//  WL9F_1SecOperationState -> Func 실행..
+   1530          			//  if (WL9F_1SecOperationState != 0) WL9F_1SecOperationFunc[WL9F_1SecOperationState]();    
+   1531          			WL9FM_1SecOperationFunc();
+   1532                                  
+   1533          		}
+   1534          	}
+   1535          }
+   1536          
+   1537          /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
+   1538          
+   1539          
 
    Maximum stack usage in bytes:
 
@@ -1707,6 +1716,7 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\WL9F_Monitor_APP.c
          8   -> SmartKeyAuthentication
          8   -> System_CheckPowerIG
          8   -> cam_mode_change
+         8   -> cam_mode_check
        0   WL9FM_10mSecOperationFunc
        8   WL9FM_1SecOperationFunc
          0   -> cam_mode_check
@@ -1861,7 +1871,7 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\WL9F_Monitor_APP.c
       22  Srand
      248  System_CheckPowerIG
        1  TotalPacketNum
-     198  WL9FM_100mSecOperationFunc
+     202  WL9FM_100mSecOperationFunc
        2  WL9FM_10mSecOperationFunc
       78  WL9FM_1SecOperationFunc
       48  WL9FM_1mSecOperationFunc
@@ -1915,9 +1925,9 @@ C:\Tools\WL9F\WL_F_Monitor_APP\Platform\TaeHa - ECS\SRC\WL9F_Monitor_APP.c
 
  
  2 850 bytes in section .bss
- 4 172 bytes in section .text
+ 4 176 bytes in section .text
  
- 4 172 bytes of CODE memory
+ 4 176 bytes of CODE memory
  2 850 bytes of DATA memory
 
 Errors: none
