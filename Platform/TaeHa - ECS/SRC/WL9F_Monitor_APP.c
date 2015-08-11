@@ -176,6 +176,43 @@ extern u8 Hardware_Revision;
 
 extern u8 Flag_St_Update;
 
+
+//	++, kutelf, 150810
+//	Software_Reset
+#define ApplicationAddress      0x8004000
+#define BootLoaderAddress       0x8000000
+
+typedef  void (*pFunction)(void);
+
+pFunction Jump_To_Application_Cluster_App;
+uint32_t JumpAddress_Cluster_App;
+
+pFunction Jump_To_Application_Cluster_Iap;
+uint32_t JumpAddress_Cluster_Iap;
+
+void Software_Reset_BootLoader(void);
+void Software_Reset_Application(void);
+
+
+void Software_Reset_Application(void)
+{ 	/* Jump to user application */
+		JumpAddress_Cluster_App = *(__IO uint32_t*) (ApplicationAddress + 4);
+		Jump_To_Application_Cluster_App = (pFunction) JumpAddress_Cluster_App;
+		/* Initialize user application's Stack Pointer */
+		__set_MSP(*(__IO uint32_t*) ApplicationAddress);
+		Jump_To_Application_Cluster_App();
+}	
+
+void Software_Reset_BootLoader(void)
+{ 	/* Jump to user application */
+		JumpAddress_Cluster_Iap = *(__IO uint32_t*) (BootLoaderAddress + 4);
+		Jump_To_Application_Cluster_Iap = (pFunction) JumpAddress_Cluster_Iap;
+		/* Initialize user application's Stack Pointer */
+		__set_MSP(*(__IO uint32_t*) BootLoaderAddress);
+		Jump_To_Application_Cluster_Iap();
+}	
+//	--, kutelf, 150810
+
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
@@ -596,6 +633,26 @@ void System_CheckPowerIG()
 			{
 				WL9FM_PowerIG(PowerIG_ON);	// 	PowerIG Set
 
+				//	++, kutelf, 150810
+				#if 1
+				if (Flag_St_Update==1)
+				{
+					gRebootCmd=1;
+					Flag_St_Update=0;
+
+					USART_ITConfig(USART2, USART_IT_TXE, DISABLE);
+					CAN_ITConfig(CAN1,CAN_IT_FMP0, DISABLE);
+
+					Software_Reset_BootLoader();
+				}
+				else
+				{
+					USART_ITConfig(USART2, USART_IT_TXE, DISABLE);
+					CAN_ITConfig(CAN1,CAN_IT_FMP0, DISABLE);
+
+					Software_Reset_Application();
+				}	
+				#else
 				if(Flag_St_Update==1)
 				{
 					gRebootCmd=1;
@@ -607,9 +664,13 @@ void System_CheckPowerIG()
 				USART_ITConfig(USART2, USART_IT_TXE, DISABLE);
 				CAN_ITConfig(CAN1,CAN_IT_FMP0, DISABLE);
 				return;
+				#endif
+				//	--, kutelf, 150810
 			}
 
-			WL9FM_PowerIG(PowerIG_OFF);		//  24v Main Power Off	    
+			WL9FM_PowerIG(PowerIG_OFF);		//  24v Main Power Off	 
+			WL9FM_PowerIG(PowerIG_OFF);		
+			WL9FM_PowerIG(PowerIG_OFF);		
 		#endif
 		//	--, kutelf, 140801
 		}
@@ -1509,9 +1570,23 @@ SYSTEM_RESET :
 			//	WL9F Monitor RESET Code
 			if((SystemReset == 1) || (gRebootCmd == 1))
 			{
-				if(gRebootCmd)		JumpIAP();
+				//	++, kutelf, 150810
+				#if 1
+				if (gRebootCmd)	
+				{	
+					Software_Reset_BootLoader();
+				}	
+				else
+				{
+					goto SYSTEM_RESET;
+				}	
+
+				#else
+				if(gRebootCmd)	JumpIAP();
 				else
 					goto SYSTEM_RESET;
+				#endif
+				//	--, kutelf, 150810
 			}
 			#endif
 		}
