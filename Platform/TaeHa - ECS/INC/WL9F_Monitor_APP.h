@@ -190,10 +190,10 @@
 
 
 #define	VERSION_HIGH			1
-#define	VERSION_LOW			0
-#define	VERSION_SUB_HIGH		2
-#define	VERSION_SUB_LOW		6
-#define	VERSION_HIDDEN		2
+#define	VERSION_LOW			1
+#define	VERSION_SUB_HIGH		0
+#define	VERSION_SUB_LOW		0
+#define	VERSION_HIDDEN		0
 ///////////////////////////////////////////////////
 ////1.0.1.0 (1.0.0.9에서 250kpbs로 CAN2 수정)
 ////1.0.1.1 (1.0.0.9에서 수정, 500kbps) 2014.10.08
@@ -274,6 +274,9 @@
 //// 1.0.2.62 - 150812
 // 1. HW 변경 - 1.8V 분리 , IAP 수정 
 // 2. power off logic 변경 
+
+//// 1.1.0.00 - 151013
+// 1. CAN Update 시 자동정지 프로토콜 송부
 ///////////////////////////////////////////////////
 
 //=================================================================
