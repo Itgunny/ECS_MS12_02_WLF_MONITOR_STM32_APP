@@ -31,6 +31,7 @@
 void SetFontOSDWindow(void)
 {
 	WriteTW8816(0xff, 0x00);
+        DownloadUDFont();
 /*
 	WriteTW8816(0x94, 0x00);
 	WriteTW8816(0x9e, 0x00);
@@ -51,15 +52,16 @@ void SetFontOSDWindow(void)
 	WriteTW8816(0xad, 0x00);
 	WriteTW8816(0xae, 0x00);
 */
-	WriteTW8816(0x94, 0x11);
+	
 	WriteTW8816(0x94, 0x02);
+        WriteTW8816(0x94, 0x80);
 	
 }
 
 void SetDisplayCH1(void)
 {
 	WriteTW8816(0xff, 0x00);
-
+        
 	WriteTW8816(0x95, 0x80);
 	WriteTW8816(0x96, 0x1C);
 	WriteTW8816(0x97, 0x43);
@@ -256,6 +258,19 @@ void SetDisplayNosignalBlank(void)
 	WriteTW8816(0x97, 0x20);
 	WriteTW8816(0x98, 0x06);
 	
+}
+
+void SetDisplayWarning(void)
+{
+        u8 i;
+        WriteTW8816(0x94, 0x02);
+        for(i = 0; i < 27; i++){
+            WriteTW8816(0x94, 0x80);
+            WriteTW8816(0x95, 0x81);
+            WriteTW8816(0x96, (i + 0x9b));
+            WriteTW8816(0x97, (i + 0x7B));
+            WriteTW8816(0x98, 0x06);    
+        }
 }
 #else
 

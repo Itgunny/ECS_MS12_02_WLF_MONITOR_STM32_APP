@@ -24,7 +24,6 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "WL9F_Monitor_APP.h"	
-
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
@@ -46,6 +45,7 @@ extern void SetDisplayCH3(void);
 extern void SetDisplayCH4(void);
 extern void SetDisplayCHBlank(void);
 extern void SetDisplayNosignal(void);
+extern void SetDisplayWarning(void);
 extern void SetDisplayNosignalBlank(void);
 
 

@@ -40,7 +40,8 @@
 /* Private variables ---------------------------------------------------------*/
 
 extern u8  InitCVBSAll_8816[];
-
+extern unsigned char warning_tables[][8];
+extern unsigned char warning_values[][162];
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 

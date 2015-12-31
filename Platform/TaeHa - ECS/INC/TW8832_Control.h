@@ -79,7 +79,7 @@ extern void I2C2_ByteWrite(u16 in_AddrVal, u8 in_DataVal);
 extern u8	I2C2_ByteRead(u16 in_AddrVal);
 extern void	WriteTW8832(u8 in_AddrVal, u8 in_DataVal);
 extern u8	ReadTW8832(u8 in_AddrVal);
-
+extern void DownloadUDFont(void);
 
 #endif /* __TW8832_Control_H */
 
