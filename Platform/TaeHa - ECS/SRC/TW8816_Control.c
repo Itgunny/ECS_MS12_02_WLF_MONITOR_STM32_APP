@@ -1517,7 +1517,7 @@ void TW8816_CameraMode(u8 Mode, u8 OSD)
 		WriteTW8816(0xf3, 0xe9);
 		WriteTW8816(0xff, 0x00);
 		WriteTW8816(0x02, 0x40);
-		SetDisplayWarning();
+		//SetDisplayWarning();
                 SetDisplayCH1();
 		TimeDelay(200);
 		WriteTW8816(0xff, 0x01);
@@ -1529,7 +1529,7 @@ void TW8816_CameraMode(u8 Mode, u8 OSD)
 		WriteTW8816(0xf3, 0xe9);
 		WriteTW8816(0xff, 0x00);
 		WriteTW8816(0x02, 0x44);
-		SetDisplayWarning();
+		//SetDisplayWarning();
                 SetDisplayCH2();
 		TimeDelay(200);
 		WriteTW8816(0xff, 0x01);
@@ -1541,7 +1541,7 @@ void TW8816_CameraMode(u8 Mode, u8 OSD)
 		WriteTW8816(0xf3, 0xe9);
 		WriteTW8816(0xff, 0x00);
 		WriteTW8816(0x02, 0x48);
-		SetDisplayWarning();
+		//SetDisplayWarning();
                 SetDisplayCH3();
 		TimeDelay(200);
 		WriteTW8816(0xff, 0x01);
@@ -1553,7 +1553,7 @@ void TW8816_CameraMode(u8 Mode, u8 OSD)
 		WriteTW8816(0xf3, 0xe9);
 		WriteTW8816(0xff, 0x00);
 		WriteTW8816(0x02, 0x4c);
-		SetDisplayWarning();
+		//SetDisplayWarning();
                 SetDisplayCH4();
                 TimeDelay(200);
 		WriteTW8816(0xff, 0x01);
@@ -1565,7 +1565,7 @@ void TW8816_CameraMode(u8 Mode, u8 OSD)
 		WriteTW8816(0xf3, 0xe9);
 		WriteTW8816(0xff, 0x00);
 		WriteTW8816(0x02, 0x40);
-                SetDisplayWarning();
+                //SetDisplayWarning();
                 SetDisplayCH1();
 		TimeDelay(200);
 		WriteTW8816(0xff, 0x01);

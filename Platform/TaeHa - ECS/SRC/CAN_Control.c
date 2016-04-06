@@ -236,8 +236,8 @@ void CAN_COMInit(void)
 	CAN_InitStructure.CAN_TXFP = DISABLE;
 	CAN_InitStructure.CAN_Mode = CAN_Mode_Normal;
 	CAN_InitStructure.CAN_SJW = CAN_SJW_1tq;
-	CAN_InitStructure.CAN_BS1 = CAN_BS1_14tq;
-	CAN_InitStructure.CAN_BS2 = CAN_BS2_6tq;  
+	CAN_InitStructure.CAN_BS1 = CAN_BS1_16tq;
+	CAN_InitStructure.CAN_BS2 = CAN_BS2_4tq;  
 	CAN_InitStructure.CAN_Prescaler = 4;   // 2:1M, 4:500k, 8:250k. 16:125k
 	CAN_Init(CAN1, &CAN_InitStructure);
 
@@ -251,8 +251,8 @@ void CAN_COMInit(void)
 	CAN_InitStructure2.CAN_TXFP = DISABLE;
 	CAN_InitStructure2.CAN_Mode = CAN_Mode_Normal;
 	CAN_InitStructure2.CAN_SJW = CAN_SJW_1tq;
-	CAN_InitStructure2.CAN_BS1 = CAN_BS1_14tq;
-	CAN_InitStructure2.CAN_BS2 = CAN_BS2_6tq;  
+	CAN_InitStructure2.CAN_BS1 = CAN_BS1_16tq;
+	CAN_InitStructure2.CAN_BS2 = CAN_BS2_4tq;  
 	CAN_InitStructure2.CAN_Prescaler = 8;   // 2:1M, 4:500k, 8:250k. 16:125k
 	CAN_Init(CAN2, &CAN_InitStructure2);
 

@@ -190,7 +190,7 @@
 
 
 #define	VERSION_HIGH			1
-#define	VERSION_LOW			1
+#define	VERSION_LOW			2
 #define	VERSION_SUB_HIGH		0
 #define	VERSION_SUB_LOW		0
 #define	VERSION_HIDDEN		0

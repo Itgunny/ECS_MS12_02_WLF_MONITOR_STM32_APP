@@ -548,7 +548,14 @@ void CAN1_RX0_IRQHandler(void)
 						CAN_RX(RxMsg);
 					}
 				}
-				
+				if(Iden.Source_Address == 0x34){
+					PF = (RxMsg.ExtId  & 0x00ff0000) >> 16;
+					PS = (RxMsg.ExtId  & 0x0000FF00) >> 8;
+					PGN = (RxMsg.ExtId  & 0x00FFFF00) >> 8;
+					if(PGN == 0xFFFA || PGN == 0xFE34){
+						CAN_RX(RxMsg);
+					}
+				}
 			}
 		#else
 			if(CANUpdateFlag == 1)
