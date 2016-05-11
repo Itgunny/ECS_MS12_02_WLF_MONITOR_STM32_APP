@@ -67,6 +67,7 @@
 
 
 /* Private define ------------------------------------------------------------*/
+#define EXT_WATCHDOG_ENALBE(x)					GPIO_WriteBit(WD_EN_PORT, WD_EN,x)		// ++, --, 160511 bwk
 /* Private macro -------------------------------------------------------------*/
 WL9FM_send_smartkey send_smartkey;
 WL9FM_receive_smartkey recv_smartkey;
@@ -527,6 +528,21 @@ u8 LoadSMKUseToEEPROM(void)
 {
 	return EEPROM_Read(0);
 }
+// ++, 160511 bwk
+void SaveSMKUseToFlash(u8 Use)
+{
+	u8 SaveSMKUse[1];
+	SaveSMKUse[0] = Use;
+	SPI_FLASH_SectorErase(0);		// 0 : Sector_0
+	SPI_FLASH_PageWrite(SaveSMKUse,0,1);		// 0 : Sector_0
+}
+u8 LoadSMKUseToFlash(void)
+{
+	u8 SaveSMKUse[1];
+	SPI_FLASH_BufferRead(SaveSMKUse,0,1);		// 0 : Sector_0
+	return SaveSMKUse[0];
+}
+// --, 160511 bwk
 
 void SaveTestToEEPROM(u8 Use)
 {
@@ -1481,7 +1497,16 @@ void WL9FM_System_Init_Start(void)
 	//--, sys3215, 141211
 	
 	Buzzer_Init();              				//  ->  Buzzer.c (Buzzer Timer Start)
-	FM3164_Watchdog_Init(0x00);					//  ->  FM31X4.c (Integrated Processor Companion ON)
+	// ++, 160511 bwk
+	#if 0
+	FM3164_Watchdog_Init(0x00);
+	#else
+	if(Hardware_Revision < REVH)			// ++, --, 160511 bwk
+		FM3164_Watchdog_Init(0x00);					//  ->  FM31X4.c (Integrated Processor Companion ON)
+	else
+		EXT_WATCHDOG_ENALBE(0);
+	#endif
+	// --, 160511 bwk
 	KeySwitch_Init();           				//  ->  KeySwitch.c
 	LAMP_Control_Init();						//	-> 	LAMP_Control.c
 												//		LAMP ALL ON
@@ -1500,7 +1525,16 @@ void WL9FM_System_Init_Start(void)
 	CAN_COMInit();								//	-> 	CAN_Control.c
 	//InitE2PROM();
 	//ReadE2PROM_ToSend();						//	->	EEPROM Data Read
+	// ++, 160511 bwk
+	#if 0
 	SmartKeyUse = LoadSMKUseToEEPROM();
+	#else
+	if(Hardware_Revision >= REVH)
+		SmartKeyUse = LoadSMKUseToFlash();
+	else
+		SmartKeyUse = LoadSMKUseToEEPROM();
+	#endif
+	// --, 160511 bwk
 	M25P32_Init();
 
 	LAMP_Update_Data = LAMP_ALL_OFF;			//	-> 	LAMP ALL OFF	

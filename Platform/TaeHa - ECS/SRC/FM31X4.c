@@ -26,6 +26,7 @@
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
+extern unsigned char Hardware_Revision;			// ++, --, 160511 bwk
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 void NOP(void)
@@ -160,28 +161,33 @@ unsigned char EEPROM_ByteRead ( void )
 
 void EEPROM_Write ( unsigned long Add, unsigned char WData )
 {
-	GPIO_SetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
-	SDAOUT;
-	/* start */
-	GPIO_SetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
-	SCL1;
-	NOP(); 
-	GPIO_ResetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
-	NOP(); 
-	SCL0;
-	/* start end */
+	// ++, 160511 bwk
+	if(Hardware_Revision < REVH)
+	{
+	// --, 160511 bwk
+		GPIO_SetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+		SDAOUT;
+		/* start */
+		GPIO_SetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+		SCL1;
+		NOP(); 
+		GPIO_ResetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+		NOP(); 
+		SCL0;
+		/* start end */
 
-	EEPROM_ByteWrite( 0xa0 );
-	EEPROM_ByteWrite( (unsigned char)(Add >> 8) );
-	EEPROM_ByteWrite( (unsigned char) Add );
-	EEPROM_ByteWrite( WData );
+		EEPROM_ByteWrite( 0xa0 );
+		EEPROM_ByteWrite( (unsigned char)(Add >> 8) );
+		EEPROM_ByteWrite( (unsigned char) Add );
+		EEPROM_ByteWrite( WData );
 
-	/* stop */
-	GPIO_ResetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
-	NOP(); 
-	SCL1;
-	NOP(); 
-	GPIO_SetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+		/* stop */
+		GPIO_ResetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+		NOP(); 
+		SCL1;
+		NOP(); 
+		GPIO_SetBits(FM31X4_I2C1_PORT, FM31X4_I2C1_SDA);
+	}		// ++, --, 160511 bwk
 }
 
 
@@ -485,6 +491,8 @@ unsigned char READ_FM31xx_RTC_Companion(unsigned char Add)
 	return (Add);
 }
 
+// ++, 160511 bwk
+#if 0
 void WRITE_RTC_Year(unsigned char data)
 {
     unsigned char temp;
@@ -717,7 +725,8 @@ void READ_RTC(WL9FM_DATA_RTC *RTC_Data)
     
     WRITE_FM31xx_RTC_Companion(0x00, 0x00);
 }
-
+#endif
+// --, 160511 bwk
 
 void InitEEPROM(void)
 {

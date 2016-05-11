@@ -110,6 +110,7 @@ extern CMD_LAMP rx_CMD_LAMP;
 
 
 /* Private define ------------------------------------------------------------*/
+#define CPU_DIE_CTL(x)		GPIO_WriteBit(CPU_DIE_PORT,CPU_DIE,x)			// ++, --, 160511 bwk
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 u8 ring_buf[RING_BUF_SIZE];		
@@ -233,6 +234,7 @@ extern uint16_t ADC3ConvertedValue;
 
 extern u16 pWriteBufPos;
 
+extern unsigned char Hardware_Revision;			// ++, --, 160511 bwk
 
 
 /* Private function prototypes -----------------------------------------------*/
@@ -276,6 +278,14 @@ void OperateRingBuffer(void)
 	
 }
 #endif
+// ++, 160511 bwk
+void CPU_OK(void)
+{
+	 static unsigned char temp=0;
+
+	 CPU_DIE_CTL(((++temp%2==0) ? Bit_SET: Bit_RESET));
+}
+// --, 160511 bwk
 
 void RTCSend(void)
 {
@@ -424,6 +434,10 @@ void SysTick_Handler(void)
 		if (WL9FM_TIME.Cnt_1mSec % 10 == 0)              //  10msec
 		{
 			WL9FM_TIME.Flag_10mSec = 1;
+			// ++, 160511 bwk
+			if(Hardware_Revision >= REVH)
+				CPU_OK();
+			// --, 160511 bwk
 
 			if (WL9FM_TIME.Cnt_1mSec % 100 == 0)         //  100msec
 			{
@@ -976,7 +990,20 @@ void UART4_Receive_CMD(void)
 					}
 					else if(WL9FM_USART_DATA.COM4_RxBuf[2] == 0x03)
 					{
+						// ++, 160511 bwk
+						#if 0
 						SaveSMKUseToEEPROM(WL9FM_USART_DATA.COM4_RxBuf[3]);
+						#else
+						if(Hardware_Revision >= REVH)
+						{
+							SaveSMKUseToFlash(WL9FM_USART_DATA.COM4_RxBuf[3]);
+						}
+						else
+						{
+							SaveSMKUseToEEPROM(WL9FM_USART_DATA.COM4_RxBuf[3]);
+						}
+						#endif
+						// --, 160511 bwk
 					}
 					// ++, 150713 bwk
 					else if(WL9FM_USART_DATA.COM4_RxBuf[2] == RESPONSE_AUTHENTICATION)

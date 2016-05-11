@@ -170,6 +170,15 @@
 #define 	FM31X4_I2C1_SDA         		GPIO_Pin_9
 #define 	FM31X4_I2C1_PORT				GPIOB
 
+// ++, 160511 bwk
+// CPU_DIE
+#define	CPU_DIE		GPIO_Pin_7
+#define	CPU_DIE_PORT	GPIOG
+
+#define	WD_EN			GPIO_Pin_6
+#define	WD_EN_PORT	GPIOG
+
+// --, 160511 bwk
 //	++, kutelf, 140801
 //	RevD.01.01 
 //	TW2835 ªË¡¶ 

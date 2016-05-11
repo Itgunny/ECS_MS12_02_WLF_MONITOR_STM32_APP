@@ -95,10 +95,25 @@ void Check_Hardware_Revision(void)
 	{
 		Hardware_Revision = REVB;
 	}
+	// ++, 160511 bwk
+	else if(ADC3ConvertedValue>1092 && ADC3ConvertedValue<1122) // R5 = 2.7K RevH		1107
+	{
+		Hardware_Revision = REVH;
+	}
+	// --, 160511 bwk
 	else //if(ADC3ConvertedValue>390 && ADC3ConvertedValue<420) // R5 = 9.1K RevD.02.01
 	{
 		Hardware_Revision = REVD_02_01;
 	}
+
+	// ++, 160511 bwk
+	if(Hardware_Revision >= REVH)
+	{
+		write_RTC_Companion(0xf, 0x0);
+		TimeDelay_msec(100);
+		write_RTC_Companion(0xf, 0x20);
+	}
+	// --, 160511 bwk
 	
 }
 // --, sys3215, 141211

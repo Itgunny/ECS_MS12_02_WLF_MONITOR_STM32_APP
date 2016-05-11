@@ -178,6 +178,8 @@ extern void FM3164_Restart(void);
 extern unsigned char EEPROM_Read ( unsigned long Add );
 
 extern void WRITE_FM31xx_RTC_Companion(unsigned char address, unsigned char data);
+// ++, 160511 bwk
+#if 0
 extern void WRITE_RTC_Year(unsigned char data);
 extern void WRITE_RTC_Month(unsigned char data);
 extern void WRITE_RTC_Date(unsigned char data);
@@ -185,8 +187,12 @@ extern void WRITE_RTC_Day(unsigned char data);
 extern void WRITE_RTC_Hour(unsigned char data);
 extern void WRITE_RTC_Minute(unsigned char data);
 extern void WRITE_RTC_Second(unsigned char data);
+#endif
+// --, 160511 bwk
 
 extern unsigned char READ_FM31xx_RTC_Companion(unsigned char Add);
+// ++, 160511 bwk
+#if 0
 extern unsigned char READ_RTC_Year(void);
 extern unsigned char READ_RTC_Month(void);
 extern unsigned char READ_RTC_Date(void);
@@ -197,6 +203,8 @@ extern unsigned char READ_RTC_Second(void);
 
 extern void WRITE_RTC(WL9FM_DATA_RTC RTC_Data);
 extern void READ_RTC(WL9FM_DATA_RTC *RTC_Data);
+#endif
+// --, 160511 bwk
 
 extern void InitEEPROM(void);
 

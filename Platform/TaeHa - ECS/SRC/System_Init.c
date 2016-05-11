@@ -568,6 +568,25 @@ void GPIO_Configuration(void)
 #endif
 //	--, kutelf, 140801
 
+	// ++, 160511 bwk
+	if(Hardware_Revision >= REVH)
+	{
+		//	Configure CPU_DIE
+		GPIO_InitStructure.GPIO_Pin   = CPU_DIE;
+		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;		//	output push-pull
+		GPIO_Init(CPU_DIE_PORT, &GPIO_InitStructure);	 
+
+		// WATCH DOG ENABLE
+		GPIO_InitStructure.GPIO_Pin   = WD_EN;
+		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;		//	output push-pull
+		GPIO_Init(WD_EN_PORT, &GPIO_InitStructure);	
+	}
 
 //	++, kutelf, 140801
 //	RevD.01.01 
@@ -758,9 +777,17 @@ void GPIO_Configuration_NotUsed(void)
 		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 		GPIO_Init(GPIOF, &GPIO_InitStructure);
 
+		// ++, 160511 bwk
+		#if 0
 		//  PG0, PG1, PG2, PG3, PG4, PG5, PG6, PG7, PG8, PG9, PG10, GP12, PG13, PG14
 		GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7 |
 		GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14;
+		#else
+		//  PG0, PG1, PG2, PG3, PG4, PG5, PG8, PG9, PG10, GP12, PG13, PG14
+		GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5 | 
+		GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14;
+		#endif
+		// --, 160511 bwk
 		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
 		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
 		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
@@ -823,9 +850,13 @@ void GPIO_Configuration_NotUsed(void)
 		GPIO_ResetBits(GPIOG, GPIO_Pin_2); 		
 		GPIO_ResetBits(GPIOG, GPIO_Pin_3); 			
 		GPIO_ResetBits(GPIOG, GPIO_Pin_4); 		
-		GPIO_ResetBits(GPIOG, GPIO_Pin_5); 			
+		GPIO_ResetBits(GPIOG, GPIO_Pin_5);
+		// ++, 160511 bwk
+		#if 0
 		GPIO_ResetBits(GPIOG, GPIO_Pin_6); 		
 		GPIO_ResetBits(GPIOG, GPIO_Pin_7); 			
+		#endif
+		// --, 160511 bwk
 		GPIO_ResetBits(GPIOG, GPIO_Pin_8); 		
 		GPIO_ResetBits(GPIOG, GPIO_Pin_9); 			
 		GPIO_ResetBits(GPIOG, GPIO_Pin_10); 			

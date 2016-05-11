@@ -1,42 +1,39 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      06/Apr/2016  13:52:15 #
+# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      11/May/2016  16:53:13 #
 # Copyright 1999-2012 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
 #    Endian       =  little                                                   #
-#    Source file  =  D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -            #
-#                    STM32_APP\Platform\TaeHa - ECS\SRC\System_Init.c         #
-#    Command line =  "D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -           #
-#                    STM32_APP\Platform\TaeHa - ECS\SRC\System_Init.c" -D     #
-#                    USE_STDPERIPH_DRIVER -D STM32F4XX -D USE_STM324xG_EVAL   #
-#                    -D USE_FULL_ASSERT -lcN "D:\Project\[SVN] ECS-RD12-16 -  #
-#                    WL9F Monitor - STM32_APP\Project\Debug\List\" -o         #
-#                    "D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -           #
-#                    STM32_APP\Project\Debug\Obj\" --debug --endian=little    #
-#                    --cpu=Cortex-M4 -e --fpu=VFPv4_sp --dlib_config          #
-#                    "C:\Program Files (x86)\IAR Systems\Embedded Workbench   #
-#                    6.5\arm\INC\c\DLib_Config_Full.h" -I "D:\Project\[SVN]   #
-#                    ECS-RD12-16 - WL9F Monitor -                             #
-#                    STM32_APP\Project\..\Platform\COMMON\INC\" -I            #
-#                    "D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -           #
+#    Source file  =  C:\Tools\WL9F\WLF Monitor - STM32_APP\Platform\TaeHa -   #
+#                    ECS\SRC\System_Init.c                                    #
+#    Command line =  "C:\Tools\WL9F\WLF Monitor - STM32_APP\Platform\TaeHa -  #
+#                    ECS\SRC\System_Init.c" -D USE_STDPERIPH_DRIVER -D        #
+#                    STM32F4XX -D USE_STM324xG_EVAL -D USE_FULL_ASSERT -lcN   #
+#                    "C:\Tools\WL9F\WLF Monitor -                             #
+#                    STM32_APP\Project\Debug\List\" -o "C:\Tools\WL9F\WLF     #
+#                    Monitor - STM32_APP\Project\Debug\Obj\" --debug          #
+#                    --endian=little --cpu=Cortex-M4 -e --fpu=VFPv4_sp        #
+#                    --dlib_config "C:\Tools\IAR Systems\Embedded Workbench   #
+#                    6.5\arm\INC\c\DLib_Config_Full.h" -I "C:\Tools\WL9F\WLF  #
+#                    Monitor - STM32_APP\Project\..\Platform\COMMON\INC\" -I  #
+#                    "C:\Tools\WL9F\WLF Monitor -                             #
 #                    STM32_APP\Project\..\Platform\TaeHa - ECS\INC\" -I       #
-#                    "D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -           #
+#                    "C:\Tools\WL9F\WLF Monitor -                             #
 #                    STM32_APP\Project\..\Libraries\CMSIS\Device\ST\STM32F4xx #
-#                    \Include\" -I "D:\Project\[SVN] ECS-RD12-16 - WL9F       #
-#                    Monitor - STM32_APP\Project\..\Libraries\STM32F4xx_StdPe #
-#                    riph_Driver\inc\" -Oh --use_c++_inline -I "C:\Program    #
-#                    Files (x86)\IAR Systems\Embedded Workbench               #
-#                    6.5\arm\CMSIS\Include\"                                  #
-#    List file    =  D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -            #
+#                    \Include\" -I "C:\Tools\WL9F\WLF Monitor -               #
+#                    STM32_APP\Project\..\Libraries\STM32F4xx_StdPeriph_Drive #
+#                    r\inc\" -Oh --use_c++_inline -I "C:\Tools\IAR            #
+#                    Systems\Embedded Workbench 6.5\arm\CMSIS\Include\"       #
+#    List file    =  C:\Tools\WL9F\WLF Monitor -                              #
 #                    STM32_APP\Project\Debug\List\System_Init.lst             #
-#    Object file  =  D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -            #
+#    Object file  =  C:\Tools\WL9F\WLF Monitor -                              #
 #                    STM32_APP\Project\Debug\Obj\System_Init.o                #
 #                                                                             #
 #                                                                             #
 ###############################################################################
 
-D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor - STM32_APP\Platform\TaeHa - ECS\SRC\System_Init.c
+C:\Tools\WL9F\WLF Monitor - STM32_APP\Platform\TaeHa - ECS\SRC\System_Init.c
       1          /**
       2            ******************************************************************************
       3            * @file    System_Init.c 
@@ -607,601 +604,632 @@ D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor - STM32_APP\Platform\TaeHa - ECS\SRC
     568          #endif
     569          //	--, kutelf, 140801
     570          
-    571          
-    572          //	++, kutelf, 140801
-    573          //	RevD.01.01 
-    574          //	DPRAM 삭제 - FSMC 사용 안함. 
-    575          #if 0
-    576          	// 	FSMC Data Line
-    577          	//  D15 ~ D0 : D15  D14  D13 D12  D11  D10  D9   D8   D7   D6  D5  D4  D3  D2  D1   D0   
-    578          	//             PD10 PD9  PD8 PE15 PE14 PE13 PE12 PE11 PE10 PE9 PE8 PE7 PD1 PD0 PD15 PD14
-    579          
-    580          	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10| GPIO_Pin_9  | GPIO_Pin_8 | GPIO_Pin_1 |
-    581          	GPIO_Pin_0 | GPIO_Pin_15 | GPIO_Pin_14;
-    582          	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF;
-    583          	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_NOPULL;
-    584          	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    585          	GPIO_Init(GPIOD, &GPIO_InitStructure);
-    586          
-    587          	GPIO_PinAFConfig(GPIOD, GPIO_PinSource10, GPIO_AF_FSMC);
-    588          	GPIO_PinAFConfig(GPIOD, GPIO_PinSource9 , GPIO_AF_FSMC);
-    589          	GPIO_PinAFConfig(GPIOD, GPIO_PinSource8 , GPIO_AF_FSMC);
-    590          	GPIO_PinAFConfig(GPIOD, GPIO_PinSource1 , GPIO_AF_FSMC);
-    591          	GPIO_PinAFConfig(GPIOD, GPIO_PinSource0 , GPIO_AF_FSMC);
-    592          	GPIO_PinAFConfig(GPIOD, GPIO_PinSource15, GPIO_AF_FSMC);
-    593          	GPIO_PinAFConfig(GPIOD, GPIO_PinSource14, GPIO_AF_FSMC);	
-    594            
-    595          	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_15 | GPIO_Pin_14 | GPIO_Pin_13 | GPIO_Pin_12 |
-    596          								GPIO_Pin_11 | GPIO_Pin_10 | GPIO_Pin_9  |
-    597          								GPIO_Pin_8  | GPIO_Pin_7;
-    598          	GPIO_Init(GPIOE, &GPIO_InitStructure);
-    599          
-    600          	GPIO_PinAFConfig(GPIOE, GPIO_PinSource15, GPIO_AF_FSMC);
-    601          	GPIO_PinAFConfig(GPIOE, GPIO_PinSource14, GPIO_AF_FSMC);
-    602          	GPIO_PinAFConfig(GPIOE, GPIO_PinSource13, GPIO_AF_FSMC);
-    603          	GPIO_PinAFConfig(GPIOE, GPIO_PinSource12, GPIO_AF_FSMC);
-    604          	GPIO_PinAFConfig(GPIOE, GPIO_PinSource11, GPIO_AF_FSMC);
-    605          	GPIO_PinAFConfig(GPIOE, GPIO_PinSource10, GPIO_AF_FSMC);
-    606          	GPIO_PinAFConfig(GPIOE, GPIO_PinSource9 , GPIO_AF_FSMC);	
-    607          	GPIO_PinAFConfig(GPIOE, GPIO_PinSource8 , GPIO_AF_FSMC);	
-    608          	GPIO_PinAFConfig(GPIOE, GPIO_PinSource7 , GPIO_AF_FSMC);	
-    609          
-    610          	//  nCLK, nOE, nWE, nWait
-    611          	GPIO_InitStructure.GPIO_Pin = FSMC_nOE | FSMC_nWE | FSMC_nWAIT | FSMC_nCLK;
-    612          	GPIO_Init(FSMC_PORT, &GPIO_InitStructure);
-    613          
-    614          	GPIO_PinAFConfig(FSMC_PORT, FSMC_nOE_PinSource  , GPIO_AF_FSMC);
-    615          	GPIO_PinAFConfig(FSMC_PORT, FSMC_nWE_PinSource  , GPIO_AF_FSMC);
-    616          	GPIO_PinAFConfig(FSMC_PORT, FSMC_nWAIT_PinSource, GPIO_AF_FSMC);
-    617          	GPIO_PinAFConfig(FSMC_PORT, FSMC_nCLK_PinSource , GPIO_AF_FSMC);
+    571          	// ++, 160511 bwk
+    572          	if(Hardware_Revision >= REVH)
+    573          	{
+    574          		//	Configure CPU_DIE
+    575          		GPIO_InitStructure.GPIO_Pin   = CPU_DIE;
+    576          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    577          		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+    578          		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+    579          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;		//	output push-pull
+    580          		GPIO_Init(CPU_DIE_PORT, &GPIO_InitStructure);	 
+    581          
+    582          		// WATCH DOG ENABLE
+    583          		GPIO_InitStructure.GPIO_Pin   = WD_EN;
+    584          		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+    585          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    586          		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+    587          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;		//	output push-pull
+    588          		GPIO_Init(WD_EN_PORT, &GPIO_InitStructure);	
+    589          	}
+    590          
+    591          //	++, kutelf, 140801
+    592          //	RevD.01.01 
+    593          //	DPRAM 삭제 - FSMC 사용 안함. 
+    594          #if 0
+    595          	// 	FSMC Data Line
+    596          	//  D15 ~ D0 : D15  D14  D13 D12  D11  D10  D9   D8   D7   D6  D5  D4  D3  D2  D1   D0   
+    597          	//             PD10 PD9  PD8 PE15 PE14 PE13 PE12 PE11 PE10 PE9 PE8 PE7 PD1 PD0 PD15 PD14
+    598          
+    599          	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10| GPIO_Pin_9  | GPIO_Pin_8 | GPIO_Pin_1 |
+    600          	GPIO_Pin_0 | GPIO_Pin_15 | GPIO_Pin_14;
+    601          	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF;
+    602          	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_NOPULL;
+    603          	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    604          	GPIO_Init(GPIOD, &GPIO_InitStructure);
+    605          
+    606          	GPIO_PinAFConfig(GPIOD, GPIO_PinSource10, GPIO_AF_FSMC);
+    607          	GPIO_PinAFConfig(GPIOD, GPIO_PinSource9 , GPIO_AF_FSMC);
+    608          	GPIO_PinAFConfig(GPIOD, GPIO_PinSource8 , GPIO_AF_FSMC);
+    609          	GPIO_PinAFConfig(GPIOD, GPIO_PinSource1 , GPIO_AF_FSMC);
+    610          	GPIO_PinAFConfig(GPIOD, GPIO_PinSource0 , GPIO_AF_FSMC);
+    611          	GPIO_PinAFConfig(GPIOD, GPIO_PinSource15, GPIO_AF_FSMC);
+    612          	GPIO_PinAFConfig(GPIOD, GPIO_PinSource14, GPIO_AF_FSMC);	
+    613            
+    614          	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_15 | GPIO_Pin_14 | GPIO_Pin_13 | GPIO_Pin_12 |
+    615          								GPIO_Pin_11 | GPIO_Pin_10 | GPIO_Pin_9  |
+    616          								GPIO_Pin_8  | GPIO_Pin_7;
+    617          	GPIO_Init(GPIOE, &GPIO_InitStructure);
     618          
-    619          	//  nBL0, nBL1
-    620          	GPIO_InitStructure.GPIO_Pin = FSMC_nBL0 | FSMC_nBL1;
-    621          	GPIO_Init(FSMC_nBL_PORT, &GPIO_InitStructure);
-    622          
-    623          	GPIO_PinAFConfig(FSMC_nBL_PORT, FSMC_nBL0_PinSource  , GPIO_AF_FSMC);
-    624          	GPIO_PinAFConfig(FSMC_nBL_PORT, FSMC_nBL1_PinSource  , GPIO_AF_FSMC);
-    625          
-    626          	//	nADV
-    627          	GPIO_InitStructure.GPIO_Pin = FSMC_nADV;
-    628          	GPIO_PinAFConfig(FSMC_ADVPORT, FSMC_nADV_PinSource  , GPIO_AF_FSMC);
-    629          	GPIO_Init(FSMC_ADVPORT, &GPIO_InitStructure);
-    630          
-    631          	// NE1 configuration
-    632          	GPIO_InitStructure.GPIO_Pin = FSMC_nNE1;
-    633          	GPIO_Init(FSMC_nNE1_PORT, &GPIO_InitStructure);
-    634          
-    635          	GPIO_PinAFConfig(FSMC_nNE1_PORT, FSMC_nNE1_PinSource  , GPIO_AF_FSMC);
-    636          #endif
-    637          //	--, kutelf, 140801
-    638          
-    639          	//  사용하지 않는 GPIO Pin은 Output -> Low 상태로 만들어 놓는다.
-    640          
-    641          	// ++, sys3215, 141211
-    642          
-    643          	// camera IO set 이후 사용하지 않는  GPIO Pin은 Output -> Low 상태로 만들어 놓는다.
-    644          	//GPIO_Configuration_NotUsed();
-    645          
-    646          	// --, sys3215, 141211
-    647          }
-    648          
-    649          /**
-    650            * @brief  GPIO Setting.
-    651            * @param  Configures the different GPIO ports. (사용하지 않는 GPIO는 Output Low 상태로 만든다.)
-    652            * @retval None
-    653            */
-    654          void GPIO_Configuration_NotUsed(void)
-    655          {
-    656          	GPIO_InitTypeDef GPIO_InitStructure;
-    657          // ++, sys3215, 141211
-    658          
-    659          	if(Hardware_Revision==REVB)
-    660          	{
-    661          		//  PC0, PC1, PC2, PC8, PC14
-    662          		GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_8 | GPIO_Pin_14;
-    663          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
-    664          		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-    665          		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-    666          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    667          		GPIO_Init(GPIOC, &GPIO_InitStructure);
-    668          
-    669          		//  PF3, PF4, PF5, PF6, PF7, PF8, PF9
-    670          		GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9;
-    671          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
-    672          		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-    673          		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-    674          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    675          		GPIO_Init(GPIOF, &GPIO_InitStructure);
-    676          
-    677          		//  PG8, PG9
-    678          		GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_8 | GPIO_Pin_9;
-    679          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
-    680          		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-    681          		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-    682          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    683          		GPIO_Init(GPIOG, &GPIO_InitStructure);
-    684          
-    685          		//  PE2, PE3, PE4, PE5
-    686          		GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5;
-    687          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
-    688          		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-    689          		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-    690          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    691          		GPIO_Init(GPIOE, &GPIO_InitStructure);
-    692          
-    693          		GPIO_ResetBits(GPIOC, GPIO_Pin_0);
-    694          		GPIO_ResetBits(GPIOC, GPIO_Pin_1);
-    695          		GPIO_ResetBits(GPIOC, GPIO_Pin_2);
-    696          		GPIO_ResetBits(GPIOC, GPIO_Pin_8);
-    697          		GPIO_ResetBits(GPIOC, GPIO_Pin_14);
-    698          
-    699          		GPIO_ResetBits(GPIOF, GPIO_Pin_3);
-    700          		GPIO_ResetBits(GPIOF, GPIO_Pin_4);
-    701          		GPIO_ResetBits(GPIOF, GPIO_Pin_5);
-    702          		GPIO_ResetBits(GPIOF, GPIO_Pin_6);
-    703          		GPIO_ResetBits(GPIOF, GPIO_Pin_7);
-    704          		GPIO_ResetBits(GPIOF, GPIO_Pin_8);
-    705          		GPIO_ResetBits(GPIOF, GPIO_Pin_9);
-    706          
-    707          		GPIO_ResetBits(GPIOG, GPIO_Pin_8);
-    708          		GPIO_ResetBits(GPIOG, GPIO_Pin_9);	
-    709          
-    710          		GPIO_ResetBits(GPIOE, GPIO_Pin_2);	
-    711          		GPIO_ResetBits(GPIOE, GPIO_Pin_3);	
-    712          		GPIO_ResetBits(GPIOE, GPIO_Pin_4);	
-    713          		GPIO_ResetBits(GPIOE, GPIO_Pin_5);	
-    714          	}
-    715          	else
-    716          	{
-    717          		//  PB7
-    718          		GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_7;
-    719          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
-    720          		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-    721          		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-    722          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    723          		GPIO_Init(GPIOB, &GPIO_InitStructure);
-    724          
-    725          		//  PC0, PC1, PC2, PC5, PC8, PC13
-    726          		GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_5 | GPIO_Pin_8 | GPIO_Pin_13;
-    727          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
-    728          		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-    729          		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-    730          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    731          		GPIO_Init(GPIOC, &GPIO_InitStructure);
-    732          
-    733          		//  PD0, PD1, PD3, PD4, PD5, PD6, PD7, PD8, PD9, PD10, PD11, PD12, PD13, PD14, PD15
-    734          		GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7 |
-    735          		GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15;
-    736          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
-    737          		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-    738          		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-    739          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    740          		GPIO_Init(GPIOD, &GPIO_InitStructure);
-    741          
-    742          		//  PE0, PE1, PE2, PE3, PE4, PE5, PE6, PE7, PE8, PE9, PE10, PE11, PE12, PE13, PE14, PE15
-    743          		GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_6 |
-    744          		GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12 | GPIO_Pin_13 |
-    745          		GPIO_Pin_14 | GPIO_Pin_15;
+    619          	GPIO_PinAFConfig(GPIOE, GPIO_PinSource15, GPIO_AF_FSMC);
+    620          	GPIO_PinAFConfig(GPIOE, GPIO_PinSource14, GPIO_AF_FSMC);
+    621          	GPIO_PinAFConfig(GPIOE, GPIO_PinSource13, GPIO_AF_FSMC);
+    622          	GPIO_PinAFConfig(GPIOE, GPIO_PinSource12, GPIO_AF_FSMC);
+    623          	GPIO_PinAFConfig(GPIOE, GPIO_PinSource11, GPIO_AF_FSMC);
+    624          	GPIO_PinAFConfig(GPIOE, GPIO_PinSource10, GPIO_AF_FSMC);
+    625          	GPIO_PinAFConfig(GPIOE, GPIO_PinSource9 , GPIO_AF_FSMC);	
+    626          	GPIO_PinAFConfig(GPIOE, GPIO_PinSource8 , GPIO_AF_FSMC);	
+    627          	GPIO_PinAFConfig(GPIOE, GPIO_PinSource7 , GPIO_AF_FSMC);	
+    628          
+    629          	//  nCLK, nOE, nWE, nWait
+    630          	GPIO_InitStructure.GPIO_Pin = FSMC_nOE | FSMC_nWE | FSMC_nWAIT | FSMC_nCLK;
+    631          	GPIO_Init(FSMC_PORT, &GPIO_InitStructure);
+    632          
+    633          	GPIO_PinAFConfig(FSMC_PORT, FSMC_nOE_PinSource  , GPIO_AF_FSMC);
+    634          	GPIO_PinAFConfig(FSMC_PORT, FSMC_nWE_PinSource  , GPIO_AF_FSMC);
+    635          	GPIO_PinAFConfig(FSMC_PORT, FSMC_nWAIT_PinSource, GPIO_AF_FSMC);
+    636          	GPIO_PinAFConfig(FSMC_PORT, FSMC_nCLK_PinSource , GPIO_AF_FSMC);
+    637          
+    638          	//  nBL0, nBL1
+    639          	GPIO_InitStructure.GPIO_Pin = FSMC_nBL0 | FSMC_nBL1;
+    640          	GPIO_Init(FSMC_nBL_PORT, &GPIO_InitStructure);
+    641          
+    642          	GPIO_PinAFConfig(FSMC_nBL_PORT, FSMC_nBL0_PinSource  , GPIO_AF_FSMC);
+    643          	GPIO_PinAFConfig(FSMC_nBL_PORT, FSMC_nBL1_PinSource  , GPIO_AF_FSMC);
+    644          
+    645          	//	nADV
+    646          	GPIO_InitStructure.GPIO_Pin = FSMC_nADV;
+    647          	GPIO_PinAFConfig(FSMC_ADVPORT, FSMC_nADV_PinSource  , GPIO_AF_FSMC);
+    648          	GPIO_Init(FSMC_ADVPORT, &GPIO_InitStructure);
+    649          
+    650          	// NE1 configuration
+    651          	GPIO_InitStructure.GPIO_Pin = FSMC_nNE1;
+    652          	GPIO_Init(FSMC_nNE1_PORT, &GPIO_InitStructure);
+    653          
+    654          	GPIO_PinAFConfig(FSMC_nNE1_PORT, FSMC_nNE1_PinSource  , GPIO_AF_FSMC);
+    655          #endif
+    656          //	--, kutelf, 140801
+    657          
+    658          	//  사용하지 않는 GPIO Pin은 Output -> Low 상태로 만들어 놓는다.
+    659          
+    660          	// ++, sys3215, 141211
+    661          
+    662          	// camera IO set 이후 사용하지 않는  GPIO Pin은 Output -> Low 상태로 만들어 놓는다.
+    663          	//GPIO_Configuration_NotUsed();
+    664          
+    665          	// --, sys3215, 141211
+    666          }
+    667          
+    668          /**
+    669            * @brief  GPIO Setting.
+    670            * @param  Configures the different GPIO ports. (사용하지 않는 GPIO는 Output Low 상태로 만든다.)
+    671            * @retval None
+    672            */
+    673          void GPIO_Configuration_NotUsed(void)
+    674          {
+    675          	GPIO_InitTypeDef GPIO_InitStructure;
+    676          // ++, sys3215, 141211
+    677          
+    678          	if(Hardware_Revision==REVB)
+    679          	{
+    680          		//  PC0, PC1, PC2, PC8, PC14
+    681          		GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_8 | GPIO_Pin_14;
+    682          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+    683          		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+    684          		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+    685          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    686          		GPIO_Init(GPIOC, &GPIO_InitStructure);
+    687          
+    688          		//  PF3, PF4, PF5, PF6, PF7, PF8, PF9
+    689          		GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9;
+    690          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+    691          		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+    692          		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+    693          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    694          		GPIO_Init(GPIOF, &GPIO_InitStructure);
+    695          
+    696          		//  PG8, PG9
+    697          		GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_8 | GPIO_Pin_9;
+    698          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+    699          		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+    700          		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+    701          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    702          		GPIO_Init(GPIOG, &GPIO_InitStructure);
+    703          
+    704          		//  PE2, PE3, PE4, PE5
+    705          		GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5;
+    706          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+    707          		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+    708          		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+    709          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    710          		GPIO_Init(GPIOE, &GPIO_InitStructure);
+    711          
+    712          		GPIO_ResetBits(GPIOC, GPIO_Pin_0);
+    713          		GPIO_ResetBits(GPIOC, GPIO_Pin_1);
+    714          		GPIO_ResetBits(GPIOC, GPIO_Pin_2);
+    715          		GPIO_ResetBits(GPIOC, GPIO_Pin_8);
+    716          		GPIO_ResetBits(GPIOC, GPIO_Pin_14);
+    717          
+    718          		GPIO_ResetBits(GPIOF, GPIO_Pin_3);
+    719          		GPIO_ResetBits(GPIOF, GPIO_Pin_4);
+    720          		GPIO_ResetBits(GPIOF, GPIO_Pin_5);
+    721          		GPIO_ResetBits(GPIOF, GPIO_Pin_6);
+    722          		GPIO_ResetBits(GPIOF, GPIO_Pin_7);
+    723          		GPIO_ResetBits(GPIOF, GPIO_Pin_8);
+    724          		GPIO_ResetBits(GPIOF, GPIO_Pin_9);
+    725          
+    726          		GPIO_ResetBits(GPIOG, GPIO_Pin_8);
+    727          		GPIO_ResetBits(GPIOG, GPIO_Pin_9);	
+    728          
+    729          		GPIO_ResetBits(GPIOE, GPIO_Pin_2);	
+    730          		GPIO_ResetBits(GPIOE, GPIO_Pin_3);	
+    731          		GPIO_ResetBits(GPIOE, GPIO_Pin_4);	
+    732          		GPIO_ResetBits(GPIOE, GPIO_Pin_5);	
+    733          	}
+    734          	else
+    735          	{
+    736          		//  PB7
+    737          		GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_7;
+    738          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+    739          		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+    740          		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+    741          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    742          		GPIO_Init(GPIOB, &GPIO_InitStructure);
+    743          
+    744          		//  PC0, PC1, PC2, PC5, PC8, PC13
+    745          		GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_5 | GPIO_Pin_8 | GPIO_Pin_13;
     746          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
     747          		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
     748          		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
     749          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    750          		GPIO_Init(GPIOE, &GPIO_InitStructure);
+    750          		GPIO_Init(GPIOC, &GPIO_InitStructure);
     751          
-    752          
-    753          		//  PF3, PF4, PF5, PF6, PF7, PF8, PF9
-    754          		GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9;
+    752          		//  PD0, PD1, PD3, PD4, PD5, PD6, PD7, PD8, PD9, PD10, PD11, PD12, PD13, PD14, PD15
+    753          		GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7 |
+    754          		GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15;
     755          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
     756          		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
     757          		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
     758          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    759          		GPIO_Init(GPIOF, &GPIO_InitStructure);
+    759          		GPIO_Init(GPIOD, &GPIO_InitStructure);
     760          
-    761          		//  PG0, PG1, PG2, PG3, PG4, PG5, PG6, PG7, PG8, PG9, PG10, GP12, PG13, PG14
-    762          		GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7 |
-    763          		GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14;
-    764          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
-    765          		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-    766          		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-    767          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    768          		GPIO_Init(GPIOG, &GPIO_InitStructure);
-    769          
+    761          		//  PE0, PE1, PE2, PE3, PE4, PE5, PE6, PE7, PE8, PE9, PE10, PE11, PE12, PE13, PE14, PE15
+    762          		GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_6 |
+    763          		GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12 | GPIO_Pin_13 |
+    764          		GPIO_Pin_14 | GPIO_Pin_15;
+    765          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+    766          		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+    767          		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+    768          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    769          		GPIO_Init(GPIOE, &GPIO_InitStructure);
     770          
-    771          		GPIO_ResetBits(GPIOB, GPIO_Pin_7); 
-    772          
-    773          		GPIO_ResetBits(GPIOC, GPIO_Pin_0); 
-    774          		GPIO_ResetBits(GPIOC, GPIO_Pin_1); 
-    775          		GPIO_ResetBits(GPIOC, GPIO_Pin_2); 
-    776          		GPIO_ResetBits(GPIOC, GPIO_Pin_5); 
-    777          		GPIO_ResetBits(GPIOC, GPIO_Pin_8); 
-    778          		GPIO_ResetBits(GPIOC, GPIO_Pin_13); 	
+    771          
+    772          		//  PF3, PF4, PF5, PF6, PF7, PF8, PF9
+    773          		GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9;
+    774          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+    775          		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+    776          		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+    777          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    778          		GPIO_Init(GPIOF, &GPIO_InitStructure);
     779          
-    780          		GPIO_ResetBits(GPIOD, GPIO_Pin_0); 		
-    781          		GPIO_ResetBits(GPIOD, GPIO_Pin_1); 		
-    782          		GPIO_ResetBits(GPIOD, GPIO_Pin_3); 		
-    783          		GPIO_ResetBits(GPIOD, GPIO_Pin_4); 		
-    784          		GPIO_ResetBits(GPIOD, GPIO_Pin_5); 		
-    785          		GPIO_ResetBits(GPIOD, GPIO_Pin_6); 		
-    786          		GPIO_ResetBits(GPIOD, GPIO_Pin_7); 		
-    787          		GPIO_ResetBits(GPIOD, GPIO_Pin_8); 		
-    788          		GPIO_ResetBits(GPIOD, GPIO_Pin_9); 		
-    789          		GPIO_ResetBits(GPIOD, GPIO_Pin_10); 		
-    790          		GPIO_ResetBits(GPIOD, GPIO_Pin_11); 		
-    791          		GPIO_ResetBits(GPIOD, GPIO_Pin_12); 		
-    792          		GPIO_ResetBits(GPIOD, GPIO_Pin_13); 		
-    793          		GPIO_ResetBits(GPIOD, GPIO_Pin_14); 		
-    794          		GPIO_ResetBits(GPIOD, GPIO_Pin_15); 		
-    795          
-    796          		GPIO_ResetBits(GPIOE, GPIO_Pin_0); 		
-    797          		GPIO_ResetBits(GPIOE, GPIO_Pin_1); 		
-    798          		GPIO_ResetBits(GPIOE, GPIO_Pin_2); 		
-    799          		GPIO_ResetBits(GPIOE, GPIO_Pin_3); 		
-    800          		GPIO_ResetBits(GPIOE, GPIO_Pin_4); 		
-    801          		GPIO_ResetBits(GPIOE, GPIO_Pin_5); 		
-    802          		GPIO_ResetBits(GPIOE, GPIO_Pin_6); 		
-    803          		GPIO_ResetBits(GPIOE, GPIO_Pin_7); 		
-    804          		GPIO_ResetBits(GPIOE, GPIO_Pin_8); 		
-    805          		GPIO_ResetBits(GPIOE, GPIO_Pin_9); 		
-    806          		GPIO_ResetBits(GPIOE, GPIO_Pin_10); 		
-    807          		GPIO_ResetBits(GPIOE, GPIO_Pin_11); 		
-    808          		GPIO_ResetBits(GPIOE, GPIO_Pin_12); 		
-    809          		GPIO_ResetBits(GPIOE, GPIO_Pin_13); 		
-    810          		GPIO_ResetBits(GPIOE, GPIO_Pin_14); 		
-    811          		GPIO_ResetBits(GPIOE, GPIO_Pin_15); 		
-    812          
-    813          		GPIO_ResetBits(GPIOF, GPIO_Pin_3); 		
-    814          		GPIO_ResetBits(GPIOF, GPIO_Pin_4); 		
-    815          		GPIO_ResetBits(GPIOF, GPIO_Pin_5); 		
-    816          		GPIO_ResetBits(GPIOF, GPIO_Pin_6); 		
-    817          		GPIO_ResetBits(GPIOF, GPIO_Pin_7); 		
-    818          		GPIO_ResetBits(GPIOF, GPIO_Pin_8); 		
-    819          		GPIO_ResetBits(GPIOF, GPIO_Pin_9); 		
-    820          
-    821          		GPIO_ResetBits(GPIOG, GPIO_Pin_0); 		
-    822          		GPIO_ResetBits(GPIOG, GPIO_Pin_1); 			
-    823          		GPIO_ResetBits(GPIOG, GPIO_Pin_2); 		
-    824          		GPIO_ResetBits(GPIOG, GPIO_Pin_3); 			
-    825          		GPIO_ResetBits(GPIOG, GPIO_Pin_4); 		
-    826          		GPIO_ResetBits(GPIOG, GPIO_Pin_5); 			
-    827          		GPIO_ResetBits(GPIOG, GPIO_Pin_6); 		
-    828          		GPIO_ResetBits(GPIOG, GPIO_Pin_7); 			
-    829          		GPIO_ResetBits(GPIOG, GPIO_Pin_8); 		
-    830          		GPIO_ResetBits(GPIOG, GPIO_Pin_9); 			
-    831          		GPIO_ResetBits(GPIOG, GPIO_Pin_10); 			
-    832          		GPIO_ResetBits(GPIOG, GPIO_Pin_12); 			
-    833          		GPIO_ResetBits(GPIOG, GPIO_Pin_13); 			
-    834          		GPIO_ResetBits(GPIOG, GPIO_Pin_14); 
-    835          	}
-    836          #if 0
-    837          //	++, kutelf, 140801
-    838          //	RevD.01.01 
-    839          //	사용하지 않는 핀 : Output Low 상태로 설정. 
-    840          #ifdef BoardVersion_RevD
-    841          	//  PB7
-    842          	GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_7;
-    843          	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
-    844          	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-    845          	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-    846          	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    847          	GPIO_Init(GPIOB, &GPIO_InitStructure);
-    848          
-    849          	//  PC0, PC1, PC2, PC5, PC8, PC13
-    850          	GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_5 | GPIO_Pin_8 | GPIO_Pin_13;
-    851          	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
-    852          	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-    853          	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-    854          	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    855          	GPIO_Init(GPIOC, &GPIO_InitStructure);
-    856          
-    857          	//  PD0, PD1, PD3, PD4, PD5, PD6, PD7, PD8, PD9, PD10, PD11, PD12, PD13, PD14, PD15
-    858          	GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7 |
-    859          	GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15;
-    860          	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
-    861          	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-    862          	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-    863          	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    864          	GPIO_Init(GPIOD, &GPIO_InitStructure);
-    865          
-    866          	//  PE0, PE1, PE2, PE3, PE4, PE5, PE6, PE7, PE8, PE9, PE10, PE11, PE12, PE13, PE14, PE15
-    867          	GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_6 |
-    868          	GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12 | GPIO_Pin_13 |
-    869          	GPIO_Pin_14 | GPIO_Pin_15;
-    870          	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
-    871          	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-    872          	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-    873          	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    874          	GPIO_Init(GPIOE, &GPIO_InitStructure);
-    875          
-    876          
-    877          	//  PF3, PF4, PF5, PF6, PF7, PF8, PF9
-    878          	GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9;
-    879          	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
-    880          	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-    881          	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-    882          	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    883          	GPIO_Init(GPIOF, &GPIO_InitStructure);
-    884          
-    885          	//  PG0, PG1, PG2, PG3, PG4, PG5, PG6, PG7, PG8, PG9, PG10, GP12, PG13, PG14
-    886          	GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7 |
-    887          	GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14;
-    888          	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
-    889          	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-    890          	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-    891          	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    892          	GPIO_Init(GPIOG, &GPIO_InitStructure);
-    893          	
-    894          
-    895          	GPIO_ResetBits(GPIOB, GPIO_Pin_7); 
+    780          		// ++, 160511 bwk
+    781          		#if 0
+    782          		//  PG0, PG1, PG2, PG3, PG4, PG5, PG6, PG7, PG8, PG9, PG10, GP12, PG13, PG14
+    783          		GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7 |
+    784          		GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14;
+    785          		#else
+    786          		//  PG0, PG1, PG2, PG3, PG4, PG5, PG8, PG9, PG10, GP12, PG13, PG14
+    787          		GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5 | 
+    788          		GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14;
+    789          		#endif
+    790          		// --, 160511 bwk
+    791          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+    792          		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+    793          		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+    794          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    795          		GPIO_Init(GPIOG, &GPIO_InitStructure);
+    796          
+    797          
+    798          		GPIO_ResetBits(GPIOB, GPIO_Pin_7); 
+    799          
+    800          		GPIO_ResetBits(GPIOC, GPIO_Pin_0); 
+    801          		GPIO_ResetBits(GPIOC, GPIO_Pin_1); 
+    802          		GPIO_ResetBits(GPIOC, GPIO_Pin_2); 
+    803          		GPIO_ResetBits(GPIOC, GPIO_Pin_5); 
+    804          		GPIO_ResetBits(GPIOC, GPIO_Pin_8); 
+    805          		GPIO_ResetBits(GPIOC, GPIO_Pin_13); 	
+    806          
+    807          		GPIO_ResetBits(GPIOD, GPIO_Pin_0); 		
+    808          		GPIO_ResetBits(GPIOD, GPIO_Pin_1); 		
+    809          		GPIO_ResetBits(GPIOD, GPIO_Pin_3); 		
+    810          		GPIO_ResetBits(GPIOD, GPIO_Pin_4); 		
+    811          		GPIO_ResetBits(GPIOD, GPIO_Pin_5); 		
+    812          		GPIO_ResetBits(GPIOD, GPIO_Pin_6); 		
+    813          		GPIO_ResetBits(GPIOD, GPIO_Pin_7); 		
+    814          		GPIO_ResetBits(GPIOD, GPIO_Pin_8); 		
+    815          		GPIO_ResetBits(GPIOD, GPIO_Pin_9); 		
+    816          		GPIO_ResetBits(GPIOD, GPIO_Pin_10); 		
+    817          		GPIO_ResetBits(GPIOD, GPIO_Pin_11); 		
+    818          		GPIO_ResetBits(GPIOD, GPIO_Pin_12); 		
+    819          		GPIO_ResetBits(GPIOD, GPIO_Pin_13); 		
+    820          		GPIO_ResetBits(GPIOD, GPIO_Pin_14); 		
+    821          		GPIO_ResetBits(GPIOD, GPIO_Pin_15); 		
+    822          
+    823          		GPIO_ResetBits(GPIOE, GPIO_Pin_0); 		
+    824          		GPIO_ResetBits(GPIOE, GPIO_Pin_1); 		
+    825          		GPIO_ResetBits(GPIOE, GPIO_Pin_2); 		
+    826          		GPIO_ResetBits(GPIOE, GPIO_Pin_3); 		
+    827          		GPIO_ResetBits(GPIOE, GPIO_Pin_4); 		
+    828          		GPIO_ResetBits(GPIOE, GPIO_Pin_5); 		
+    829          		GPIO_ResetBits(GPIOE, GPIO_Pin_6); 		
+    830          		GPIO_ResetBits(GPIOE, GPIO_Pin_7); 		
+    831          		GPIO_ResetBits(GPIOE, GPIO_Pin_8); 		
+    832          		GPIO_ResetBits(GPIOE, GPIO_Pin_9); 		
+    833          		GPIO_ResetBits(GPIOE, GPIO_Pin_10); 		
+    834          		GPIO_ResetBits(GPIOE, GPIO_Pin_11); 		
+    835          		GPIO_ResetBits(GPIOE, GPIO_Pin_12); 		
+    836          		GPIO_ResetBits(GPIOE, GPIO_Pin_13); 		
+    837          		GPIO_ResetBits(GPIOE, GPIO_Pin_14); 		
+    838          		GPIO_ResetBits(GPIOE, GPIO_Pin_15); 		
+    839          
+    840          		GPIO_ResetBits(GPIOF, GPIO_Pin_3); 		
+    841          		GPIO_ResetBits(GPIOF, GPIO_Pin_4); 		
+    842          		GPIO_ResetBits(GPIOF, GPIO_Pin_5); 		
+    843          		GPIO_ResetBits(GPIOF, GPIO_Pin_6); 		
+    844          		GPIO_ResetBits(GPIOF, GPIO_Pin_7); 		
+    845          		GPIO_ResetBits(GPIOF, GPIO_Pin_8); 		
+    846          		GPIO_ResetBits(GPIOF, GPIO_Pin_9); 		
+    847          
+    848          		GPIO_ResetBits(GPIOG, GPIO_Pin_0); 		
+    849          		GPIO_ResetBits(GPIOG, GPIO_Pin_1); 			
+    850          		GPIO_ResetBits(GPIOG, GPIO_Pin_2); 		
+    851          		GPIO_ResetBits(GPIOG, GPIO_Pin_3); 			
+    852          		GPIO_ResetBits(GPIOG, GPIO_Pin_4); 		
+    853          		GPIO_ResetBits(GPIOG, GPIO_Pin_5);
+    854          		// ++, 160511
+    855          		#if 0
+    856          		GPIO_ResetBits(GPIOG, GPIO_Pin_6); 		
+    857          		GPIO_ResetBits(GPIOG, GPIO_Pin_7); 			
+    858          		#endif
+    859          		// --, 160511 bwk
+    860          		GPIO_ResetBits(GPIOG, GPIO_Pin_8); 		
+    861          		GPIO_ResetBits(GPIOG, GPIO_Pin_9); 			
+    862          		GPIO_ResetBits(GPIOG, GPIO_Pin_10); 			
+    863          		GPIO_ResetBits(GPIOG, GPIO_Pin_12); 			
+    864          		GPIO_ResetBits(GPIOG, GPIO_Pin_13); 			
+    865          		GPIO_ResetBits(GPIOG, GPIO_Pin_14); 
+    866          	}
+    867          #if 0
+    868          //	++, kutelf, 140801
+    869          //	RevD.01.01 
+    870          //	사용하지 않는 핀 : Output Low 상태로 설정. 
+    871          #ifdef BoardVersion_RevD
+    872          	//  PB7
+    873          	GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_7;
+    874          	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+    875          	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+    876          	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+    877          	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    878          	GPIO_Init(GPIOB, &GPIO_InitStructure);
+    879          
+    880          	//  PC0, PC1, PC2, PC5, PC8, PC13
+    881          	GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_5 | GPIO_Pin_8 | GPIO_Pin_13;
+    882          	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+    883          	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+    884          	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+    885          	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    886          	GPIO_Init(GPIOC, &GPIO_InitStructure);
+    887          
+    888          	//  PD0, PD1, PD3, PD4, PD5, PD6, PD7, PD8, PD9, PD10, PD11, PD12, PD13, PD14, PD15
+    889          	GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7 |
+    890          	GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15;
+    891          	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+    892          	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+    893          	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+    894          	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    895          	GPIO_Init(GPIOD, &GPIO_InitStructure);
     896          
-    897          	GPIO_ResetBits(GPIOC, GPIO_Pin_0); 
-    898          	GPIO_ResetBits(GPIOC, GPIO_Pin_1); 
-    899          	GPIO_ResetBits(GPIOC, GPIO_Pin_2); 
-    900          	GPIO_ResetBits(GPIOC, GPIO_Pin_5); 
-    901          	GPIO_ResetBits(GPIOC, GPIO_Pin_8); 
-    902          	GPIO_ResetBits(GPIOC, GPIO_Pin_13); 	
-    903          
-    904          	GPIO_ResetBits(GPIOD, GPIO_Pin_0); 		
-    905          	GPIO_ResetBits(GPIOD, GPIO_Pin_1); 		
-    906          	GPIO_ResetBits(GPIOD, GPIO_Pin_3); 		
-    907          	GPIO_ResetBits(GPIOD, GPIO_Pin_4); 		
-    908          	GPIO_ResetBits(GPIOD, GPIO_Pin_5); 		
-    909          	GPIO_ResetBits(GPIOD, GPIO_Pin_6); 		
-    910          	GPIO_ResetBits(GPIOD, GPIO_Pin_7); 		
-    911          	GPIO_ResetBits(GPIOD, GPIO_Pin_8); 		
-    912          	GPIO_ResetBits(GPIOD, GPIO_Pin_9); 		
-    913          	GPIO_ResetBits(GPIOD, GPIO_Pin_10); 		
-    914          	GPIO_ResetBits(GPIOD, GPIO_Pin_11); 		
-    915          	GPIO_ResetBits(GPIOD, GPIO_Pin_12); 		
-    916          	GPIO_ResetBits(GPIOD, GPIO_Pin_13); 		
-    917          	GPIO_ResetBits(GPIOD, GPIO_Pin_14); 		
-    918          	GPIO_ResetBits(GPIOD, GPIO_Pin_15); 		
-    919          
-    920          	GPIO_ResetBits(GPIOE, GPIO_Pin_0); 		
-    921          	GPIO_ResetBits(GPIOE, GPIO_Pin_1); 		
-    922          	GPIO_ResetBits(GPIOE, GPIO_Pin_2); 		
-    923          	GPIO_ResetBits(GPIOE, GPIO_Pin_3); 		
-    924          	GPIO_ResetBits(GPIOE, GPIO_Pin_4); 		
-    925          	GPIO_ResetBits(GPIOE, GPIO_Pin_5); 		
-    926          	GPIO_ResetBits(GPIOE, GPIO_Pin_6); 		
-    927          	GPIO_ResetBits(GPIOE, GPIO_Pin_7); 		
-    928          	GPIO_ResetBits(GPIOE, GPIO_Pin_8); 		
-    929          	GPIO_ResetBits(GPIOE, GPIO_Pin_9); 		
-    930          	GPIO_ResetBits(GPIOE, GPIO_Pin_10); 		
-    931          	GPIO_ResetBits(GPIOE, GPIO_Pin_11); 		
-    932          	GPIO_ResetBits(GPIOE, GPIO_Pin_12); 		
-    933          	GPIO_ResetBits(GPIOE, GPIO_Pin_13); 		
-    934          	GPIO_ResetBits(GPIOE, GPIO_Pin_14); 		
-    935          	GPIO_ResetBits(GPIOE, GPIO_Pin_15); 		
-    936          
-    937          	GPIO_ResetBits(GPIOF, GPIO_Pin_3); 		
-    938          	GPIO_ResetBits(GPIOF, GPIO_Pin_4); 		
-    939          	GPIO_ResetBits(GPIOF, GPIO_Pin_5); 		
-    940          	GPIO_ResetBits(GPIOF, GPIO_Pin_6); 		
-    941          	GPIO_ResetBits(GPIOF, GPIO_Pin_7); 		
-    942          	GPIO_ResetBits(GPIOF, GPIO_Pin_8); 		
-    943          	GPIO_ResetBits(GPIOF, GPIO_Pin_9); 		
-    944          
-    945          	GPIO_ResetBits(GPIOG, GPIO_Pin_0); 		
-    946          	GPIO_ResetBits(GPIOG, GPIO_Pin_1); 			
-    947          	GPIO_ResetBits(GPIOG, GPIO_Pin_2); 		
-    948          	GPIO_ResetBits(GPIOG, GPIO_Pin_3); 			
-    949          	GPIO_ResetBits(GPIOG, GPIO_Pin_4); 		
-    950          	GPIO_ResetBits(GPIOG, GPIO_Pin_5); 			
-    951          	GPIO_ResetBits(GPIOG, GPIO_Pin_6); 		
-    952          	GPIO_ResetBits(GPIOG, GPIO_Pin_7); 			
-    953          	GPIO_ResetBits(GPIOG, GPIO_Pin_8); 		
-    954          	GPIO_ResetBits(GPIOG, GPIO_Pin_9); 			
-    955          	GPIO_ResetBits(GPIOG, GPIO_Pin_10); 			
-    956          	GPIO_ResetBits(GPIOG, GPIO_Pin_12); 			
-    957          	GPIO_ResetBits(GPIOG, GPIO_Pin_13); 			
-    958          	GPIO_ResetBits(GPIOG, GPIO_Pin_14); 				
-    959          	
-    960          #else
-    961          //	RevD 이하 버젼에서 사용 
-    962          
-    963          	//  PC0, PC1, PC2, PC8, PC14
-    964          	GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_8 | GPIO_Pin_14;
-    965          	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
-    966          	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-    967          	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-    968          	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    969          	GPIO_Init(GPIOC, &GPIO_InitStructure);
-    970          
-    971          	//  PF3, PF4, PF5, PF6, PF7, PF8, PF9
-    972          	GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9;
-    973          	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
-    974          	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-    975          	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-    976          	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    977          	GPIO_Init(GPIOF, &GPIO_InitStructure);
-    978          
-    979          	//  PG8, PG9
-    980          	GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_8 | GPIO_Pin_9;
-    981          	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
-    982          	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-    983          	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-    984          	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    985          	GPIO_Init(GPIOG, &GPIO_InitStructure);
-    986          
-    987          	//  PE2, PE3, PE4, PE5
-    988          	GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5;
-    989          	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
-    990          	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-    991          	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-    992          	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    993          	GPIO_Init(GPIOE, &GPIO_InitStructure);
-    994          
-    995          	GPIO_ResetBits(GPIOC, GPIO_Pin_0);
-    996          	GPIO_ResetBits(GPIOC, GPIO_Pin_1);
-    997          	GPIO_ResetBits(GPIOC, GPIO_Pin_2);
-    998          	GPIO_ResetBits(GPIOC, GPIO_Pin_8);
-    999          	GPIO_ResetBits(GPIOC, GPIO_Pin_14);
-   1000          
-   1001          	GPIO_ResetBits(GPIOF, GPIO_Pin_3);
-   1002          	GPIO_ResetBits(GPIOF, GPIO_Pin_4);
-   1003          	GPIO_ResetBits(GPIOF, GPIO_Pin_5);
-   1004          	GPIO_ResetBits(GPIOF, GPIO_Pin_6);
-   1005          	GPIO_ResetBits(GPIOF, GPIO_Pin_7);
-   1006          	GPIO_ResetBits(GPIOF, GPIO_Pin_8);
-   1007          	GPIO_ResetBits(GPIOF, GPIO_Pin_9);
-   1008          
-   1009          	GPIO_ResetBits(GPIOG, GPIO_Pin_8);
-   1010          	GPIO_ResetBits(GPIOG, GPIO_Pin_9);	
-   1011          
-   1012          	GPIO_ResetBits(GPIOE, GPIO_Pin_2);	
-   1013          	GPIO_ResetBits(GPIOE, GPIO_Pin_3);	
-   1014          	GPIO_ResetBits(GPIOE, GPIO_Pin_4);	
-   1015          	GPIO_ResetBits(GPIOE, GPIO_Pin_5);	
-   1016          #endif
-   1017          //	--, kutelf, 140801
-   1018          #endif
-   1019          
-   1020          }
-   1021          
-   1022          /**
-   1023            * @brief  Hardware, Software System Configuration.
-   1024            * @param  None
-   1025            * @retval None
-   1026            */
-   1027          void System_Configuration(void)
-   1028          {
-   1029          	RCC_Configuration();		    // 	Configure the system clocks
-   1030          	NVIC_Configuration();		    //	NVIC Configuration
-   1031          	GPIO_Configuration();		    // 	Configure the GPIO ports
-   1032          
-   1033          }
-   1034          
-   1035          void System_Initialize(void)
-   1036          {
-   1037          	//  PWR_CTRL -> BootLoader에서는 Sub Power Enable을 Off 
-   1038          	GPIO_ResetBits(PWR_CTRL_PORT, PWR_CTRL);   	//	24V Power Enable 
-   1039          	                                //  Set   : Power Enable On
-   1040          	                                //  Reset : Power Enable Off    	
-   1041          
-   1042          	//  LCDPWR_CTRL -> BootLoader에서는 VLCD12 Power Enable을 Off 
-   1043          	GPIO_ResetBits(LCDPWR_PORT, LCDPWR_CTRL);  	//	LCD Power Enable 
-   1044          	                                //  Set   : LCD Power Enable 
-   1045          	                                //  Reset : LCD Power Disable	
-   1046          
-   1047          	//  BootLoader Bootting시에, LCDBL는 Off 상태로 만든다.
-   1048          	GPIO_ResetBits(LCDBL_PORT, LCDBL_CTRL);	    //	LCD BackLight Power On/Off (LCDBL_CTRL)
-   1049          	                               	//  Set   : BackLight Power On
-   1050          	                               	//  Reset : BackLight Power Off			
-   1051          	                               	
-   1052          	GPIO_ResetBits(BUZZER_PORT, BUZZER_CTRL);	//	BUZZER Off
-   1053          	                                //  Set   : BUZZER On
-   1054          	                                //  Reset : BUZZER Off
-   1055          
-   1056          	GPIO_ResetBits(LED_PORT, LED_CTRL);			//	LED Enable Off
-   1057          	                                //  Set   : LED Enable  -> On
-   1058          	                                //  Reset : LED Disable -> Off
-   1059          
-   1060          	GPIO_ResetBits(EXYNOS_PWR_CTRL_PORT, EXYNOS_PWR_CTRL);	//	Exynos-4412 Power On/Off
-   1061          	                                			//  Set   : Exynos-4412 -> Power On
-   1062          	                                			//  Reset : Exynos-4412 -> Power Off
-   1063          	                                			
-   1064          	GPIO_ResetBits(EXYNOS_PMIC_CTRL_PORT, EXYNOS_PMIC_CTRL);	//	Exynos-4412 PMIC On/Off
-   1065          	                                				//  PMIC On  : Low -> High
-   1066          	                                				//       Off : Low -> High
-   1067          	//	++, kutelf, 140801
-   1068          	//	RevD.01.01 
-   1069          	//	EXYNOS PMIC nRESET => Reset 상태로 초기화 
-   1070          	GPIO_ResetBits(EXYNOS_PMIC_nRESET_PORT, EXYNOS_PMIC_nRESET);	//	Exynos-4412 PMIC nRESET
-   1071          	                                				//  PMIC On  : High
-   1072          	                                				//       Off : Low
-   1073          	//	--, kutelf, 140801
-   1074          
-   1075          	GPIO_SetBits(LCD_EXYNOS_PORT, LCD_EXYNOS);	//	Exynos-4412 LCD Display
-   1076          	                                //  Set   : HI-Z
-   1077          	                                //  Reset : Display
-   1078          	                                    				
-   1079          	GPIO_ResetBits(LCD_STM32_PORT, LCD_STM32);	//	STM32 LCD Display
-   1080          	                                //  Set   : HI-Z
-   1081          	                                //  Reset : Display
-   1082          
-   1083          	GPIO_ResetBits(CAMERA_nRESET_PORT, CAMERA_nRESET);	//	CAMERA nRESET
-   1084          	                                        //  Set   : On
-   1085          	                                        //  Reset : Off												
-   1086          }
-   1087          
-   1088          void System_Variable_Init(void)
-   1089          {
-   1090          	memset((void *)(&WL9FM_TIME),       	0x0, sizeof(WL9FM_TIME_DATA));
-   1091          	memset((void *)(&WL9FM_RTC),            0x0, sizeof(WL9FM_DATA_RTC));	
-   1092          	memset((void *)(&WL9FM_BUZZER),         0x0, sizeof(WL9FM_BUZZER_DATA));	
-   1093          	memset((void *)(&WL9FM_LCDBL),          0x0, sizeof(WL9FM_LCDBL_DATA));	
-   1094          
-   1095          	WL9F_CAN_Buffer_Init();
-   1096          	WL9F_CAN_Variables_Init();
-   1097          	Init_Smart_Key_valuable();
-   1098          	CANUpdateFlag = 0;
-   1099          	LCDOffCount = 30;
-   1100          	OSUpdateCount = 200;
-   1101          	CameraCommFlag = 0;
-   1102          }
-   1103          
-   1104          
-   1105          // ++, sys3215, 141211
-   1106          void Camera_IO_Init(void)
-   1107          {
-   1108          	GPIO_InitTypeDef GPIO_InitStructure;
-   1109          
-   1110          	if(Hardware_Revision==REVB)
-   1111          	{
-   1112          		GPIO_InitStructure.GPIO_Pin   = TW8832_I2C2_SCL | TW8832_I2C2_SDA;
-   1113          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
-   1114          		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-   1115          		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-   1116          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-   1117          		GPIO_Init(TW8832_I2C2_PORT, &GPIO_InitStructure);
+    897          	//  PE0, PE1, PE2, PE3, PE4, PE5, PE6, PE7, PE8, PE9, PE10, PE11, PE12, PE13, PE14, PE15
+    898          	GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_6 |
+    899          	GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12 | GPIO_Pin_13 |
+    900          	GPIO_Pin_14 | GPIO_Pin_15;
+    901          	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+    902          	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+    903          	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+    904          	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    905          	GPIO_Init(GPIOE, &GPIO_InitStructure);
+    906          
+    907          
+    908          	//  PF3, PF4, PF5, PF6, PF7, PF8, PF9
+    909          	GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9;
+    910          	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+    911          	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+    912          	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+    913          	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    914          	GPIO_Init(GPIOF, &GPIO_InitStructure);
+    915          
+    916          	//  PG0, PG1, PG2, PG3, PG4, PG5, PG6, PG7, PG8, PG9, PG10, GP12, PG13, PG14
+    917          	GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7 |
+    918          	GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14;
+    919          	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+    920          	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+    921          	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+    922          	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    923          	GPIO_Init(GPIOG, &GPIO_InitStructure);
+    924          	
+    925          
+    926          	GPIO_ResetBits(GPIOB, GPIO_Pin_7); 
+    927          
+    928          	GPIO_ResetBits(GPIOC, GPIO_Pin_0); 
+    929          	GPIO_ResetBits(GPIOC, GPIO_Pin_1); 
+    930          	GPIO_ResetBits(GPIOC, GPIO_Pin_2); 
+    931          	GPIO_ResetBits(GPIOC, GPIO_Pin_5); 
+    932          	GPIO_ResetBits(GPIOC, GPIO_Pin_8); 
+    933          	GPIO_ResetBits(GPIOC, GPIO_Pin_13); 	
+    934          
+    935          	GPIO_ResetBits(GPIOD, GPIO_Pin_0); 		
+    936          	GPIO_ResetBits(GPIOD, GPIO_Pin_1); 		
+    937          	GPIO_ResetBits(GPIOD, GPIO_Pin_3); 		
+    938          	GPIO_ResetBits(GPIOD, GPIO_Pin_4); 		
+    939          	GPIO_ResetBits(GPIOD, GPIO_Pin_5); 		
+    940          	GPIO_ResetBits(GPIOD, GPIO_Pin_6); 		
+    941          	GPIO_ResetBits(GPIOD, GPIO_Pin_7); 		
+    942          	GPIO_ResetBits(GPIOD, GPIO_Pin_8); 		
+    943          	GPIO_ResetBits(GPIOD, GPIO_Pin_9); 		
+    944          	GPIO_ResetBits(GPIOD, GPIO_Pin_10); 		
+    945          	GPIO_ResetBits(GPIOD, GPIO_Pin_11); 		
+    946          	GPIO_ResetBits(GPIOD, GPIO_Pin_12); 		
+    947          	GPIO_ResetBits(GPIOD, GPIO_Pin_13); 		
+    948          	GPIO_ResetBits(GPIOD, GPIO_Pin_14); 		
+    949          	GPIO_ResetBits(GPIOD, GPIO_Pin_15); 		
+    950          
+    951          	GPIO_ResetBits(GPIOE, GPIO_Pin_0); 		
+    952          	GPIO_ResetBits(GPIOE, GPIO_Pin_1); 		
+    953          	GPIO_ResetBits(GPIOE, GPIO_Pin_2); 		
+    954          	GPIO_ResetBits(GPIOE, GPIO_Pin_3); 		
+    955          	GPIO_ResetBits(GPIOE, GPIO_Pin_4); 		
+    956          	GPIO_ResetBits(GPIOE, GPIO_Pin_5); 		
+    957          	GPIO_ResetBits(GPIOE, GPIO_Pin_6); 		
+    958          	GPIO_ResetBits(GPIOE, GPIO_Pin_7); 		
+    959          	GPIO_ResetBits(GPIOE, GPIO_Pin_8); 		
+    960          	GPIO_ResetBits(GPIOE, GPIO_Pin_9); 		
+    961          	GPIO_ResetBits(GPIOE, GPIO_Pin_10); 		
+    962          	GPIO_ResetBits(GPIOE, GPIO_Pin_11); 		
+    963          	GPIO_ResetBits(GPIOE, GPIO_Pin_12); 		
+    964          	GPIO_ResetBits(GPIOE, GPIO_Pin_13); 		
+    965          	GPIO_ResetBits(GPIOE, GPIO_Pin_14); 		
+    966          	GPIO_ResetBits(GPIOE, GPIO_Pin_15); 		
+    967          
+    968          	GPIO_ResetBits(GPIOF, GPIO_Pin_3); 		
+    969          	GPIO_ResetBits(GPIOF, GPIO_Pin_4); 		
+    970          	GPIO_ResetBits(GPIOF, GPIO_Pin_5); 		
+    971          	GPIO_ResetBits(GPIOF, GPIO_Pin_6); 		
+    972          	GPIO_ResetBits(GPIOF, GPIO_Pin_7); 		
+    973          	GPIO_ResetBits(GPIOF, GPIO_Pin_8); 		
+    974          	GPIO_ResetBits(GPIOF, GPIO_Pin_9); 		
+    975          
+    976          	GPIO_ResetBits(GPIOG, GPIO_Pin_0); 		
+    977          	GPIO_ResetBits(GPIOG, GPIO_Pin_1); 			
+    978          	GPIO_ResetBits(GPIOG, GPIO_Pin_2); 		
+    979          	GPIO_ResetBits(GPIOG, GPIO_Pin_3); 			
+    980          	GPIO_ResetBits(GPIOG, GPIO_Pin_4); 		
+    981          	GPIO_ResetBits(GPIOG, GPIO_Pin_5); 			
+    982          	GPIO_ResetBits(GPIOG, GPIO_Pin_6); 		
+    983          	GPIO_ResetBits(GPIOG, GPIO_Pin_7); 			
+    984          	GPIO_ResetBits(GPIOG, GPIO_Pin_8); 		
+    985          	GPIO_ResetBits(GPIOG, GPIO_Pin_9); 			
+    986          	GPIO_ResetBits(GPIOG, GPIO_Pin_10); 			
+    987          	GPIO_ResetBits(GPIOG, GPIO_Pin_12); 			
+    988          	GPIO_ResetBits(GPIOG, GPIO_Pin_13); 			
+    989          	GPIO_ResetBits(GPIOG, GPIO_Pin_14); 				
+    990          	
+    991          #else
+    992          //	RevD 이하 버젼에서 사용 
+    993          
+    994          	//  PC0, PC1, PC2, PC8, PC14
+    995          	GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_8 | GPIO_Pin_14;
+    996          	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+    997          	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+    998          	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+    999          	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+   1000          	GPIO_Init(GPIOC, &GPIO_InitStructure);
+   1001          
+   1002          	//  PF3, PF4, PF5, PF6, PF7, PF8, PF9
+   1003          	GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9;
+   1004          	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+   1005          	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+   1006          	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+   1007          	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+   1008          	GPIO_Init(GPIOF, &GPIO_InitStructure);
+   1009          
+   1010          	//  PG8, PG9
+   1011          	GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_8 | GPIO_Pin_9;
+   1012          	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+   1013          	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+   1014          	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+   1015          	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+   1016          	GPIO_Init(GPIOG, &GPIO_InitStructure);
+   1017          
+   1018          	//  PE2, PE3, PE4, PE5
+   1019          	GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5;
+   1020          	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+   1021          	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+   1022          	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+   1023          	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+   1024          	GPIO_Init(GPIOE, &GPIO_InitStructure);
+   1025          
+   1026          	GPIO_ResetBits(GPIOC, GPIO_Pin_0);
+   1027          	GPIO_ResetBits(GPIOC, GPIO_Pin_1);
+   1028          	GPIO_ResetBits(GPIOC, GPIO_Pin_2);
+   1029          	GPIO_ResetBits(GPIOC, GPIO_Pin_8);
+   1030          	GPIO_ResetBits(GPIOC, GPIO_Pin_14);
+   1031          
+   1032          	GPIO_ResetBits(GPIOF, GPIO_Pin_3);
+   1033          	GPIO_ResetBits(GPIOF, GPIO_Pin_4);
+   1034          	GPIO_ResetBits(GPIOF, GPIO_Pin_5);
+   1035          	GPIO_ResetBits(GPIOF, GPIO_Pin_6);
+   1036          	GPIO_ResetBits(GPIOF, GPIO_Pin_7);
+   1037          	GPIO_ResetBits(GPIOF, GPIO_Pin_8);
+   1038          	GPIO_ResetBits(GPIOF, GPIO_Pin_9);
+   1039          
+   1040          	GPIO_ResetBits(GPIOG, GPIO_Pin_8);
+   1041          	GPIO_ResetBits(GPIOG, GPIO_Pin_9);	
+   1042          
+   1043          	GPIO_ResetBits(GPIOE, GPIO_Pin_2);	
+   1044          	GPIO_ResetBits(GPIOE, GPIO_Pin_3);	
+   1045          	GPIO_ResetBits(GPIOE, GPIO_Pin_4);	
+   1046          	GPIO_ResetBits(GPIOE, GPIO_Pin_5);	
+   1047          #endif
+   1048          //	--, kutelf, 140801
+   1049          #endif
+   1050          
+   1051          }
+   1052          
+   1053          /**
+   1054            * @brief  Hardware, Software System Configuration.
+   1055            * @param  None
+   1056            * @retval None
+   1057            */
+   1058          void System_Configuration(void)
+   1059          {
+   1060          	RCC_Configuration();		    // 	Configure the system clocks
+   1061          	NVIC_Configuration();		    //	NVIC Configuration
+   1062          	GPIO_Configuration();		    // 	Configure the GPIO ports
+   1063          
+   1064          }
+   1065          
+   1066          void System_Initialize(void)
+   1067          {
+   1068          	//  PWR_CTRL -> BootLoader에서는 Sub Power Enable을 Off 
+   1069          	GPIO_ResetBits(PWR_CTRL_PORT, PWR_CTRL);   	//	24V Power Enable 
+   1070          	                                //  Set   : Power Enable On
+   1071          	                                //  Reset : Power Enable Off    	
+   1072          
+   1073          	//  LCDPWR_CTRL -> BootLoader에서는 VLCD12 Power Enable을 Off 
+   1074          	GPIO_ResetBits(LCDPWR_PORT, LCDPWR_CTRL);  	//	LCD Power Enable 
+   1075          	                                //  Set   : LCD Power Enable 
+   1076          	                                //  Reset : LCD Power Disable	
+   1077          
+   1078          	//  BootLoader Bootting시에, LCDBL는 Off 상태로 만든다.
+   1079          	GPIO_ResetBits(LCDBL_PORT, LCDBL_CTRL);	    //	LCD BackLight Power On/Off (LCDBL_CTRL)
+   1080          	                               	//  Set   : BackLight Power On
+   1081          	                               	//  Reset : BackLight Power Off			
+   1082          	                               	
+   1083          	GPIO_ResetBits(BUZZER_PORT, BUZZER_CTRL);	//	BUZZER Off
+   1084          	                                //  Set   : BUZZER On
+   1085          	                                //  Reset : BUZZER Off
+   1086          
+   1087          	GPIO_ResetBits(LED_PORT, LED_CTRL);			//	LED Enable Off
+   1088          	                                //  Set   : LED Enable  -> On
+   1089          	                                //  Reset : LED Disable -> Off
+   1090          
+   1091          	GPIO_ResetBits(EXYNOS_PWR_CTRL_PORT, EXYNOS_PWR_CTRL);	//	Exynos-4412 Power On/Off
+   1092          	                                			//  Set   : Exynos-4412 -> Power On
+   1093          	                                			//  Reset : Exynos-4412 -> Power Off
+   1094          	                                			
+   1095          	GPIO_ResetBits(EXYNOS_PMIC_CTRL_PORT, EXYNOS_PMIC_CTRL);	//	Exynos-4412 PMIC On/Off
+   1096          	                                				//  PMIC On  : Low -> High
+   1097          	                                				//       Off : Low -> High
+   1098          	//	++, kutelf, 140801
+   1099          	//	RevD.01.01 
+   1100          	//	EXYNOS PMIC nRESET => Reset 상태로 초기화 
+   1101          	GPIO_ResetBits(EXYNOS_PMIC_nRESET_PORT, EXYNOS_PMIC_nRESET);	//	Exynos-4412 PMIC nRESET
+   1102          	                                				//  PMIC On  : High
+   1103          	                                				//       Off : Low
+   1104          	//	--, kutelf, 140801
+   1105          
+   1106          	GPIO_SetBits(LCD_EXYNOS_PORT, LCD_EXYNOS);	//	Exynos-4412 LCD Display
+   1107          	                                //  Set   : HI-Z
+   1108          	                                //  Reset : Display
+   1109          	                                    				
+   1110          	GPIO_ResetBits(LCD_STM32_PORT, LCD_STM32);	//	STM32 LCD Display
+   1111          	                                //  Set   : HI-Z
+   1112          	                                //  Reset : Display
+   1113          
+   1114          	GPIO_ResetBits(CAMERA_nRESET_PORT, CAMERA_nRESET);	//	CAMERA nRESET
+   1115          	                                        //  Set   : On
+   1116          	                                        //  Reset : Off												
+   1117          }
    1118          
-   1119          		//  FW_UPDATE -> GPIO Input
-   1120          		GPIO_InitStructure.GPIO_Pin   = FW_UPDATE;
-   1121          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_IN;   
-   1122          		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-   1123          		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-   1124          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-   1125          		GPIO_Init(FW_UPDATE_PORT, &GPIO_InitStructure);
-   1126          
-   1127          		//  TW2835 -> GPIO Output
-   1128          		GPIO_InitStructure.GPIO_Pin   = TW2835_IRQ| TW2835_HALE | TW2835_HSPB;
-   1129          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
-   1130          		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-   1131          		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-   1132          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-   1133          		GPIO_Init(TW2835_CTRLPORT, &GPIO_InitStructure);
+   1119          void System_Variable_Init(void)
+   1120          {
+   1121          	memset((void *)(&WL9FM_TIME),       	0x0, sizeof(WL9FM_TIME_DATA));
+   1122          	memset((void *)(&WL9FM_RTC),            0x0, sizeof(WL9FM_DATA_RTC));	
+   1123          	memset((void *)(&WL9FM_BUZZER),         0x0, sizeof(WL9FM_BUZZER_DATA));	
+   1124          	memset((void *)(&WL9FM_LCDBL),          0x0, sizeof(WL9FM_LCDBL_DATA));	
+   1125          
+   1126          	WL9F_CAN_Buffer_Init();
+   1127          	WL9F_CAN_Variables_Init();
+   1128          	Init_Smart_Key_valuable();
+   1129          	CANUpdateFlag = 0;
+   1130          	LCDOffCount = 30;
+   1131          	OSUpdateCount = 200;
+   1132          	CameraCommFlag = 0;
+   1133          }
    1134          
-   1135          		GPIO_InitStructure.GPIO_Pin   = TW2835_D0 | TW2835_D1 | TW2835_D2 | TW2835_D3 | TW2835_D4 | TW2835_D5 | TW2835_D6 | TW2835_D7;
-   1136          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
-   1137          		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-   1138          		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-   1139          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-   1140          		GPIO_Init(TW2835_DATAPORT, &GPIO_InitStructure);	
-   1141          
-   1142          		GPIO_InitStructure.GPIO_Pin   = TW2835_CSB0 | TW2835_CSB1 | TW2835_nWE | TW2835_nOE;
-   1143          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
-   1144          		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-   1145          		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-   1146          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-   1147          		GPIO_Init(TW2835_DATAPORT, &GPIO_InitStructure);
-   1148          	}
-   1149          	else
-   1150          	{
-   1151          		GPIO_InitStructure.GPIO_Pin   = TW8816_I2C2_SCL | TW8816_I2C2_SDA;
-   1152          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+   1135          
+   1136          // ++, sys3215, 141211
+   1137          void Camera_IO_Init(void)
+   1138          {
+   1139          	GPIO_InitTypeDef GPIO_InitStructure;
+   1140          
+   1141          	if(Hardware_Revision==REVB)
+   1142          	{
+   1143          		GPIO_InitStructure.GPIO_Pin   = TW8832_I2C2_SCL | TW8832_I2C2_SDA;
+   1144          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+   1145          		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+   1146          		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+   1147          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+   1148          		GPIO_Init(TW8832_I2C2_PORT, &GPIO_InitStructure);
+   1149          
+   1150          		//  FW_UPDATE -> GPIO Input
+   1151          		GPIO_InitStructure.GPIO_Pin   = FW_UPDATE;
+   1152          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_IN;   
    1153          		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
    1154          		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
    1155          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-   1156          		GPIO_Init(TW8816_I2C2_PORT, &GPIO_InitStructure);
-   1157          	}
-   1158          
-   1159          	GPIO_Configuration_NotUsed();
-   1160          }
-   1161          // -- , sys3215, 141211
-   1162          
-   1163          /*********(C) COPYRIGHT 2013 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
-   1164          
+   1156          		GPIO_Init(FW_UPDATE_PORT, &GPIO_InitStructure);
+   1157          
+   1158          		//  TW2835 -> GPIO Output
+   1159          		GPIO_InitStructure.GPIO_Pin   = TW2835_IRQ| TW2835_HALE | TW2835_HSPB;
+   1160          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+   1161          		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+   1162          		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+   1163          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+   1164          		GPIO_Init(TW2835_CTRLPORT, &GPIO_InitStructure);
    1165          
+   1166          		GPIO_InitStructure.GPIO_Pin   = TW2835_D0 | TW2835_D1 | TW2835_D2 | TW2835_D3 | TW2835_D4 | TW2835_D5 | TW2835_D6 | TW2835_D7;
+   1167          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+   1168          		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+   1169          		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+   1170          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+   1171          		GPIO_Init(TW2835_DATAPORT, &GPIO_InitStructure);	
+   1172          
+   1173          		GPIO_InitStructure.GPIO_Pin   = TW2835_CSB0 | TW2835_CSB1 | TW2835_nWE | TW2835_nOE;
+   1174          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+   1175          		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+   1176          		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+   1177          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+   1178          		GPIO_Init(TW2835_DATAPORT, &GPIO_InitStructure);
+   1179          	}
+   1180          	else
+   1181          	{
+   1182          		GPIO_InitStructure.GPIO_Pin   = TW8816_I2C2_SCL | TW8816_I2C2_SDA;
+   1183          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+   1184          		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+   1185          		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+   1186          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+   1187          		GPIO_Init(TW8816_I2C2_PORT, &GPIO_InitStructure);
+   1188          	}
+   1189          
+   1190          	GPIO_Configuration_NotUsed();
+   1191          }
+   1192          // -- , sys3215, 141211
+   1193          
+   1194          /*********(C) COPYRIGHT 2013 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
+   1195          
+   1196          
 
    Maximum stack usage in bytes:
 
@@ -1264,8 +1292,8 @@ D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor - STM32_APP\Platform\TaeHa - ECS\SRC
        4  ??DataTable5_8
        4  ??DataTable5_9
      230  Camera_IO_Init
-    1028  GPIO_Configuration
-    1094  GPIO_Configuration_NotUsed
+    1110  GPIO_Configuration
+    1078  GPIO_Configuration_NotUsed
       12  NVIC_Configuration
      252  RCC_Configuration
       26  System_Configuration
@@ -1273,9 +1301,9 @@ D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor - STM32_APP\Platform\TaeHa - ECS\SRC
       72  System_Variable_Init
 
  
- 2 898 bytes in section .text
+ 2 964 bytes in section .text
  
- 2 898 bytes of CODE memory
+ 2 964 bytes of CODE memory
 
 Errors: none
 Warnings: none

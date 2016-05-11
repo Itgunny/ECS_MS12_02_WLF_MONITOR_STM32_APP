@@ -1,43 +1,39 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      06/Apr/2016  13:52:12 #
+# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      11/May/2016  16:53:06 #
 # Copyright 1999-2012 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
 #    Endian       =  little                                                   #
-#    Source file  =  D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -            #
-#                    STM32_APP\Platform\TaeHa - ECS\SRC\Hardware_Version.c    #
-#    Command line =  "D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -           #
-#                    STM32_APP\Platform\TaeHa - ECS\SRC\Hardware_Version.c"   #
-#                    -D USE_STDPERIPH_DRIVER -D STM32F4XX -D                  #
-#                    USE_STM324xG_EVAL -D USE_FULL_ASSERT -lcN                #
-#                    "D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -           #
-#                    STM32_APP\Project\Debug\List\" -o "D:\Project\[SVN]      #
-#                    ECS-RD12-16 - WL9F Monitor -                             #
-#                    STM32_APP\Project\Debug\Obj\" --debug --endian=little    #
-#                    --cpu=Cortex-M4 -e --fpu=VFPv4_sp --dlib_config          #
-#                    "C:\Program Files (x86)\IAR Systems\Embedded Workbench   #
-#                    6.5\arm\INC\c\DLib_Config_Full.h" -I "D:\Project\[SVN]   #
-#                    ECS-RD12-16 - WL9F Monitor -                             #
-#                    STM32_APP\Project\..\Platform\COMMON\INC\" -I            #
-#                    "D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -           #
+#    Source file  =  C:\Tools\WL9F\WLF Monitor - STM32_APP\Platform\TaeHa -   #
+#                    ECS\SRC\Hardware_Version.c                               #
+#    Command line =  "C:\Tools\WL9F\WLF Monitor - STM32_APP\Platform\TaeHa -  #
+#                    ECS\SRC\Hardware_Version.c" -D USE_STDPERIPH_DRIVER -D   #
+#                    STM32F4XX -D USE_STM324xG_EVAL -D USE_FULL_ASSERT -lcN   #
+#                    "C:\Tools\WL9F\WLF Monitor -                             #
+#                    STM32_APP\Project\Debug\List\" -o "C:\Tools\WL9F\WLF     #
+#                    Monitor - STM32_APP\Project\Debug\Obj\" --debug          #
+#                    --endian=little --cpu=Cortex-M4 -e --fpu=VFPv4_sp        #
+#                    --dlib_config "C:\Tools\IAR Systems\Embedded Workbench   #
+#                    6.5\arm\INC\c\DLib_Config_Full.h" -I "C:\Tools\WL9F\WLF  #
+#                    Monitor - STM32_APP\Project\..\Platform\COMMON\INC\" -I  #
+#                    "C:\Tools\WL9F\WLF Monitor -                             #
 #                    STM32_APP\Project\..\Platform\TaeHa - ECS\INC\" -I       #
-#                    "D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -           #
+#                    "C:\Tools\WL9F\WLF Monitor -                             #
 #                    STM32_APP\Project\..\Libraries\CMSIS\Device\ST\STM32F4xx #
-#                    \Include\" -I "D:\Project\[SVN] ECS-RD12-16 - WL9F       #
-#                    Monitor - STM32_APP\Project\..\Libraries\STM32F4xx_StdPe #
-#                    riph_Driver\inc\" -Oh --use_c++_inline -I "C:\Program    #
-#                    Files (x86)\IAR Systems\Embedded Workbench               #
-#                    6.5\arm\CMSIS\Include\"                                  #
-#    List file    =  D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -            #
+#                    \Include\" -I "C:\Tools\WL9F\WLF Monitor -               #
+#                    STM32_APP\Project\..\Libraries\STM32F4xx_StdPeriph_Drive #
+#                    r\inc\" -Oh --use_c++_inline -I "C:\Tools\IAR            #
+#                    Systems\Embedded Workbench 6.5\arm\CMSIS\Include\"       #
+#    List file    =  C:\Tools\WL9F\WLF Monitor -                              #
 #                    STM32_APP\Project\Debug\List\Hardware_Version.lst        #
-#    Object file  =  D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -            #
+#    Object file  =  C:\Tools\WL9F\WLF Monitor -                              #
 #                    STM32_APP\Project\Debug\Obj\Hardware_Version.o           #
 #                                                                             #
 #                                                                             #
 ###############################################################################
 
-D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor - STM32_APP\Platform\TaeHa - ECS\SRC\Hardware_Version.c
+C:\Tools\WL9F\WLF Monitor - STM32_APP\Platform\TaeHa - ECS\SRC\Hardware_Version.c
       1          /**
       2            ******************************************************************************
       3            * @file    Hardware_Version.c 
@@ -135,33 +131,48 @@ D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor - STM32_APP\Platform\TaeHa - ECS\SRC
      95          	{
      96          		Hardware_Revision = REVB;
      97          	}
-     98          	else //if(ADC3ConvertedValue>390 && ADC3ConvertedValue<420) // R5 = 9.1K RevD.02.01
-     99          	{
-    100          		Hardware_Revision = REVD_02_01;
-    101          	}
-    102          	
-    103          }
-    104          // --, sys3215, 141211
-    105          
-    106          /**\
-    107            * @brief  None
-    108            * @param  None
-    109            * @retval None
-    110            */
-    111          void Hardware_Version_Init(void)
-    112          {
-    113          	DebugMsg_printf("++ Hardware_Version (ADC : IN13), ADC Initialize START\r\n");
-    114          
-    115          	ADC_Configuration();
-    116          
-    117          	// ++, sys3215, 141211
-    118          	Check_Hardware_Revision();
-    119          	// --, sys3215, 141211
-    120          	
-    121          	DebugMsg_printf("-- Hardware_Version (ADC : IN13), ADC Initialize END\r\n");
-    122          }
-    123          
-    124          /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
+     98          	// ++, 160511 bwk
+     99          	else if(ADC3ConvertedValue>1092 && ADC3ConvertedValue<1122) // R5 = 2.7K RevH		1107
+    100          	{
+    101          		Hardware_Revision = REVH;
+    102          	}
+    103          	// --, 160511 bwk
+    104          	else //if(ADC3ConvertedValue>390 && ADC3ConvertedValue<420) // R5 = 9.1K RevD.02.01
+    105          	{
+    106          		Hardware_Revision = REVD_02_01;
+    107          	}
+    108          
+    109          	// ++, 160511 bwk
+    110          	if(Hardware_Revision >= REVH)
+    111          	{
+    112          		write_RTC_Companion(0xf, 0x0);
+    113          		TimeDelay_msec(100);
+    114          		write_RTC_Companion(0xf, 0x20);
+    115          	}
+    116          	// --, 160511 bwk
+    117          	
+    118          }
+    119          // --, sys3215, 141211
+    120          
+    121          /**\
+    122            * @brief  None
+    123            * @param  None
+    124            * @retval None
+    125            */
+    126          void Hardware_Version_Init(void)
+    127          {
+    128          	DebugMsg_printf("++ Hardware_Version (ADC : IN13), ADC Initialize START\r\n");
+    129          
+    130          	ADC_Configuration();
+    131          
+    132          	// ++, sys3215, 141211
+    133          	Check_Hardware_Revision();
+    134          	// --, sys3215, 141211
+    135          	
+    136          	DebugMsg_printf("-- Hardware_Version (ADC : IN13), ADC Initialize END\r\n");
+    137          }
+    138          
+    139          /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
 
    Maximum stack usage in bytes:
 
@@ -177,6 +188,9 @@ D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor - STM32_APP\Platform\TaeHa - ECS\SRC
         48   -> ADC_SoftwareStartConv
        8   Check_Hardware_Revision
          8   -> ADC_GetConversionValue
+         8   -> TimeDelay_msec
+         0   -> write_RTC_Companion
+         8   -> write_RTC_Companion
        8   Hardware_Version_Init
          8   -> ADC_Configuration
          0   -> Check_Hardware_Revision
@@ -189,16 +203,16 @@ D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor - STM32_APP\Platform\TaeHa - ECS\SRC
        4  ??DataTable1
        4  ??DataTable1_1
      104  ADC_Configuration
-      28  Check_Hardware_Revision
+      72  Check_Hardware_Revision
        4  Hardware_Revision
           ADC3ConvertedValue
       12  Hardware_Version_Init
 
  
    4 bytes in section .bss
- 152 bytes in section .text
+ 196 bytes in section .text
  
- 152 bytes of CODE memory
+ 196 bytes of CODE memory
    4 bytes of DATA memory
 
 Errors: none

@@ -67,11 +67,13 @@
 #include "UART_Control.h"
 #include "CAN_Control.h"
 #include "M25PXX.h"
+#include "RTC.h"				// ++, --, 160511 bwk
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 
 // ++, sys3215, 141211
+#define REVH			2		// ++, --, 160511 bwk
 #define REVD_02_01	1
 
 #define REVB			0
@@ -363,6 +365,10 @@ void System_CheckPowerIG();
 void SaveDataToEEPROM(void);
 void SaveSMKUseToEEPROM(u8 Use);
 u8 LoadSMKUseToEEPROM(void);
+// ++, 160511 bwk
+void SaveSMKUseToFlash(u8 Use);
+u8 LoadSMKUseToFlash(void);
+// --, 160511 bwk
 
 void SaveTestToEEPROM(u8 Use);
 u8 LoadTestToEEPROM(void);
