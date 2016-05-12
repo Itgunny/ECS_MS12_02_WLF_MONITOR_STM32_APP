@@ -1,39 +1,42 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      11/May/2016  16:53:10 #
+# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      12/May/2016  10:40:40 #
 # Copyright 1999-2012 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
 #    Endian       =  little                                                   #
-#    Source file  =  C:\Tools\WL9F\WLF Monitor - STM32_APP\Platform\TaeHa -   #
-#                    ECS\SRC\FM31X4.c                                         #
-#    Command line =  "C:\Tools\WL9F\WLF Monitor - STM32_APP\Platform\TaeHa -  #
-#                    ECS\SRC\FM31X4.c" -D USE_STDPERIPH_DRIVER -D STM32F4XX   #
-#                    -D USE_STM324xG_EVAL -D USE_FULL_ASSERT -lcN             #
-#                    "C:\Tools\WL9F\WLF Monitor -                             #
-#                    STM32_APP\Project\Debug\List\" -o "C:\Tools\WL9F\WLF     #
-#                    Monitor - STM32_APP\Project\Debug\Obj\" --debug          #
-#                    --endian=little --cpu=Cortex-M4 -e --fpu=VFPv4_sp        #
-#                    --dlib_config "C:\Tools\IAR Systems\Embedded Workbench   #
-#                    6.5\arm\INC\c\DLib_Config_Full.h" -I "C:\Tools\WL9F\WLF  #
-#                    Monitor - STM32_APP\Project\..\Platform\COMMON\INC\" -I  #
-#                    "C:\Tools\WL9F\WLF Monitor -                             #
+#    Source file  =  D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -            #
+#                    STM32_APP\Platform\TaeHa - ECS\SRC\FM31X4.c              #
+#    Command line =  "D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -           #
+#                    STM32_APP\Platform\TaeHa - ECS\SRC\FM31X4.c" -D          #
+#                    USE_STDPERIPH_DRIVER -D STM32F4XX -D USE_STM324xG_EVAL   #
+#                    -D USE_FULL_ASSERT -lcN "D:\Project\[SVN] ECS-RD12-16 -  #
+#                    WL9F Monitor - STM32_APP\Project\Debug\List\" -o         #
+#                    "D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -           #
+#                    STM32_APP\Project\Debug\Obj\" --debug --endian=little    #
+#                    --cpu=Cortex-M4 -e --fpu=VFPv4_sp --dlib_config          #
+#                    "C:\Program Files (x86)\IAR Systems\Embedded Workbench   #
+#                    6.5\arm\INC\c\DLib_Config_Full.h" -I "D:\Project\[SVN]   #
+#                    ECS-RD12-16 - WL9F Monitor -                             #
+#                    STM32_APP\Project\..\Platform\COMMON\INC\" -I            #
+#                    "D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -           #
 #                    STM32_APP\Project\..\Platform\TaeHa - ECS\INC\" -I       #
-#                    "C:\Tools\WL9F\WLF Monitor -                             #
+#                    "D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -           #
 #                    STM32_APP\Project\..\Libraries\CMSIS\Device\ST\STM32F4xx #
-#                    \Include\" -I "C:\Tools\WL9F\WLF Monitor -               #
-#                    STM32_APP\Project\..\Libraries\STM32F4xx_StdPeriph_Drive #
-#                    r\inc\" -Oh --use_c++_inline -I "C:\Tools\IAR            #
-#                    Systems\Embedded Workbench 6.5\arm\CMSIS\Include\"       #
-#    List file    =  C:\Tools\WL9F\WLF Monitor -                              #
+#                    \Include\" -I "D:\Project\[SVN] ECS-RD12-16 - WL9F       #
+#                    Monitor - STM32_APP\Project\..\Libraries\STM32F4xx_StdPe #
+#                    riph_Driver\inc\" -Oh --use_c++_inline -I "C:\Program    #
+#                    Files (x86)\IAR Systems\Embedded Workbench               #
+#                    6.5\arm\CMSIS\Include\"                                  #
+#    List file    =  D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -            #
 #                    STM32_APP\Project\Debug\List\FM31X4.lst                  #
-#    Object file  =  C:\Tools\WL9F\WLF Monitor -                              #
+#    Object file  =  D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -            #
 #                    STM32_APP\Project\Debug\Obj\FM31X4.o                     #
 #                                                                             #
 #                                                                             #
 ###############################################################################
 
-C:\Tools\WL9F\WLF Monitor - STM32_APP\Platform\TaeHa - ECS\SRC\FM31X4.c
+D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor - STM32_APP\Platform\TaeHa - ECS\SRC\FM31X4.c
       1          /**
       2            ******************************************************************************
       3            * @file    FM31X4.h 
@@ -762,50 +765,51 @@ C:\Tools\WL9F\WLF Monitor - STM32_APP\Platform\TaeHa - ECS\SRC\FM31X4.c
     726              WRITE_FM31xx_RTC_Companion(0x00, 0x00);
     727          }
     728          #endif
-    729          
-    730          void InitEEPROM(void)
-    731          {
-    732          	uint8_t i;
-    733          
-    734          	for(i = 0; i < 100; i++) EEPROM_Write(i, 0);	
-    735          }
-    736          
-    737          void ReadAllData(WL9FM_DATA_EEPROM *ReadData)
-    738          {
-    739          	uint8_t  i;
-    740          	uint8_t  *buf;
-    741          	uint16_t size;
-    742          
-    743          	size = sizeof(WL9FM_DATA_EEPROM); 
-    744          
-    745          	buf = (uint8_t *)ReadData;
-    746          
-    747          	for(i = 0; i < size; i++)
-    748          	{
-    749          		*buf = EEPROM_Read(i);
-    750          		buf++;
-    751          	}
-    752          }
-    753          
-    754          void SaveAllData(WL9FM_DATA_EEPROM SaveData)
-    755          {
-    756          	uint8_t  i;
-    757          	uint8_t  *buf;
-    758          	uint16_t size;
-    759          
-    760          	size = sizeof(WL9FM_DATA_EEPROM); 
-    761          
-    762          	buf = (uint8_t *)&SaveData;
-    763          	
-    764          	for(i = 0; i < size; i++)
-    765          	{
-    766          		EEPROM_Write(i, *buf++);
-    767          		TimeDelay_msec(10);
-    768          	}
-    769          }
-    770          
-    771          /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
-    772          
+    729          // --, 160511 bwk
+    730          
+    731          void InitEEPROM(void)
+    732          {
+    733          	uint8_t i;
+    734          
+    735          	for(i = 0; i < 100; i++) EEPROM_Write(i, 0);	
+    736          }
+    737          
+    738          void ReadAllData(WL9FM_DATA_EEPROM *ReadData)
+    739          {
+    740          	uint8_t  i;
+    741          	uint8_t  *buf;
+    742          	uint16_t size;
+    743          
+    744          	size = sizeof(WL9FM_DATA_EEPROM); 
+    745          
+    746          	buf = (uint8_t *)ReadData;
+    747          
+    748          	for(i = 0; i < size; i++)
+    749          	{
+    750          		*buf = EEPROM_Read(i);
+    751          		buf++;
+    752          	}
+    753          }
+    754          
+    755          void SaveAllData(WL9FM_DATA_EEPROM SaveData)
+    756          {
+    757          	uint8_t  i;
+    758          	uint8_t  *buf;
+    759          	uint16_t size;
+    760          
+    761          	size = sizeof(WL9FM_DATA_EEPROM); 
+    762          
+    763          	buf = (uint8_t *)&SaveData;
+    764          	
+    765          	for(i = 0; i < size; i++)
+    766          	{
+    767          		EEPROM_Write(i, *buf++);
+    768          		TimeDelay_msec(10);
+    769          	}
+    770          }
+    771          
+    772          /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
+    773          
 
    Maximum stack usage in bytes:
 

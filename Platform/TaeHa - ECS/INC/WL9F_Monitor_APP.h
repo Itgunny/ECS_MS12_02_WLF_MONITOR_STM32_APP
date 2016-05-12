@@ -192,7 +192,7 @@
 
 
 #define	VERSION_HIGH			1
-#define	VERSION_LOW			2
+#define	VERSION_LOW			3
 #define	VERSION_SUB_HIGH		0
 #define	VERSION_SUB_LOW		0
 #define	VERSION_HIDDEN		0
@@ -279,6 +279,19 @@
 
 //// 1.1.0.00 - 151013
 // 1. CAN Update 시 자동정지 프로토콜 송부
+
+//// 1.1.0.00 - 151231
+// 1. Camera OSD 표시 문구 추가
+
+//// 1.2.0.00 - 160406
+// 1. CAN BITTIMING 
+// 2. BKCU 업데이트 관련 CAN RX 부분 수정 
+
+//// 1.3.0.00 - 160406
+// 1. REV.H.01.01 적용
+// 2. RTC 변경, EEPROM 삭제
+// 3. SMART KEY 값 FLASH에 저장
+// 4. WATCH DOG 추가
 ///////////////////////////////////////////////////
 
 //=================================================================

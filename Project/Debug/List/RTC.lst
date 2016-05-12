@@ -1,39 +1,42 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      11/May/2016  16:53:12 #
+# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      12/May/2016  10:40:41 #
 # Copyright 1999-2012 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
 #    Endian       =  little                                                   #
-#    Source file  =  C:\Tools\WL9F\WLF Monitor - STM32_APP\Platform\TaeHa -   #
-#                    ECS\SRC\RTC.c                                            #
-#    Command line =  "C:\Tools\WL9F\WLF Monitor - STM32_APP\Platform\TaeHa -  #
-#                    ECS\SRC\RTC.c" -D USE_STDPERIPH_DRIVER -D STM32F4XX -D   #
-#                    USE_STM324xG_EVAL -D USE_FULL_ASSERT -lcN                #
-#                    "C:\Tools\WL9F\WLF Monitor -                             #
-#                    STM32_APP\Project\Debug\List\" -o "C:\Tools\WL9F\WLF     #
-#                    Monitor - STM32_APP\Project\Debug\Obj\" --debug          #
-#                    --endian=little --cpu=Cortex-M4 -e --fpu=VFPv4_sp        #
-#                    --dlib_config "C:\Tools\IAR Systems\Embedded Workbench   #
-#                    6.5\arm\INC\c\DLib_Config_Full.h" -I "C:\Tools\WL9F\WLF  #
-#                    Monitor - STM32_APP\Project\..\Platform\COMMON\INC\" -I  #
-#                    "C:\Tools\WL9F\WLF Monitor -                             #
+#    Source file  =  D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -            #
+#                    STM32_APP\Platform\TaeHa - ECS\SRC\RTC.c                 #
+#    Command line =  "D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -           #
+#                    STM32_APP\Platform\TaeHa - ECS\SRC\RTC.c" -D             #
+#                    USE_STDPERIPH_DRIVER -D STM32F4XX -D USE_STM324xG_EVAL   #
+#                    -D USE_FULL_ASSERT -lcN "D:\Project\[SVN] ECS-RD12-16 -  #
+#                    WL9F Monitor - STM32_APP\Project\Debug\List\" -o         #
+#                    "D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -           #
+#                    STM32_APP\Project\Debug\Obj\" --debug --endian=little    #
+#                    --cpu=Cortex-M4 -e --fpu=VFPv4_sp --dlib_config          #
+#                    "C:\Program Files (x86)\IAR Systems\Embedded Workbench   #
+#                    6.5\arm\INC\c\DLib_Config_Full.h" -I "D:\Project\[SVN]   #
+#                    ECS-RD12-16 - WL9F Monitor -                             #
+#                    STM32_APP\Project\..\Platform\COMMON\INC\" -I            #
+#                    "D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -           #
 #                    STM32_APP\Project\..\Platform\TaeHa - ECS\INC\" -I       #
-#                    "C:\Tools\WL9F\WLF Monitor -                             #
+#                    "D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -           #
 #                    STM32_APP\Project\..\Libraries\CMSIS\Device\ST\STM32F4xx #
-#                    \Include\" -I "C:\Tools\WL9F\WLF Monitor -               #
-#                    STM32_APP\Project\..\Libraries\STM32F4xx_StdPeriph_Drive #
-#                    r\inc\" -Oh --use_c++_inline -I "C:\Tools\IAR            #
-#                    Systems\Embedded Workbench 6.5\arm\CMSIS\Include\"       #
-#    List file    =  C:\Tools\WL9F\WLF Monitor -                              #
+#                    \Include\" -I "D:\Project\[SVN] ECS-RD12-16 - WL9F       #
+#                    Monitor - STM32_APP\Project\..\Libraries\STM32F4xx_StdPe #
+#                    riph_Driver\inc\" -Oh --use_c++_inline -I "C:\Program    #
+#                    Files (x86)\IAR Systems\Embedded Workbench               #
+#                    6.5\arm\CMSIS\Include\"                                  #
+#    List file    =  D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -            #
 #                    STM32_APP\Project\Debug\List\RTC.lst                     #
-#    Object file  =  C:\Tools\WL9F\WLF Monitor -                              #
+#    Object file  =  D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -            #
 #                    STM32_APP\Project\Debug\Obj\RTC.o                        #
 #                                                                             #
 #                                                                             #
 ###############################################################################
 
-C:\Tools\WL9F\WLF Monitor - STM32_APP\Platform\TaeHa - ECS\SRC\RTC.c
+D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor - STM32_APP\Platform\TaeHa - ECS\SRC\RTC.c
       1          #include "WL9F_Monitor_APP.h"
       2          
       3          #define RTC_PortChange_in			0x00
@@ -62,548 +65,554 @@ C:\Tools\WL9F\WLF Monitor - STM32_APP\Platform\TaeHa - ECS\SRC\RTC.c
      26          	if(dir)	// Output
      27          	{	
      28          		GPIO_InitStructure.GPIO_Pin = FM31X4_I2C1_SDA;
-     29          		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+     29          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;
      30          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-     31          		GPIO_Init(FM31X4_I2C1_PORT, &GPIO_InitStructure);	
-     32          	}
-     33          	else		// Input
-     34          	{	
-     35          		GPIO_InitStructure.GPIO_Pin = 	FM31X4_I2C1_SDA ;
-     36          		GPIO_InitStructure.GPIO_Mode = 	GPIO_Mode_IN;
-     37          		GPIO_Init(FM31X4_I2C1_PORT, &GPIO_InitStructure);
-     38          	}
-     39          }
-     40          
-     41          void WRITE_RTC_Year(unsigned char data)
-     42          {
-     43          	unsigned char temp;
+     31                          GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+     32                          GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+     33          		GPIO_Init(FM31X4_I2C1_PORT, &GPIO_InitStructure);	
+     34          	}
+     35          	else		// Input
+     36          	{	
+     37          		GPIO_InitStructure.GPIO_Pin = 	FM31X4_I2C1_SDA ;
+     38          		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+     39                          GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+     40                          GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+     41                          GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+     42          		GPIO_Init(FM31X4_I2C1_PORT, &GPIO_InitStructure);
+     43          	}
      44          
-     45          	if (data > 99)
-     46          		return;
-     47          
-     48          	temp = 0;
-     49          	temp += (data / 10) << 4;
-     50          	temp += data % 10;
-     51          
-     52          	if(Hardware_Revision>=REVH)
-     53          		write_RTC_Companion(ADDRESS_RTC_YEAR, temp);
-     54          	else
-     55          		WRITE_FM31xx_RTC_Companion(ADDRESS_RTC_FM31XX_YEAR, temp);
-     56          }
+     45          }
+     46          
+     47          void WRITE_RTC_Year(unsigned char data)
+     48          {
+     49          	unsigned char temp;
+     50          
+     51          	if (data > 99)
+     52          		return;
+     53          
+     54          	temp = 0;
+     55          	temp += (data / 10) << 4;
+     56          	temp += data % 10;
      57          
-     58          unsigned char READ_RTC_Year(void)
-     59          {
-     60          	unsigned char data;
-     61          	unsigned char temp;
-     62          
-     63          	if(Hardware_Revision>=REVH)
-     64          		data = read_RTC_Companion(ADDRESS_RTC_YEAR);
-     65          	else
-     66          		data = READ_FM31xx_RTC_Companion(ADDRESS_RTC_FM31XX_YEAR);
-     67          
-     68          	temp = 0;
-     69          	temp += ((data >> 4) & 0x0f) * 10;
-     70          	temp += data & 0x0f;
-     71          
-     72          	return temp;
-     73          }
-     74          
-     75          void WRITE_RTC_Month(unsigned char data)
-     76          {
-     77          	unsigned char temp;
-     78          
-     79          	if (data > 12)
-     80          	    return;
-     81          
-     82          	if (data < 1)
-     83          	    return;
+     58          	if(Hardware_Revision>=REVH)
+     59          		write_RTC_Companion(ADDRESS_RTC_YEAR, temp);
+     60          	else
+     61          		WRITE_FM31xx_RTC_Companion(ADDRESS_RTC_FM31XX_YEAR, temp);
+     62          }
+     63          
+     64          unsigned char READ_RTC_Year(void)
+     65          {
+     66          	unsigned char data;
+     67          	unsigned char temp;
+     68          
+     69          	if(Hardware_Revision>=REVH)
+     70          		data = read_RTC_Companion(ADDRESS_RTC_YEAR);
+     71          	else
+     72          		data = READ_FM31xx_RTC_Companion(ADDRESS_RTC_FM31XX_YEAR);
+     73          
+     74          	temp = 0;
+     75          	temp += ((data >> 4) & 0x0f) * 10;
+     76          	temp += data & 0x0f;
+     77          
+     78          	return temp;
+     79          }
+     80          
+     81          void WRITE_RTC_Month(unsigned char data)
+     82          {
+     83          	unsigned char temp;
      84          
-     85          	temp = 0;
-     86          	temp += (data / 10) << 4;
-     87          	temp += data % 10;
-     88          
-     89          	if(Hardware_Revision>=REVH)
-     90          		write_RTC_Companion(ADDRESS_RTC_MONTH, temp);
-     91          	else
-     92          		WRITE_FM31xx_RTC_Companion(ADDRESS_RTC_FM31XX_MONTH, temp);
-     93          }
+     85          	if (data > 12)
+     86          	    return;
+     87          
+     88          	if (data < 1)
+     89          	    return;
+     90          
+     91          	temp = 0;
+     92          	temp += (data / 10) << 4;
+     93          	temp += data % 10;
      94          
-     95          unsigned char READ_RTC_Month(void)
-     96          {
-     97          	unsigned char data;
-     98          	unsigned char temp;
-     99          
-    100          	if(Hardware_Revision>=REVH)
-    101          		data = read_RTC_Companion(ADDRESS_RTC_MONTH);
-    102          	else
-    103          		data = READ_FM31xx_RTC_Companion(ADDRESS_RTC_FM31XX_MONTH);
-    104          
-    105          	temp = 0;
-    106          	temp += ((data >> 4) & 0x01) * 10;
-    107          	temp += data & 0x0f;
-    108          
-    109          	return temp;
-    110          }
-    111          
-    112          
-    113          void WRITE_RTC_Date(unsigned char data)
-    114          {
-    115          	unsigned char temp;
-    116          
-    117          	if (data > 31)
-    118          		return;
-    119          
-    120          	if (data < 1)
-    121          		return;
+     95          	if(Hardware_Revision>=REVH)
+     96          		write_RTC_Companion(ADDRESS_RTC_MONTH, temp);
+     97          	else
+     98          		WRITE_FM31xx_RTC_Companion(ADDRESS_RTC_FM31XX_MONTH, temp);
+     99          }
+    100          
+    101          unsigned char READ_RTC_Month(void)
+    102          {
+    103          	unsigned char data;
+    104          	unsigned char temp;
+    105          
+    106          	if(Hardware_Revision>=REVH)
+    107          		data = read_RTC_Companion(ADDRESS_RTC_MONTH);
+    108          	else
+    109          		data = READ_FM31xx_RTC_Companion(ADDRESS_RTC_FM31XX_MONTH);
+    110          
+    111          	temp = 0;
+    112          	temp += ((data >> 4) & 0x01) * 10;
+    113          	temp += data & 0x0f;
+    114          
+    115          	return temp;
+    116          }
+    117          
+    118          
+    119          void WRITE_RTC_Date(unsigned char data)
+    120          {
+    121          	unsigned char temp;
     122          
-    123          	temp = 0;
-    124          	temp += (data / 10) << 4;
-    125          	temp += data % 10;
-    126          
-    127          	if(Hardware_Revision>=REVH)
-    128          		write_RTC_Companion(ADDRESS_RTC_DATE, temp);
-    129          	else
-    130          		WRITE_FM31xx_RTC_Companion(ADDRESS_RTC_FM31XX_DATE, temp);
-    131          }
+    123          	if (data > 31)
+    124          		return;
+    125          
+    126          	if (data < 1)
+    127          		return;
+    128          
+    129          	temp = 0;
+    130          	temp += (data / 10) << 4;
+    131          	temp += data % 10;
     132          
-    133          unsigned char READ_RTC_Date(void)
-    134          {
-    135          	unsigned char data;
-    136          	unsigned char temp;
-    137          
-    138          	if(Hardware_Revision>=REVH)
-    139          		data = read_RTC_Companion(ADDRESS_RTC_DATE);
-    140          	else
-    141          		data = READ_FM31xx_RTC_Companion(ADDRESS_RTC_FM31XX_DATE);
-    142          
-    143          	temp = 0;
-    144          	temp += ((data >> 4) & 0x03) * 10;
-    145          	temp += data & 0x0f;
-    146          
-    147          	return temp;
-    148          }
-    149          
-    150          
-    151          void WRITE_RTC_Day(unsigned char data)
-    152          {
-    153          	unsigned char temp;
-    154          
-    155          	if(Hardware_Revision>=REVH)
-    156          	{
-    157          		temp = data;
-    158          		write_RTC_Companion(ADDRESS_RTC_DAY, temp);
-    159          	}
-    160          	else
-    161          	{
-    162          		if (data > 7)
-    163          			return;
-    164          
-    165          		if (data < 1)
-    166          			return;
-    167          
-    168          		temp = data;
-    169          
-    170          		WRITE_FM31xx_RTC_Companion(ADDRESS_RTC_FM31XX_DAY, temp);
-    171          	}
-    172          }
+    133          	if(Hardware_Revision>=REVH)
+    134          		write_RTC_Companion(ADDRESS_RTC_DATE, temp);
+    135          	else
+    136          		WRITE_FM31xx_RTC_Companion(ADDRESS_RTC_FM31XX_DATE, temp);
+    137          }
+    138          
+    139          unsigned char READ_RTC_Date(void)
+    140          {
+    141          	unsigned char data;
+    142          	unsigned char temp;
+    143          
+    144          	if(Hardware_Revision>=REVH)
+    145          		data = read_RTC_Companion(ADDRESS_RTC_DATE);
+    146          	else
+    147          		data = READ_FM31xx_RTC_Companion(ADDRESS_RTC_FM31XX_DATE);
+    148          
+    149          	temp = 0;
+    150          	temp += ((data >> 4) & 0x03) * 10;
+    151          	temp += data & 0x0f;
+    152          
+    153          	return temp;
+    154          }
+    155          
+    156          
+    157          void WRITE_RTC_Day(unsigned char data)
+    158          {
+    159          	unsigned char temp;
+    160          
+    161          	if(Hardware_Revision>=REVH)
+    162          	{
+    163          		temp = data;
+    164          		write_RTC_Companion(ADDRESS_RTC_DAY, temp);
+    165          	}
+    166          	else
+    167          	{
+    168          		if (data > 7)
+    169          			return;
+    170          
+    171          		if (data < 1)
+    172          			return;
     173          
-    174          unsigned char READ_RTC_Day(void)
-    175          {
-    176          	unsigned char data;
-    177          	unsigned char temp;
-    178          
-    179          	if(Hardware_Revision>=REVH)
-    180          		data = read_RTC_Companion(ADDRESS_RTC_DAY);
-    181          	else
-    182          		data = READ_FM31xx_RTC_Companion(ADDRESS_RTC_FM31XX_DAY);
-    183          
-    184          	temp = data & 0x07;
-    185          
-    186          	return temp;
-    187          }
-    188          
+    174          		temp = data;
+    175          
+    176          		WRITE_FM31xx_RTC_Companion(ADDRESS_RTC_FM31XX_DAY, temp);
+    177          	}
+    178          }
+    179          
+    180          unsigned char READ_RTC_Day(void)
+    181          {
+    182          	unsigned char data;
+    183          	unsigned char temp;
+    184          
+    185          	if(Hardware_Revision>=REVH)
+    186          		data = read_RTC_Companion(ADDRESS_RTC_DAY);
+    187          	else
+    188          		data = READ_FM31xx_RTC_Companion(ADDRESS_RTC_FM31XX_DAY);
     189          
-    190          void WRITE_RTC_Hour(unsigned char data)
-    191          {
-    192          	unsigned char temp;
-    193          
-    194          	if (data > 23)
-    195          	    return;
-    196          
-    197          	temp = 0;
-    198          	temp += (data / 10) << 4;
-    199          	temp += data % 10;
-    200          
-    201          	if(Hardware_Revision>=REVH)
-    202          		write_RTC_Companion(ADDRESS_RTC_HOUR, temp);
-    203          	else
-    204          		WRITE_FM31xx_RTC_Companion(ADDRESS_RTC_FM31XX_HOUR, temp);
-    205          }
+    190          	temp = data & 0x07;
+    191          
+    192          	return temp;
+    193          }
+    194          
+    195          
+    196          void WRITE_RTC_Hour(unsigned char data)
+    197          {
+    198          	unsigned char temp;
+    199          
+    200          	if (data > 23)
+    201          	    return;
+    202          
+    203          	temp = 0;
+    204          	temp += (data / 10) << 4;
+    205          	temp += data % 10;
     206          
-    207          unsigned char READ_RTC_Hour(void)
-    208          {
-    209          	unsigned char data;
-    210          	unsigned char temp;
-    211          
-    212          	if(Hardware_Revision>=REVH)
-    213          		data = read_RTC_Companion(ADDRESS_RTC_HOUR);
-    214          	else
-    215          		data = READ_FM31xx_RTC_Companion(ADDRESS_RTC_FM31XX_HOUR);
-    216          
-    217          	temp = 0;
-    218          	temp += ((data >> 4) & 0x03) * 10;
-    219          	temp += data & 0x0f;
-    220          
-    221          	return temp;
-    222          }
-    223          
-    224          void WRITE_RTC_Minute(unsigned char data)
-    225          {
-    226          	unsigned char temp;
-    227          
-    228          	if (data > 59)
-    229          	    return;
-    230          
-    231          	temp = 0;
-    232          	temp += (data / 10) << 4;
-    233          	temp += data % 10;
-    234          
-    235          	if(Hardware_Revision>=REVH)
-    236          		write_RTC_Companion(ADDRESS_RTC_MINUTE, temp);
-    237          	else
-    238          		WRITE_FM31xx_RTC_Companion(ADDRESS_RTC_FM31XX_MINUTE, temp);
-    239          }
+    207          	if(Hardware_Revision>=REVH)
+    208          		write_RTC_Companion(ADDRESS_RTC_HOUR, temp);
+    209          	else
+    210          		WRITE_FM31xx_RTC_Companion(ADDRESS_RTC_FM31XX_HOUR, temp);
+    211          }
+    212          
+    213          unsigned char READ_RTC_Hour(void)
+    214          {
+    215          	unsigned char data;
+    216          	unsigned char temp;
+    217          
+    218          	if(Hardware_Revision>=REVH)
+    219          		data = read_RTC_Companion(ADDRESS_RTC_HOUR);
+    220          	else
+    221          		data = READ_FM31xx_RTC_Companion(ADDRESS_RTC_FM31XX_HOUR);
+    222          
+    223          	temp = 0;
+    224          	temp += ((data >> 4) & 0x03) * 10;
+    225          	temp += data & 0x0f;
+    226          
+    227          	return temp;
+    228          }
+    229          
+    230          void WRITE_RTC_Minute(unsigned char data)
+    231          {
+    232          	unsigned char temp;
+    233          
+    234          	if (data > 59)
+    235          	    return;
+    236          
+    237          	temp = 0;
+    238          	temp += (data / 10) << 4;
+    239          	temp += data % 10;
     240          
-    241          unsigned char READ_RTC_Minute(void)
-    242          {
-    243          	unsigned char data;
-    244          	unsigned char temp;
-    245          
-    246          	if(Hardware_Revision>=REVH)
-    247          		data = read_RTC_Companion(ADDRESS_RTC_MINUTE);
-    248          	else
-    249          		data = READ_FM31xx_RTC_Companion(ADDRESS_RTC_FM31XX_MINUTE);
-    250          
-    251          	temp = 0;
-    252          	temp += ((data >> 4) & 0x07) * 10;
-    253          	temp += data & 0x0f;
-    254          
-    255          	return temp;
-    256          }
-    257          
-    258          void WRITE_RTC_Second(unsigned char data)
-    259          {
-    260          	unsigned char temp;
-    261          
-    262          	if (data > 59)
-    263          		return;
-    264          
-    265          	temp = 0;
-    266          	temp += (data / 10) << 4;
-    267          	temp += data % 10;
-    268          
-    269          	if(Hardware_Revision>=REVH)
-    270          		write_RTC_Companion(ADDRESS_RTC_SECOND, temp);
-    271          	else
-    272          		WRITE_FM31xx_RTC_Companion(ADDRESS_RTC_FM31XX_SECOND, temp);
-    273          }
+    241          	if(Hardware_Revision>=REVH)
+    242          		write_RTC_Companion(ADDRESS_RTC_MINUTE, temp);
+    243          	else
+    244          		WRITE_FM31xx_RTC_Companion(ADDRESS_RTC_FM31XX_MINUTE, temp);
+    245          }
+    246          
+    247          unsigned char READ_RTC_Minute(void)
+    248          {
+    249          	unsigned char data;
+    250          	unsigned char temp;
+    251          
+    252          	if(Hardware_Revision>=REVH)
+    253          		data = read_RTC_Companion(ADDRESS_RTC_MINUTE);
+    254          	else
+    255          		data = READ_FM31xx_RTC_Companion(ADDRESS_RTC_FM31XX_MINUTE);
+    256          
+    257          	temp = 0;
+    258          	temp += ((data >> 4) & 0x07) * 10;
+    259          	temp += data & 0x0f;
+    260          
+    261          	return temp;
+    262          }
+    263          
+    264          void WRITE_RTC_Second(unsigned char data)
+    265          {
+    266          	unsigned char temp;
+    267          
+    268          	if (data > 59)
+    269          		return;
+    270          
+    271          	temp = 0;
+    272          	temp += (data / 10) << 4;
+    273          	temp += data % 10;
     274          
-    275          unsigned char READ_RTC_Second(void)
-    276          {
-    277          	unsigned char data;
-    278          	unsigned char temp;
-    279          
-    280          	if(Hardware_Revision>=REVH)
-    281          		data = read_RTC_Companion(ADDRESS_RTC_SECOND);
-    282          	else
-    283          		data = READ_FM31xx_RTC_Companion(ADDRESS_RTC_FM31XX_SECOND);
-    284          
-    285          	temp = 0;
-    286          	temp += ((data >> 4) & 0x07) * 10;
-    287          	temp += data & 0x0f;
-    288          
-    289          	return temp;
-    290          }
-    291          
-    292          void WRITE_RTC(WL9FM_DATA_RTC RTC_Data)
-    293          {    
-    294          	if(Hardware_Revision >=REVH)
-    295          	{	
-    296          		WRITE_RTC_Year(RTC_Data.Year);
-    297          		WRITE_RTC_Month(RTC_Data.Month);
-    298          		WRITE_RTC_Date(RTC_Data.Date);
-    299          		WRITE_RTC_Day(RTC_Data.Day);
-    300          		WRITE_RTC_Hour(RTC_Data.Hour);
-    301          		WRITE_RTC_Minute(RTC_Data.Minute);
-    302          		WRITE_RTC_Second(RTC_Data.Second);
-    303          	}
-    304          	else
-    305          	{
-    306          		WRITE_FM31xx_RTC_Companion(0x00, 0x02);
-    307          
-    308          		WRITE_RTC_Year(RTC_Data.Year);
-    309          		WRITE_RTC_Month(RTC_Data.Month);
-    310          		WRITE_RTC_Date(RTC_Data.Date);
-    311          		WRITE_RTC_Day(RTC_Data.Day);
-    312          		WRITE_RTC_Hour(RTC_Data.Hour);
-    313          		WRITE_RTC_Minute(RTC_Data.Minute);
-    314          		WRITE_RTC_Second(RTC_Data.Second);
-    315          
-    316          		WRITE_FM31xx_RTC_Companion(0x00, 0x00);
-    317          
-    318          		WRITE_FM31xx_RTC_Companion(0x01, 0x00);
-    319          	}
-    320          }
+    275          	if(Hardware_Revision>=REVH)
+    276          		write_RTC_Companion(ADDRESS_RTC_SECOND, temp);
+    277          	else
+    278          		WRITE_FM31xx_RTC_Companion(ADDRESS_RTC_FM31XX_SECOND, temp);
+    279          }
+    280          
+    281          unsigned char READ_RTC_Second(void)
+    282          {
+    283          	unsigned char data;
+    284          	unsigned char temp;
+    285          
+    286          	if(Hardware_Revision>=REVH)
+    287          		data = read_RTC_Companion(ADDRESS_RTC_SECOND);
+    288          	else
+    289          		data = READ_FM31xx_RTC_Companion(ADDRESS_RTC_FM31XX_SECOND);
+    290          
+    291          	temp = 0;
+    292          	temp += ((data >> 4) & 0x07) * 10;
+    293          	temp += data & 0x0f;
+    294          
+    295          	return temp;
+    296          }
+    297          
+    298          void WRITE_RTC(WL9FM_DATA_RTC RTC_Data)
+    299          {    
+    300          	if(Hardware_Revision >=REVH)
+    301          	{	
+    302          		WRITE_RTC_Year(RTC_Data.Year);
+    303          		WRITE_RTC_Month(RTC_Data.Month);
+    304          		WRITE_RTC_Date(RTC_Data.Date);
+    305          		WRITE_RTC_Day(RTC_Data.Day);
+    306          		WRITE_RTC_Hour(RTC_Data.Hour);
+    307          		WRITE_RTC_Minute(RTC_Data.Minute);
+    308          		WRITE_RTC_Second(RTC_Data.Second);
+    309          	}
+    310          	else
+    311          	{
+    312          		WRITE_FM31xx_RTC_Companion(0x00, 0x02);
+    313          
+    314          		WRITE_RTC_Year(RTC_Data.Year);
+    315          		WRITE_RTC_Month(RTC_Data.Month);
+    316          		WRITE_RTC_Date(RTC_Data.Date);
+    317          		WRITE_RTC_Day(RTC_Data.Day);
+    318          		WRITE_RTC_Hour(RTC_Data.Hour);
+    319          		WRITE_RTC_Minute(RTC_Data.Minute);
+    320          		WRITE_RTC_Second(RTC_Data.Second);
     321          
-    322          void READ_RTC(WL9FM_DATA_RTC *RTC_Data)
-    323          {    
-    324          
-    325          	if(Hardware_Revision >=REVH)
-    326          	{	
-    327          		RTC_Data->Year 	 = READ_RTC_Year();
-    328          		RTC_Data->Month  = READ_RTC_Month();
-    329          		RTC_Data->Date 	 = READ_RTC_Date();
-    330          		RTC_Data->Day 	 = READ_RTC_Day();
-    331          		RTC_Data->Hour   = READ_RTC_Hour();
-    332          		RTC_Data->Minute = READ_RTC_Minute();
-    333          		RTC_Data->Second = READ_RTC_Second();
-    334          	}
-    335          	else
-    336          	{
-    337          		WRITE_FM31xx_RTC_Companion(0x00, 0x01);
-    338          
-    339          		RTC_Data->Year 	 = READ_RTC_Year();
-    340          		RTC_Data->Month  = READ_RTC_Month();
-    341          		RTC_Data->Date 	 = READ_RTC_Date();
-    342          		RTC_Data->Day 	 = READ_RTC_Day();
-    343          		RTC_Data->Hour   = READ_RTC_Hour();
-    344          		RTC_Data->Minute = READ_RTC_Minute();
-    345          		RTC_Data->Second = READ_RTC_Second();
-    346          
-    347          		WRITE_FM31xx_RTC_Companion(0x00, 0x00);
-    348          	}
-    349          }
-    350          
-    351          void PCA2119_Delay(void)
-    352          {
-    353          	NOP () ;
-    354          }
-    355          
-    356          void PCA2119_START(void)
-    357          {
-    358          	PCA2119_SDAOUT();
-    359          	PCA2119_SDA(Bit_SET);
-    360          	
-    361          	// start
-    362          	PCA2119_SDA(Bit_SET);
-    363          	PCA2119_SCL(Bit_SET);
-    364          	PCA2119_Delay();
-    365          	PCA2119_SDA(Bit_RESET);
-    366          	PCA2119_Delay();
-    367          	PCA2119_SCL(Bit_RESET);
-    368          	// start end 
-    369          }
-    370          
-    371          void PCA2119_STOP(void)
-    372          {
-    373          	PCA2119_SDAOUT();
-    374          	
-    375          	PCA2119_SDA(Bit_RESET);
-    376          	PCA2119_Delay();
-    377          	PCA2119_SCL(Bit_SET);
-    378          	PCA2119_Delay();
-    379          	PCA2119_SDA(Bit_SET);
-    380          }
-    381          
-    382          
-    383          void PCA2119_BIT_WRITE(unsigned char bit)
-    384          {
-    385          	#if 1
-    386          	PCA2119_SDAOUT();
-    387          	
-    388          	PCA2119_SDA((bit) ? Bit_SET: Bit_RESET);
-    389          
-    390          	PCA2119_Delay();
-    391          
-    392          	PCA2119_SCL(Bit_SET);
-    393          
-    394          	PCA2119_Delay();
+    322          		WRITE_FM31xx_RTC_Companion(0x00, 0x00);
+    323          
+    324          		WRITE_FM31xx_RTC_Companion(0x01, 0x00);
+    325          	}
+    326          }
+    327          
+    328          void READ_RTC(WL9FM_DATA_RTC *RTC_Data)
+    329          {    
+    330          
+    331          	if(Hardware_Revision >=REVH)
+    332          	{	
+    333          		RTC_Data->Year 	 = READ_RTC_Year();
+    334          		RTC_Data->Month  = READ_RTC_Month();
+    335          		RTC_Data->Date 	 = READ_RTC_Date();
+    336          		RTC_Data->Day 	 = READ_RTC_Day();
+    337          		RTC_Data->Hour   = READ_RTC_Hour();
+    338          		RTC_Data->Minute = READ_RTC_Minute();
+    339          		RTC_Data->Second = READ_RTC_Second();
+    340          	}
+    341          	else
+    342          	{
+    343          		WRITE_FM31xx_RTC_Companion(0x00, 0x01);
+    344          
+    345          		RTC_Data->Year 	 = READ_RTC_Year();
+    346          		RTC_Data->Month  = READ_RTC_Month();
+    347          		RTC_Data->Date 	 = READ_RTC_Date();
+    348          		RTC_Data->Day 	 = READ_RTC_Day();
+    349          		RTC_Data->Hour   = READ_RTC_Hour();
+    350          		RTC_Data->Minute = READ_RTC_Minute();
+    351          		RTC_Data->Second = READ_RTC_Second();
+    352          
+    353          		WRITE_FM31xx_RTC_Companion(0x00, 0x00);
+    354          	}
+    355          }
+    356          
+    357          void PCA2119_Delay(void)
+    358          {
+    359          	NOP () ;
+    360          }
+    361          
+    362          void PCA2119_START(void)
+    363          {
+    364          	PCA2119_SDAOUT();
+    365          	PCA2119_SDA(Bit_SET);
+    366          	
+    367          	// start
+    368          	PCA2119_SDA(Bit_SET);
+    369          	PCA2119_SCL(Bit_SET);
+    370          	PCA2119_Delay();
+    371          	PCA2119_SDA(Bit_RESET);
+    372          	PCA2119_Delay();
+    373          	PCA2119_SCL(Bit_RESET);
+    374          	// start end 
+    375          }
+    376          
+    377          void PCA2119_STOP(void)
+    378          {
+    379          	PCA2119_SDAOUT();
+    380          	
+    381          	PCA2119_SDA(Bit_RESET);
+    382          	PCA2119_Delay();
+    383          	PCA2119_SCL(Bit_SET);
+    384          	PCA2119_Delay();
+    385          	PCA2119_SDA(Bit_SET);
+    386          }
+    387          
+    388          
+    389          void PCA2119_BIT_WRITE(unsigned char bit)
+    390          {
+    391          	#if 1
+    392          	PCA2119_SDAOUT();
+    393          	
+    394          	PCA2119_SDA((bit) ? Bit_SET: Bit_RESET);
     395          
-    396          	PCA2119_SCL(Bit_RESET);
+    396          	PCA2119_Delay();
     397          
-    398          	PCA2119_Delay();
-    399          	#else
-    400          	PCA2119_SDAOUT();
+    398          	PCA2119_SCL(Bit_SET);
+    399          
+    400          	PCA2119_Delay();
     401          
-    402          	PCA2119_SCL(Bit_SET);
+    402          	PCA2119_SCL(Bit_RESET);
     403          
     404          	PCA2119_Delay();
-    405          	
-    406          	PCA2119_SDA((bit) ? Bit_SET: Bit_RESET);
+    405          	#else
+    406          	PCA2119_SDAOUT();
     407          
-    408          	PCA2119_Delay();
+    408          	PCA2119_SCL(Bit_SET);
     409          
-    410          	PCA2119_SCL(Bit_RESET);
-    411          
-    412          	PCA2119_Delay();
-    413          	#endif
-    414          	
-    415          }
-    416          
-    417          unsigned char PCA2119_BIT_READ(void)
-    418          {
-    419          	unsigned char bit;
-    420          
-    421          	PCA2119_SDAIN();
+    410          	PCA2119_Delay();
+    411          	
+    412          	PCA2119_SDA((bit) ? Bit_SET: Bit_RESET);
+    413          
+    414          	PCA2119_Delay();
+    415          
+    416          	PCA2119_SCL(Bit_RESET);
+    417          
+    418          	PCA2119_Delay();
+    419          	#endif
+    420          	
+    421          }
     422          
-    423          	PCA2119_SCL(Bit_SET);
-    424          
-    425          	PCA2119_Delay();
+    423          unsigned char PCA2119_BIT_READ(void)
+    424          {
+    425          	unsigned char bit;
     426          
-    427          	bit = PCA2119_SDA_READ();   
+    427          	PCA2119_SDAIN();
     428          
-    429          	PCA2119_Delay();
+    429          	PCA2119_SCL(Bit_SET);
     430          
-    431          	PCA2119_SCL(Bit_RESET);
+    431          	PCA2119_Delay();
     432          
-    433          	PCA2119_Delay();
+    433          	bit = PCA2119_SDA_READ();   
     434          
-    435          	
-    436          	return bit;
-    437          }
+    435          	PCA2119_Delay();
+    436          
+    437          	PCA2119_SCL(Bit_RESET);
     438          
-    439          void PCA2119_BYTE_WRITE(unsigned char byte)
-    440          {
-    441          	unsigned char i;
-    442          
-    443          	for (i = 0; i < 8; i++)
-    444          	{
-    445          		PCA2119_BIT_WRITE((byte & (1 << (7 - i))) ? 1 : 0);      
-    446          	}
-    447          
-    448          	PCA2119_BIT_READ();
-    449          }
-    450          
-    451          unsigned char PCA2119_BYTE_READ(void)
-    452          {
-    453          	unsigned char byte;    
-    454          	unsigned char i;
-    455          
-    456          	byte = 0;
-    457          
-    458          	for (i = 0; i < 8; i++)
-    459          	{
-    460          		byte <<= 1;
-    461          		byte |= PCA2119_BIT_READ();      
-    462          	}  
+    439          	PCA2119_Delay();
+    440          
+    441          	
+    442          	return bit;
+    443          }
+    444          
+    445          void PCA2119_BYTE_WRITE(unsigned char byte)
+    446          {
+    447          	unsigned char i;
+    448          
+    449          	for (i = 0; i < 8; i++)
+    450          	{
+    451          		PCA2119_BIT_WRITE((byte & (1 << (7 - i))) ? 1 : 0);      
+    452          	}
+    453          
+    454          	PCA2119_BIT_READ();
+    455          }
+    456          
+    457          unsigned char PCA2119_BYTE_READ(void)
+    458          {
+    459          	unsigned char byte;    
+    460          	unsigned char i;
+    461          
+    462          	byte = 0;
     463          
-    464          	return byte;
-    465          }
-    466          
-    467          void write_RTC_Companion(unsigned char address, unsigned char data)
-    468          {
-    469          	PCA2119_START();    
-    470          	PCA2119_BYTE_WRITE(RTC_WRITE_COMMAND);
-    471          	PCA2119_BYTE_WRITE(address);
-    472          	PCA2119_BYTE_WRITE(data);    
-    473          	PCA2119_STOP();
-    474          }
-    475          
-    476          
-    477          void write_PCA2129_TimewSet(unsigned char address, unsigned char *data)
-    478          {
-    479          	unsigned char temp;
-    480          	
-    481          	PCA2119_START();    
-    482          	PCA2119_BYTE_WRITE(RTC_WRITE_COMMAND);
-    483          	PCA2119_BYTE_WRITE(address);
-    484          
-    485          	temp = 0;
-    486          	temp += (data[6] / 10) << 4;
-    487          	temp += data[6] % 10;
-    488          	
-    489          	PCA2119_BYTE_WRITE(temp);  // second
+    464          	for (i = 0; i < 8; i++)
+    465          	{
+    466          		byte <<= 1;
+    467          		byte |= PCA2119_BIT_READ();      
+    468          	}  
+    469          
+    470          	return byte;
+    471          }
+    472          
+    473          void write_RTC_Companion(unsigned char address, unsigned char data)
+    474          {
+    475          	PCA2119_START();    
+    476          	PCA2119_BYTE_WRITE(RTC_WRITE_COMMAND);
+    477          	PCA2119_BYTE_WRITE(address);
+    478          	PCA2119_BYTE_WRITE(data);    
+    479          	PCA2119_STOP();
+    480          }
+    481          
+    482          
+    483          void write_PCA2129_TimewSet(unsigned char address, unsigned char *data)
+    484          {
+    485          	unsigned char temp;
+    486          	
+    487          	PCA2119_START();    
+    488          	PCA2119_BYTE_WRITE(RTC_WRITE_COMMAND);
+    489          	PCA2119_BYTE_WRITE(address);
     490          
     491          	temp = 0;
-    492          	temp += (data[5] / 10) << 4;
-    493          	temp += data[5] % 10;
+    492          	temp += (data[6] / 10) << 4;
+    493          	temp += data[6] % 10;
     494          	
-    495          	PCA2119_BYTE_WRITE(temp);  // min
+    495          	PCA2119_BYTE_WRITE(temp);  // second
     496          
     497          	temp = 0;
-    498          	temp += (data[4] / 10) << 4;
-    499          	temp += data[4] % 10;
+    498          	temp += (data[5] / 10) << 4;
+    499          	temp += data[5] % 10;
     500          	
-    501          	PCA2119_BYTE_WRITE(temp);  // hour
+    501          	PCA2119_BYTE_WRITE(temp);  // min
     502          
     503          	temp = 0;
-    504          	temp += (data[2] / 10) << 4;
-    505          	temp += data[2] % 10;
+    504          	temp += (data[4] / 10) << 4;
+    505          	temp += data[4] % 10;
     506          	
-    507          	PCA2119_BYTE_WRITE(temp);  // days
+    507          	PCA2119_BYTE_WRITE(temp);  // hour
     508          
-    509          	temp = data[3];
-    510          	
-    511          	PCA2119_BYTE_WRITE(temp); // weekdays
+    509          	temp = 0;
+    510          	temp += (data[2] / 10) << 4;
+    511          	temp += data[2] % 10;
     512          	
-    513          	temp = 0;
-    514          	temp += (data[1] / 10) << 4;
-    515          	temp += data[1] % 10;
+    513          	PCA2119_BYTE_WRITE(temp);  // days
+    514          
+    515          	temp = data[3];
     516          	
-    517          	PCA2119_BYTE_WRITE(temp); // month
-    518          
+    517          	PCA2119_BYTE_WRITE(temp); // weekdays
+    518          	
     519          	temp = 0;
-    520          	temp += (data[0] / 10) << 4;
-    521          	temp += data[0] % 10;
-    522          	PCA2119_BYTE_WRITE(temp);  // year
-    523          	
-    524          	PCA2119_STOP();
-    525          }
-    526          
-    527          
-    528          unsigned char pca2129_get_time(unsigned char address)
-    529          {
-    530          	unsigned char data[3];
-    531          	
-    532          	PCA2119_START();    
-    533          	PCA2119_BYTE_WRITE(RTC_WRITE_COMMAND);
-    534          	PCA2119_BYTE_WRITE(address);
-    535          	PCA2119_STOP();
-    536          	
-    537          	PCA2119_START();
-    538          	PCA2119_BYTE_WRITE(RTC_READ_COMMAND);    
-    539          	data[0]= PCA2119_BYTE_READ();
-    540          	PCA2119_ACK;
-    541          	data[1]= PCA2119_BYTE_READ();
-    542          	PCA2119_ACK;
-    543          	data[2]= PCA2119_BYTE_READ();
-    544          	PCA2119_NACK;
-    545          	PCA2119_STOP();
-    546          	
-    547          	return data[0];
-    548          }
-    549          	
-    550          unsigned char read_RTC_Companion(unsigned char address)
-    551          {
-    552          	unsigned char data;
-    553          	
-    554          	PCA2119_START();    
-    555          	PCA2119_BYTE_WRITE(RTC_WRITE_COMMAND);
-    556          	PCA2119_BYTE_WRITE(address);
-    557          	PCA2119_STOP();
-    558          	
-    559          	PCA2119_START();
-    560          	PCA2119_BYTE_WRITE(RTC_READ_COMMAND);    
-    561          	data= PCA2119_BYTE_READ();
-    562          	PCA2119_NACK;
+    520          	temp += (data[1] / 10) << 4;
+    521          	temp += data[1] % 10;
+    522          	
+    523          	PCA2119_BYTE_WRITE(temp); // month
+    524          
+    525          	temp = 0;
+    526          	temp += (data[0] / 10) << 4;
+    527          	temp += data[0] % 10;
+    528          	PCA2119_BYTE_WRITE(temp);  // year
+    529          	
+    530          	PCA2119_STOP();
+    531          }
+    532          
+    533          
+    534          unsigned char pca2129_get_time(unsigned char address)
+    535          {
+    536          	unsigned char data[3];
+    537          	
+    538          	PCA2119_START();    
+    539          	PCA2119_BYTE_WRITE(RTC_WRITE_COMMAND);
+    540          	PCA2119_BYTE_WRITE(address);
+    541          	PCA2119_STOP();
+    542          	
+    543          	PCA2119_START();
+    544          	PCA2119_BYTE_WRITE(RTC_READ_COMMAND);    
+    545          	data[0]= PCA2119_BYTE_READ();
+    546          	PCA2119_ACK;
+    547          	data[1]= PCA2119_BYTE_READ();
+    548          	PCA2119_ACK;
+    549          	data[2]= PCA2119_BYTE_READ();
+    550          	PCA2119_NACK;
+    551          	PCA2119_STOP();
+    552          	
+    553          	return data[0];
+    554          }
+    555          	
+    556          unsigned char read_RTC_Companion(unsigned char address)
+    557          {
+    558          	unsigned char data;
+    559          	
+    560          	PCA2119_START();    
+    561          	PCA2119_BYTE_WRITE(RTC_WRITE_COMMAND);
+    562          	PCA2119_BYTE_WRITE(address);
     563          	PCA2119_STOP();
     564          	
-    565          	return data;
-    566          }
-    567          
-    568          
-    569          
-    570          
+    565          	PCA2119_START();
+    566          	PCA2119_BYTE_WRITE(RTC_READ_COMMAND);    
+    567          	data= PCA2119_BYTE_READ();
+    568          	PCA2119_NACK;
+    569          	PCA2119_STOP();
+    570          	
+    571          	return data;
+    572          }
+    573          
+    574          
+    575          
+    576          
 
    Maximum stack usage in bytes:
 
@@ -763,7 +772,7 @@ C:\Tools\WL9F\WLF Monitor - STM32_APP\Platform\TaeHa - ECS\SRC\RTC.c
       32  READ_RTC_Month
       30  READ_RTC_Second
       30  READ_RTC_Year
-      46  RTC_PortChange
+      52  RTC_PortChange
      160  WRITE_RTC
       70  WRITE_RTC_Date
       54  WRITE_RTC_Day
@@ -778,9 +787,9 @@ C:\Tools\WL9F\WLF Monitor - STM32_APP\Platform\TaeHa - ECS\SRC\RTC.c
       26  write_RTC_Companion
 
  
- 1 762 bytes in section .text
+ 1 768 bytes in section .text
  
- 1 762 bytes of CODE memory
+ 1 768 bytes of CODE memory
 
 Errors: none
 Warnings: 1
