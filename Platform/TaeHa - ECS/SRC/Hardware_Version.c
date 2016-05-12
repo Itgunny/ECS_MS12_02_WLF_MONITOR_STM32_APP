@@ -96,7 +96,7 @@ void Check_Hardware_Revision(void)
 		Hardware_Revision = REVB;
 	}
 	// ++, 160511 bwk
-	else if(ADC3ConvertedValue>1092 && ADC3ConvertedValue<1122) // R5 = 2.7K RevH		1107
+	else if(ADC3ConvertedValue>1087)                        // R5 = 2.7K RevH		1107
 	{
 		Hardware_Revision = REVH;
 	}
