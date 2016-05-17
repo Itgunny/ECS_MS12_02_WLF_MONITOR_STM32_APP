@@ -1,6 +1,6 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      12/May/2016  14:27:47 #
+# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      12/May/2016  19:10:55 #
 # Copyright 1999-2012 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
@@ -1080,124 +1080,130 @@ C:\Tools\WL9F\WLF Monitor - STM32_APP\Platform\COMMON\SRC\stm32f4xx_it.c
    1044          					if(WL9FM_USART_DATA.COM4_RxBuf[2] == 1)
    1045          					{
    1046          						SPI_FLASH_BulkErase();
-   1047          					}
-   1048          					else
-   1049          					{
-   1050          						SPI_FLASH_SectorErase(0x3d0000);	//Sector60
-   1051          						SPI_FLASH_PageWrite(&WL9FM_USART_DATA.COM4_RxBuf[3],0x3d0000,7);
-   1052          						SPI_FLASH_BufferRead(&Temp[3],0x3d0000,7);
-   1053          						Temp[0] = 0x02;
-   1054          						Temp[1] = FLASHTESTRES;
-   1055          						Temp[2] = WL9FM_USART_DATA.COM4_RxBuf[2];
-   1056          						Temp[Serial_COM4_RxSize-1] = 0x03;	
-   1057          						USARTx_EXYNOS(COM4, (char *)Temp);	
-   1058          						SPI_FLASH_SectorErase(0x3d0000);	//Sector60
-   1059          					}
-   1060          
-   1061          					break;
-   1062          				default :
-   1063          					break;								
-   1064          			}
-   1065                          }						
+   1047          						CPU_OK();		// ++, --, 160511 bwk
+   1048          					}
+   1049          					else
+   1050          					{
+   1051          						SPI_FLASH_SectorErase(0x3d0000);	//Sector60
+   1052          						CPU_OK();		// ++, --, 160511 bwk
+   1053          						SPI_FLASH_PageWrite(&WL9FM_USART_DATA.COM4_RxBuf[3],0x3d0000,7);
+   1054          						CPU_OK();		// ++, --, 160511 bwk
+   1055          						SPI_FLASH_BufferRead(&Temp[3],0x3d0000,7);
+   1056          						CPU_OK();		// ++, --, 160511 bwk
+   1057          						Temp[0] = 0x02;
+   1058          						Temp[1] = FLASHTESTRES;
+   1059          						Temp[2] = WL9FM_USART_DATA.COM4_RxBuf[2];
+   1060          						Temp[Serial_COM4_RxSize-1] = 0x03;	
+   1061          						USARTx_EXYNOS(COM4, (char *)Temp);	
+   1062          						CPU_OK();		// ++, --, 160511 bwk
+   1063          						SPI_FLASH_SectorErase(0x3d0000);	//Sector60
+   1064          						CPU_OK();		// ++, --, 160511 bwk
+   1065          					}
    1066          
-   1067          		//memset(WL9FM_USART_DATA.COM4_RxBuf, 0x0, Serial_COM4_RxSize);					
-   1068          				break;
-   1069          		
-   1070          		default :
-   1071          
-   1072          			WL9FM_USART_INDEX.COM4_RxCnt++;
-   1073          			break;
-   1074          	}	
-   1075          }
-   1076          
-   1077          void UART4_Receive_File(void)
-   1078          {
-   1079          	
-   1080          	//  Read one byte to the receive data register
-   1081          	WL9FM_USART_RX_FILE_DATA.File_RxBuf[WL9FM_USART_RX_FILE_DATA.File_RxCnt] = USART_ReceiveData(UART4);
-   1082          	
-   1083          	switch (WL9FM_USART_RX_FILE_DATA.File_RxCnt)
-   1084          	{
-   1085          		case 0:
-   1086          				if (WL9FM_USART_RX_FILE_DATA.File_RxBuf[0] == STX)
-   1087          				{
-   1088          					WL9FM_USART_RX_FILE_DATA.File_RxCnt++;
-   1089          				}						
-   1090          				break;
-   1091          		case 1029: 
-   1092          				WL9FM_USART_RX_FILE_DATA.File_RxCnt = 0;
-   1093          					
-   1094          				if (WL9FM_USART_RX_FILE_DATA.File_RxBuf[1029] == ETX)
-   1095          				{
-   1096          					memcpy(&WL9FM_USART_FILE_DATA , &WL9FM_USART_RX_FILE_DATA, Serial_file_RxSize);	
-   1097          					ST_Update=1;
-   1098          				}
-   1099          				else if (WL9FM_USART_RX_FILE_DATA.File_RxBuf[1029] == EOT)
-   1100          				{
-   1101          					memcpy(&WL9FM_USART_FILE_DATA , &WL9FM_USART_RX_FILE_DATA, Serial_file_RxSize);	
-   1102          					Change_UART4_for_Download =2;
+   1067          					break;
+   1068          				default :
+   1069          					break;								
+   1070          			}
+   1071                          }						
+   1072          
+   1073          		//memset(WL9FM_USART_DATA.COM4_RxBuf, 0x0, Serial_COM4_RxSize);					
+   1074          				break;
+   1075          		
+   1076          		default :
+   1077          
+   1078          			WL9FM_USART_INDEX.COM4_RxCnt++;
+   1079          			break;
+   1080          	}	
+   1081          }
+   1082          
+   1083          void UART4_Receive_File(void)
+   1084          {
+   1085          	
+   1086          	//  Read one byte to the receive data register
+   1087          	WL9FM_USART_RX_FILE_DATA.File_RxBuf[WL9FM_USART_RX_FILE_DATA.File_RxCnt] = USART_ReceiveData(UART4);
+   1088          	
+   1089          	switch (WL9FM_USART_RX_FILE_DATA.File_RxCnt)
+   1090          	{
+   1091          		case 0:
+   1092          				if (WL9FM_USART_RX_FILE_DATA.File_RxBuf[0] == STX)
+   1093          				{
+   1094          					WL9FM_USART_RX_FILE_DATA.File_RxCnt++;
+   1095          				}						
+   1096          				break;
+   1097          		case 1029: 
+   1098          				WL9FM_USART_RX_FILE_DATA.File_RxCnt = 0;
+   1099          					
+   1100          				if (WL9FM_USART_RX_FILE_DATA.File_RxBuf[1029] == ETX)
+   1101          				{
+   1102          					memcpy(&WL9FM_USART_FILE_DATA , &WL9FM_USART_RX_FILE_DATA, Serial_file_RxSize);	
    1103          					ST_Update=1;
    1104          				}
-   1105          				else
+   1105          				else if (WL9FM_USART_RX_FILE_DATA.File_RxBuf[1029] == EOT)
    1106          				{
-   1107          					ACK_NACK_SendToExynos(NAK);
-   1108          				}
-   1109                                          break;
-   1110          		default :
-   1111          
-   1112          			WL9FM_USART_RX_FILE_DATA.File_RxCnt++;
-   1113          			break;
-   1114          	}					
-   1115          }
-   1116          
+   1107          					memcpy(&WL9FM_USART_FILE_DATA , &WL9FM_USART_RX_FILE_DATA, Serial_file_RxSize);	
+   1108          					Change_UART4_for_Download =2;
+   1109          					ST_Update=1;
+   1110          				}
+   1111          				else
+   1112          				{
+   1113          					ACK_NACK_SendToExynos(NAK);
+   1114          				}
+   1115                                          break;
+   1116          		default :
    1117          
-   1118          void UART4_transmit_CMD(void)
-   1119          {
-   1120          // ++, 150707 sys
-   1121          #if 0
-   1122          	//  Write one byte to the transmit data register
-   1123          	USART_SendData(UART4, WL9FM_USART_DATA.COM4_TxBuf[WL9FM_USART_INDEX.COM4_TxCnt++]);
-   1124          
-   1125          	if (WL9FM_USART_INDEX.COM4_TxIdx >= Serial_COM4_TxSize)
-   1126          	{
-   1127          		WL9FM_USART_INDEX.COM4_TxIdx = Serial_COM4_TxSize;
-   1128          	}    
-   1129          	if (WL9FM_USART_INDEX.COM4_TxCnt == WL9FM_USART_INDEX.COM4_TxIdx)
-   1130          	{
-   1131          		//  Disable the UART4 Transmit interrupt
-   1132          		USART_ITConfig(UART4, USART_IT_TXE, DISABLE);
-   1133          
-   1134          		WL9FM_USART_INDEX.COM4_TxIdx = 0; //  transmit buffer Index clear
-   1135          		WL9FM_USART_INDEX.COM4_TxCnt = 0; //  transmit buffer Cnt   clear
-   1136          	}      
-   1137          #endif
-   1138          
-   1139          	if((UART4->SR & 0x80) == RESET)
-   1140          		return;
-   1141          
-   1142          	if (pWriteBufPos == pReadBufPos)
-   1143          	{
-   1144          		    USART_ITConfig(UART4, USART_IT_TXE, DISABLE);
-   1145          		    return;
-   1146          	}
+   1118          			WL9FM_USART_RX_FILE_DATA.File_RxCnt++;
+   1119          			break;
+   1120          	}					
+   1121          }
+   1122          
+   1123          
+   1124          void UART4_transmit_CMD(void)
+   1125          {
+   1126          // ++, 150707 sys
+   1127          #if 0
+   1128          	//  Write one byte to the transmit data register
+   1129          	USART_SendData(UART4, WL9FM_USART_DATA.COM4_TxBuf[WL9FM_USART_INDEX.COM4_TxCnt++]);
+   1130          
+   1131          	if (WL9FM_USART_INDEX.COM4_TxIdx >= Serial_COM4_TxSize)
+   1132          	{
+   1133          		WL9FM_USART_INDEX.COM4_TxIdx = Serial_COM4_TxSize;
+   1134          	}    
+   1135          	if (WL9FM_USART_INDEX.COM4_TxCnt == WL9FM_USART_INDEX.COM4_TxIdx)
+   1136          	{
+   1137          		//  Disable the UART4 Transmit interrupt
+   1138          		USART_ITConfig(UART4, USART_IT_TXE, DISABLE);
+   1139          
+   1140          		WL9FM_USART_INDEX.COM4_TxIdx = 0; //  transmit buffer Index clear
+   1141          		WL9FM_USART_INDEX.COM4_TxCnt = 0; //  transmit buffer Cnt   clear
+   1142          	}      
+   1143          #endif
+   1144          
+   1145          	if((UART4->SR & 0x80) == RESET)
+   1146          		return;
    1147          
-   1148          	if(pReadBufPos >= (RING_BUF_SIZE-1))
-   1149          			pReadBufPos = 0;
-   1150          
-   1151          
-   1152          	if((pWriteBufPos != pReadBufPos) && (WL9FM_USART_INDEX.COM4_TxCnt == 0))
-   1153          		memcpy(&WL9FM_USART_DATA.COM4_TxBuf[0] , &ring_buf[pReadBufPos], Serial_COM4_TxSize);
-   1154          
-   1155          	USART_SendData(UART4, WL9FM_USART_DATA.COM4_TxBuf[WL9FM_USART_INDEX.COM4_TxCnt++]);
+   1148          	if (pWriteBufPos == pReadBufPos)
+   1149          	{
+   1150          		    USART_ITConfig(UART4, USART_IT_TXE, DISABLE);
+   1151          		    return;
+   1152          	}
+   1153          
+   1154          	if(pReadBufPos >= (RING_BUF_SIZE-1))
+   1155          			pReadBufPos = 0;
    1156          
-   1157          	if (WL9FM_USART_INDEX.COM4_TxCnt >= Serial_COM4_TxSize)
-   1158          	{
-   1159          		WL9FM_USART_INDEX.COM4_TxCnt = 0;
-   1160          		pReadBufPos += Serial_COM4_TxSize;
-   1161          	}
-   1162          // --, 150707 sys
-   1163          }
-   1164          /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+   1157          
+   1158          	if((pWriteBufPos != pReadBufPos) && (WL9FM_USART_INDEX.COM4_TxCnt == 0))
+   1159          		memcpy(&WL9FM_USART_DATA.COM4_TxBuf[0] , &ring_buf[pReadBufPos], Serial_COM4_TxSize);
+   1160          
+   1161          	USART_SendData(UART4, WL9FM_USART_DATA.COM4_TxBuf[WL9FM_USART_INDEX.COM4_TxCnt++]);
+   1162          
+   1163          	if (WL9FM_USART_INDEX.COM4_TxCnt >= Serial_COM4_TxSize)
+   1164          	{
+   1165          		WL9FM_USART_INDEX.COM4_TxCnt = 0;
+   1166          		pReadBufPos += Serial_COM4_TxSize;
+   1167          	}
+   1168          // --, 150707 sys
+   1169          }
+   1170          /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
 
    Maximum stack usage in bytes:
 
@@ -1224,7 +1230,7 @@ C:\Tools\WL9F\WLF Monitor - STM32_APP\Platform\COMMON\SRC\stm32f4xx_it.c
          0   -> USART_ITConfig
          8   -> __aeabi_memcpy
        8   SysTick_Handler
-         8   -> GPIO_WriteBit
+         8   -> CPU_OK
          8   -> TimeDelay_Decrement
        8   TIM4_IRQHandler
          8   -> Buzzer_Off
@@ -1238,26 +1244,28 @@ C:\Tools\WL9F\WLF Monitor - STM32_APP\Platform\COMMON\SRC\stm32f4xx_it.c
          8   -> UART4_Receive_File
          8   -> UART4_transmit_CMD
          8   -> USART_GetITStatus
-      32   UART4_Receive_CMD
-        32   -> Buzzer_UnLimitOff
-        32   -> Buzzer_UnLimitOn
-        32   -> CAN_ITConfig
-        32   -> InitE2PROM
-        32   -> LCDBL_PWM_LEVEL
-        32   -> Lamp_Update_State
-        32   -> LoadTestToEEPROM
-        32   -> SPI_FLASH_BufferRead
-        32   -> SPI_FLASH_BulkErase
-        32   -> SPI_FLASH_PageWrite
-        32   -> SPI_FLASH_SectorErase
-        32   -> SaveSMKUseToEEPROM
-        32   -> SaveSMKUseToFlash
-        32   -> SaveTestToEEPROM
-        32   -> SendSMKAuthResult
-        32   -> USART_ReceiveData
-        32   -> USARTx_EXYNOS
-        32   -> WRITE_RTC
-        32   -> __aeabi_memcpy
+      40   UART4_Receive_CMD
+        40   -> Buzzer_UnLimitOff
+        40   -> Buzzer_UnLimitOn
+        40   -> CAN_ITConfig
+        40   -> CPU_OK
+        40   -> GPIO_WriteBit
+        40   -> InitE2PROM
+        40   -> LCDBL_PWM_LEVEL
+        40   -> Lamp_Update_State
+        40   -> LoadTestToEEPROM
+        40   -> SPI_FLASH_BufferRead
+        40   -> SPI_FLASH_BulkErase
+        40   -> SPI_FLASH_PageWrite
+        40   -> SPI_FLASH_SectorErase
+        40   -> SaveSMKUseToEEPROM
+        40   -> SaveSMKUseToFlash
+        40   -> SaveTestToEEPROM
+        40   -> SendSMKAuthResult
+        40   -> USART_ReceiveData
+        40   -> USARTx_EXYNOS
+        40   -> WRITE_RTC
+        40   -> __aeabi_memcpy
        8   UART4_Receive_File
          0   -> ACK_NACK_SendToExynos
          8   -> USART_ReceiveData
@@ -1307,7 +1315,6 @@ C:\Tools\WL9F\WLF Monitor - STM32_APP\Platform\COMMON\SRC\stm32f4xx_it.c
        4  ??DataTable12_31
        4  ??DataTable12_32
        4  ??DataTable12_33
-       4  ??DataTable12_34
        4  ??DataTable12_4
        4  ??DataTable12_5
        4  ??DataTable12_6
@@ -1317,9 +1324,9 @@ C:\Tools\WL9F\WLF Monitor - STM32_APP\Platform\COMMON\SRC\stm32f4xx_it.c
       18  ?Subroutine0
        2  BusFault_Handler
        1  Buz1
-     306  CAN1_RX0_IRQHandler
+     304  CAN1_RX0_IRQHandler
        8  CANRXIndex
-      28  CPU_OK
+      32  CPU_OK
        1  CanRecvCnt
        2  DebugMon_Handler
        1  Flag_TxE2pRomData
@@ -1329,51 +1336,51 @@ C:\Tools\WL9F\WLF Monitor - STM32_APP\Platform\COMMON\SRC\stm32f4xx_it.c
        2  PendSV_Handler
        4  RMCUpgn
       44  RTCSend
-     816  RxMsg
+      36  RxMsg
           Iden
-          Uart2_SerialTxCnt
           Stm32_Update_CMD
           FatoryInit_Flag
           CANUpdateFlag
           CANUpdateSA
-          pWriteBufPos
-          pReadBufPos
-          TotPacketNum
+          temp
           CommErrCnt
-          pgn
-          ring_buf
        2  SVC_Handler
       60  SendTo_E2PROM
        8  SerialTXIndex
-     148  SysTick_Handler
+     124  SysTick_Handler
       86  TIM4_IRQHandler
       20  TIM5_IRQHandler
        2  TotMsgSize
       60  UART4_IRQHandler
-     710  UART4_Receive_CMD
+     814  UART4_Receive_CMD
      114  UART4_Receive_File
      110  UART4_transmit_CMD
       94  USART2_IRQHandler
       17  Uart2_SerialRxMsg
           Uart2_SerialRxCnt
-      21  Uart2_SerialTxMsg
+     800  Uart2_SerialTxMsg
+          Uart2_SerialTxCnt
           SendEEPROMDataCnt
+          pWriteBufPos
+          pReadBufPos
+          TotPacketNum
+          pgn
+          ring_buf
        2  UsageFault_Handler
       42  WL9F_CAN_Buffer_Init
        2  old_test
        1  stop_send_as_phone_data
-       1  temp
        1  temp_61184
        4  temp_rx_buf
        2  test
        8  test_temp
 
  
-   898 bytes in section .bss
- 1 996 bytes in section .text
+   896 bytes in section .bss
+ 2 074 bytes in section .text
  
- 1 996 bytes of CODE memory
-   898 bytes of DATA memory
+ 2 074 bytes of CODE memory
+   896 bytes of DATA memory
 
 Errors: none
 Warnings: 2

@@ -1044,18 +1044,24 @@ void UART4_Receive_CMD(void)
 					if(WL9FM_USART_DATA.COM4_RxBuf[2] == 1)
 					{
 						SPI_FLASH_BulkErase();
+						CPU_OK();		// ++, --, 160511 bwk
 					}
 					else
 					{
 						SPI_FLASH_SectorErase(0x3d0000);	//Sector60
+						CPU_OK();		// ++, --, 160511 bwk
 						SPI_FLASH_PageWrite(&WL9FM_USART_DATA.COM4_RxBuf[3],0x3d0000,7);
+						CPU_OK();		// ++, --, 160511 bwk
 						SPI_FLASH_BufferRead(&Temp[3],0x3d0000,7);
+						CPU_OK();		// ++, --, 160511 bwk
 						Temp[0] = 0x02;
 						Temp[1] = FLASHTESTRES;
 						Temp[2] = WL9FM_USART_DATA.COM4_RxBuf[2];
 						Temp[Serial_COM4_RxSize-1] = 0x03;	
 						USARTx_EXYNOS(COM4, (char *)Temp);	
+						CPU_OK();		// ++, --, 160511 bwk
 						SPI_FLASH_SectorErase(0x3d0000);	//Sector60
+						CPU_OK();		// ++, --, 160511 bwk
 					}
 
 					break;
