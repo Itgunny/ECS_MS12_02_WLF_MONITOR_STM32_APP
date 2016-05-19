@@ -112,7 +112,7 @@ void SPI_FLASH_BulkErase(void)
 }
 
 void SPI_FLASH_PageWrite(unsigned char* pBuffer, unsigned long WriteAddr, unsigned short NumByteToWrite)
-{
+{	
 	// Enable the write access to the FLASH 
 	SPI_FLASH_WriteEnable();
 
@@ -294,6 +294,8 @@ unsigned char SPI_FLASH_ReadByte(void)
 
 unsigned char  SPI_Transfer(u8 data)
 {      
+	CPU_OK();		// ++, --, 160511 bwk
+
 	unsigned char i;
 	unsigned char result;
 

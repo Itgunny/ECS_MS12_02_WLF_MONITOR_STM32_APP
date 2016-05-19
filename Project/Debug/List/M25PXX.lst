@@ -1,6 +1,6 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      12/May/2016  14:27:35 #
+# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      19/May/2016  15:12:30 #
 # Copyright 1999-2012 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
@@ -148,7 +148,7 @@ C:\Tools\WL9F\WLF Monitor - STM32_APP\Platform\TaeHa - ECS\SRC\M25PXX.c
     112          }
     113          
     114          void SPI_FLASH_PageWrite(unsigned char* pBuffer, unsigned long WriteAddr, unsigned short NumByteToWrite)
-    115          {
+    115          {	
     116          	// Enable the write access to the FLASH 
     117          	SPI_FLASH_WriteEnable();
     118          
@@ -330,321 +330,323 @@ C:\Tools\WL9F\WLF Monitor - STM32_APP\Platform\TaeHa - ECS\SRC\M25PXX.c
     294          
     295          unsigned char  SPI_Transfer(u8 data)
     296          {      
-    297          	unsigned char i;
-    298          	unsigned char result;
-    299          
-    300          	result = 0;
+    297          	CPU_OK();		// ++, --, 160511 bwk
+    298          
+    299          	unsigned char i;
+    300          	unsigned char result;
     301          
-    302          	for (i = 0; i < 8; i++)
-    303          	{
-    304          		SPI_FLASH_SCK_LOW();
-    305          		(data & (1 << (7- i))) ? SPI_FLASH_MOSI_HIGH():SPI_FLASH_MOSI_LOW();
-    306          		SPI_FLASH_SCK_HIGH();
-    307          
-    308          		result <<= 1;
-    309          		result |= GPIO_ReadInputDataBit(SFLASH_SPI1_PORT,SFLASH_SPI1_MISO);
-    310          	}
-    311          
-    312          	return result;
-    313              
-    314          }
-    315          
-    316          unsigned char SPI_FLASH_SendByte(unsigned char byte)
-    317          {
-    318          	
-    319          	// Loop while DR register in not emplty 
-    320          	while(SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) == RESET);
-    321          	// Send byte through the SPI1 peripheral 
-    322          	SPI_I2S_SendData(SPI1, byte);
-    323          	// Wait to receive a byte 
-    324          	while(SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_RXNE) == RESET);
-    325          	// Return the byte read from the SPI bus 
-    326          	
-    327          	return SPI_I2S_ReceiveData(SPI1);
-    328          }
-    329          
-    330          void SPI_FLASH_WriteEnable(void)
-    331          {
-    332          	// Select the FLASH: Chip Select low 
-    333          	SPI_FLASH_CS_LOW();
-    334          
-    335          	// Send "Write Enable" instruction 
-    336          	SPI_Transfer(WREN);
-    337          
-    338          	// Deselect the FLASH: Chip Select high 
-    339          	SPI_FLASH_CS_HIGH();
-    340          }
-    341          
-    342          void SPI_FLASH_WaitForWriteEnd(void)
-    343          {
-    344          	unsigned char FLASH_Status = 0;
-    345          
-    346              //  ++, kutelf, 140801    
-    347              //unsigned int TimeOut = 0;
-    348              //  --, kutelf, 140801
-    349              
-    350          	// Select the FLASH: Chip Select low 
-    351          	SPI_FLASH_CS_LOW();
-    352          
-    353          	// Send "Read Status Register" instruction 
-    354          	SPI_Transfer(RDSR);
-    355              
-    356          	// Loop as long as the memory is busy with a write cycle 
-    357            
-    358          	do
-    359          	{
-    360          		// Send a dummy byte to generate the clock needed by the FLASH and put the value of the status register in FLASH_Status variable 
-    361          		FLASH_Status = SPI_Transfer(Dummy_Byte);
-    362          
-    363                  //  ++, kutelf, 140801
-    364                  //  SPI Flash가 문제가 있을 경우 - 무한루프에서 빠져나오지 못할 수 있음. 
-    365                  //if (TimeOut++ > 2000)
-    366                  //  break;
-    367                  //  --, kutelf, 140801
-    368          
-    369          	} while((FLASH_Status & WIP_Flag) == SET); // Write in progress 
+    302          	result = 0;
+    303          
+    304          	for (i = 0; i < 8; i++)
+    305          	{
+    306          		SPI_FLASH_SCK_LOW();
+    307          		(data & (1 << (7- i))) ? SPI_FLASH_MOSI_HIGH():SPI_FLASH_MOSI_LOW();
+    308          		SPI_FLASH_SCK_HIGH();
+    309          
+    310          		result <<= 1;
+    311          		result |= GPIO_ReadInputDataBit(SFLASH_SPI1_PORT,SFLASH_SPI1_MISO);
+    312          	}
+    313          
+    314          	return result;
+    315              
+    316          }
+    317          
+    318          unsigned char SPI_FLASH_SendByte(unsigned char byte)
+    319          {
+    320          	
+    321          	// Loop while DR register in not emplty 
+    322          	while(SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) == RESET);
+    323          	// Send byte through the SPI1 peripheral 
+    324          	SPI_I2S_SendData(SPI1, byte);
+    325          	// Wait to receive a byte 
+    326          	while(SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_RXNE) == RESET);
+    327          	// Return the byte read from the SPI bus 
+    328          	
+    329          	return SPI_I2S_ReceiveData(SPI1);
+    330          }
+    331          
+    332          void SPI_FLASH_WriteEnable(void)
+    333          {
+    334          	// Select the FLASH: Chip Select low 
+    335          	SPI_FLASH_CS_LOW();
+    336          
+    337          	// Send "Write Enable" instruction 
+    338          	SPI_Transfer(WREN);
+    339          
+    340          	// Deselect the FLASH: Chip Select high 
+    341          	SPI_FLASH_CS_HIGH();
+    342          }
+    343          
+    344          void SPI_FLASH_WaitForWriteEnd(void)
+    345          {
+    346          	unsigned char FLASH_Status = 0;
+    347          
+    348              //  ++, kutelf, 140801    
+    349              //unsigned int TimeOut = 0;
+    350              //  --, kutelf, 140801
+    351              
+    352          	// Select the FLASH: Chip Select low 
+    353          	SPI_FLASH_CS_LOW();
+    354          
+    355          	// Send "Read Status Register" instruction 
+    356          	SPI_Transfer(RDSR);
+    357              
+    358          	// Loop as long as the memory is busy with a write cycle 
+    359            
+    360          	do
+    361          	{
+    362          		// Send a dummy byte to generate the clock needed by the FLASH and put the value of the status register in FLASH_Status variable 
+    363          		FLASH_Status = SPI_Transfer(Dummy_Byte);
+    364          
+    365                  //  ++, kutelf, 140801
+    366                  //  SPI Flash가 문제가 있을 경우 - 무한루프에서 빠져나오지 못할 수 있음. 
+    367                  //if (TimeOut++ > 2000)
+    368                  //  break;
+    369                  //  --, kutelf, 140801
     370          
-    371          	// Deselect the FLASH: Chip Select high 
+    371          	} while((FLASH_Status & WIP_Flag) == SET); // Write in progress 
     372          
-    373          	SPI_FLASH_CS_HIGH();
-    374          }
-    375          
-    376          
-    377          unsigned short MakeCrc16(unsigned char *data, unsigned short nLen)
-    378          {
-    379              unsigned short i = 0;
-    380              unsigned short crc16 = 0;
-    381              
-    382              while (nLen--)
-    383              {
-    384                  crc16 = Crc16Table[((crc16 ^ data[i]) & 0xff)] ^ (crc16 >> 8);
-    385                  i++;
-    386              }
-    387              
-    388              return(crc16);
-    389          }
-    390          
-    391          void M25P32_Init(void)
-    392          {
-    393          	SPI_FLASH_CS_HIGH();
-    394          	
-    395          	SPI_FLASH_HOLD_DISABLE();
-    396          
-    397          	SPI_FLASH_WP_DISABLE();
-    398          }
-    399          uint8_t temp1024[1024];
-    400          
-    401          uint8_t temp_cmp[1024];
+    373          	// Deselect the FLASH: Chip Select high 
+    374          
+    375          	SPI_FLASH_CS_HIGH();
+    376          }
+    377          
+    378          
+    379          unsigned short MakeCrc16(unsigned char *data, unsigned short nLen)
+    380          {
+    381              unsigned short i = 0;
+    382              unsigned short crc16 = 0;
+    383              
+    384              while (nLen--)
+    385              {
+    386                  crc16 = Crc16Table[((crc16 ^ data[i]) & 0xff)] ^ (crc16 >> 8);
+    387                  i++;
+    388              }
+    389              
+    390              return(crc16);
+    391          }
+    392          
+    393          void M25P32_Init(void)
+    394          {
+    395          	SPI_FLASH_CS_HIGH();
+    396          	
+    397          	SPI_FLASH_HOLD_DISABLE();
+    398          
+    399          	SPI_FLASH_WP_DISABLE();
+    400          }
+    401          uint8_t temp1024[1024];
     402          
-    403          
-    404          void STM32_Update(unsigned char cmd, unsigned char FactoryInitFlag)
-    405          {
-    406          	unsigned long temp_address;
-    407          	if(FactoryInitFlag == 1)
-    408          	{
-    409          		switch(cmd)
-    410          		{
-    411          			case FILE_WRITE_ENABLE :
-    412          				if(Change_UART4_for_Download == 0)
-    413          				{
-    414          					SPI_FLASH_SectorErase(Sector_10);
-    415          					Change_UART4_for_Download = 1;
-    416          					CMD_ACK_SendToExynos(FILE_WRITE_ENABLE); 
-    417          					// can serial disable
-    418          					//USART_Cmd(Serial_COM2, DISABLE);
-    419          				}
-    420          				else
-    421          				{
-    422          					temp_address = Sector_10 + (WL9FM_USART_FILE_DATA.Bin_Data.index  *1024);
-    423          					File_Write_to_SFLAH(temp_address);
-    424          				}
-    425          				break;
-    426          
-    427          			case FILE_VERIFY :
+    403          uint8_t temp_cmp[1024];
+    404          
+    405          
+    406          void STM32_Update(unsigned char cmd, unsigned char FactoryInitFlag)
+    407          {
+    408          	unsigned long temp_address;
+    409          	if(FactoryInitFlag == 1)
+    410          	{
+    411          		switch(cmd)
+    412          		{
+    413          			case FILE_WRITE_ENABLE :
+    414          				if(Change_UART4_for_Download == 0)
+    415          				{
+    416          					SPI_FLASH_SectorErase(Sector_10);
+    417          					Change_UART4_for_Download = 1;
+    418          					CMD_ACK_SendToExynos(FILE_WRITE_ENABLE); 
+    419          					// can serial disable
+    420          					//USART_Cmd(Serial_COM2, DISABLE);
+    421          				}
+    422          				else
+    423          				{
+    424          					temp_address = Sector_10 + (WL9FM_USART_FILE_DATA.Bin_Data.index  *1024);
+    425          					File_Write_to_SFLAH(temp_address);
+    426          				}
+    427          				break;
     428          
-    429          				if(Change_UART4_for_Download == 0)
-    430          				{
-    431          					Change_UART4_for_Download = 1;
-    432          					CMD_ACK_SendToExynos(FILE_VERIFY);
-    433          				}
-    434          				else
-    435          				{
-    436          					temp_address = Sector_10 + (WL9FM_USART_FILE_DATA.Bin_Data.index  * 1024);
-    437          					Read_File_From_SFLAH(temp_address);
-    438          				}
-    439          				break;
-    440          
-    441          			case FILE_WRITE_FINISH :
-    442          				SPI_FLASH_SectorErase(Sector_61);
-    443          				SPI_FLASH_SectorErase(Sector_62);
-    444          
-    445          				fatoryinit_enable_code[4]=WL9FM_USART_FILE_DATA.Bin_Data.index;
-    446          				fatoryinit_enable_code[5]=WL9FM_USART_FILE_DATA.Bin_Data.index>>8;
-    447          				SPI_FLASH_PageWrite(fatoryinit_enable_code,Sector_61,6);
-    448          				SPI_FLASH_PageWrite(fatoryinit_enable_code,Sector_62,6);
-    449          				SPI_FLASH_BufferRead(temp3,Sector_62,6);
-    450          				Change_UART4_for_Download=0;
-    451          				CMD_ACK_SendToExynos(FILE_WRITE_FINISH);
-    452          				// can serial disable
-    453          				//USART_Cmd(Serial_COM2, ENABLE);
-    454          				
-    455          				break;	
-    456          
-    457          				
-    458          		}
-    459          
-    460          	}
-    461          	else
-    462          	{
-    463          		switch(cmd)
-    464          		{
-    465          			case FILE_WRITE_ENABLE :
-    466          				if(Change_UART4_for_Download == 0)
-    467          				{
-    468          					SPI_FLASH_SectorErase(Sector_1);
-    469          					Change_UART4_for_Download = 1;
-    470          					CMD_ACK_SendToExynos(FILE_WRITE_ENABLE); 
-    471          					Flag_St_Update=0;
-    472          					// can serial disable
-    473          					//USART_Cmd(Serial_COM2, DISABLE);
-    474          				}
-    475          				else
-    476          				{
-    477          					temp_address = Sector_1 + (WL9FM_USART_FILE_DATA.Bin_Data.index  *1024);
-    478          					File_Write_to_SFLAH(temp_address);
-    479          				}
-    480          				break;
-    481          
-    482          			case FILE_VERIFY :
+    429          			case FILE_VERIFY :
+    430          
+    431          				if(Change_UART4_for_Download == 0)
+    432          				{
+    433          					Change_UART4_for_Download = 1;
+    434          					CMD_ACK_SendToExynos(FILE_VERIFY);
+    435          				}
+    436          				else
+    437          				{
+    438          					temp_address = Sector_10 + (WL9FM_USART_FILE_DATA.Bin_Data.index  * 1024);
+    439          					Read_File_From_SFLAH(temp_address);
+    440          				}
+    441          				break;
+    442          
+    443          			case FILE_WRITE_FINISH :
+    444          				SPI_FLASH_SectorErase(Sector_61);
+    445          				SPI_FLASH_SectorErase(Sector_62);
+    446          
+    447          				fatoryinit_enable_code[4]=WL9FM_USART_FILE_DATA.Bin_Data.index;
+    448          				fatoryinit_enable_code[5]=WL9FM_USART_FILE_DATA.Bin_Data.index>>8;
+    449          				SPI_FLASH_PageWrite(fatoryinit_enable_code,Sector_61,6);
+    450          				SPI_FLASH_PageWrite(fatoryinit_enable_code,Sector_62,6);
+    451          				SPI_FLASH_BufferRead(temp3,Sector_62,6);
+    452          				Change_UART4_for_Download=0;
+    453          				CMD_ACK_SendToExynos(FILE_WRITE_FINISH);
+    454          				// can serial disable
+    455          				//USART_Cmd(Serial_COM2, ENABLE);
+    456          				
+    457          				break;	
+    458          
+    459          				
+    460          		}
+    461          
+    462          	}
+    463          	else
+    464          	{
+    465          		switch(cmd)
+    466          		{
+    467          			case FILE_WRITE_ENABLE :
+    468          				if(Change_UART4_for_Download == 0)
+    469          				{
+    470          					SPI_FLASH_SectorErase(Sector_1);
+    471          					Change_UART4_for_Download = 1;
+    472          					CMD_ACK_SendToExynos(FILE_WRITE_ENABLE); 
+    473          					Flag_St_Update=0;
+    474          					// can serial disable
+    475          					//USART_Cmd(Serial_COM2, DISABLE);
+    476          				}
+    477          				else
+    478          				{
+    479          					temp_address = Sector_1 + (WL9FM_USART_FILE_DATA.Bin_Data.index  *1024);
+    480          					File_Write_to_SFLAH(temp_address);
+    481          				}
+    482          				break;
     483          
-    484          				if(Change_UART4_for_Download == 0)
-    485          				{
-    486          					Change_UART4_for_Download = 1;
-    487          					CMD_ACK_SendToExynos(FILE_VERIFY);
-    488          				}
-    489          				else
-    490          				{
-    491          					temp_address = Sector_1 + (WL9FM_USART_FILE_DATA.Bin_Data.index  * 1024);
-    492          					Read_File_From_SFLAH(temp_address);
-    493          				}
-    494          				break;
-    495          
-    496          			case FILE_WRITE_FINISH :
-    497          				SPI_FLASH_SectorErase(Sector_63);
-    498          
-    499          				download_enable_code[4]=WL9FM_USART_FILE_DATA.Bin_Data.index;
-    500          				download_enable_code[5]=WL9FM_USART_FILE_DATA.Bin_Data.index>>8;
-    501          				SPI_FLASH_PageWrite(download_enable_code,Sector_63,6);
-    502          				SPI_FLASH_BufferRead(temp3,Sector_63,6);
-    503          				Change_UART4_for_Download=0;
-    504          				CMD_ACK_SendToExynos(FILE_WRITE_FINISH);
-    505          				Flag_St_Update=1;
-    506          				break;					
-    507          		}
-    508          	}
-    509          	
-    510          }
-    511          
-    512          void ACK_NACK_SendToExynos(uint8_t data)
-    513          {
-    514          	uint8_t ValueBuffer[Serial_COM4_TxSize];
-    515          
-    516          	ValueBuffer[0] = 0x02;				//	STX
-    517          	ValueBuffer[1] = WL9FM_USART_FILE_DATA.Bin_Data.index ;			//	index L
-    518          	ValueBuffer[2] = WL9FM_USART_FILE_DATA.Bin_Data.index>>8  ; 	//	index H
-    519          	ValueBuffer[Serial_COM4_TxSize-1] = data;				//	ETX
-    520          	
-    521          	USARTx_EXYNOS(COM4, (char *)ValueBuffer);	
-    522          }
-    523          
-    524          void CMD_ACK_SendToExynos(uint8_t data)
-    525          {
-    526          	uint8_t ValueBuffer[Serial_COM4_TxSize];
-    527          
-    528          	ValueBuffer[0] = 0x02;				//	STX
-    529          	ValueBuffer[1] = DOWNRES;			//	KeyValue Command, 0x4B
-    530          	ValueBuffer[2] = data;   			//	Key Value HexCode, 
-    531          	ValueBuffer[Serial_COM4_TxSize-1] = 0x03;				//	ETX
-    532          	
-    533          	USARTx_EXYNOS(COM4, (char *)ValueBuffer);	
-    534          }
-    535          
-    536          
-    537          void File_Write_to_SFLAH(unsigned long addr)
-    538          {
-    539          	uint16_t	temp_crc;
-    540          	uint8_t i=0;
-    541          	
-    542          	temp_crc = MakeCrc16(WL9FM_USART_FILE_DATA.Bin_Data.data, 1024);
-    543          
-    544          	if(temp_crc == WL9FM_USART_FILE_DATA.Bin_Data.CRC_data)
-    545          	{
-    546          		
-    547          		ACK_NACK_SendToExynos(ACK);
-    548          
-    549          		for(i=0;i<4;i++)
-    550          		{
-    551          			SPI_FLASH_PageWrite(&WL9FM_USART_FILE_DATA.Bin_Data.data[i*256],addr+(i<<8),256);
-    552          		}
-    553                          
-    554                          // ++, 150324 sys
-    555                          //SPI_FLASH_BufferRead(temp1024,addr,1024);
-    556                          // --, 150324 sys
-    557          
-    558          		if(Change_UART4_for_Download==2)	Change_UART4_for_Download=0;
-    559          	}
-    560          	else
-    561          	{
-    562          		ACK_NACK_SendToExynos(NAK);
-    563          	}
-    564          }
-    565          
-    566          uint16_t	temp_crc;
+    484          			case FILE_VERIFY :
+    485          
+    486          				if(Change_UART4_for_Download == 0)
+    487          				{
+    488          					Change_UART4_for_Download = 1;
+    489          					CMD_ACK_SendToExynos(FILE_VERIFY);
+    490          				}
+    491          				else
+    492          				{
+    493          					temp_address = Sector_1 + (WL9FM_USART_FILE_DATA.Bin_Data.index  * 1024);
+    494          					Read_File_From_SFLAH(temp_address);
+    495          				}
+    496          				break;
+    497          
+    498          			case FILE_WRITE_FINISH :
+    499          				SPI_FLASH_SectorErase(Sector_63);
+    500          
+    501          				download_enable_code[4]=WL9FM_USART_FILE_DATA.Bin_Data.index;
+    502          				download_enable_code[5]=WL9FM_USART_FILE_DATA.Bin_Data.index>>8;
+    503          				SPI_FLASH_PageWrite(download_enable_code,Sector_63,6);
+    504          				SPI_FLASH_BufferRead(temp3,Sector_63,6);
+    505          				Change_UART4_for_Download=0;
+    506          				CMD_ACK_SendToExynos(FILE_WRITE_FINISH);
+    507          				Flag_St_Update=1;
+    508          				break;					
+    509          		}
+    510          	}
+    511          	
+    512          }
+    513          
+    514          void ACK_NACK_SendToExynos(uint8_t data)
+    515          {
+    516          	uint8_t ValueBuffer[Serial_COM4_TxSize];
+    517          
+    518          	ValueBuffer[0] = 0x02;				//	STX
+    519          	ValueBuffer[1] = WL9FM_USART_FILE_DATA.Bin_Data.index ;			//	index L
+    520          	ValueBuffer[2] = WL9FM_USART_FILE_DATA.Bin_Data.index>>8  ; 	//	index H
+    521          	ValueBuffer[Serial_COM4_TxSize-1] = data;				//	ETX
+    522          	
+    523          	USARTx_EXYNOS(COM4, (char *)ValueBuffer);	
+    524          }
+    525          
+    526          void CMD_ACK_SendToExynos(uint8_t data)
+    527          {
+    528          	uint8_t ValueBuffer[Serial_COM4_TxSize];
+    529          
+    530          	ValueBuffer[0] = 0x02;				//	STX
+    531          	ValueBuffer[1] = DOWNRES;			//	KeyValue Command, 0x4B
+    532          	ValueBuffer[2] = data;   			//	Key Value HexCode, 
+    533          	ValueBuffer[Serial_COM4_TxSize-1] = 0x03;				//	ETX
+    534          	
+    535          	USARTx_EXYNOS(COM4, (char *)ValueBuffer);	
+    536          }
+    537          
+    538          
+    539          void File_Write_to_SFLAH(unsigned long addr)
+    540          {
+    541          	uint16_t	temp_crc;
+    542          	uint8_t i=0;
+    543          	
+    544          	temp_crc = MakeCrc16(WL9FM_USART_FILE_DATA.Bin_Data.data, 1024);
+    545          
+    546          	if(temp_crc == WL9FM_USART_FILE_DATA.Bin_Data.CRC_data)
+    547          	{
+    548          		
+    549          		ACK_NACK_SendToExynos(ACK);
+    550          
+    551          		for(i=0;i<4;i++)
+    552          		{
+    553          			SPI_FLASH_PageWrite(&WL9FM_USART_FILE_DATA.Bin_Data.data[i*256],addr+(i<<8),256);
+    554          		}
+    555                          
+    556                          // ++, 150324 sys
+    557                          //SPI_FLASH_BufferRead(temp1024,addr,1024);
+    558                          // --, 150324 sys
+    559          
+    560          		if(Change_UART4_for_Download==2)	Change_UART4_for_Download=0;
+    561          	}
+    562          	else
+    563          	{
+    564          		ACK_NACK_SendToExynos(NAK);
+    565          	}
+    566          }
     567          
-    568          void Read_File_From_SFLAH(unsigned long addr)
-    569          {
-    570          		
-    571          	temp_crc = MakeCrc16(WL9FM_USART_FILE_DATA.Bin_Data.data, 1024);
-    572          
-    573          	//if(memcmp(temp_crc,WL9FM_USART_FILE_DATA.Bin_Data.CRC_data,1)==0)
+    568          uint16_t	temp_crc;
+    569          
+    570          void Read_File_From_SFLAH(unsigned long addr)
+    571          {
+    572          		
+    573          	temp_crc = MakeCrc16(WL9FM_USART_FILE_DATA.Bin_Data.data, 1024);
     574          
-    575          	if(temp_crc == WL9FM_USART_FILE_DATA.Bin_Data.CRC_data)
-    576          	{
-    577          		
-    578          
-    579          		memset(temp1024,0xff,1024);
-    580          		
-    581          		SPI_FLASH_BufferRead(temp1024,addr,1024);
-    582          
-    583          		if(memcmp(temp1024,WL9FM_USART_FILE_DATA.Bin_Data.data,1024)==0)
-    584          		{
-    585          
-    586          			if(Change_UART4_for_Download==2)	Change_UART4_for_Download=0;
+    575          	//if(memcmp(temp_crc,WL9FM_USART_FILE_DATA.Bin_Data.CRC_data,1)==0)
+    576          
+    577          	if(temp_crc == WL9FM_USART_FILE_DATA.Bin_Data.CRC_data)
+    578          	{
+    579          		
+    580          
+    581          		memset(temp1024,0xff,1024);
+    582          		
+    583          		SPI_FLASH_BufferRead(temp1024,addr,1024);
+    584          
+    585          		if(memcmp(temp1024,WL9FM_USART_FILE_DATA.Bin_Data.data,1024)==0)
+    586          		{
     587          
-    588          			ACK_NACK_SendToExynos(ACK);
-    589          		}
-    590          		else
-    591          			ACK_NACK_SendToExynos(NAK);
-    592          	}
-    593          	else
-    594          	{
-    595          		ACK_NACK_SendToExynos(NAK);
-    596          	}
-    597          }
-    598          
-    599          void CMD_DUMMY_SendToExynos(uint8_t data)
-    600          {
-    601          	uint8_t ValueBuffer[Serial_COM4_TxSize];
-    602          
-    603          	ValueBuffer[0] = 0x02;				//	STX
-    604          	ValueBuffer[1] = DUMMYCMD;			//	DUMMYCMD
-    605          	ValueBuffer[2] = data;   			//	Data
-    606          	ValueBuffer[3] = 0x03;				//	ETX
-    607          	
-    608          	USARTx_EXYNOS(COM4, (char *)ValueBuffer);	
-    609          }
-    610          
-    611          
+    588          			if(Change_UART4_for_Download==2)	Change_UART4_for_Download=0;
+    589          
+    590          			ACK_NACK_SendToExynos(ACK);
+    591          		}
+    592          		else
+    593          			ACK_NACK_SendToExynos(NAK);
+    594          	}
+    595          	else
+    596          	{
+    597          		ACK_NACK_SendToExynos(NAK);
+    598          	}
+    599          }
+    600          
+    601          void CMD_DUMMY_SendToExynos(uint8_t data)
+    602          {
+    603          	uint8_t ValueBuffer[Serial_COM4_TxSize];
+    604          
+    605          	ValueBuffer[0] = 0x02;				//	STX
+    606          	ValueBuffer[1] = DUMMYCMD;			//	DUMMYCMD
+    607          	ValueBuffer[2] = data;   			//	Data
+    608          	ValueBuffer[3] = 0x03;				//	ETX
+    609          	
+    610          	USARTx_EXYNOS(COM4, (char *)ValueBuffer);	
+    611          }
+    612          
+    613          
 
    Maximum stack usage in bytes:
 
@@ -671,24 +673,22 @@ C:\Tools\WL9F\WLF Monitor - STM32_APP\Platform\TaeHa - ECS\SRC\M25PXX.c
         16   -> SPI_FLASH_BufferRead
         16   -> __aeabi_memset4
         16   -> memcmp
-      32   SPI_FLASH_BufferRead
-        32   -> GPIO_ReadInputDataBit
+      24   SPI_FLASH_BufferRead
          0   -> GPIO_WriteBit
-        32   -> GPIO_WriteBit
-        32   -> SPI_Transfer
+        24   -> GPIO_WriteBit
+        24   -> SPI_Transfer
       24   SPI_FLASH_BufferWrite
          0   -> SPI_FLASH_PageWrite
         24   -> SPI_FLASH_PageWrite
        8   SPI_FLASH_BulkErase
          8   -> GPIO_WriteBit
          0   -> SPI_FLASH_WaitForWriteEnd
-         8   -> SPI_FLASH_WriteEnable
          8   -> SPI_Transfer
       32   SPI_FLASH_PageWrite
+        32   -> CPU_OK
         32   -> GPIO_ReadInputDataBit
         32   -> GPIO_WriteBit
          0   -> SPI_FLASH_WaitForWriteEnd
-        32   -> SPI_FLASH_WriteEnable
         32   -> SPI_Transfer
        0   SPI_FLASH_ReadByte
          0   -> SPI_Transfer
@@ -698,7 +698,6 @@ C:\Tools\WL9F\WLF Monitor - STM32_APP\Platform\TaeHa - ECS\SRC\M25PXX.c
       16   SPI_FLASH_SectorErase
         16   -> GPIO_WriteBit
          0   -> SPI_FLASH_WaitForWriteEnd
-        16   -> SPI_FLASH_WriteEnable
         16   -> SPI_Transfer
       16   SPI_FLASH_SendByte
         16   -> SPI_I2S_GetFlagStatus
@@ -708,26 +707,26 @@ C:\Tools\WL9F\WLF Monitor - STM32_APP\Platform\TaeHa - ECS\SRC\M25PXX.c
          8   -> GPIO_WriteBit
          0   -> SPI_Transfer
          8   -> SPI_Transfer
-      24   SPI_FLASH_WaitForWriteEnd
-        24   -> GPIO_ReadInputDataBit
+       8   SPI_FLASH_WaitForWriteEnd
          0   -> GPIO_WriteBit
-        24   -> GPIO_WriteBit
-        24   -> SPI_Transfer
+         8   -> GPIO_WriteBit
+         8   -> SPI_Transfer
        8   SPI_FLASH_WriteEnable
          0   -> GPIO_WriteBit
          8   -> GPIO_WriteBit
          8   -> SPI_Transfer
       24   SPI_Transfer
+        24   -> CPU_OK
         24   -> GPIO_ReadInputDataBit
         24   -> GPIO_WriteBit
-       8   STM32_Update
-         0   -> CMD_ACK_SendToExynos
-         8   -> CMD_ACK_SendToExynos
-         0   -> File_Write_to_SFLAH
-         0   -> Read_File_From_SFLAH
-         8   -> SPI_FLASH_BufferRead
-         8   -> SPI_FLASH_PageWrite
-         8   -> SPI_FLASH_SectorErase
+      24   STM32_Update
+        24   -> CMD_ACK_SendToExynos
+        24   -> File_Write_to_SFLAH
+        24   -> Read_File_From_SFLAH
+        24   -> SPI_FLASH_BufferRead
+        24   -> SPI_FLASH_PageWrite
+        24   -> SPI_FLASH_SectorErase
+        24   -> USARTx_EXYNOS
 
 
    Section sizes:
@@ -739,7 +738,7 @@ C:\Tools\WL9F\WLF Monitor - STM32_APP\Platform\TaeHa - ECS\SRC\M25PXX.c
        4  ??DataTable14_2
        4  ??DataTable14_3
        4  ??DataTable14_4
-       8  ?Subroutine0
+      14  ?Subroutine0
       16  ?Subroutine1
       30  ACK_NACK_SendToExynos
       22  CMD_ACK_SendToExynos
@@ -750,19 +749,19 @@ C:\Tools\WL9F\WLF Monitor - STM32_APP\Platform\TaeHa - ECS\SRC\M25PXX.c
       42  M25P32_Init
       38  MakeCrc16
       94  Read_File_From_SFLAH
-     142  SPI_FLASH_BufferRead
+      74  SPI_FLASH_BufferRead
      156  SPI_FLASH_BufferWrite
-      42  SPI_FLASH_BulkErase
-     150  SPI_FLASH_PageWrite
+      64  SPI_FLASH_BulkErase
+     176  SPI_FLASH_PageWrite
        2  SPI_FLASH_ReadByte
       66  SPI_FLASH_ReadID
-      66  SPI_FLASH_SectorErase
+      88  SPI_FLASH_SectorErase
       48  SPI_FLASH_SendByte
       46  SPI_FLASH_StartReadSequence
-     102  SPI_FLASH_WaitForWriteEnd
-      26  SPI_FLASH_WriteEnable
-      84  SPI_Transfer
-     318  STM32_Update
+      30  SPI_FLASH_WaitForWriteEnd
+      22  SPI_FLASH_WriteEnable
+      88  SPI_Transfer
+     354  STM32_Update
     1052  download_enable_code
           fatoryinit_enable_code
           Change_UART4_for_Download
@@ -775,10 +774,10 @@ C:\Tools\WL9F\WLF Monitor - STM32_APP\Platform\TaeHa - ECS\SRC\M25PXX.c
  
  1 026 bytes in section .bss
  1 052 bytes in section .data
- 2 170 bytes in section .text
+ 2 142 bytes in section .text
  
- 2 170 bytes of CODE memory
+ 2 142 bytes of CODE memory
  2 078 bytes of DATA memory
 
 Errors: none
-Warnings: none
+Warnings: 1

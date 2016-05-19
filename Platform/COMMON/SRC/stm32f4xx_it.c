@@ -111,6 +111,7 @@ extern CMD_LAMP rx_CMD_LAMP;
 
 /* Private define ------------------------------------------------------------*/
 #define CPU_DIE_CTL(x)		GPIO_WriteBit(CPU_DIE_PORT,CPU_DIE,x)			// ++, --, 160511 bwk
+#define EXT_WATCHDOG_ENALBE(x)					GPIO_WriteBit(WD_EN_PORT, WD_EN,x)		// ++, --, 160519 bwk
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 u8 ring_buf[RING_BUF_SIZE];		
@@ -951,7 +952,9 @@ void UART4_Receive_CMD(void)
 					Stm32_Update_CMD = WL9FM_USART_DATA.COM4_RxBuf[2];
 					FatoryInit_Flag = WL9FM_USART_DATA.COM4_RxBuf[3];
 					ST_Update=1;
-
+					// ++, 160519 bwk
+					EXT_WATCHDOG_ENALBE(1);
+					// --, 160519 bwk
 					break;
 				case VersionCMD:
 					
@@ -1019,6 +1022,10 @@ void UART4_Receive_CMD(void)
 				case CANUPDATECMD:
 					CANUpdateFlag = WL9FM_USART_DATA.COM4_RxBuf[2];
 					CANUpdateSA = WL9FM_USART_DATA.COM4_RxBuf[3];
+					// ++, 160519 bwk
+					if(CANUpdateFlag == 1)
+						EXT_WATCHDOG_ENALBE(1);
+					// --, 160519 bwk
 					break;
 				case OSUPDATECMD:
 					LCDOffCount = 0;
@@ -1044,24 +1051,19 @@ void UART4_Receive_CMD(void)
 					if(WL9FM_USART_DATA.COM4_RxBuf[2] == 1)
 					{
 						SPI_FLASH_BulkErase();
-						CPU_OK();		// ++, --, 160511 bwk
 					}
 					else
 					{
 						SPI_FLASH_SectorErase(0x3d0000);	//Sector60
-						CPU_OK();		// ++, --, 160511 bwk
 						SPI_FLASH_PageWrite(&WL9FM_USART_DATA.COM4_RxBuf[3],0x3d0000,7);
-						CPU_OK();		// ++, --, 160511 bwk
 						SPI_FLASH_BufferRead(&Temp[3],0x3d0000,7);
-						CPU_OK();		// ++, --, 160511 bwk
 						Temp[0] = 0x02;
 						Temp[1] = FLASHTESTRES;
 						Temp[2] = WL9FM_USART_DATA.COM4_RxBuf[2];
 						Temp[Serial_COM4_RxSize-1] = 0x03;	
 						USARTx_EXYNOS(COM4, (char *)Temp);	
-						CPU_OK();		// ++, --, 160511 bwk
+						
 						SPI_FLASH_SectorErase(0x3d0000);	//Sector60
-						CPU_OK();		// ++, --, 160511 bwk
 					}
 
 					break;
