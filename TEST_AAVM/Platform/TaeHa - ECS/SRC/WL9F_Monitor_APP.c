@@ -76,6 +76,7 @@ WL9FM_flag_data smk_flag_data;
 
 /* Private variables ---------------------------------------------------------*/
 u8 gAuthentication_Cnt = 0;
+u8 gRetryCheck=0;		// ++, --, 160830 bwk
 
 // ++ , 141118 sys3215
 u8 Flag_ESL;
@@ -437,6 +438,9 @@ void Init_Smart_Key_valuable(void)
 	Password_Certification_Result=0;
 // --, 141118 sys3215
 
+	gAuthentication_Cnt = 0;						// ++, --, 160830 bwk
+	rand_value.rand_cpk = (rand() % 0xfaffffff);	// ++, --, 160830 bwk
+
 }
 
 
@@ -797,6 +801,8 @@ void Srand()
 
 void GetRandValue(u8 random)
 {
+	// ++, 160830 bwk
+	#if 0
 	if(random == GET_VMC)	
 	{
 		// ++, 150710 bwk
@@ -814,11 +820,19 @@ void GetRandValue(u8 random)
 		rand_value.rand_vmc = (rand() % 64255);
 		rand_value.rand_cpk = (rand() % 0xfaffffff);
 	}	
+	#else
+	if((random == GET_VMC) || (random == GET_VMC_CPK))
+		rand_value.rand_vmc = (rand() % 64255);	
+	#endif
+	// --, 160830 bwk
 }
 
 void RequestFirstAuthentication(void)
 {
 	unsigned int temp;
+
+	gAuthentication_Cnt = 0;		// ++, --, 160830 bwk
+	gRetryCheck = 0;				// ++, --, 160830 bwk
 	
 	SetTagLevel(TAG_LEVEL_NORMAL);
 	SetTagCmd(TAG_CMD_COMM_AUTHENTICATION);
@@ -847,6 +861,9 @@ void RequestSecondAuthentication(void)
 {
 	unsigned short upper_cpk, lower_cpk;
 	unsigned int temp;
+
+	gAuthentication_Cnt = 0;		// ++, --, 160830 bwk
+	gRetryCheck = 0;				// ++, --, 160830 bwk
 
 	upper_cpk = (rand_value.rand_cpk & 0xffff0000) >> 16;
 	lower_cpk = rand_value.rand_cpk & 0x0000ffff;
@@ -1151,11 +1168,53 @@ void SmartKeyAuthentication(void)
 			}
 			else if(smk_flag_data.recv_resp_packet == (REQUEST_FIRST_AUTHENTICATION | RESPONSE_WAIT))
 			{
+				// ++, 160830 bwk
+				#if 0
 				//RequestFirstAuthentication();
+				#else
+				if(gRetryCheck < 5)
+				{
+					if(++gAuthentication_Cnt >= 2)
+					{
+						gAuthentication_Cnt = 0;
+						struct st_CAN_Message1 Send_Message;
+						memcpy(&Send_Message.Data,&send_smartkey,8);	
+						Send_Message.Priority= 0x18;
+						Send_Message.PDU_Format= 0xFF;
+						Send_Message.PDU_Specific= 0xE7;
+						Send_Message.Source_Address= 0x28;
+						Write_CAN_Single(Send_Message);
+
+						gRetryCheck++;
+					}
+				}
+				#endif
+				// --, 160830 bwk
 			}
 			else if(smk_flag_data.recv_resp_packet == (REQUEST_SECOND_AUTHENTICATION | RESPONSE_WAIT))
 			{
+				// ++, 160830 bwk
+				#if 0
 				//RequestSecondAuthentication();
+				#else
+				if(gRetryCheck < 5)
+				{
+					if(++gAuthentication_Cnt >= 2)
+					{
+						gAuthentication_Cnt = 0;
+						struct st_CAN_Message1 Send_Message;
+						memcpy(&Send_Message.Data,&send_smartkey,8);	
+						Send_Message.Priority= 0x18;
+						Send_Message.PDU_Format= 0xFF;
+						Send_Message.PDU_Specific= 0xE7;
+						Send_Message.Source_Address= 0x28;
+						Write_CAN_Single(Send_Message);
+
+						gRetryCheck++;
+					}
+				}
+				#endif
+				// --, 160830 bwk
 			}
 		}
 	}
