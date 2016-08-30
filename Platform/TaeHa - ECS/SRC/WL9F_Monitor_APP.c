@@ -171,6 +171,7 @@ u8 SmartKeyUse;
 
 u8 CameraCommFlag;
 
+u8 AAVMCommFlag;
 // ++, sys3215, 141211
 extern u8 Hardware_Revision;
 // --, sys3215, 141211
@@ -1253,6 +1254,7 @@ void WL9FM_10mSecOperationFunc(void)
   * @param  None
   * @retval None
   */
+u8 count = 0;
 void WL9FM_100mSecOperationFunc(void)
 {
 	
@@ -1353,7 +1355,15 @@ void WL9FM_100mSecOperationFunc(void)
                 cam_mode_check();
 #endif
                 // --, 150715 bwk
+
 	}
+        
+        if(AAVMCommFlag == 1)
+        {
+                AAVMCommFlag = 0;
+                aavm_mode_change(AAVM_Mode);
+                aavm_mode_check();
+        }
 
 
 	// ++, 150204 sys3215
@@ -1398,8 +1408,20 @@ void WL9FM_1SecOperationFunc(void)
 		Camera_CheckCnt = 0;
 	}
 	//  --, kutelf, 131007
+	if (AAVM_CheckFlag == 1 && AAVM_Mode != 0xFF)
+	{
+		if (++AAVM_CheckCnt == 6) AAVM_CheckCnt = 0;
+			
+		if ((AAVM_CheckCnt % 3) == 0)
+		{
+			aavm_mode_check();
+		}
+	}
+	else
+	{
+		AAVM_CheckCnt = 0;
+	}
 }
-
 //	++, kutelf, 140801
 //	RevD.01.01
 //	RevD 보드와 호환성을 위하여 함수 추가 및 이름 변경
@@ -1446,7 +1468,52 @@ void CheckCamera_Input(u8 Mode)
 	}
 // --, sys3215, 14121
 }
+
+void AAVMMode(u8 Mode, u8 OSD)
+{
+// ++, sys3215, 141211
+#if 0
+	#ifdef BoardVersion_RevD
+		TW8816_AAVMMode(Mode, OSD);
+	#else
+		TW2835_CameraMode(Mode, OSD);
+	#endif
+#endif
+
+	if(Hardware_Revision==REVB)
+	{
+		TW2835_CameraMode(Mode, OSD);
+	}
+	else
+	{
+		TW8816_AAVMMode(Mode, OSD);
+	}
+// --, sys3215, 141211
+}
+
+void CheckAAVM_Input(u8 Mode)
+{
+// ++, sys3215, 141211
+#if 0
+	#ifdef BoardVersion_RevD
+		TW8816_CheckAAVM_Input(Mode);
+	#else
+		TW2835_CheckCamera_Input(Mode);
+	#endif
+#endif
+
+	if(Hardware_Revision==REVB)
+	{
+		TW2835_CheckCamera_Input(Mode);
+	}
+	else
+	{
+		TW8816_CheckAAVM_Input(Mode);
+	}
+// --, sys3215, 14121
+}
 //	--, kutelf, 140801
+
 
 void WL9FM_System_Init_Start(void)
 {

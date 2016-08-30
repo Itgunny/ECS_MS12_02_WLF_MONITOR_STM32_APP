@@ -1,39 +1,42 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      12/May/2016  14:27:30 #
+# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      29/Aug/2016  16:39:12 #
 # Copyright 1999-2012 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
 #    Endian       =  little                                                   #
-#    Source file  =  C:\Tools\WL9F\WLF Monitor - STM32_APP\Platform\TaeHa -   #
-#                    ECS\SRC\LCD_Control.c                                    #
-#    Command line =  "C:\Tools\WL9F\WLF Monitor - STM32_APP\Platform\TaeHa -  #
-#                    ECS\SRC\LCD_Control.c" -D USE_STDPERIPH_DRIVER -D        #
-#                    STM32F4XX -D USE_STM324xG_EVAL -D USE_FULL_ASSERT -lcN   #
-#                    "C:\Tools\WL9F\WLF Monitor -                             #
-#                    STM32_APP\Project\Debug\List\" -o "C:\Tools\WL9F\WLF     #
-#                    Monitor - STM32_APP\Project\Debug\Obj\" --debug          #
-#                    --endian=little --cpu=Cortex-M4 -e --fpu=VFPv4_sp        #
-#                    --dlib_config "C:\Tools\IAR Systems\Embedded Workbench   #
-#                    6.5\arm\INC\c\DLib_Config_Full.h" -I "C:\Tools\WL9F\WLF  #
-#                    Monitor - STM32_APP\Project\..\Platform\COMMON\INC\" -I  #
-#                    "C:\Tools\WL9F\WLF Monitor -                             #
+#    Source file  =  D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -            #
+#                    STM32_APP\Platform\TaeHa - ECS\SRC\LCD_Control.c         #
+#    Command line =  "D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -           #
+#                    STM32_APP\Platform\TaeHa - ECS\SRC\LCD_Control.c" -D     #
+#                    USE_STDPERIPH_DRIVER -D STM32F4XX -D USE_STM324xG_EVAL   #
+#                    -D USE_FULL_ASSERT -lcN "D:\Project\[SVN] ECS-RD12-16 -  #
+#                    WL9F Monitor - STM32_APP\Project\Debug\List\" -o         #
+#                    "D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -           #
+#                    STM32_APP\Project\Debug\Obj\" --debug --endian=little    #
+#                    --cpu=Cortex-M4 -e --fpu=VFPv4_sp --dlib_config          #
+#                    "C:\Program Files (x86)\IAR Systems\Embedded Workbench   #
+#                    6.5\arm\INC\c\DLib_Config_Full.h" -I "D:\Project\[SVN]   #
+#                    ECS-RD12-16 - WL9F Monitor -                             #
+#                    STM32_APP\Project\..\Platform\COMMON\INC\" -I            #
+#                    "D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -           #
 #                    STM32_APP\Project\..\Platform\TaeHa - ECS\INC\" -I       #
-#                    "C:\Tools\WL9F\WLF Monitor -                             #
+#                    "D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -           #
 #                    STM32_APP\Project\..\Libraries\CMSIS\Device\ST\STM32F4xx #
-#                    \Include\" -I "C:\Tools\WL9F\WLF Monitor -               #
-#                    STM32_APP\Project\..\Libraries\STM32F4xx_StdPeriph_Drive #
-#                    r\inc\" -Oh --use_c++_inline -I "C:\Tools\IAR            #
-#                    Systems\Embedded Workbench 6.5\arm\CMSIS\Include\"       #
-#    List file    =  C:\Tools\WL9F\WLF Monitor -                              #
+#                    \Include\" -I "D:\Project\[SVN] ECS-RD12-16 - WL9F       #
+#                    Monitor - STM32_APP\Project\..\Libraries\STM32F4xx_StdPe #
+#                    riph_Driver\inc\" -Oh --use_c++_inline -I "C:\Program    #
+#                    Files (x86)\IAR Systems\Embedded Workbench               #
+#                    6.5\arm\CMSIS\Include\"                                  #
+#    List file    =  D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -            #
 #                    STM32_APP\Project\Debug\List\LCD_Control.lst             #
-#    Object file  =  C:\Tools\WL9F\WLF Monitor -                              #
+#    Object file  =  D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -            #
 #                    STM32_APP\Project\Debug\Obj\LCD_Control.o                #
 #                                                                             #
 #                                                                             #
 ###############################################################################
 
-C:\Tools\WL9F\WLF Monitor - STM32_APP\Platform\TaeHa - ECS\SRC\LCD_Control.c
+D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor - STM32_APP\Platform\TaeHa - ECS\SRC\LCD_Control.c
       1          /**
       2            ******************************************************************************
       3            * @file    LCD_Control.c 
@@ -94,234 +97,264 @@ C:\Tools\WL9F\WLF Monitor - STM32_APP\Platform\TaeHa - ECS\SRC\LCD_Control.c
      58          unsigned char Camera_CheckCnt = 0;
      59          //  --, kutelf, 131007
      60          
-     61          /* Private function prototypes -----------------------------------------------*/
-     62          /* Private functions ---------------------------------------------------------*/
-     63          
-     64          void LED_POWER_ONOFF(uint8_t BitData)
-     65          {
-     66              GPIO_WriteBit(LED_PORT, LED_CTRL, (BitAction) BitData);
-     67          }
-     68          
-     69          void LCD_POWER_ONOFF(uint8_t BitData)
-     70          {
-     71              GPIO_WriteBit(LCDPWR_PORT, LCDPWR_CTRL, (BitAction) BitData);
-     72          }
-     73          
-     74          void LCDBL_ONOFF(uint8_t BitData)
-     75          {
-     76              GPIO_WriteBit(LCDBL_PORT, LCDBL_CTRL, (BitAction) BitData);
-     77          
-     78          	WL9FM_LCDBL.OnOff = BitData;
+     61          unsigned char AAVM_Mode = 0xFF;
+     62          extern unsigned char AAVM_Icon_Index = 0xFF;
+     63          extern unsigned char AAVM_Camera_Icon_Index = 0xFF;
+     64          unsigned char AAVM_CheckFlag = 1;
+     65          unsigned char AAVM_CheckCnt = 0;
+     66          extern unsigned char AAVM_Menu_Flag = 0xFF;
+     67          
+     68          /* Private function prototypes -----------------------------------------------*/
+     69          /* Private functions ---------------------------------------------------------*/
+     70          
+     71          void LED_POWER_ONOFF(uint8_t BitData)
+     72          {
+     73              GPIO_WriteBit(LED_PORT, LED_CTRL, (BitAction) BitData);
+     74          }
+     75          
+     76          void LCD_POWER_ONOFF(uint8_t BitData)
+     77          {
+     78              GPIO_WriteBit(LCDPWR_PORT, LCDPWR_CTRL, (BitAction) BitData);
      79          }
      80          
-     81          /**
-     82            * @brief  PWM Level Setting (LEVEL value를 받아서 설정한다.)
-     83            * @param  pwm
-     84            * @retval None
-     85            */
-     86          void LCDBL_PWM_LEVEL(uint8_t LEVEL)
-     87          {
-     88              //  PWM을 변경한 후에 항상 저장해 놓는다.
-     89              WL9FM_LCDBL.PWM	  = LCDBL_PWMLEVEL[LEVEL];  
-     90              WL9FM_LCDBL.LEVEL = LEVEL;
-     91              LCDBL_PWM_CONTROL(WL9FM_LCDBL.PWM);
-     92          }
-     93          
-     94          /**
-     95            * @brief  PWM Value Setting (pwm value를 받아서, Pulse로 설정한다.)
-     96            * @param  pwm
-     97            * @retval None
-     98            */
-     99          void LCDBL_PWM_CONTROL(uint16_t PWM_VALUE)
-    100          {
-    101          	TIM_OCInitTypeDef  TIM_OCInitStructure;
-    102          
-    103          	TIM_OCInitStructure.TIM_OCMode 			= TIM_OCMode_PWM2;
-    104          	TIM_OCInitStructure.TIM_OutputState 	= TIM_OutputState_Enable;
-    105          	TIM_OCInitStructure.TIM_OutputNState 	= TIM_OutputNState_Enable;
-    106          	TIM_OCInitStructure.TIM_OCPolarity 		= TIM_OCPolarity_Low;
-    107          	TIM_OCInitStructure.TIM_OCNPolarity 	= TIM_OCNPolarity_High;
-    108          	TIM_OCInitStructure.TIM_OCIdleState 	= TIM_OCIdleState_Set;
-    109          	TIM_OCInitStructure.TIM_OCNIdleState 	= TIM_OCIdleState_Reset;
-    110          
-    111          	//	Channel 1 Configuration in PWM mode
-    112          	TIM_OCInitStructure.TIM_Pulse = PWM_VALUE;
-    113          	TIM_OC1Init(TIM8, &TIM_OCInitStructure);					
-    114          
-    115          	// 	TIM8 counter enable
-    116          	TIM_Cmd(TIM8, ENABLE);			
+     81          void LCDBL_ONOFF(uint8_t BitData)
+     82          {
+     83              GPIO_WriteBit(LCDBL_PORT, LCDBL_CTRL, (BitAction) BitData);
+     84          
+     85          	WL9FM_LCDBL.OnOff = BitData;
+     86          }
+     87          
+     88          /**
+     89            * @brief  PWM Level Setting (LEVEL value를 받아서 설정한다.)
+     90            * @param  pwm
+     91            * @retval None
+     92            */
+     93          void LCDBL_PWM_LEVEL(uint8_t LEVEL)
+     94          {
+     95              //  PWM을 변경한 후에 항상 저장해 놓는다.
+     96              WL9FM_LCDBL.PWM	  = LCDBL_PWMLEVEL[LEVEL];  
+     97              WL9FM_LCDBL.LEVEL = LEVEL;
+     98              LCDBL_PWM_CONTROL(WL9FM_LCDBL.PWM);
+     99          }
+    100          
+    101          /**
+    102            * @brief  PWM Value Setting (pwm value를 받아서, Pulse로 설정한다.)
+    103            * @param  pwm
+    104            * @retval None
+    105            */
+    106          void LCDBL_PWM_CONTROL(uint16_t PWM_VALUE)
+    107          {
+    108          	TIM_OCInitTypeDef  TIM_OCInitStructure;
+    109          
+    110          	TIM_OCInitStructure.TIM_OCMode 			= TIM_OCMode_PWM2;
+    111          	TIM_OCInitStructure.TIM_OutputState 	= TIM_OutputState_Enable;
+    112          	TIM_OCInitStructure.TIM_OutputNState 	= TIM_OutputNState_Enable;
+    113          	TIM_OCInitStructure.TIM_OCPolarity 		= TIM_OCPolarity_Low;
+    114          	TIM_OCInitStructure.TIM_OCNPolarity 	= TIM_OCNPolarity_High;
+    115          	TIM_OCInitStructure.TIM_OCIdleState 	= TIM_OCIdleState_Set;
+    116          	TIM_OCInitStructure.TIM_OCNIdleState 	= TIM_OCIdleState_Reset;
     117          
-    118          	//	TIM8 Main Output Enable
-    119          	TIM_CtrlPWMOutputs(TIM8, ENABLE);
-    120          }
+    118          	//	Channel 1 Configuration in PWM mode
+    119          	TIM_OCInitStructure.TIM_Pulse = PWM_VALUE;
+    120          	TIM_OC1Init(TIM8, &TIM_OCInitStructure);					
     121          
-    122          void LCDBL_Init(void)
-    123          {
-    124          	DebugMsg_printf("++ LCD_Control_Init, LCDBL(TIM8 : PWM), ONOFF Initialize START\r\n");
-    125          
-    126          	/* TIM8 Configuration ---------------------------------------------------
-    127          	Generate 7 PWM signals with 4 different duty cycles:
-    128          	TIM8 input clock (TIM8CLK) is set to 2 * APB2 clock (PCLK2), since APB2 
-    129          	prescaler is different from 1.   
-    130          	TIM8CLK = 2 * PCLK2  
-    131          	PCLK2 = HCLK / 2 
-    132          	=> TIM8CLK = 2 * (HCLK / 2) = HCLK = SystemCoreClock
-    133          	TIM8CLK = SystemCoreClock, Prescaler = 0, TIM8 counter clock = SystemCoreClock
-    134          	SystemCoreClock is set to 168 MHz for STM32F4xx devices
-    135          
-    136          	The objective is to generate 7 PWM signal at 17.57 KHz:
-    137          	- TIM8_Period = (SystemCoreClock / 17570) - 1
-    138          	The channel 1 and channel 1N duty cycle is set to 50%
-    139          	The channel 2 and channel 2N duty cycle is set to 37.5%
-    140          	The channel 3 and channel 3N duty cycle is set to 25%
-    141          	The channel 4 duty cycle is set to 12.5%
-    142          	The Timer pulse is calculated as follows:
-    143          	- ChannelxPulse = DutyCycle * (TIM8_Period - 1) / 100
-    144             
-    145             Note: 
-    146              SystemCoreClock variable holds HCLK frequency and is defined in system_stm32f4xx.c file.
-    147              Each time the core clock (HCLK) changes, user had to call SystemCoreClockUpdate()
-    148              function to update SystemCoreClock variable value. Otherwise, any configuration
-    149              based on this variable will be incorrect. 
-    150            ----------------------------------------------------------------------- */
-    151            
-    152            	TIM_TimeBaseInitTypeDef  	TIM_TimeBaseStructure;
-    153            	TIM_OCInitTypeDef  			TIM_OCInitStructure;
-    154          
-    155          	uint16_t TimerPeriod  = 0;
-    156          	
-    157          	//	PWM Frequency : 500Hz (Mitsubishi 7" LCD)
-    158          	TimerPeriod = (SystemCoreClock / 250 ) - 1;
-    159          #if 0
-    160          	ChannelPulse = (uint16_t) (((uint32_t) 0 * (TimerPeriod - 1)) / 10);  	//    0% : 0
-    161          	ChannelPulse = (uint16_t) (((uint32_t) 2 * (TimerPeriod - 1)) / 10);	//	 20% : 3327  
-    162          	ChannelPulse = (uint16_t) (((uint32_t) 3 * (TimerPeriod - 1)) / 10); 	//	 30% : 4991 
-    163          	ChannelPulse = (uint16_t) (((uint32_t) 4 * (TimerPeriod - 1)) / 10); 	//	 40% : 6655 
-    164          	ChannelPulse = (uint16_t) (((uint32_t) 5 * (TimerPeriod - 1)) / 10);  	//	 50% : 8319
-    165          	ChannelPulse = (uint16_t) (((uint32_t) 6 * (TimerPeriod - 1)) / 10);  	//	 60% : 9982
-    166          	ChannelPulse = (uint16_t) (((uint32_t) 7 * (TimerPeriod - 1)) / 10);  	//	 70% : 11646
-    167          	ChannelPulse = (uint16_t) (((uint32_t) 85 * (TimerPeriod - 1)) / 100);	//	 85% : 14142  
-    168          	ChannelPulse = (uint16_t) (((uint32_t) 10 * (TimerPeriod - 1)) / 10);  //	100% : 16638
-    169          #endif
-    170          
-    171              //  LCDBL GPIO는 System_Init.c 에서 설정
-    172          #if 0
-    173          	GPIO_InitTypeDef GPIO_InitStructure;
-    174          
-    175          	//	LCDBL_PWM -> PWM
-    176          	GPIO_InitStructure.GPIO_Pin   = LCDBL_PWM;
-    177          	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF;   
-    178          	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-    179          	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-    180          	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
-    181          	GPIO_Init(LCDBL_PORT, &GPIO_InitStructure);
-    182          	GPIO_PinAFConfig(LCDBL_PORT, LCDBL_PWM_PinSource, GPIO_AF_TIM8);
-    183          
-    184          	//  LCDBL_CTRL -> GPIO Output
-    185          	GPIO_InitStructure.GPIO_Pin   = LCDBL_CTRL;
-    186          	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
-    187          	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-    188          	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-    189          	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    190          	GPIO_Init(LCDBL_PORT, &GPIO_InitStructure);
-    191          
-    192          #endif
-    193          	
-    194          	TIM_TimeBaseStructure.TIM_Prescaler         = 16;
-    195          	TIM_TimeBaseStructure.TIM_CounterMode 	    = TIM_CounterMode_Up;
-    196          	TIM_TimeBaseStructure.TIM_Period 			= TimerPeriod;
-    197          	TIM_TimeBaseStructure.TIM_ClockDivision     = 0;
-    198          	TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;
-    199          
-    200          	TIM_TimeBaseInit(TIM8, &TIM_TimeBaseStructure);
-    201          
-    202          	TIM_OCInitStructure.TIM_OCMode 			= TIM_OCMode_PWM2;
-    203          	TIM_OCInitStructure.TIM_OutputState 	= TIM_OutputState_Enable;
-    204          	TIM_OCInitStructure.TIM_OutputNState 	= TIM_OutputNState_Enable;
-    205          	TIM_OCInitStructure.TIM_OCPolarity 		= TIM_OCPolarity_Low;
-    206          	TIM_OCInitStructure.TIM_OCNPolarity 	= TIM_OCNPolarity_High;
-    207          	TIM_OCInitStructure.TIM_OCIdleState 	= TIM_OCIdleState_Set;
-    208          	TIM_OCInitStructure.TIM_OCNIdleState 	= TIM_OCIdleState_Reset;
-    209          
-    210          	//	Channel 1 Configuration in PWM mode
-    211          	TIM_OCInitStructure.TIM_Pulse = LCDBL_PWMLEVEL[DefaultLCDBLLEVEL];
-    212          
-    213          	TIM_OC1Init(TIM8, &TIM_OCInitStructure);
-    214          
-    215          	// 	TIM8 counter enable
-    216          	TIM_Cmd(TIM8, ENABLE);
-    217          
-    218          	// 	TIM8 Main Output Enable
-    219          	TIM_CtrlPWMOutputs(TIM8, ENABLE);		
-    220          
-    221          	DebugMsg_printf("-- LCD_Control_Init, LCDBL(TIM8 : PWM), ONOFF Initialize END\r\n");
-    222          
-    223          	TimeDelay_msec(1000); 
+    122          	// 	TIM8 counter enable
+    123          	TIM_Cmd(TIM8, ENABLE);			
+    124          
+    125          	//	TIM8 Main Output Enable
+    126          	TIM_CtrlPWMOutputs(TIM8, ENABLE);
+    127          }
+    128          
+    129          void LCDBL_Init(void)
+    130          {
+    131          	DebugMsg_printf("++ LCD_Control_Init, LCDBL(TIM8 : PWM), ONOFF Initialize START\r\n");
+    132          
+    133          	/* TIM8 Configuration ---------------------------------------------------
+    134          	Generate 7 PWM signals with 4 different duty cycles:
+    135          	TIM8 input clock (TIM8CLK) is set to 2 * APB2 clock (PCLK2), since APB2 
+    136          	prescaler is different from 1.   
+    137          	TIM8CLK = 2 * PCLK2  
+    138          	PCLK2 = HCLK / 2 
+    139          	=> TIM8CLK = 2 * (HCLK / 2) = HCLK = SystemCoreClock
+    140          	TIM8CLK = SystemCoreClock, Prescaler = 0, TIM8 counter clock = SystemCoreClock
+    141          	SystemCoreClock is set to 168 MHz for STM32F4xx devices
+    142          
+    143          	The objective is to generate 7 PWM signal at 17.57 KHz:
+    144          	- TIM8_Period = (SystemCoreClock / 17570) - 1
+    145          	The channel 1 and channel 1N duty cycle is set to 50%
+    146          	The channel 2 and channel 2N duty cycle is set to 37.5%
+    147          	The channel 3 and channel 3N duty cycle is set to 25%
+    148          	The channel 4 duty cycle is set to 12.5%
+    149          	The Timer pulse is calculated as follows:
+    150          	- ChannelxPulse = DutyCycle * (TIM8_Period - 1) / 100
+    151             
+    152             Note: 
+    153              SystemCoreClock variable holds HCLK frequency and is defined in system_stm32f4xx.c file.
+    154              Each time the core clock (HCLK) changes, user had to call SystemCoreClockUpdate()
+    155              function to update SystemCoreClock variable value. Otherwise, any configuration
+    156              based on this variable will be incorrect. 
+    157            ----------------------------------------------------------------------- */
+    158            
+    159            	TIM_TimeBaseInitTypeDef  	TIM_TimeBaseStructure;
+    160            	TIM_OCInitTypeDef  			TIM_OCInitStructure;
+    161          
+    162          	uint16_t TimerPeriod  = 0;
+    163          	
+    164          	//	PWM Frequency : 500Hz (Mitsubishi 7" LCD)
+    165          	TimerPeriod = (SystemCoreClock / 250 ) - 1;
+    166          #if 0
+    167          	ChannelPulse = (uint16_t) (((uint32_t) 0 * (TimerPeriod - 1)) / 10);  	//    0% : 0
+    168          	ChannelPulse = (uint16_t) (((uint32_t) 2 * (TimerPeriod - 1)) / 10);	//	 20% : 3327  
+    169          	ChannelPulse = (uint16_t) (((uint32_t) 3 * (TimerPeriod - 1)) / 10); 	//	 30% : 4991 
+    170          	ChannelPulse = (uint16_t) (((uint32_t) 4 * (TimerPeriod - 1)) / 10); 	//	 40% : 6655 
+    171          	ChannelPulse = (uint16_t) (((uint32_t) 5 * (TimerPeriod - 1)) / 10);  	//	 50% : 8319
+    172          	ChannelPulse = (uint16_t) (((uint32_t) 6 * (TimerPeriod - 1)) / 10);  	//	 60% : 9982
+    173          	ChannelPulse = (uint16_t) (((uint32_t) 7 * (TimerPeriod - 1)) / 10);  	//	 70% : 11646
+    174          	ChannelPulse = (uint16_t) (((uint32_t) 85 * (TimerPeriod - 1)) / 100);	//	 85% : 14142  
+    175          	ChannelPulse = (uint16_t) (((uint32_t) 10 * (TimerPeriod - 1)) / 10);  //	100% : 16638
+    176          #endif
+    177          
+    178              //  LCDBL GPIO는 System_Init.c 에서 설정
+    179          #if 0
+    180          	GPIO_InitTypeDef GPIO_InitStructure;
+    181          
+    182          	//	LCDBL_PWM -> PWM
+    183          	GPIO_InitStructure.GPIO_Pin   = LCDBL_PWM;
+    184          	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF;   
+    185          	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+    186          	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+    187          	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
+    188          	GPIO_Init(LCDBL_PORT, &GPIO_InitStructure);
+    189          	GPIO_PinAFConfig(LCDBL_PORT, LCDBL_PWM_PinSource, GPIO_AF_TIM8);
+    190          
+    191          	//  LCDBL_CTRL -> GPIO Output
+    192          	GPIO_InitStructure.GPIO_Pin   = LCDBL_CTRL;
+    193          	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+    194          	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+    195          	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+    196          	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    197          	GPIO_Init(LCDBL_PORT, &GPIO_InitStructure);
+    198          
+    199          #endif
+    200          	
+    201          	TIM_TimeBaseStructure.TIM_Prescaler         = 16;
+    202          	TIM_TimeBaseStructure.TIM_CounterMode 	    = TIM_CounterMode_Up;
+    203          	TIM_TimeBaseStructure.TIM_Period 			= TimerPeriod;
+    204          	TIM_TimeBaseStructure.TIM_ClockDivision     = 0;
+    205          	TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;
+    206          
+    207          	TIM_TimeBaseInit(TIM8, &TIM_TimeBaseStructure);
+    208          
+    209          	TIM_OCInitStructure.TIM_OCMode 			= TIM_OCMode_PWM2;
+    210          	TIM_OCInitStructure.TIM_OutputState 	= TIM_OutputState_Enable;
+    211          	TIM_OCInitStructure.TIM_OutputNState 	= TIM_OutputNState_Enable;
+    212          	TIM_OCInitStructure.TIM_OCPolarity 		= TIM_OCPolarity_Low;
+    213          	TIM_OCInitStructure.TIM_OCNPolarity 	= TIM_OCNPolarity_High;
+    214          	TIM_OCInitStructure.TIM_OCIdleState 	= TIM_OCIdleState_Set;
+    215          	TIM_OCInitStructure.TIM_OCNIdleState 	= TIM_OCIdleState_Reset;
+    216          
+    217          	//	Channel 1 Configuration in PWM mode
+    218          	TIM_OCInitStructure.TIM_Pulse = LCDBL_PWMLEVEL[DefaultLCDBLLEVEL];
+    219          
+    220          	TIM_OC1Init(TIM8, &TIM_OCInitStructure);
+    221          
+    222          	// 	TIM8 counter enable
+    223          	TIM_Cmd(TIM8, ENABLE);
     224          
-    225          	WL9FM_LCDBL.LEVEL = DefaultLCDBLLEVEL;
-    226          	WL9FM_LCDBL.PWM   = LCDBL_PWMLEVEL[DefaultLCDBLLEVEL];
-    227          }
-    228          
-    229          void LCD_Display_Change(uint8_t BitData)
-    230          {
-    231          	//	Display Buffer를 변경하는 것이기 때문에
-    232          	//	표시하고자 하는 것을 하기 전에, 다른 것을 먼저 High-Z 상태로 만든다. 
-    233          	if (BitData == STM32F4_DISPLAY)
-    234          	{
-    235          	    GPIO_WriteBit(LCD_EXYNOS_PORT, LCD_EXYNOS, Bit_RESET);
-    236          		TimeDelay_msec(10); 
-    237          	    GPIO_WriteBit(LCD_STM32_PORT , LCD_STM32 , Bit_SET);
-    238          	}
-    239          	else
-    240          	{
-    241          	    GPIO_WriteBit(LCD_STM32_PORT , LCD_STM32 , Bit_RESET);
-    242          		TimeDelay_msec(10); 
-    243          		GPIO_WriteBit(LCD_EXYNOS_PORT, LCD_EXYNOS, Bit_SET);
-    244          	}
-    245          }
-    246          
-    247          //  ++, kutelf, 131007
-    248          //	카메라 동작 모드 일 경우, 3초 마다 한번씩 각 채널의
-    249          //	상태를 체크하여, Video가 없으면 No Video 띄워준다.
-    250          void cam_mode_check(void)
-    251          {
-    252          	CheckCamera_Input(Camera_Mode);		
-    253          }
-    254          	
-    255          void cam_mode_change(u8 Mode)
-    256          {
-    257          	if(Mode == 0xFF)
-    258          	{
-    259          		LCD_Display_Change(EXYNOS_DISPLAY);
-    260          	}
-    261          	else
-    262          	{
-    263          		CameraMode(Mode, 1);
-    264          		LCD_Display_Change(STM32F4_DISPLAY);
-    265          	}
-    266          	
-    267          	
-    268          }
-    269          //  --, kutelf, 131007
-    270          
-    271          /**\
-    272            * @brief  None
-    273            * @param  None
-    274            * @retval None
-    275            */
-    276          void LCD_Control_Init(void)
-    277          {
-    278          	TimeDelay_msec(3000); 
-    279          	LCD_Display_Change(EXYNOS_DISPLAY);
-    280          	//LCD_Display_Change(STM32F4_DISPLAY);
-    281          	LCDBL_Init();	
-    282          	LCDBL_ONOFF(LCDBL_ON);	//  LCDBL Power On!!!
-    283          			//	LCDBL PWM 설정 
-    284          	
-    285          	//LCD_Display_Change(STM32F4_DISPLAY);
-    286          }
-    287          
-    288          /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
+    225          	// 	TIM8 Main Output Enable
+    226          	TIM_CtrlPWMOutputs(TIM8, ENABLE);		
+    227          
+    228          	DebugMsg_printf("-- LCD_Control_Init, LCDBL(TIM8 : PWM), ONOFF Initialize END\r\n");
+    229          
+    230          	TimeDelay_msec(1000); 
+    231          
+    232          	WL9FM_LCDBL.LEVEL = DefaultLCDBLLEVEL;
+    233          	WL9FM_LCDBL.PWM   = LCDBL_PWMLEVEL[DefaultLCDBLLEVEL];
+    234          }
+    235          
+    236          void LCD_Display_Change(uint8_t BitData)
+    237          {
+    238          	//	Display Buffer를 변경하는 것이기 때문에
+    239          	//	표시하고자 하는 것을 하기 전에, 다른 것을 먼저 High-Z 상태로 만든다. 
+    240          	if (BitData == STM32F4_DISPLAY)
+    241          	{
+    242          	    GPIO_WriteBit(LCD_EXYNOS_PORT, LCD_EXYNOS, Bit_RESET);
+    243          		TimeDelay_msec(10); 
+    244          	    GPIO_WriteBit(LCD_STM32_PORT , LCD_STM32 , Bit_SET);
+    245          	}
+    246          	else
+    247          	{
+    248          	    GPIO_WriteBit(LCD_STM32_PORT , LCD_STM32 , Bit_RESET);
+    249          		TimeDelay_msec(10); 
+    250          		GPIO_WriteBit(LCD_EXYNOS_PORT, LCD_EXYNOS, Bit_SET);
+    251          	}
+    252          }
+    253          
+    254          //  ++, kutelf, 131007
+    255          //	카메라 동작 모드 일 경우, 3초 마다 한번씩 각 채널의
+    256          //	상태를 체크하여, Video가 없으면 No Video 띄워준다.
+    257          void cam_mode_check(void)
+    258          {
+    259          	CheckCamera_Input(Camera_Mode);		
+    260          }
+    261          	
+    262          void cam_mode_change(u8 Mode)
+    263          {
+    264          	if(Mode == 0xFF)
+    265          	{
+    266          		LCD_Display_Change(EXYNOS_DISPLAY);
+    267          	}
+    268          	else
+    269          	{
+    270          		CameraMode(Mode, 1);
+    271          		LCD_Display_Change(STM32F4_DISPLAY);
+    272          	}
+    273          	
+    274          	
+    275          }
+    276          // ++, 160812 cjg
+    277          void aavm_mode_check(void)
+    278          {
+    279                    CheckAAVM_Input(AAVM_Mode);
+    280          }
+    281          void aavm_mode_change(u8 Mode)
+    282          {
+    283                    if(Mode == 0xFF)
+    284                    {
+    285                            LCD_Display_Change(EXYNOS_DISPLAY);
+    286                    }
+    287                    else
+    288                    {
+    289                            AAVMMode(Mode, 1);
+    290                            LCD_Display_Change(STM32F4_DISPLAY);
+    291                    }
+    292          }
+    293          
+    294          // --, 160812 cjg
+    295          
+    296          
+    297          
+    298          
+    299          //  --, kutelf, 131007
+    300          
+    301          /**\
+    302            * @brief  None
+    303            * @param  None
+    304            * @retval None
+    305            */
+    306          void LCD_Control_Init(void)
+    307          {
+    308          	TimeDelay_msec(3000); 
+    309          	LCD_Display_Change(EXYNOS_DISPLAY);
+    310          	//LCD_Display_Change(STM32F4_DISPLAY);
+    311          	LCDBL_Init();	
+    312          	LCDBL_ONOFF(LCDBL_ON);	//  LCDBL Power On!!!
+    313          			//	LCDBL PWM 설정 
+    314          	
+    315          	//LCD_Display_Change(STM32F4_DISPLAY);
+    316          }
+    317          
+    318          /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
 
    Maximum stack usage in bytes:
 
@@ -354,6 +387,11 @@ C:\Tools\WL9F\WLF Monitor - STM32_APP\Platform\TaeHa - ECS\SRC\LCD_Control.c
          0   -> GPIO_WriteBit
        0   LED_POWER_ONOFF
          0   -> GPIO_WriteBit
+       8   aavm_mode_change
+         8   -> AAVMMode
+         0   -> LCD_Display_Change
+       0   aavm_mode_check
+         0   -> CheckAAVM_Input
        8   cam_mode_change
          8   -> CameraMode
          0   -> LCD_Display_Change
@@ -365,13 +403,21 @@ C:\Tools\WL9F\WLF Monitor - STM32_APP\Platform\TaeHa - ECS\SRC\LCD_Control.c
 
    Bytes  Function/Label
    -----  --------------
-       4  ??DataTable8
-       4  ??DataTable8_1
-       4  ??DataTable8_2
-       4  ??DataTable8_3
-       4  ??DataTable8_4
-       4  ??DataTable8_5
-       4  ??DataTable8_6
+       4  ??DataTable9
+       4  ??DataTable9_1
+       4  ??DataTable9_2
+       4  ??DataTable9_3
+       4  ??DataTable9_4
+       4  ??DataTable9_5
+       4  ??DataTable9_6
+       4  ??DataTable9_7
+       6  ?Subroutine0
+       1  AAVM_Camera_Icon_Index
+       1  AAVM_CheckCnt
+       1  AAVM_CheckFlag
+       1  AAVM_Icon_Index
+       1  AAVM_Menu_Flag
+       1  AAVM_Mode
        1  Camera_CheckCnt
        1  Camera_CheckFlag
        1  Camera_Mode
@@ -384,16 +430,18 @@ C:\Tools\WL9F\WLF Monitor - STM32_APP\Platform\TaeHa - ECS\SRC\LCD_Control.c
       72  LCD_Display_Change
       10  LCD_POWER_ONOFF
       12  LED_POWER_ONOFF
-      24  cam_mode_change
+      18  aavm_mode_change
+       8  aavm_mode_check
+      20  cam_mode_change
        8  cam_mode_check
 
  
-   1 byte  in section .bss
-   2 bytes in section .data
- 474 bytes in section .text
+   2 bytes in section .bss
+   7 bytes in section .data
+ 506 bytes in section .text
  
- 474 bytes of CODE memory
-   3 bytes of DATA memory
+ 506 bytes of CODE memory
+   9 bytes of DATA memory
 
 Errors: none
 Warnings: none

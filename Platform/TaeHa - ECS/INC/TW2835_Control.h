@@ -111,6 +111,7 @@
 #define I2C_PUBLICS
 
 #define CAMCMD 				0x04
+#define AAVMCMD                         0x0E
 #define CAMRES 				0x84
 
 //==================================================================================

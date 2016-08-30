@@ -192,7 +192,7 @@
 
 
 #define	VERSION_HIGH			1
-#define	VERSION_LOW			3
+#define	VERSION_LOW			4
 #define	VERSION_SUB_HIGH		0
 #define	VERSION_SUB_LOW		0
 #define	VERSION_HIDDEN		0
@@ -469,6 +469,10 @@ extern void RTCSend(void);
 extern void CameraMode(u8 Mode, u8 OSD);
 extern void CheckCamera_Input(u8 Mode);
 //	--, kutelf, 140801
+
+extern void AAVMMode(u8 Mode, u8 OSD);
+extern void CheckAAVM_Input(u8 Mode);
+
 
 extern void Init_Smart_Key_valuable(void);
 

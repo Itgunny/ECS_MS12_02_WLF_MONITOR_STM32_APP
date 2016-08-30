@@ -47,8 +47,20 @@ extern void SetDisplayCHBlank(void);
 extern void SetDisplayNosignal(void);
 extern void SetDisplayWarning(void);
 extern void SetDisplayNosignalBlank(void);
-
-
+extern void SetDisplayIcon(void);
+extern void SetChangeSpeakerIcon(void);
+extern void SetChange2DBirdView(void);
+extern void SetChangeFrontView(void);
+extern void SetChangeLeftView(void);
+extern void SetChangeBackView(void);
+extern void SetChangeRightView(void);
+extern void SetChange3DBirdView(void);
+extern void SetChange3DRearView(void);
+extern void SetChange4ChannelView(void);
+extern void SetChange3DLeftView(void);
+extern void SetChange3DRightView(void);
+extern void SetBlankIcon(void);
+extern void SetChangeXIcon(void);
 
 #endif /* __TW8816_OSD_H */
 

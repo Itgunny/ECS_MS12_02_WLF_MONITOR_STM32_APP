@@ -230,6 +230,8 @@ extern u8 SmartKeyUse;
 
 extern u8 CameraCommFlag;
 
+extern u8 AAVMCommFlag;
+
 extern uint16_t ADC3ConvertedValue;
 
 
@@ -508,7 +510,7 @@ void CAN1_RX0_IRQHandler(void)
 	if((Iden.Source_Address == 0x47) || (Iden.Source_Address == 0x17) || (Iden.Source_Address == 0x29) || 
 		(Iden.Source_Address == 0xE4) || (Iden.Source_Address == 0xDD)|| (Iden.Source_Address == 0x4a)|| (Iden.Source_Address == 0xf4)
 		|| (Iden.Source_Address == 0x00)|| (Iden.Source_Address == 0x03) || (Iden.Source_Address == 0x02) || (Iden.Source_Address == 0x19)
-		|| (Iden.Source_Address == 0x34))
+		|| (Iden.Source_Address == 0x34) || (Iden.Source_Address == 0xDE))
 		{
 		#if 1
 			
@@ -888,6 +890,7 @@ void UART4_Receive_CMD(void)
 				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == OSUPDATECMD) WL9FM_USART_INDEX.COM4_RxCnt++;
 				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == EEPROMTESTCMD) WL9FM_USART_INDEX.COM4_RxCnt++;
 				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == FLASHTESTCMD) WL9FM_USART_INDEX.COM4_RxCnt++;
+                                else if (WL9FM_USART_DATA.COM4_RxBuf[1] == AAVMCMD) WL9FM_USART_INDEX.COM4_RxCnt++;
 
                 else
                 {
@@ -947,7 +950,21 @@ void UART4_Receive_CMD(void)
 						Camera_Mode = WL9FM_USART_DATA.COM4_RxBuf[2];
 					}					
 					break;
-
+                                        
+                                case AAVMCMD:
+                                  if(AAVMCommFlag == 0){
+                                        AAVMCommFlag = 1;
+                                        
+                                        AAVM_Mode = WL9FM_USART_DATA.COM4_RxBuf[2];
+                                        
+                                        AAVM_Icon_Index = WL9FM_USART_DATA.COM4_RxBuf[3];
+                                        
+                                        AAVM_Camera_Icon_Index = WL9FM_USART_DATA.COM4_RxBuf[4];                                        
+                                        
+                                        AAVM_Menu_Flag = WL9FM_USART_DATA.COM4_RxBuf[5];
+                                  }
+                                        break;
+                          
 				case DOWNCMD:
 					Stm32_Update_CMD = WL9FM_USART_DATA.COM4_RxBuf[2];
 					FatoryInit_Flag = WL9FM_USART_DATA.COM4_RxBuf[3];
