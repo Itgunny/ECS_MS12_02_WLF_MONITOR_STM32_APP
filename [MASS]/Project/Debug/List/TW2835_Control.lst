@@ -1,0 +1,1657 @@
+###############################################################################
+#                                                                             #
+# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      12/May/2016  14:27:38 #
+# Copyright 1999-2012 IAR Systems AB.                                         #
+#                                                                             #
+#    Cpu mode     =  thumb                                                    #
+#    Endian       =  little                                                   #
+#    Source file  =  C:\Tools\WL9F\WLF Monitor - STM32_APP\Platform\TaeHa -   #
+#                    ECS\SRC\TW2835_Control.c                                 #
+#    Command line =  "C:\Tools\WL9F\WLF Monitor - STM32_APP\Platform\TaeHa -  #
+#                    ECS\SRC\TW2835_Control.c" -D USE_STDPERIPH_DRIVER -D     #
+#                    STM32F4XX -D USE_STM324xG_EVAL -D USE_FULL_ASSERT -lcN   #
+#                    "C:\Tools\WL9F\WLF Monitor -                             #
+#                    STM32_APP\Project\Debug\List\" -o "C:\Tools\WL9F\WLF     #
+#                    Monitor - STM32_APP\Project\Debug\Obj\" --debug          #
+#                    --endian=little --cpu=Cortex-M4 -e --fpu=VFPv4_sp        #
+#                    --dlib_config "C:\Tools\IAR Systems\Embedded Workbench   #
+#                    6.5\arm\INC\c\DLib_Config_Full.h" -I "C:\Tools\WL9F\WLF  #
+#                    Monitor - STM32_APP\Project\..\Platform\COMMON\INC\" -I  #
+#                    "C:\Tools\WL9F\WLF Monitor -                             #
+#                    STM32_APP\Project\..\Platform\TaeHa - ECS\INC\" -I       #
+#                    "C:\Tools\WL9F\WLF Monitor -                             #
+#                    STM32_APP\Project\..\Libraries\CMSIS\Device\ST\STM32F4xx #
+#                    \Include\" -I "C:\Tools\WL9F\WLF Monitor -               #
+#                    STM32_APP\Project\..\Libraries\STM32F4xx_StdPeriph_Drive #
+#                    r\inc\" -Oh --use_c++_inline -I "C:\Tools\IAR            #
+#                    Systems\Embedded Workbench 6.5\arm\CMSIS\Include\"       #
+#    List file    =  C:\Tools\WL9F\WLF Monitor -                              #
+#                    STM32_APP\Project\Debug\List\TW2835_Control.lst          #
+#    Object file  =  C:\Tools\WL9F\WLF Monitor -                              #
+#                    STM32_APP\Project\Debug\Obj\TW2835_Control.o             #
+#                                                                             #
+#                                                                             #
+###############################################################################
+
+C:\Tools\WL9F\WLF Monitor - STM32_APP\Platform\TaeHa - ECS\SRC\TW2835_Control.c
+      1          /**
+      2            ******************************************************************************
+      3            * @file    TW2835_Control.c 
+      4            * @author  kutelf (kutelf@taeha.co.kr)
+      5            * @version V1.0.0
+      6            * @date    02/22/2013
+      7            * @brief   TW2835_Control.c module
+      8            *
+      9            * Project Name       : WL9F Monitor APP
+     10            * Project Enviroment : IAREmbedded Workbench for ARM 6.5x 
+     11            *                      STM32F407ZGT6 Firmware Library
+     12            * Project Workspace  : WL9F_Monitor_APP
+     13            * MCU Type           : STM32F407ZGT6
+     14            *
+     15            * TAEHA MECHATRONICS Co., Ltd (http://www.taeha.co.kr)				
+     16            * ECS Division R&D Center. / Author by Young-Min Han (kutelf@taeha.co.kr)
+     17            * 
+     18            ******************************************************************************
+     19            */ 
+     20          
+     21          /* Includes ------------------------------------------------------------------*/
+     22          #include "WL9F_Monitor_APP.h"	
+     23          
+     24          /* Private typedef -----------------------------------------------------------*/
+     25          /* Private define ------------------------------------------------------------*/
+     26          /* Private macro -------------------------------------------------------------*/
+     27          /* Private variables ---------------------------------------------------------*/
+     28          //==================================================================================
+     29          //						Page1 initialize table description
+     30          //==================================================================================
+     31          unsigned char	tbl_pg1_x_cmn[] = {
+     32          //  00   01   02   03   04   05   06   07		 08   09   0A   0B   0C   0D   0E   0F
+     33          	     0x02,0x00,0x00,0x00,0x00,0x00,0x00,	0x00,0x00,0x00,0xd7,0x23,0x2d,0x1e,0xa7,	//...  0x01
+     34          	0x80,0x02,0x00,0x00,0x02,0x00,0x10,0x00,	0x81,0x02,0x00,0x01,0x02,0x00,0x11,0x00,	//...  0x10	//... normal quad
+     35          	0x82,0x02,0x00,0x02,0x02,0x00,0x12,0x00,	0x83,0x02,0x00,0x03,0x02,0x00,0x13,0x00,	//...  0x20
+     36          //	0x90,0x02,0x00,0x90,0x02,0x00,0x10,0x00,	0x91,0x02,0x00,0x91,0x02,0x00,0x11,0x00,	//... 0x10	//... non-realtime
+     37          //	0x92,0x02,0x00,0x92,0x02,0x00,0x12,0x00,	0x93,0x02,0x00,0x93,0x02,0x00,0x13,0x00,	//... 0x20
+     38          };
+     39          
+     40          //--------------------------		NTSC		------------------------------//
+     41          //... H:60(3c),90(5a),120(78),180(b4), V:40(28),60(3c),80(50),120(78) for NTSC, 48(30),72(48),96(60),144(90) for PAL
+     42          unsigned char	tbl_ntsc_pg1_pic_fl[] = {
+     43          //  00   01   02   03   04   05   06   07		 08   09   0A   0B   0C   0D   0E   0F
+     44          	0x00,0xb4,0x00,0x78,0x00,0xb4,0x00,0x78,	0x00,0xb4,0x00,0x78,0x00,0xb4,0x00,0x78	//...  
+     45          };
+     46          
+     47          unsigned char	tbl_ntsc_pg1_pic_qd[] = {
+     48          //  00   01   02   03   04   05   06   07		 08   09   0A   0B   0C   0D   0E   0F
+     49          	0x00,0x5a,0x00,0x3c,0x5a,0xb4,0x00,0x3c,	0x00,0x5a,0x3c,0x78,0x5a,0xb4,0x3c,0x78	//...  
+     50          };
+     51          
+     52          unsigned char	tbl_ntsc_pg1_pic_9_lt[] = {
+     53          //  00   01   02   03   04   05   06   07		 08   09   0A   0B   0C   0D   0E   0F
+     54          	0x00,0x3c,0x00,0x28,0x3c,0x78,0x00,0x28,	0x78,0xb4,0x00,0x28,0x00,0x3c,0x28,0x50	//...   
+     55          };
+     56          
+     57          unsigned char	tbl_ntsc_pg1_pic_9_rb[] = {
+     58          //  00   01   02   03   04   05   06   07		 08   09   0A   0B   0C   0D   0E   0F
+     59          	0x78,0xb4,0x28,0x50,0x00,0x3c,0x50,0x78,	0x3c,0x78,0x50,0x78,0x78,0xb4,0x50,0x78	//...   
+     60          };
+     61          
+     62          //--------------------------		PAL		------------------------------//
+     63          //... H:60(3c),90(5a),120(78),180(b4), V:40(28),60(3c),80(50),120(78) for NTSC, 48(30),72(48),96(60),144(90) for PAL
+     64          unsigned char	tbl_pal_pg1_pic_fl[] = {
+     65          //  00   01   02   03   04   05   06   07		 08   09   0A   0B   0C   0D   0E   0F
+     66          	0x00,0xb4,0x00,0x90,0x00,0xb4,0x00,0x90,	0x00,0xb4,0x00,0x90,0x00,0xb4,0x00,0x90	//...  
+     67          };
+     68          
+     69          unsigned char	tbl_pal_pg1_pic_qd[] = {
+     70          //  00   01   02   03   04   05   06   07		 08   09   0A   0B   0C   0D   0E   0F
+     71          	0x00,0x5a,0x00,0x48,0x5a,0xb4,0x00,0x48,	0x00,0x5a,0x48,0x90,0x5a,0xb4,0x48,0x90	//...  
+     72          };
+     73          
+     74          unsigned char	tbl_pal_pg1_pic_9_lt[] = {
+     75          //  00   01   02   03   04   05   06   07		 08   09   0A   0B   0C   0D   0E   0F
+     76          	0x00,0x3c,0x00,0x30,0x3c,0x78,0x00,0x30,	0x78,0xb4,0x00,0x30,0x00,0x3c,0x30,0x60	//...   
+     77          };
+     78          
+     79          unsigned char	tbl_pal_pg1_pic_9_rb[] = {
+     80          //  00   01   02   03   04   05   06   07		 08   09   0A   0B   0C   0D   0E   0F
+     81          	0x78,0xb4,0x30,0x60,0x00,0x3c,0x60,0x90,	0x3c,0x78,0x60,0x90,0x78,0xb4,0x60,0x90	//...   
+     82          };
+     83          
+     84          //=================================================================================
+     85          
+     86          unsigned char	tbl_pg1_y_cmn[] = {
+     87          //  00   01   02   03   04   05   06   07		 08   09   0A   0B   0C   0D   0E   0F
+     88          	0x28,0x00,0x10,0xa0,0x00,0x00,0x00,0x03,	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0xa7,//... 0x50 
+     89          	0x80,0x02,0x00,0x81,0x02,0x00,0x82,0x02,	0x00,0x83,0x02,0x00,0x00,0xe4,0x00,0x00,//... 0x60	//... normal quad
+     90          //	0x90,0x02,0x00,0x91,0x02,0x00,0x92,0x02,	0x00,0x93,0x02,0x00,0x00,0xe4,0x00,0x00,//...0x60	//...non-realtime
+     91          	0x00,0x03,0x00,0x00,0x00,0x00,0x02,0x00,	0xff,0xff,0xff,0xff,0xf0,0x00,0x8b,0x84,//... 0x70 
+     92          //	0xff,0x00,0x51,0x07,0xeb,0x10,0xa8,0x00,	0x51,0xe7,0x80,0x00,0x00,0x00,0x00,0x00,//...0x80
+     93          	0xdf,0x00,0x91,0x07,0xeb,0x10,0xa8,0x00,	0x91,0xe7,0x80,0x00,0x00,0x00,0x00,0x00,//... 0x80	//... update:060715
+     94          	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00	//... 0x90
+     95          };
+     96          
+     97          //--------------------------		NTSC		------------------------------//
+     98          //=================================================================================
+     99          unsigned char	tbl_ntsc_pg1_enc[] = {
+    100          //  00   01   02   03   04   05   06   07		 08   09   0A   0B   0C   0D   0E   0F
+    101          	0x77,0x23,0xd7,0x01,0x80,0x20,0x00,0x0c,	0x20,0x09,0xaa,0x00,0x40,0x40,0x00,0x00	//... 0xa0
+    102          //	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00	//...0xb0
+    103          };
+    104          //--------------------------		PAL		------------------------------//
+    105          //=================================================================================
+    106          unsigned char	tbl_pal_pg1_enc[] = {
+    107          //  00   01   02   03   04   05   06   07		 08   09   0A   0B   0C   0D   0E   0F
+    108          	0x77,0x23,0xd7,0x01,0x80,0x20,0x00,0x0c,	0x20,0x4c,0xaa,0x00,0x40,0x40,0x00,0x00	//... 0xa0
+    109          //	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00	//...0xb0
+    110          };
+    111          //=================================================================================
+    112          
+    113          //==================================================================================
+    114          //						Page2 initialize table description
+    115          //==================================================================================
+    116          
+    117          //--------------------------		PAGE 2		------------------------------//
+    118          unsigned char	tbl_pg2_mse_box[] = {		// 80 EA
+    119          //  00   01   02   03   04   05   06   07		 08   09   0A   0B   0C   0D   0E   0F
+    120          	//... mouse & LUT
+    121          	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,//...  0x10
+    122          	//... single box
+    123          	0x00,0xb0,0x00,0x00,0x00,0x00,0x40,0x00,	0x00,0x00,0x00,0x00,0x00,0xb0,0x00,0x00,//...  0x20
+    124          	0x00,0x00,0x40,0x00,0x00,0x00,0x00,0x00,	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,//...  0x30
+    125          	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,//...  0x40
+    126          	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,	0x00,0x00,0x00,0x40,0x40,0x40,0x42,0xff	//...  0x50
+    127          };
+    128          
+    129          unsigned char	tbl_ntsc_pg2_2dbox[] = {		// 32 EA
+    130          	//... 2d array box
+    131          	0x88,0x00,0x00,0x00,0x00,0x00,0xfb,0x00,	0x89,0x00,0x00,0x00,0x00,0x00,0xfb,0x00,//...  0x60
+    132          	0x8a,0x00,0x00,0x00,0x00,0x00,0xfb,0x00,	0x8b,0x00,0x00,0x00,0x00,0x00,0xfb,0x00	//...  0x70
+    133          };
+    134          
+    135          unsigned char	tbl_ntsc_pg2_mtn[] = {		// 32 EA
+    136          	//... sensitivity & mask info
+    137          	0x17,0x73,0x88,0x4a,0x07,0x24,0x00,0x00,	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,//...  0x80
+    138          	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00	//...  0x90
+    139          };
+    140          
+    141          
+    142          unsigned char	tbl_pal_pg2_2dbox[] = {		// 32 EA
+    143          	//... 2d array box
+    144          	0x20,0x28,0x00,0x00,0x00,0x00,0xfb,0x00,	0x21,0x28,0x00,0x00,0x00,0x00,0xfb,0x00,//...  0x60
+    145          	0x22,0x28,0x00,0x00,0x00,0x00,0xfb,0x00,	0x23,0x28,0x00,0x00,0x00,0x00,0xfb,0x00	//...  0x70
+    146          };
+    147          
+    148          unsigned char	tbl_pal_pg2_mtn[] = {		// 32 EA
+    149          	//... sensitivity & mask info
+    150          	0x17,0x73,0x88,0x4a,0x07,0x24,0x00,0x00,	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,//...  0x80
+    151          	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,	0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00	//...  0x90
+    152          };
+    153          
+    154          unsigned char Register_Table_Page0[] = {
+    155          //  0    1    2    3    4    5    6    7       8    9    a    b    c    d    e    f   
+    156              0x00,0xC8,0x20,0xD0,0x06,0xF0,0x08,0x80,   0x80,0x80,0x80,0x00,0x00,0x00,0x11,0x00, //  0x00 
+    157              0x80,0xC8,0x20,0xD0,0x06,0xF0,0x08,0x80,   0x80,0x80,0x80,0x00,0x00,0x00,0x11,0x00, //  0x10
+    158              0x80,0xC8,0x20,0xD0,0x06,0xF0,0x08,0x80,   0x80,0x80,0x80,0x00,0x00,0x00,0x11,0x00, //  0x20
+    159              0x80,0xC8,0x20,0xD0,0x06,0xF0,0x08,0x80,   0x80,0x80,0x80,0x00,0x00,0x00,0x11,0x00, //  0x30
+    160              0x00,0x77,0x77,0x45,0xA0,0xD0,0x2F,0x64,   0x80,0x80,0x82,0x82,0x30,0x0F,0x05,0x00, //  0x40
+    161              0x00,0x80,0x06,0x00,0x40,0xFF,0x00,0x00,   0x90,0x00,0x00,0x00,0x00,0x00,0x00,0x00, //  0x50
+    162              0xFF,0xFF,0x00,0x00,0x10,0x32,0x54,0x76,   0x00,0xBA,0xDC,0xFE,0x00,0x00,0x88,0x88, //  0x60
+    163              0x08,0x54,0x00,0x00,0x00,0x00,0x00,0x00,   0xFF,0x00,0x00,0x00,0x00,0x00,0x00,0x00, //  0x70
+    164              0x01,0x7F,0xFF,0x7F,0xFF,0x00,0xFF,0xFF,   0xFF,0xFF,0x31,0x00,0xD0,0x00,0xF0,0x08, //  0x80
+    165              0x41,0x7F,0xFF,0x7F,0xFF,0x00,0xFF,0xFF,   0xFF,0xFF,0x71,0x00,0xD0,0x00,0xF0,0x08, //  0x90
+    166              0x81,0x7F,0xFF,0x7F,0xFF,0x00,0xFF,0xFF,   0xFF,0xFF,0xB1,0x00,0xD0,0x00,0xF0,0x08, //  0xa0 
+    167              0xC1,0x7F,0xFF,0x7F,0xFF,0x00,0xFF,0xFF,   0xFF,0xFF,0xF1,0x00,0xD0,0x00,0xF0,0x08, //  0xb0 
+    168              0x00,0x00,0x00,0x00,0x00,0x00,0xF0,0xFF,   0x00,0x3C,0x4F,0x00,0x00,0x00,0x00,0x00, //  0xc0 
+    169              0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,   0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, //  0xd0 
+    170              0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,   0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, //  0xe0 
+    171              0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,   0x00,0x00,0x00,0x00,0x00,0x00,0x28,0x00  //  0xf0 
+    172          };
+    173          unsigned char Register_Table_Page1[] = { 
+    174          //  0    1    2    3    4    5    6    7                         8    9         a       b       c    d    e    f       
+    175              0x00,0x00,0x00,0x00,0x0F,0x04,0x00,0x00,   0x00,0x00,0x20,0xD7,0x23,0x2D,0x1E,0xA3, //  0x00 
+    176              0x80,0x02,0x00,0x00,0x02,0x00,0x10,0x00,   0x81,0x02,0x00,0x01,0x02,0x00,0x11,0x00, //  0x10 
+    177              0x82,0x02,0x00,0x02,0x02,0x00,0x12,0x00,   0x83,0x02,0x00,0x03,0x02,0x00,0x13,0x00, //  0x20
+    178              //0x00,0x02,0x00,0x00,0x02,0x00,0x10,0x00,   0x01,0x02,0x00,0x01,0x02,0x00,0x11,0x00, //  0x10 
+    179              //0x02,0x02,0x00,0x02,0x02,0x00,0x12,0x00,   0x03,0x02,0x00,0x03,0x02,0x00,0x13,0x00, //  0x20
+    180              0x00,0x58,0x00,0x3C,0x58,0xB0,0x00,0x3C,   0x00,0x58,0x3C,0x78,0x58,0xB0,0x3C,0x78, //  0x30 
+    181              0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,   0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, //  0x40 
+    182              0x28,0x41,0x10,0xa0,0x00,0x00,0x00,0x03,   0x00,0x00,0x00,0x00,0x00,0x00,0x00,0xa3, //  0x50 
+    183              0x80,0x00,0x00,0x81,0x00,0x00,0x82,0x00,   0x00,0x83,0x00,0x00,0x00,0xe4,0x00,0x00, //  0x60 
+    184              0x00,0x03,0x00,0x00,0x00,0x00,0x02,0x00,   0xff,0xff,0xff,0xff,0xf0,0x00,0x89,0x84, //  0x70 
+    185              0xdf,0x00,0x91,0x07,0xeb,0x10,0xa8,0x00,   0x91,0xe7,0x80,0x00,0x00,0x00,0x00,0x00, //  0x80 
+    186              0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,   0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, //  0x90 
+    187              0x77,0x88,0x88,0x00,0x80,0x20,0x00,0x0c,   0x20,0x09,0xaa,0x00,0x40,0x40,0x00,0x00, //  0xa0 
+    188              0x00,0x00,0xFF,0x00,0xFF,0x00,0xFF,0x0F,   0x0F,0x00,0x00,0x00,0x00,0x00,0x00,0x00, //  0xb0 
+    189              0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,   0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, //  0xc0 
+    190              0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,   0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, //  0xd0 
+    191              0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,   0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, //  0xe0 
+    192              0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,   0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00  //  0xf0
+    193          };
+    194          
+    195          struct	{							//	struct cmn_flg Byte   
+    196          	union {							//	ST        
+    197                 	u8 BYTE;					//  Byte Access 
+    198                 	struct {					//  Bit  Access 
+    199                      u8 b_cmn_tmp:1;	    	//  Bit 7     
+    200                      u8 b_cmn_NA:1;       	//  Bit 6     
+    201                      u8 b_cmn_prtcl_bsy:1;	//  Bit 5     
+    202                      u8 b_cmn_irq:1;		    //  Bit 4     
+    203                      u8 b_cmn_wndw_mn:1;		//  Bit 3     
+    204                      u8 b_cmn_wndw_pop:1;	//  Bit 2     
+    205                    	u8 b_cmn_jp_vdo:2;	    //  Bit 1     
+    206                     	u8 b_cmn_dtct_vs:1;		//  Bit 0     
+    207                    	
+    208                	}	BIT;					
+    209          	}		ST;						
+    210          }			cmn_flg;
+    211          
+    212          struct	{							//	struct cmn_flg Byte   
+    213          	union {							//	ST        
+    214                 	u8 BYTE;					//  Byte Access 
+    215                 	struct {					//  Bit  Access 
+    216                 	    u8 b_cmn_NA:1;	    	//  Bit 7     
+    217                      u8 b_cmn_cnt_1s:1;	    //  Bit 6     
+    218                      u8 b_cmn_cnt_05s:1;	    //  Bit 5     
+    219                      u8 b_cmn_cnt_02s:1;		//  Bit 4     
+    220                      u8 b_cmn_cnt_01s:1;		//  Bit 3     
+    221                      u8 b_cmn_cnt_tgl:1;	    //  Bit 2     
+    222                    	u8 b_cmn_cnt_fld:2;	    //  Bit 1     
+    223                     	u8 b_cmn_cnt_vs:1;		//  Bit 0     
+    224                    	
+    225                	}	BIT;						
+    226          	}		ST;							
+    227          }			cmn_flg_cnt;
+    228          
+    229          struct	{							//	struct cmn_flg Byte   
+    230          	union {							//	ST        
+    231                 	u8 BYTE;					//  Byte Access 
+    232                 	struct {					//  Bit  Access 
+    233                      u8 b_ds_wth_cif:1;	    //  Bit 7     
+    234                      u8 b_ds_wth_4pb:1;	    //  Bit 6     
+    235                      u8 b_ds_wth_16pb:1;		//  Bit 5     
+    236                      u8 b_ds_wth_rc:1;		//  Bit 4     
+    237                      u8 b_ds_in_run:2;	    //  Bit 3     
+    238                     	u8 b_ds_in_auto:1;		//  Bit 2     
+    239                     	u8 b_cmn_NA:2;	    	//  Bit 0~1
+    240                    	
+    241                	}	BIT;						
+    242          	}		ST;							
+    243          }			wndw_flg_ds;
+    244          
+    245          struct	{							//	struct cmn_flg Byte   
+    246          	union {							//	ST        
+    247                 	u8 BYTE;					//  Byte Access 
+    248                 	struct {					//  Bit  Access 
+    249                 	    u8 b_ch_src:1;	    	//  Bit 7     
+    250                      u8 b_ado_lv_mr:1;	    //  Bit 6     
+    251                      u8 b_ado_lv_mr_arw_pb:1;//  Bit 5     
+    252                      u8 b_cmn_NA:5;  		//  Bit 0~4     
+    253                      
+    254                	}	BIT;						
+    255          	}		ST;							
+    256          }			wndw_flg;
+    257          
+    258          
+    259          
+    260          u8	cmn_bot;
+    261          u8	cmn_cnt_vs = 0;
+    262          u8	cmn_cnt_vs_sub = 0;
+    263          u8	cmn_vga_det = 0;				//... __WTH_VGA__일때 idata 없애면 compile시 error 발생.
+    264          
+    265          
+    266          u8	cmn_dvc = MASTER;
+    267          u8	cmn_lst_slvr_x = MASTER;
+    268          u8	cmn_lst_slvr_y = MASTER;
+    269          u8	cmn_max_ch = 4;
+    270          
+    271          u8 	read_data[0x0100];
+    272          u8 	Temp;
+    273          
+    274          /* Private function prototypes -----------------------------------------------*/
+    275          /* Private functions ---------------------------------------------------------*/
+    276          
+    277          void SetAsicFlgType(u8 _dvc, u8 _pg, u8 _addr, u8 _flg, u8 _data)
+    278          {
+    279          	u8 _t1_;
+    280          
+    281          	_t1_ = ReadAsicByte(_dvc,_pg,_addr);
+    282          	_t1_ = (_t1_ & ~_flg)|_data;
+    283          	WriteAsicByte(_dvc,_pg,_addr,_t1_);
+    284          }
+    285          
+    286          void InitPg0(void)
+    287          {
+    288              	WriteAsicTable(MASTER,DVC_PG0,0x00,Register_Table_Page0,0xff);
+    289          }
+    290          
+    291          void InitPg1(void)
+    292          {
+    293          	WriteAsicTable(MASTER,DVC_PG1,0x00,Register_Table_Page1,0xff);
+    294          }
+    295          
+    296          void InitPg2(void)
+    297          {
+    298          	u8 _t1_;
+    299          
+    300          	//... OSD color index
+    301          	InitOSDCol();
+    302          
+    303          	WriteAsicByte(MASTER,DVC_PG2,0x0f,0x0f);		//... OSD Enable for Display/Capture	
+    304          
+    305          	WriteOSDClrX(MASTER,0,0,0,45,31);				//... max line num is 310 line for OSD
+    306          	WriteOSDClrX(MASTER,1,0,0,45,31);				//... max line num is 310 line for OSD
+    307          	WriteOSDClrX(MASTER,2,0,0,45,31);				//... max line num is 310 line for OSD
+    308          	WriteOSDClrX(MASTER,3,0,0,45,31);				//... max line num is 310 line for OSD
+    309          	WriteOSDClrY(MASTER,0,0,45,31);					//... max line num is 310 line for OSD
+    310          
+    311          	WriteAsicByte(MASTER,DVC_PG2,0x10,0xf0);		//... cursor
+    312          
+    313          	//... other ( mouse, single box, 2d box, mask ..)
+    314          	WriteAsicTable(MASTER,DVC_PG2,0x10,tbl_pg2_mse_box,80);
+    315          	if(cmn_flg.ST.BIT.b_cmn_jp_vdo == VDO_NTSC){
+    316          		WriteAsicTable(MASTER,DVC_PG2,0x60,tbl_ntsc_pg2_2dbox,32);
+    317          		for(_t1_=0;_t1_<4;_t1_++)	WriteAsicTable(MASTER,DVC_PG2,0x80+0x20*_t1_,tbl_ntsc_pg2_mtn,32);
+    318          	}
+    319          	else{
+    320          		WriteAsicTable(MASTER,DVC_PG2,0x60,tbl_pal_pg2_2dbox,32);
+    321          		for(_t1_=0;_t1_<4;_t1_++)	WriteAsicTable(MASTER,DVC_PG2,0x80+0x20*_t1_,tbl_pal_pg2_mtn,32);
+    322          	}
+    323          }
+    324          
+    325          void WriteAsicByteOSD(u8 _dvc, u8 _addr, u8 _wdat)
+    326          {
+    327          #if	defined(__EN_ISR__)
+    328          	EA = 0;
+    329          #endif
+    330          	Temp = _dvc;
+    331          
+    332          	cmn_flg.ST.BIT.b_cmn_prtcl_bsy=1;
+    333          
+    334          	HALE_RESET;
+    335          	HRDB_SET;
+    336          	HWRB_SET;
+    337          	HSPB_RESET;
+    338          
+    339          	_dvc = 0;							//... temporal
+    340          	HCSB0_RESET;
+    341          	HCSB1_SET;
+    342          
+    343          	Write_TW2835(_addr);
+    344          	HALE_SET;
+    345          	HALE_RESET;
+    346          
+    347          	Write_TW2835(_wdat);
+    348          	HWRB_RESET;
+    349          	HWRB_SET;
+    350          
+    351          	HALE_RESET;
+    352          	HRDB_SET;
+    353          	HWRB_SET;
+    354          	HSPB_RESET;
+    355          
+    356          	HCSB0_SET;
+    357          	HCSB1_SET;
+    358          
+    359          	Write_TW2835(0xFF);
+    360          
+    361          	cmn_flg.ST.BIT.b_cmn_prtcl_bsy=0;
+    362          #if	defined(__EN_ISR__)
+    363          	EA = 1;
+    364          #endif
+    365          }
+    366          
+    367          void WriteAsicTableOSD(u8 _dvc, u8 _addr, u8 *_tbl_ptr)
+    368          {
+    369          	u8 _t1_;
+    370          
+    371          #if	defined(__EN_ISR__)
+    372          	EA = 0;
+    373          #endif
+    374             	Temp = _dvc;
+    375          
+    376          	cmn_flg.ST.BIT.b_cmn_prtcl_bsy=1;
+    377          
+    378          	HALE_RESET;
+    379          	HRDB_SET;
+    380          	HWRB_SET;
+    381          	HSPB_RESET;
+    382          
+    383          	_dvc = 0;							//... temporal
+    384          	HCSB0_RESET;
+    385          	HCSB1_SET;
+    386          
+    387          	Write_TW2835(_addr);
+    388          
+    389          	HALE_SET;
+    390          	HALE_RESET;
+    391          
+    392          
+    393          	for(_t1_=0;_t1_<5;_t1_++)
+    394          	{
+    395          		Write_TW2835(_tbl_ptr[_t1_]);
+    396          		HWRB_RESET;
+    397          		HWRB_SET;
+    398          	}
+    399          
+    400          	HALE_RESET;
+    401          	HRDB_SET;
+    402          	HWRB_SET;
+    403          	HSPB_RESET;
+    404          
+    405          
+    406          	HCSB0_SET;
+    407          	HCSB1_SET;
+    408          
+    409          	Write_TW2835(0xFF);
+    410          
+    411          
+    412          	cmn_flg.ST.BIT.b_cmn_prtcl_bsy=0;
+    413          #if	defined(__EN_ISR__)
+    414          	EA = 1;
+    415          #endif
+    416          
+    417          }
+    418          
+    419          void WriteAsicByte(u8 _dvc, u8 _pg, u8 _addr, u8 _wdat)
+    420          {
+    421          
+    422          #if	defined(__EN_ISR__)
+    423          	EA = 0;
+    424          #endif
+    425             	Temp = _dvc;
+    426                  
+    427          	cmn_flg.ST.BIT.b_cmn_prtcl_bsy=1;
+    428          
+    429          	HALE_RESET;
+    430          	HRDB_SET;
+    431          	HWRB_SET;
+    432          	HSPB_RESET;
+    433          
+    434          	_dvc = 0;							//... temporal
+    435          	if(_pg == DVC_PG0)
+    436          	{	
+    437          		HCSB1_RESET;	HCSB0_RESET;
+    438          	}
+    439          	else if(_pg == DVC_PG1)
+    440          	{	
+    441          		HCSB1_RESET;	
+    442          		HCSB0_SET;
+    443          	}
+    444          	else if(_pg == DVC_PG2)
+    445          	{	
+    446          		HCSB1_SET;	
+    447          		HCSB0_RESET;
+    448          	}
+    449          
+    450          	Write_TW2835(_addr);
+    451          	HALE_SET;
+    452          	HALE_RESET;
+    453          
+    454          	Write_TW2835(_wdat);
+    455          	HWRB_RESET;
+    456          	HWRB_SET;
+    457          
+    458          	HALE_RESET;
+    459          	HRDB_SET;
+    460          	HWRB_SET;
+    461          	HSPB_RESET;
+    462          
+    463          	HCSB0_SET;
+    464          	HCSB1_SET;
+    465          
+    466          	Write_TW2835(0xFF);
+    467          
+    468          	cmn_flg.ST.BIT.b_cmn_prtcl_bsy=0;
+    469          #if	defined(__EN_ISR__)
+    470          	EA = 1;
+    471          #endif
+    472          }
+    473          
+    474          void WriteAsicTable(u8 _dvc, u8 _pg, u8 _addr, u8 *_tbl_ptr, u16 _tbl_cnt)
+    475          {
+    476          	u16 _t1_;
+    477          
+    478          
+    479          #if	defined(__EN_ISR__)
+    480          	EA = 0;
+    481          #endif
+    482             	Temp = _dvc;
+    483          
+    484          	cmn_flg.ST.BIT.b_cmn_prtcl_bsy=1;
+    485          
+    486          	HALE_RESET;
+    487          	HRDB_SET;
+    488          	HWRB_SET;
+    489          	HSPB_RESET;
+    490          
+    491          
+    492          	_dvc = 0;							//... temporal
+    493          	if(_pg == DVC_PG0)      
+    494          	{	
+    495          		HCSB1_RESET;	
+    496          		HCSB0_RESET;
+    497          	}
+    498          	else if(_pg == DVC_PG1) 
+    499          	{	
+    500          		HCSB1_RESET;	
+    501          		HCSB0_SET;
+    502          	}
+    503          	else if(_pg == DVC_PG2)
+    504          	{	
+    505          		HCSB1_SET;	 
+    506          		HCSB0_RESET;
+    507          	}
+    508          
+    509          
+    510          	Write_TW2835(_addr);
+    511          	HALE_SET;
+    512          	HALE_RESET;
+    513          
+    514          
+    515          	for(_t1_=0;_t1_<_tbl_cnt;_t1_++)
+    516          	{
+    517          		Write_TW2835(_tbl_ptr[_t1_]);
+    518          		HWRB_RESET;
+    519          		HWRB_SET;   
+    520          	}	
+    521          
+    522          	HALE_RESET;
+    523          	HRDB_SET;
+    524          	HWRB_SET;
+    525          	HSPB_RESET;
+    526          
+    527          	HCSB0_SET;
+    528          	HCSB1_SET;
+    529          
+    530          	Write_TW2835(0xFF);
+    531          
+    532          	cmn_flg.ST.BIT.b_cmn_prtcl_bsy=0;
+    533          
+    534          #if	defined(__EN_ISR__)
+    535          	EA = 1;
+    536          #endif
+    537          }
+    538          
+    539          void ReadAsicTable(u8 _dvc, u8 _pg, u8 _addr, u16 _data_cnt)
+    540          {
+    541          	u16 _t1_;
+    542          
+    543          #if	defined(__EN_ISR__)
+    544          	EA = 0;
+    545          #endif
+    546             	Temp = _dvc;
+    547              
+    548          	cmn_flg.ST.BIT.b_cmn_prtcl_bsy=1;
+    549          
+    550          	HALE_RESET;
+    551          	HRDB_SET;
+    552          	HWRB_SET;
+    553          	HSPB_RESET;
+    554          
+    555          	_dvc = 0;							//... temporal
+    556          	if(_pg == DVC_PG0)     
+    557          	{
+    558          		HCSB1_RESET;	
+    559          		HCSB0_RESET;
+    560          	}
+    561          	else if(_pg == DVC_PG1) 
+    562          	{
+    563          		HCSB1_RESET;	
+    564          		HCSB0_SET;
+    565          	}
+    566          	else if(_pg == DVC_PG2) 
+    567          	{
+    568          		HCSB1_SET;	    
+    569          		HCSB0_RESET;
+    570          	}
+    571          
+    572          	Write_TW2835(_addr);
+    573          	HALE_SET;
+    574          	HALE_RESET;
+    575          
+    576          	for(_t1_=0;_t1_<_data_cnt;_t1_++)
+    577          	{
+    578          		//Write_TW2835(0xFF);
+    579          		HRDB_RESET;		
+    580          		read_data[_t1_]= Read_TW2835();
+    581          		HRDB_SET;
+    582          	}
+    583          
+    584          	HALE_RESET;
+    585          	HRDB_SET;
+    586          	HWRB_SET;
+    587          	HSPB_RESET;
+    588          
+    589          	HCSB0_SET;
+    590          	HCSB1_SET;
+    591          
+    592          	cmn_flg.ST.BIT.b_cmn_prtcl_bsy=0;
+    593          
+    594          #if	defined(__EN_ISR__)
+    595          	EA = 1;
+    596          #endif
+    597          
+    598          }
+    599          
+    600          u8 ReadAsicByte(u8 _dvc, u8 _pg, u8 _addr)
+    601          {
+    602          	u8 _rdat_;
+    603          
+    604          #if	defined(__EN_ISR__)
+    605          	EA = 0;
+    606          #endif
+    607             	Temp = _dvc;
+    608              
+    609          	cmn_flg.ST.BIT.b_cmn_prtcl_bsy=1;
+    610          
+    611          	HALE_RESET;
+    612          	HRDB_SET;
+    613          	HWRB_SET;
+    614          	HSPB_RESET;
+    615          
+    616          	if(_pg == DVC_PG0)      
+    617          	{	
+    618          		HCSB1_RESET;	
+    619          		HCSB0_RESET;
+    620          	}
+    621          	else if(_pg == DVC_PG1)
+    622          	{
+    623          		HCSB1_RESET;
+    624          		HCSB0_SET;
+    625          	}
+    626          	else if(_pg == DVC_PG2) 
+    627          	{	
+    628          		HCSB1_SET;	 
+    629          		HCSB0_RESET;
+    630          	}
+    631          
+    632          	Write_TW2835(_addr);
+    633          	HALE_SET;
+    634          	HALE_RESET;
+    635          
+    636          	//Write_TW2835(0xFF);
+    637          
+    638          	HRDB_RESET;
+    639          	_rdat_ = Read_TW2835();
+    640          	HRDB_SET;
+    641          
+    642          
+    643          	HALE_RESET;
+    644          	HRDB_SET;
+    645          	HWRB_SET;
+    646          	HSPB_RESET;
+    647          
+    648          	HCSB0_SET;
+    649          	HCSB1_SET;
+    650          
+    651          	cmn_flg.ST.BIT.b_cmn_prtcl_bsy=0;
+    652          
+    653          #if	defined(__EN_ISR__)
+    654          	EA = 1;
+    655          #endif
+    656          
+    657          	return _rdat_;
+    658          }
+    659          
+    660          u8	ReadAsicOSDMemWr(u8 _dvc)
+    661          {
+    662          	u8 _rdat_;
+    663          //	u16 temp_16;
+    664          
+    665          #if	defined(__EN_ISR__)
+    666          	EA = 0;
+    667          #endif
+    668             	Temp = _dvc;
+    669          	cmn_flg.ST.BIT.b_cmn_prtcl_bsy=1;
+    670          
+    671          	HALE_RESET;
+    672          	HRDB_SET;
+    673          	HWRB_SET;
+    674          	HSPB_RESET;
+    675          
+    676          
+    677          	_dvc = 0;							//... temporal
+    678          	HCSB0_RESET;
+    679          	HCSB1_SET;
+    680          
+    681          
+    682          	Write_TW2835(0x0A);
+    683          	HALE_SET;
+    684          	HALE_RESET;
+    685          
+    686          
+    687          	Write_TW2835(0xFF);
+    688          	HRDB_RESET;
+    689          
+    690          
+    691          	_rdat_ = Read_TW2835();
+    692          	HRDB_SET;
+    693          
+    694          
+    695          	HALE_RESET;	
+    696          	HRDB_SET;
+    697          	HWRB_SET;
+    698          	HSPB_RESET;
+    699          
+    700          	HCSB0_SET;
+    701          	HCSB1_SET;
+    702          
+    703          	cmn_flg.ST.BIT.b_cmn_prtcl_bsy=0;
+    704          
+    705          #if	defined(__EN_ISR__)
+    706          	EA = 1;
+    707          #endif
+    708          
+    709          	return _rdat_;
+    710          }
+    711          
+    712          void	InitVdo(void)
+    713          {
+    714          	cmn_flg.ST.BIT.b_cmn_jp_vdo = VDO_NTSC;
+    715          	cmn_bot = 120;
+    716          	cmn_cnt_vs_sub = 54;
+    717          }
+    718          
+    719          
+    720          void Write_TW2835(u8 Data)
+    721          {
+    722          	u16 TempData;
+    723          
+    724          	Port_Change(TW2835_WRITE);
+    725          
+    726          	TempData = GPIO_ReadOutputData(TW2835_DATAPORT) & 0xFF00;
+    727          	TempData |= ((u16)Data & 0x00FF);
+    728          	
+    729          	GPIO_Write(TW2835_DATAPORT,TempData);
+    730          }
+    731          
+    732          u8 Read_TW2835()
+    733          {
+    734          	u8 Result;
+    735          	Port_Change(TW2835_READ);
+    736          
+    737          	Result = (u8)(GPIO_ReadInputData(TW2835_DATAPORT) & 0x00FF);
+    738          	
+    739          
+    740          	return Result;
+    741          }
+    742          
+    743          void Port_Change(u8 in_Dir)
+    744          {
+    745          	GPIO_InitTypeDef GPIO_InitStructure;
+    746          
+    747          
+    748          	if(in_Dir == TW2835_WRITE)
+    749          	{
+    750          		GPIO_InitStructure.GPIO_Pin = TW2835_D0 | TW2835_D1 | TW2835_D2 | TW2835_D3 | TW2835_D4 | 
+    751          										TW2835_D5 | TW2835_D6 | TW2835_D7;
+    752          		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+    753          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    754                          GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+    755                          GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;    
+    756          		GPIO_Init(TW2835_DATAPORT, &GPIO_InitStructure);
+    757          	}
+    758          	else if(in_Dir == TW2835_READ)
+    759          	{
+    760          		GPIO_InitStructure.GPIO_Pin = TW2835_D0 | TW2835_D1 | TW2835_D2 | TW2835_D3 | TW2835_D4 | 
+    761          										TW2835_D5 | TW2835_D6 | TW2835_D7;
+    762          		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+    763          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    764                          GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+    765                          GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;    
+    766          		GPIO_Init(TW2835_DATAPORT, &GPIO_InitStructure);
+    767          	}
+    768          }
+    769          
+    770          void ClearCheckCamera()
+    771          {
+    772          	WriteOSDBmpX(MASTER,65,100,0x00,0x00,gt_CHANNEL_blank);
+    773          	WriteOSDBmpX(MASTER,20,100,0x00,0x00,gt_CHANNEL_blank);
+    774          	WriteOSDBmpX(MASTER,110,100,0x00,0x00,gt_CHANNEL_blank);
+    775          	WriteOSDBmpX(MASTER,20,45,0x00,0x00,gt_CHANNEL_blank);
+    776          	WriteOSDBmpX(MASTER,110,45,0x00,0x00,gt_CHANNEL_blank);
+    777          	WriteOSDBmpX(MASTER,20,165,0x00,0x00,gt_CHANNEL_blank);
+    778          	WriteOSDBmpX(MASTER,110,165,0x00,0x00,gt_CHANNEL_blank);
+    779          }
+    780          
+    781          //	++, kutelf, 140801
+    782          //	RevD 보드와 호환성을 위하여 함수 이름 변경
+    783          //  ++, kutelf, 131007
+    784          //u8 Temp0, Temp1, Temp2, Temp3;
+    785          void TW2835_CheckCamera_Input(u8 Mode)
+    786          {
+    787          
+    788          	//	입력이 없으면, return 0x80
+    789          	//	입력이 있으면, return 0x9f
+    790          	u8 Signal1 = ReadAsicByte(MASTER,DVC_PG0,0x00); 	//  ch1
+    791          	u8 Signal2 = ReadAsicByte(MASTER,DVC_PG0,0x10);	//	ch2
+    792          	u8 Signal3 = ReadAsicByte(MASTER,DVC_PG0,0x20);	//	ch3
+    793          	u8 Signal4 = ReadAsicByte(MASTER,DVC_PG0,0x30);	//	ch4
+    794          
+    795          	
+    796          	ClearCheckCamera();
+    797          	if(Mode == 0x00)
+    798          	{
+    799          		
+    800          		if(Signal1 != 0x80)
+    801          		{
+    802          			WriteOSDBmpX(MASTER,65,100,0x00,0x00,gt_CHANNEL_blank);
+    803          		}
+    804          		else
+    805          		{
+    806          			WriteOSDBmpX(MASTER,65,100,0x00,0x00,gt_CHANNEL_x);
+    807          		}
+    808          
+    809          		
+    810          	}
+    811          
+    812          	else if(Mode == 0x01)
+    813          	{
+    814          		if(Signal2 != 0x80)
+    815          		{
+    816          			WriteOSDBmpX(MASTER,65,100,0x00,0x00,gt_CHANNEL_blank);
+    817          		}
+    818          		else
+    819          		{
+    820          			WriteOSDBmpX(MASTER,65,100,0x00,0x00,gt_CHANNEL_x);
+    821          		}
+    822          
+    823          	}
+    824          
+    825          	else if(Mode == 0x02)
+    826          	{
+    827          		if(Signal3 != 0x80)
+    828          		{
+    829          			WriteOSDBmpX(MASTER,65,100,0x00,0x00,gt_CHANNEL_blank);
+    830          		}
+    831          		else
+    832          		{
+    833          			WriteOSDBmpX(MASTER,65,100,0x00,0x00,gt_CHANNEL_x);
+    834          		}
+    835          
+    836          		
+    837          	}
+    838          
+    839          	else if(Mode == 0x03)
+    840          	{
+    841          		if(Signal4 != 0x80)
+    842          		{
+    843          			WriteOSDBmpX(MASTER,65,100,0x00,0x00,gt_CHANNEL_blank);
+    844          		}
+    845          		else
+    846          		{
+    847          			WriteOSDBmpX(MASTER,65,100,0x00,0x00,gt_CHANNEL_x);
+    848          		}
+    849          
+    850          	}
+    851          	else if(Mode == 0x04)
+    852          	{
+    853          		if(Signal1 != 0x80)
+    854          		{
+    855          			WriteOSDBmpX(MASTER,20,100,0x00,0x00,gt_CHANNEL_blank);
+    856          		}
+    857          		else
+    858          		{
+    859          			WriteOSDBmpX(MASTER,20,100,0x00,0x00,gt_CHANNEL_x);
+    860          		}
+    861          
+    862          		if(Signal2 != 0x80)
+    863          		{
+    864          			WriteOSDBmpX(MASTER,110,100,0x00,0x00,gt_CHANNEL_blank);
+    865          		}
+    866          		else
+    867          		{
+    868          			WriteOSDBmpX(MASTER,110,100,0x00,0x00,gt_CHANNEL_x);
+    869          		}
+    870          	}
+    871          
+    872          	else if(Mode == 0x05)
+    873          	{
+    874          		if(Signal1 != 0x80)
+    875          		{
+    876          			WriteOSDBmpX(MASTER,20,100,0x00,0x00,gt_CHANNEL_blank);
+    877          		}
+    878          		else
+    879          		{
+    880          			WriteOSDBmpX(MASTER,20,100,0x00,0x00,gt_CHANNEL_x);
+    881          		}
+    882          
+    883          		if(Signal3 != 0x80)
+    884          		{
+    885          			WriteOSDBmpX(MASTER,110,100,0x00,0x00,gt_CHANNEL_blank);
+    886          		}
+    887          		else
+    888          		{
+    889          			WriteOSDBmpX(MASTER,110,100,0x00,0x00,gt_CHANNEL_x);
+    890          		}
+    891          	}
+    892          	else if(Mode == 0x06)
+    893          	{
+    894          		if(Signal1 != 0x80)
+    895          		{
+    896          			WriteOSDBmpX(MASTER,20,100,0x00,0x00,gt_CHANNEL_blank);
+    897          		}
+    898          		else
+    899          		{
+    900          			WriteOSDBmpX(MASTER,20,100,0x00,0x00,gt_CHANNEL_x);
+    901          		}
+    902          
+    903          		if(Signal4 != 0x80)
+    904          		{
+    905          			WriteOSDBmpX(MASTER,110,100,0x00,0x00,gt_CHANNEL_blank);
+    906          		}
+    907          		else
+    908          		{
+    909          			WriteOSDBmpX(MASTER,110,100,0x00,0x00,gt_CHANNEL_x);
+    910          		}
+    911          
+    912          	}
+    913          	else if(Mode == 0x07)
+    914          	{
+    915          		if(Signal2 != 0x80)
+    916          		{
+    917          			WriteOSDBmpX(MASTER,20,100,0x00,0x00,gt_CHANNEL_blank);
+    918          		}
+    919          		else
+    920          		{
+    921          			WriteOSDBmpX(MASTER,20,100,0x00,0x00,gt_CHANNEL_x);
+    922          		}
+    923          
+    924          		if(Signal3 != 0x80)
+    925          		{
+    926          			WriteOSDBmpX(MASTER,110,100,0x00,0x00,gt_CHANNEL_blank);
+    927          		}
+    928          		else
+    929          		{
+    930          			WriteOSDBmpX(MASTER,110,100,0x00,0x00,gt_CHANNEL_x);
+    931          		}
+    932          
+    933          	}
+    934          	else if(Mode == 0x08)
+    935          	{
+    936          		if(Signal2 != 0x80)
+    937          		{
+    938          			WriteOSDBmpX(MASTER,20,100,0x00,0x00,gt_CHANNEL_blank);
+    939          		}
+    940          		else
+    941          		{
+    942          			WriteOSDBmpX(MASTER,20,100,0x00,0x00,gt_CHANNEL_x);
+    943          		}
+    944          
+    945          		if(Signal4 != 0x80)
+    946          		{
+    947          			WriteOSDBmpX(MASTER,110,100,0x00,0x00,gt_CHANNEL_blank);
+    948          		}
+    949          		else
+    950          		{
+    951          			WriteOSDBmpX(MASTER,110,100,0x00,0x00,gt_CHANNEL_x);
+    952          		}
+    953          
+    954          	}
+    955          
+    956          	else if(Mode == 0x09)
+    957          	{
+    958          		if(Signal3 != 0x80)
+    959          		{
+    960          			WriteOSDBmpX(MASTER,20,100,0x00,0x00,gt_CHANNEL_blank);
+    961          		}
+    962          		else
+    963          		{
+    964          			WriteOSDBmpX(MASTER,20,100,0x00,0x00,gt_CHANNEL_x);
+    965          		}
+    966          
+    967          		if(Signal4 != 0x80)
+    968          		{
+    969          			WriteOSDBmpX(MASTER,110,100,0x00,0x00,gt_CHANNEL_blank);
+    970          		}
+    971          		else
+    972          		{
+    973          			WriteOSDBmpX(MASTER,110,100,0x00,0x00,gt_CHANNEL_x);
+    974          		}
+    975          
+    976          	}
+    977          
+    978          	else if(Mode == 0x0A)
+    979          	{
+    980          		if(Signal1 != 0x80)
+    981          		{
+    982          			WriteOSDBmpX(MASTER,20,45,0x00,0x00,gt_CHANNEL_blank);
+    983          		}
+    984          		else
+    985          		{
+    986          			WriteOSDBmpX(MASTER,20,45,0x00,0x00,gt_CHANNEL_x);
+    987          		}
+    988          
+    989          		if(Signal2 != 0x80)
+    990          		{
+    991          			WriteOSDBmpX(MASTER,110,45,0x00,0x00,gt_CHANNEL_blank);
+    992          		}
+    993          		else
+    994          		{
+    995          			WriteOSDBmpX(MASTER,110,45,0x00,0x00,gt_CHANNEL_x);
+    996          		}
+    997          
+    998          		if(Signal3 != 0x80)
+    999          		{
+   1000          			WriteOSDBmpX(MASTER,20,165,0x00,0x00,gt_CHANNEL_blank);
+   1001          		}
+   1002          		else
+   1003          		{
+   1004          			WriteOSDBmpX(MASTER,20,165,0x00,0x00,gt_CHANNEL_x);
+   1005          		}
+   1006          
+   1007          		if(Signal4 != 0x80)
+   1008          		{
+   1009          			WriteOSDBmpX(MASTER,110,165,0x00,0x00,gt_CHANNEL_blank);
+   1010          		}
+   1011          		else
+   1012          		{
+   1013          			WriteOSDBmpX(MASTER,110,165,0x00,0x00,gt_CHANNEL_x);
+   1014          		}
+   1015          
+   1016          	}
+   1017          
+   1018          }
+   1019          //  --, kutelf, 131007
+   1020          //	--, kutelf, 140801
+   1021          
+   1022          //	++, kutelf, 140801
+   1023          //	RevD 보드와 호환성을 위하여 함수 이름 변경
+   1024          //  ++, kutelf, 131007
+   1025          
+   1026          void TW2835_CameraMode(u8 Mode, u8 OSD)
+   1027          {
+   1028          
+   1029          	if(Mode == 0x00)
+   1030          	{
+   1031          		if(OSD)
+   1032          		{
+   1033          			WriteOSDClrX(MASTER, 0, 0, 0, 45, 31);
+   1034          			WriteOSDBmpX(MASTER,162,5,0x00,0x00,gt_CHANNEL_CH1_O);
+   1035          		}
+   1036          		
+   1037          		// Scale CAM_0 // Select CAM
+   1038          		WriteAsicByte(MASTER,DVC_PG0,0x80,0x01);    
+   1039          		WriteAsicByte(MASTER,DVC_PG0,0x81,0xff);
+   1040          		WriteAsicByte(MASTER,DVC_PG0,0x82,0xff);
+   1041          		WriteAsicByte(MASTER,DVC_PG0,0x83,0xff);
+   1042          		WriteAsicByte(MASTER,DVC_PG0,0x84,0xff);
+   1043          		    
+   1044          		// ON/OFF CAMERA
+   1045          		WriteAsicByte(MASTER,DVC_PG1,0x10,0x80);    // ON CAM_0
+   1046          		WriteAsicByte(MASTER,DVC_PG1,0x18,0x01);	// OFF CAM_1
+   1047          		WriteAsicByte(MASTER,DVC_PG1,0x20,0x02);    // OFF CAM_2
+   1048          		WriteAsicByte(MASTER,DVC_PG1,0x28,0x03);    // OFF CAM_3
+   1049          
+   1050          		WriteAsicByte(MASTER,DVC_PG1,0x30,0x00);    // Position CAM_0
+   1051          		WriteAsicByte(MASTER,DVC_PG1,0x31,0xb0);
+   1052          		WriteAsicByte(MASTER,DVC_PG1,0x32,0x00);
+   1053          		WriteAsicByte(MASTER,DVC_PG1,0x33,0x78);
+   1054          	}
+   1055          	else if(Mode == 0x01)
+   1056          	{
+   1057          		if(OSD)
+   1058          		{
+   1059          			WriteOSDClrX(MASTER, 0, 0, 0, 45, 31);	
+   1060          			WriteOSDBmpX(MASTER,162,5,0x00,0x00,gt_CHANNEL_CH2_O);
+   1061          		}
+   1062          
+   1063          		// Scale CAM_1 // Select CAM
+   1064          		WriteAsicByte(MASTER,DVC_PG0,0x90,0x41);
+   1065          		WriteAsicByte(MASTER,DVC_PG0,0x91,0xff);
+   1066          		WriteAsicByte(MASTER,DVC_PG0,0x92,0xff);
+   1067          		WriteAsicByte(MASTER,DVC_PG0,0x93,0xff);
+   1068          		WriteAsicByte(MASTER,DVC_PG0,0x94,0xff);
+   1069          		    
+   1070          		// ON/OFF CAMERA
+   1071          		WriteAsicByte(MASTER,DVC_PG1,0x10,0x00);    // ON/OFF CAM
+   1072          		WriteAsicByte(MASTER,DVC_PG1,0x18,0x81);
+   1073          		WriteAsicByte(MASTER,DVC_PG1,0x20,0x02);    // OFF CAM_3
+   1074          		WriteAsicByte(MASTER,DVC_PG1,0x28,0x03);    // OFF CAM_4
+   1075          
+   1076          		WriteAsicByte(MASTER,DVC_PG1,0x34,0x00);    // Position CAM_1
+   1077          		WriteAsicByte(MASTER,DVC_PG1,0x35,0xb0);
+   1078          		WriteAsicByte(MASTER,DVC_PG1,0x36,0x00);
+   1079          		WriteAsicByte(MASTER,DVC_PG1,0x37,0x78);
+   1080          	}
+   1081          	else if(Mode == 0x02)
+   1082          	{
+   1083          		if(OSD)
+   1084          		{
+   1085          			WriteOSDClrX(MASTER, 0, 0, 0, 45, 31);
+   1086          			WriteOSDBmpX(MASTER,162,5,0x00,0x00,gt_CHANNEL_CH3_O);
+   1087          		}
+   1088          
+   1089          		// Scale CAM_2 // Select CAM
+   1090          		WriteAsicByte(MASTER,DVC_PG0,0xa0,0x81);
+   1091          		WriteAsicByte(MASTER,DVC_PG0,0xa1,0xff);
+   1092          		WriteAsicByte(MASTER,DVC_PG0,0xa2,0xff);
+   1093          		WriteAsicByte(MASTER,DVC_PG0,0xa3,0xff);
+   1094          		WriteAsicByte(MASTER,DVC_PG0,0xa4,0xff);
+   1095          		    
+   1096          		// ON/OFF CAMERA
+   1097          		WriteAsicByte(MASTER,DVC_PG1,0x10,0x00);    // ON/OFF CAM
+   1098          		WriteAsicByte(MASTER,DVC_PG1,0x18,0x01);
+   1099          		WriteAsicByte(MASTER,DVC_PG1,0x20,0x82);    // OFF CAM_3
+   1100          		WriteAsicByte(MASTER,DVC_PG1,0x28,0x03);    // OFF CAM_4
+   1101          
+   1102          		WriteAsicByte(MASTER,DVC_PG1,0x38,0x00);    // Position CAM_2
+   1103          		WriteAsicByte(MASTER,DVC_PG1,0x39,0xb0);
+   1104          		WriteAsicByte(MASTER,DVC_PG1,0x3a,0x00);
+   1105          		WriteAsicByte(MASTER,DVC_PG1,0x3b,0x78);
+   1106          	}
+   1107          	else if(Mode == 0x03)
+   1108          	{
+   1109          		if(OSD)
+   1110          		{
+   1111          			WriteOSDClrX(MASTER, 0, 0, 0, 45, 31);
+   1112          			WriteOSDBmpX(MASTER,162,5,0x00,0x00,gt_CHANNEL_CH4_O);
+   1113          		}
+   1114          		
+   1115          		// Scale CAM_3 // Select CAM
+   1116          		WriteAsicByte(MASTER,DVC_PG0,0xb0,0xc1);
+   1117          		WriteAsicByte(MASTER,DVC_PG0,0xb1,0xff);
+   1118          		WriteAsicByte(MASTER,DVC_PG0,0xb2,0xff);
+   1119          		WriteAsicByte(MASTER,DVC_PG0,0xb3,0xff);
+   1120          		WriteAsicByte(MASTER,DVC_PG0,0xb4,0xff);
+   1121          		    
+   1122          		// ON/OFF CAMERA
+   1123          		WriteAsicByte(MASTER,DVC_PG1,0x10,0x00);    // ON/OFF CAM
+   1124          		WriteAsicByte(MASTER,DVC_PG1,0x18,0x01);
+   1125          		WriteAsicByte(MASTER,DVC_PG1,0x20,0x02);    // OFF CAM_3
+   1126          		WriteAsicByte(MASTER,DVC_PG1,0x28,0x83);    // OFF CAM_4
+   1127          
+   1128          		WriteAsicByte(MASTER,DVC_PG1,0x3c,0x00);    // Position CAM_3
+   1129          		WriteAsicByte(MASTER,DVC_PG1,0x3d,0xb0);
+   1130          		WriteAsicByte(MASTER,DVC_PG1,0x3e,0x00);
+   1131          		WriteAsicByte(MASTER,DVC_PG1,0x3f,0x78); 
+   1132            	}
+   1133          	else if(Mode == 0x04)
+   1134          	{
+   1135          		
+   1136          		if(OSD)
+   1137          		{
+   1138          			WriteOSDClrX(MASTER, 0, 0, 0, 45, 31);
+   1139          			WriteOSDBmpX(MASTER,76,5,0x00,0x00,gt_CHANNEL_CH1_O);
+   1140                 		WriteOSDBmpX(MASTER,162,5,0x00,0x00,gt_CHANNEL_CH2_O);
+   1141          		}
+   1142          		
+   1143          		// Scale CAM_0 // Select CAM
+   1144          		WriteAsicByte(MASTER,DVC_PG0,0x80,0x01);    
+   1145          		WriteAsicByte(MASTER,DVC_PG0,0x81,0xff);
+   1146          		WriteAsicByte(MASTER,DVC_PG0,0x82,0xff);
+   1147          		WriteAsicByte(MASTER,DVC_PG0,0x83,0x7f);
+   1148          		WriteAsicByte(MASTER,DVC_PG0,0x84,0xff);
+   1149          		// Scale CAM_1 // Select CAM
+   1150          		WriteAsicByte(MASTER,DVC_PG0,0x90,0x41);
+   1151          		WriteAsicByte(MASTER,DVC_PG0,0x91,0xff);
+   1152          		WriteAsicByte(MASTER,DVC_PG0,0x92,0xff);
+   1153          		WriteAsicByte(MASTER,DVC_PG0,0x93,0x7f);
+   1154          		WriteAsicByte(MASTER,DVC_PG0,0x94,0xff);
+   1155          
+   1156          
+   1157          		// ON/OFF CAMERA
+   1158          		WriteAsicByte(MASTER,DVC_PG1,0x10,0x80);  
+   1159          		WriteAsicByte(MASTER,DVC_PG1,0x18,0x81);
+   1160          		WriteAsicByte(MASTER,DVC_PG1,0x20,0x02);   
+   1161          		WriteAsicByte(MASTER,DVC_PG1,0x28,0x03);   
+   1162          
+   1163          		WriteAsicByte(MASTER,DVC_PG1,0x30,0x00);    // Position CAM_0
+   1164          		WriteAsicByte(MASTER,DVC_PG1,0x31,0x58);
+   1165          		WriteAsicByte(MASTER,DVC_PG1,0x32,0x00);    //0x00);
+   1166          		WriteAsicByte(MASTER,DVC_PG1,0x33,0x78);
+   1167          
+   1168          		WriteAsicByte(MASTER,DVC_PG1,0x34,0x58);    // Position CAM_1
+   1169          		WriteAsicByte(MASTER,DVC_PG1,0x35,0xb0);
+   1170          		WriteAsicByte(MASTER,DVC_PG1,0x36,0x00);    //0x00);
+   1171          		WriteAsicByte(MASTER,DVC_PG1,0x37,0x78);
+   1172          	}
+   1173          	else if(Mode == 0x05)
+   1174          	{
+   1175          		if(OSD)
+   1176          		{
+   1177          			WriteOSDClrX(MASTER, 0, 0, 0, 45, 31);
+   1178          			WriteOSDBmpX(MASTER,76,5,0x00,0x00,gt_CHANNEL_CH1_O);
+   1179                 	 	WriteOSDBmpX(MASTER,162,5,0x00,0x00,gt_CHANNEL_CH3_O);
+   1180          		}
+   1181          
+   1182          		// Scale CAM_0 // Select CAM
+   1183          		WriteAsicByte(MASTER,DVC_PG0,0x80,0x01);    
+   1184          		WriteAsicByte(MASTER,DVC_PG0,0x81,0xff);
+   1185          		WriteAsicByte(MASTER,DVC_PG0,0x82,0xff);
+   1186          		WriteAsicByte(MASTER,DVC_PG0,0x83,0x7f);
+   1187          		WriteAsicByte(MASTER,DVC_PG0,0x84,0xff);
+   1188          
+   1189          		// Scale CAM_2 // Select CAM
+   1190          		WriteAsicByte(MASTER,DVC_PG0,0xa0,0x81);
+   1191          		WriteAsicByte(MASTER,DVC_PG0,0xa1,0xff);
+   1192          		WriteAsicByte(MASTER,DVC_PG0,0xa2,0xff);
+   1193          		WriteAsicByte(MASTER,DVC_PG0,0xa3,0xff);
+   1194          		WriteAsicByte(MASTER,DVC_PG0,0xa4,0xff);
+   1195          		    
+   1196          		// ON/OFF CAMERA
+   1197          		WriteAsicByte(MASTER,DVC_PG1,0x10,0x80);  
+   1198          		WriteAsicByte(MASTER,DVC_PG1,0x18,0x01);
+   1199          		WriteAsicByte(MASTER,DVC_PG1,0x20,0x82);   
+   1200          		WriteAsicByte(MASTER,DVC_PG1,0x28,0x03);    
+   1201          
+   1202          		WriteAsicByte(MASTER,DVC_PG1,0x30,0x00);    // Position CAM_0
+   1203          		WriteAsicByte(MASTER,DVC_PG1,0x31,0x58);
+   1204          		WriteAsicByte(MASTER,DVC_PG1,0x32,0x00);
+   1205          		WriteAsicByte(MASTER,DVC_PG1,0x33,0x78);
+   1206          
+   1207          		WriteAsicByte(MASTER,DVC_PG1,0x38,0x58);    // Position CAM_2
+   1208          		WriteAsicByte(MASTER,DVC_PG1,0x39,0xb0);
+   1209          		WriteAsicByte(MASTER,DVC_PG1,0x3a,0x00);
+   1210          		WriteAsicByte(MASTER,DVC_PG1,0x3b,0x78); 
+   1211          	}
+   1212          	else if(Mode == 0x06)
+   1213          	{
+   1214          		if(OSD)
+   1215          		{
+   1216          			WriteOSDClrX(MASTER, 0, 0, 0, 45, 31);
+   1217          			WriteOSDBmpX(MASTER,76,5,0x00,0x00,gt_CHANNEL_CH1_O);
+   1218                 	 	WriteOSDBmpX(MASTER,162,5,0x00,0x00,gt_CHANNEL_CH4_O);
+   1219          		}
+   1220          
+   1221          		// Scale CAM_0 // Select CAM
+   1222          		WriteAsicByte(MASTER,DVC_PG0,0x80,0x01);    
+   1223          		WriteAsicByte(MASTER,DVC_PG0,0x81,0xff);
+   1224          		WriteAsicByte(MASTER,DVC_PG0,0x82,0xff);
+   1225          		WriteAsicByte(MASTER,DVC_PG0,0x83,0x7f);
+   1226          		WriteAsicByte(MASTER,DVC_PG0,0x84,0xff);
+   1227          
+   1228          		// Scale CAM_3 // Select CAM
+   1229          		WriteAsicByte(MASTER,DVC_PG0,0xb0,0xc1);
+   1230          		WriteAsicByte(MASTER,DVC_PG0,0xb1,0xff);
+   1231          		WriteAsicByte(MASTER,DVC_PG0,0xb2,0xff);
+   1232          		WriteAsicByte(MASTER,DVC_PG0,0xb3,0xff);
+   1233          		WriteAsicByte(MASTER,DVC_PG0,0xb4,0xff);
+   1234          		    
+   1235          		// ON/OFF CAMERA
+   1236          		WriteAsicByte(MASTER,DVC_PG1,0x10,0x80);  
+   1237          		WriteAsicByte(MASTER,DVC_PG1,0x18,0x01);
+   1238          		WriteAsicByte(MASTER,DVC_PG1,0x20,0x02);   
+   1239          		WriteAsicByte(MASTER,DVC_PG1,0x28,0x83);    
+   1240          
+   1241          		WriteAsicByte(MASTER,DVC_PG1,0x30,0x00);    // Position CAM_0
+   1242          		WriteAsicByte(MASTER,DVC_PG1,0x31,0x58);
+   1243          		WriteAsicByte(MASTER,DVC_PG1,0x32,0x00);
+   1244          		WriteAsicByte(MASTER,DVC_PG1,0x33,0x78);
+   1245          
+   1246          		WriteAsicByte(MASTER,DVC_PG1,0x3c,0x58);    // Position CAM_3
+   1247          		WriteAsicByte(MASTER,DVC_PG1,0x3d,0xb0);
+   1248          		WriteAsicByte(MASTER,DVC_PG1,0x3e,0x00);
+   1249          		WriteAsicByte(MASTER,DVC_PG1,0x3f,0x78); 
+   1250          	}
+   1251          	else if(Mode == 0x07)
+   1252          	{
+   1253          		if(OSD)
+   1254          		{
+   1255          			WriteOSDClrX(MASTER, 0, 0, 0, 45, 31);
+   1256          			WriteOSDBmpX(MASTER,76,5,0x00,0x00,gt_CHANNEL_CH2_O);
+   1257                 	 	WriteOSDBmpX(MASTER,162,5,0x00,0x00,gt_CHANNEL_CH3_O);
+   1258          		}
+   1259          
+   1260          		// Scale CAM_1 // Select CAM
+   1261          		WriteAsicByte(MASTER,DVC_PG0,0x90,0x41);
+   1262          		WriteAsicByte(MASTER,DVC_PG0,0x91,0xff);
+   1263          		WriteAsicByte(MASTER,DVC_PG0,0x92,0xff);
+   1264          		WriteAsicByte(MASTER,DVC_PG0,0x93,0x7f);
+   1265          		WriteAsicByte(MASTER,DVC_PG0,0x94,0xff);
+   1266          
+   1267          		// Scale CAM_2 // Select CAM
+   1268          		WriteAsicByte(MASTER,DVC_PG0,0xa0,0x81);
+   1269          		WriteAsicByte(MASTER,DVC_PG0,0xa1,0xff);
+   1270          		WriteAsicByte(MASTER,DVC_PG0,0xa2,0xff);
+   1271          		WriteAsicByte(MASTER,DVC_PG0,0xa3,0x7f);
+   1272          		WriteAsicByte(MASTER,DVC_PG0,0xa4,0xff);
+   1273          		    
+   1274          		// ON/OFF CAMERA
+   1275          		WriteAsicByte(MASTER,DVC_PG1,0x10,0x00);  
+   1276          		WriteAsicByte(MASTER,DVC_PG1,0x18,0x81);
+   1277          		WriteAsicByte(MASTER,DVC_PG1,0x20,0x82);   
+   1278          		WriteAsicByte(MASTER,DVC_PG1,0x28,0x03);    
+   1279          
+   1280          		WriteAsicByte(MASTER,DVC_PG1,0x34,0x00);    // Position CAM_1
+   1281          		WriteAsicByte(MASTER,DVC_PG1,0x35,0x58);
+   1282          		WriteAsicByte(MASTER,DVC_PG1,0x36,0x00);
+   1283          		WriteAsicByte(MASTER,DVC_PG1,0x37,0x78);
+   1284          
+   1285          		WriteAsicByte(MASTER,DVC_PG1,0x38,0x58);    // Position CAM_2
+   1286          		WriteAsicByte(MASTER,DVC_PG1,0x39,0xb0);
+   1287          		WriteAsicByte(MASTER,DVC_PG1,0x3a,0x00);
+   1288          		WriteAsicByte(MASTER,DVC_PG1,0x3b,0x78); 
+   1289          	}
+   1290          	else if(Mode == 0x08)
+   1291          	{
+   1292          		if(OSD)
+   1293          		{
+   1294          			WriteOSDClrX(MASTER, 0, 0, 0, 45, 31);
+   1295          			WriteOSDBmpX(MASTER,76,5,0x00,0x00,gt_CHANNEL_CH2_O);
+   1296                 	 	WriteOSDBmpX(MASTER,162,5,0x00,0x00,gt_CHANNEL_CH4_O);
+   1297          		}
+   1298          
+   1299          		// Scale CAM_1 // Select CAM
+   1300          		WriteAsicByte(MASTER,DVC_PG0,0x90,0x41);
+   1301          		WriteAsicByte(MASTER,DVC_PG0,0x91,0xff);
+   1302          		WriteAsicByte(MASTER,DVC_PG0,0x92,0xff);
+   1303          		WriteAsicByte(MASTER,DVC_PG0,0x93,0x7f);
+   1304          		WriteAsicByte(MASTER,DVC_PG0,0x94,0xff);
+   1305          
+   1306          		// Scale CAM_3 // Select CAM
+   1307          		WriteAsicByte(MASTER,DVC_PG0,0xb0,0xc1);
+   1308          		WriteAsicByte(MASTER,DVC_PG0,0xb1,0xff);
+   1309          		WriteAsicByte(MASTER,DVC_PG0,0xb2,0xff);
+   1310          		WriteAsicByte(MASTER,DVC_PG0,0xb3,0xff);
+   1311          		WriteAsicByte(MASTER,DVC_PG0,0xb4,0xff);
+   1312          		    
+   1313          		// ON/OFF CAMERA
+   1314          		WriteAsicByte(MASTER,DVC_PG1,0x10,0x00);  
+   1315          		WriteAsicByte(MASTER,DVC_PG1,0x18,0x81);
+   1316          		WriteAsicByte(MASTER,DVC_PG1,0x20,0x02);   
+   1317          		WriteAsicByte(MASTER,DVC_PG1,0x28,0x83);    
+   1318          
+   1319          		WriteAsicByte(MASTER,DVC_PG1,0x34,0x00);    // Position CAM_1
+   1320          		WriteAsicByte(MASTER,DVC_PG1,0x35,0x58);
+   1321          		WriteAsicByte(MASTER,DVC_PG1,0x36,0x00);
+   1322          		WriteAsicByte(MASTER,DVC_PG1,0x37,0x78);
+   1323          
+   1324          		WriteAsicByte(MASTER,DVC_PG1,0x3c,0x58);    // Position CAM_3
+   1325          		WriteAsicByte(MASTER,DVC_PG1,0x3d,0xb0);
+   1326          		WriteAsicByte(MASTER,DVC_PG1,0x3e,0x00);
+   1327          		WriteAsicByte(MASTER,DVC_PG1,0x3f,0x78); 
+   1328          	}
+   1329          	else if(Mode == 0x09)
+   1330          	{
+   1331          		if(OSD)
+   1332          		{
+   1333          			WriteOSDClrX(MASTER, 0, 0, 0, 45, 31);
+   1334          			WriteOSDBmpX(MASTER,76,5,0x00,0x00,gt_CHANNEL_CH3_O);
+   1335                 	 	WriteOSDBmpX(MASTER,162,5,0x00,0x00,gt_CHANNEL_CH4_O);
+   1336          		}
+   1337          
+   1338          		// Scale CAM_2 // Select CAM
+   1339          		WriteAsicByte(MASTER,DVC_PG0,0xa0,0x81);
+   1340          		WriteAsicByte(MASTER,DVC_PG0,0xa1,0xff);
+   1341          		WriteAsicByte(MASTER,DVC_PG0,0xa2,0xff);
+   1342          		WriteAsicByte(MASTER,DVC_PG0,0xa3,0x7f);
+   1343          		WriteAsicByte(MASTER,DVC_PG0,0xa4,0xff);
+   1344          
+   1345          		// Scale CAM_3 // Select CAM
+   1346          		WriteAsicByte(MASTER,DVC_PG0,0xb0,0xc1);
+   1347          		WriteAsicByte(MASTER,DVC_PG0,0xb1,0xff);
+   1348          		WriteAsicByte(MASTER,DVC_PG0,0xb2,0xff);
+   1349          		WriteAsicByte(MASTER,DVC_PG0,0xb3,0xff);
+   1350          		WriteAsicByte(MASTER,DVC_PG0,0xb4,0xff);
+   1351          		    
+   1352          		// ON/OFF CAMERA
+   1353          		WriteAsicByte(MASTER,DVC_PG1,0x10,0x00);  
+   1354          		WriteAsicByte(MASTER,DVC_PG1,0x18,0x01);
+   1355          		WriteAsicByte(MASTER,DVC_PG1,0x20,0x82);   
+   1356          		WriteAsicByte(MASTER,DVC_PG1,0x28,0x83);    
+   1357          
+   1358          		WriteAsicByte(MASTER,DVC_PG1,0x38,0x00);    // Position CAM_2
+   1359          		WriteAsicByte(MASTER,DVC_PG1,0x39,0x58);
+   1360          		WriteAsicByte(MASTER,DVC_PG1,0x3a,0x00);
+   1361          		WriteAsicByte(MASTER,DVC_PG1,0x3b,0x78);
+   1362          
+   1363          		WriteAsicByte(MASTER,DVC_PG1,0x3c,0x58);    // Position CAM_3
+   1364          		WriteAsicByte(MASTER,DVC_PG1,0x3d,0xb0);
+   1365          		WriteAsicByte(MASTER,DVC_PG1,0x3e,0x00);
+   1366          		WriteAsicByte(MASTER,DVC_PG1,0x3f,0x78); 
+   1367          	}
+   1368          	else if (Mode == 0x0A)
+   1369          	{
+   1370          		if(OSD)
+   1371          		{
+   1372          			WriteOSDClrX(MASTER, 0, 0, 0, 45, 31);
+   1373          			WriteOSDBmpX(MASTER,76,5,0x00,0x00,gt_CHANNEL_CH1_O);
+   1374          		    WriteOSDBmpX(MASTER,162,5,0x00,0x00,gt_CHANNEL_CH2_O);
+   1375          		    WriteOSDBmpX(MASTER,76,125,0x00,0x00,gt_CHANNEL_CH3_O);
+   1376          		    WriteOSDBmpX(MASTER,162,125,0x00,0x00,gt_CHANNEL_CH4_O);
+   1377          		}
+   1378          		
+   1379          		// Scale CAM_0 // Select CAM
+   1380          		WriteAsicByte(MASTER,DVC_PG0,0x80,0x01);    
+   1381          		WriteAsicByte(MASTER,DVC_PG0,0x81,0x7f);
+   1382          		WriteAsicByte(MASTER,DVC_PG0,0x82,0xff);
+   1383          		WriteAsicByte(MASTER,DVC_PG0,0x83,0x7f);
+   1384          		WriteAsicByte(MASTER,DVC_PG0,0x84,0xff);
+   1385          		// Scale CAM_1 // Select CAM
+   1386          		WriteAsicByte(MASTER,DVC_PG0,0x90,0x41);
+   1387          		WriteAsicByte(MASTER,DVC_PG0,0x91,0x7f);
+   1388          		WriteAsicByte(MASTER,DVC_PG0,0x92,0xff);
+   1389          		WriteAsicByte(MASTER,DVC_PG0,0x93,0x7f);
+   1390          		WriteAsicByte(MASTER,DVC_PG0,0x94,0xff);
+   1391          		// Scale CAM_2 // Select CAM
+   1392          		WriteAsicByte(MASTER,DVC_PG0,0xa0,0x81);
+   1393          		WriteAsicByte(MASTER,DVC_PG0,0xa1,0x7f);
+   1394          		WriteAsicByte(MASTER,DVC_PG0,0xa2,0xff);
+   1395          		WriteAsicByte(MASTER,DVC_PG0,0xa3,0x7f);
+   1396          		WriteAsicByte(MASTER,DVC_PG0,0xa4,0xff);
+   1397          		// Scale CAM_3 // Select CAM
+   1398          		WriteAsicByte(MASTER,DVC_PG0,0xb0,0xc1);
+   1399          		WriteAsicByte(MASTER,DVC_PG0,0xb1,0x7f);
+   1400          		WriteAsicByte(MASTER,DVC_PG0,0xb2,0xff);
+   1401          		WriteAsicByte(MASTER,DVC_PG0,0xb3,0x7f);
+   1402          		WriteAsicByte(MASTER,DVC_PG0,0xb4,0xff);
+   1403          
+   1404          		// ON/OFF CAMERA
+   1405          		WriteAsicByte(MASTER,DVC_PG1,0x10,0x80);   
+   1406          		WriteAsicByte(MASTER,DVC_PG1,0x18,0x81);
+   1407          		WriteAsicByte(MASTER,DVC_PG1,0x20,0x82);   
+   1408          		WriteAsicByte(MASTER,DVC_PG1,0x28,0x83); 
+   1409          
+   1410          		WriteAsicByte(MASTER,DVC_PG1,0x30,0x00);    // Position CAM_0
+   1411          		WriteAsicByte(MASTER,DVC_PG1,0x31,0x58);
+   1412          		WriteAsicByte(MASTER,DVC_PG1,0x32,0x00);
+   1413          		WriteAsicByte(MASTER,DVC_PG1,0x33,0x3C);
+   1414          
+   1415          		WriteAsicByte(MASTER,DVC_PG1,0x34,0x58);    // Position CAM_1
+   1416          		WriteAsicByte(MASTER,DVC_PG1,0x35,0xb0);
+   1417          		WriteAsicByte(MASTER,DVC_PG1,0x36,0x00);
+   1418          		WriteAsicByte(MASTER,DVC_PG1,0x37,0x3C);
+   1419          
+   1420          		WriteAsicByte(MASTER,DVC_PG1,0x38,0x00);    // Position CAM_2
+   1421          		WriteAsicByte(MASTER,DVC_PG1,0x39,0x58);
+   1422          		WriteAsicByte(MASTER,DVC_PG1,0x3a,0x3C);
+   1423          		WriteAsicByte(MASTER,DVC_PG1,0x3b,0x78);
+   1424          
+   1425          		WriteAsicByte(MASTER,DVC_PG1,0x3c,0x58);    // Position CAM_3
+   1426          		WriteAsicByte(MASTER,DVC_PG1,0x3d,0xb0);
+   1427          		WriteAsicByte(MASTER,DVC_PG1,0x3e,0x3C);
+   1428          		WriteAsicByte(MASTER,DVC_PG1,0x3f,0x78); 
+   1429          	}
+   1430          }
+   1431          //  --, kutelf, 131007
+   1432          //	--, kutelf, 140801
+   1433          
+   1434          /**\
+   1435            * @brief  None
+   1436            * @param  None
+   1437            * @retval None
+   1438            */
+   1439          void TW2835_Control_Init(void)
+   1440          {
+   1441          	DebugMsg_printf("++ TW2835_Control_Init (GPIO Mode), Initialize START\r\n");
+   1442          
+   1443          	InitPg0();
+   1444          	InitPg1();
+   1445          	InitPg2();
+   1446          
+   1447          	DebugMsg_printf("-- TW2835_Control_Init (GPIO Mode), Initialize END\r\n");
+   1448          }
+   1449          
+   1450          /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+      16   ClearCheckCamera
+        16   -> WriteOSDBmpX
+       8   InitPg0
+         8   -> WriteAsicTable
+       8   InitPg1
+         8   -> WriteAsicTable
+      16   InitPg2
+        16   -> InitOSDCol
+        16   -> WriteAsicByte
+        16   -> WriteAsicTable
+        16   -> WriteOSDClrX
+        16   -> WriteOSDClrY
+       0   InitVdo
+      16   Port_Change
+        16   -> GPIO_Init
+      24   ReadAsicByte
+        24   -> GPIO_ReadInputData
+        24   -> GPIO_ReadOutputData
+        24   -> GPIO_ResetBits
+        24   -> GPIO_SetBits
+        24   -> GPIO_Write
+        24   -> Port_Change
+      24   ReadAsicOSDMemWr
+        24   -> GPIO_ReadInputData
+        24   -> GPIO_ReadOutputData
+        24   -> GPIO_ResetBits
+        24   -> GPIO_SetBits
+        24   -> GPIO_Write
+        24   -> Port_Change
+      32   ReadAsicTable
+        32   -> GPIO_ReadInputData
+        32   -> GPIO_ReadOutputData
+        32   -> GPIO_ResetBits
+        32   -> GPIO_SetBits
+        32   -> GPIO_Write
+        32   -> Port_Change
+       8   Read_TW2835
+         8   -> GPIO_ReadInputData
+         8   -> Port_Change
+      24   SetAsicFlgType
+        24   -> ReadAsicByte
+         0   -> WriteAsicByte
+      16   TW2835_CameraMode
+         0   -> WriteAsicByte
+        16   -> WriteAsicByte
+        16   -> WriteOSDBmpX
+        16   -> WriteOSDClrX
+      32   TW2835_CheckCamera_Input
+        32   -> ClearCheckCamera
+        32   -> ReadAsicByte
+        32   -> WriteOSDBmpX
+      16   TW2835_Control_Init
+         0   -> InitPg2
+        16   -> WriteAsicTable
+      32   WriteAsicByte
+        32   -> GPIO_ReadOutputData
+        32   -> GPIO_ResetBits
+        32   -> GPIO_SetBits
+        32   -> GPIO_Write
+        32   -> Port_Change
+      24   WriteAsicByteOSD
+        24   -> GPIO_ReadOutputData
+        24   -> GPIO_ResetBits
+        24   -> GPIO_SetBits
+        24   -> GPIO_Write
+        24   -> Port_Change
+      32   WriteAsicTable
+        32   -> GPIO_ReadOutputData
+        32   -> GPIO_ResetBits
+        32   -> GPIO_SetBits
+        32   -> GPIO_Write
+        32   -> Port_Change
+      24   WriteAsicTableOSD
+        24   -> GPIO_ReadOutputData
+        24   -> GPIO_ResetBits
+        24   -> GPIO_SetBits
+        24   -> GPIO_Write
+        24   -> Port_Change
+      16   Write_TW2835
+        16   -> GPIO_ReadOutputData
+         0   -> GPIO_Write
+        16   -> Port_Change
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable13
+       4  ??DataTable13_1
+       4  ??DataTable13_2
+       4  ??DataTable13_3
+       4  ??DataTable13_4
+       4  ??DataTable13_5
+       4  ??DataTable13_6
+       4  ??DataTable15
+       4  ??DataTable15_1
+       4  ??DataTable15_2
+       4  ??DataTable15_3
+       4  ??DataTable15_4
+       4  ??DataTable15_5
+       8  ?Subroutine0
+      12  ?Subroutine1
+     132  ClearCheckCamera
+      16  InitPg0
+      14  InitPg1
+     322  InitPg2
+      20  InitVdo
+      58  Port_Change
+     288  ReadAsicByte
+     258  ReadAsicOSDMemWr
+     288  ReadAsicTable
+      18  Read_TW2835
+     512  Register_Table_Page0
+          Register_Table_Page1
+      36  SetAsicFlgType
+    3326  TW2835_CameraMode
+     420  TW2835_CheckCamera_Input
+      48  TW2835_Control_Init
+     322  WriteAsicByte
+     276  WriteAsicByteOSD
+     326  WriteAsicTable
+     470  WriteAsicTableOSD
+      36  Write_TW2835
+     216  cmn_bot
+          cmn_cnt_vs_sub
+          Temp
+          cmn_flg
+          tbl_pg2_mse_box
+          tbl_ntsc_pg2_2dbox
+          tbl_ntsc_pg2_mtn
+          tbl_pal_pg2_2dbox
+          tbl_pal_pg2_mtn
+       1  cmn_cnt_vs
+       1  cmn_dvc
+       4  cmn_flg_cnt
+       1  cmn_lst_slvr_x
+       1  cmn_lst_slvr_y
+       1  cmn_max_ch
+       1  cmn_vga_det
+     256  read_data
+      16  tbl_ntsc_pg1_enc
+      16  tbl_ntsc_pg1_pic_9_lt
+      16  tbl_ntsc_pg1_pic_9_rb
+      16  tbl_ntsc_pg1_pic_fl
+      16  tbl_ntsc_pg1_pic_qd
+      16  tbl_pal_pg1_enc
+      16  tbl_pal_pg1_pic_9_lt
+      16  tbl_pal_pg1_pic_9_rb
+      16  tbl_pal_pg1_pic_fl
+      16  tbl_pal_pg1_pic_qd
+      48  tbl_pg1_x_cmn
+      80  tbl_pg1_y_cmn
+       4  wndw_flg
+       4  wndw_flg_ds
+
+ 
+   270 bytes in section .bss
+ 1 020 bytes in section .data
+ 6 746 bytes in section .text
+ 
+ 6 746 bytes of CODE memory
+ 1 290 bytes of DATA memory
+
+Errors: none
+Warnings: none

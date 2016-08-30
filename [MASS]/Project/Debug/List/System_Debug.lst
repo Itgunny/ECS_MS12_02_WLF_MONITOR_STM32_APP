@@ -1,0 +1,172 @@
+###############################################################################
+#                                                                             #
+# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      12/May/2016  14:27:36 #
+# Copyright 1999-2012 IAR Systems AB.                                         #
+#                                                                             #
+#    Cpu mode     =  thumb                                                    #
+#    Endian       =  little                                                   #
+#    Source file  =  C:\Tools\WL9F\WLF Monitor - STM32_APP\Platform\TaeHa -   #
+#                    ECS\SRC\System_Debug.c                                   #
+#    Command line =  "C:\Tools\WL9F\WLF Monitor - STM32_APP\Platform\TaeHa -  #
+#                    ECS\SRC\System_Debug.c" -D USE_STDPERIPH_DRIVER -D       #
+#                    STM32F4XX -D USE_STM324xG_EVAL -D USE_FULL_ASSERT -lcN   #
+#                    "C:\Tools\WL9F\WLF Monitor -                             #
+#                    STM32_APP\Project\Debug\List\" -o "C:\Tools\WL9F\WLF     #
+#                    Monitor - STM32_APP\Project\Debug\Obj\" --debug          #
+#                    --endian=little --cpu=Cortex-M4 -e --fpu=VFPv4_sp        #
+#                    --dlib_config "C:\Tools\IAR Systems\Embedded Workbench   #
+#                    6.5\arm\INC\c\DLib_Config_Full.h" -I "C:\Tools\WL9F\WLF  #
+#                    Monitor - STM32_APP\Project\..\Platform\COMMON\INC\" -I  #
+#                    "C:\Tools\WL9F\WLF Monitor -                             #
+#                    STM32_APP\Project\..\Platform\TaeHa - ECS\INC\" -I       #
+#                    "C:\Tools\WL9F\WLF Monitor -                             #
+#                    STM32_APP\Project\..\Libraries\CMSIS\Device\ST\STM32F4xx #
+#                    \Include\" -I "C:\Tools\WL9F\WLF Monitor -               #
+#                    STM32_APP\Project\..\Libraries\STM32F4xx_StdPeriph_Drive #
+#                    r\inc\" -Oh --use_c++_inline -I "C:\Tools\IAR            #
+#                    Systems\Embedded Workbench 6.5\arm\CMSIS\Include\"       #
+#    List file    =  C:\Tools\WL9F\WLF Monitor -                              #
+#                    STM32_APP\Project\Debug\List\System_Debug.lst            #
+#    Object file  =  C:\Tools\WL9F\WLF Monitor -                              #
+#                    STM32_APP\Project\Debug\Obj\System_Debug.o               #
+#                                                                             #
+#                                                                             #
+###############################################################################
+
+C:\Tools\WL9F\WLF Monitor - STM32_APP\Platform\TaeHa - ECS\SRC\System_Debug.c
+      1          /**
+      2            ******************************************************************************
+      3            * @file    System_Debug.c 
+      4            * @author  kutelf (kutelf@taeha.co.kr)
+      5            * @version V1.0.0
+      6            * @date    02/22/2013
+      7            * @brief   System_Debug.c module
+      8            *
+      9            * Project Name       : WL9F Monitor APP
+     10            * Project Enviroment : IAREmbedded Workbench for ARM 6.5x 
+     11            *                      STM32F407ZGT6 Firmware Library
+     12            * Project Workspace  : WL9F_Monitor_APP
+     13            * MCU Type           : STM32F407ZGT6
+     14            *
+     15            * TAEHA MECHATRONICS Co., Ltd (http://www.taeha.co.kr)				
+     16            * ECS Division R&D Center. / Author by Young-Min Han (kutelf@taeha.co.kr)
+     17            * 
+     18            ******************************************************************************
+     19            */ 
+     20          
+     21          /* Includes ------------------------------------------------------------------*/
+     22          #include "WL9F_Monitor_APP.h"	
+     23          
+     24          /* Private typedef -----------------------------------------------------------*/
+     25          /* Private define ------------------------------------------------------------*/
+     26          /* Private macro -------------------------------------------------------------*/
+     27          /* Private variables ---------------------------------------------------------*/
+     28          /* Private function prototypes -----------------------------------------------*/
+     29          /* Private functions ---------------------------------------------------------*/
+     30          
+     31          #if 0
+     32          #ifdef  USE_FULL_ASSERT
+     33          
+     34          /**
+     35            * @brief  Reports the name of the source file and the source line number
+     36            *   where the assert_param error has occurred.
+     37            * @param  file: pointer to the source file name
+     38            * @param  line: assert_param error line source number
+     39            * @retval None
+     40            */
+     41          void assert_failed(uint8_t* file, uint32_t line)
+     42          { 
+     43            /* User can add his own implementation to report the file name and line number,
+     44               ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+     45          
+     46          	printf("Wrong parameters value: file %s on line %d\r\n", file, line);	
+     47          
+     48            /* Infinite loop */
+     49            while (1)
+     50            {
+     51            }
+     52          }
+     53          #endif
+     54          #endif
+     55          
+     56          /**
+     57            * @brief  DebugMsg xxxxx.
+     58            * @param  
+     59            * @retval None
+     60            */
+     61          
+     62          void DebugMsg_FunctionStart(char const *fName_p)
+     63          {
+     64          #ifdef DEBUG_MSG_LEVEL0
+     65              printf("[START]  %s()\n", fName_p);
+     66          #endif
+     67          }
+     68          
+     69          void DebugMsg_FunctionEnd(char const *fName_p)
+     70          {
+     71          #ifdef DEBUG_MSG_LEVEL0
+     72              printf("[End]    %s()\n", fName_p);
+     73          #endif
+     74          }
+     75          
+     76          void DebugMsg_FunctionNotify(char const *fName_p, int lineNum)
+     77          {
+     78          #ifdef DEBUG_MSG_LEVEL0
+     79              printf("[Notify] %s() %d\n", fName_p, lineNum);
+     80          #endif
+     81          }
+     82          
+     83          void DebugMsg_FunctionError(char const *fName_p, int lineNum)
+     84          {
+     85          #ifdef DEBUG_MSG_LEVEL0
+     86              printf("[ERROR] %s() %d\n", fName_p, lineNum);
+     87          #endif
+     88          }
+     89          
+     90          #ifdef USE_FULL_ASSERT
+     91          void DebugMsg_Assert(char const *fName_p, int lineNum)
+     92          {
+     93              printf("ASSERT FAILED !!! %s() %d\n", fName_p, lineNum);
+     94          }
+     95          #endif
+     96          
+     97          /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       0   DebugMsg_Assert
+         0   -> printf
+       0   DebugMsg_FunctionEnd
+         0   -> printf
+       0   DebugMsg_FunctionError
+         0   -> printf
+       0   DebugMsg_FunctionNotify
+         0   -> printf
+       0   DebugMsg_FunctionStart
+         0   -> printf
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+      28  ?<Constant "ASSERT FAILED !!! %s(...">
+      20  ?<Constant "[ERROR] %s() %d\n">
+      16  ?<Constant "[End]    %s()\n">
+      20  ?<Constant "[Notify] %s() %d\n">
+      16  ?<Constant "[START]  %s()\n">
+      12  DebugMsg_Assert
+      10  DebugMsg_FunctionEnd
+      12  DebugMsg_FunctionError
+      12  DebugMsg_FunctionNotify
+      10  DebugMsg_FunctionStart
+
+ 
+ 156 bytes in section .text
+ 
+ 156 bytes of CODE memory
+
+Errors: none
+Warnings: none
