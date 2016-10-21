@@ -236,7 +236,7 @@ extern uint16_t ADC3ConvertedValue;
 extern u16 pWriteBufPos;
 
 extern unsigned char Hardware_Revision;			// ++, --, 160511 bwk
-
+extern u8 SaveSmartKeyUse;						// ++, --, 161021 bwk
 
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
@@ -569,7 +569,8 @@ void CAN1_RX0_IRQHandler(void)
 					PGN = (RxMsg.ExtId  & 0x00FFFF00) >> 8;
 					if(PGN == 0xFFFA || PGN == 0xFE34){
 						CAN_RX(RxMsg);
-					}
+						}
+				
 				}
 			}
 		#else
@@ -999,7 +1000,13 @@ void UART4_Receive_CMD(void)
 						#else
 						if(Hardware_Revision >= REVH)
 						{
+							// ++, 161021 bwk
+							#if 0
 							SaveSMKUseToFlash(WL9FM_USART_DATA.COM4_RxBuf[3]);
+							#else
+							SaveSmartKeyUse = WL9FM_USART_DATA.COM4_RxBuf[3];
+							#endif
+							// --, 161021 bwk
 						}
 						else
 						{

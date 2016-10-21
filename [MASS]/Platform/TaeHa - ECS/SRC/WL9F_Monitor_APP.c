@@ -23,6 +23,7 @@
 #include "WL9F_Monitor_APP.h"	
 #include "WL9F_Monitor_Variable.h"
 #include "endecoder.h"
+#include "flash_if.h"
 /* Private typedef -----------------------------------------------------------*/
 /*
 #define RX_MSG69		0x01
@@ -76,6 +77,7 @@ WL9FM_flag_data smk_flag_data;
 
 /* Private variables ---------------------------------------------------------*/
 u8 gAuthentication_Cnt = 0;
+u8 gRetryCheck=0;		// ++, --, 161021 bwk
 
 // ++ , 141118 sys3215
 u8 Flag_ESL;
@@ -168,6 +170,7 @@ u16 OSUpdateCount;
 // --, 141006 fort22
 
 u8 SmartKeyUse;
+u8 SaveSmartKeyUse;		// ++, --, 161021 bwk
 
 u8 CameraCommFlag;
 
@@ -436,6 +439,9 @@ void Init_Smart_Key_valuable(void)
 	Password_Certification_Result=0;
 // --, 141118 sys3215
 
+	gAuthentication_Cnt = 0;						// ++, --, 161021 bwk
+	rand_value.rand_cpk = (rand() % 0xfaffffff);	// ++, --, 161021 bwk
+
 }
 
 
@@ -528,19 +534,43 @@ u8 LoadSMKUseToEEPROM(void)
 {
 	return EEPROM_Read(0);
 }
+
 // ++, 160511 bwk
 void SaveSMKUseToFlash(u8 Use)
 {
+	// ++, 161021 bwk
+	#if 0
 	u8 SaveSMKUse[1];
 	SaveSMKUse[0] = Use;
 	SPI_FLASH_SectorErase(0);		// 0 : Sector_0
 	SPI_FLASH_PageWrite(SaveSMKUse,0,1);		// 0 : Sector_0
+	#else
+	FLASH_If_Init();	
+	u32 SmkAddress = ADDR_FLASH_SECTOR_11;
+	FLASH_If_SMK_Erase(SmkAddress);
+	FLASH_ProgramByte(SmkAddress, Use);
+	FLASH_Lock();
+	#endif
+	// --, 161021 bwk
 }
 u8 LoadSMKUseToFlash(void)
 {
+	// ++, 161021 bwk
+	#if 0
 	u8 SaveSMKUse[1];
 	SPI_FLASH_BufferRead(SaveSMKUse,0,1);		// 0 : Sector_0
 	return SaveSMKUse[0];
+	#else
+	u8 loadSMKUse;
+	u32 SmkAddress = ADDR_FLASH_SECTOR_11;
+	loadSMKUse =  *(unsigned char*)SmkAddress++;
+	if(loadSMKUse == 0xff)
+		loadSMKUse = 0;
+	return loadSMKUse;
+	#endif
+	// --, 161021 bwk
+        /*
+        */
 }
 // --, 160511 bwk
 
@@ -597,6 +627,12 @@ void System_CheckPowerIG()
 					break;
 			}
 
+			// ++, 161021 bwk
+			if(SaveSmartKeyUse != SmartKeyUse)
+			{
+				SaveSMKUseToFlash(SaveSmartKeyUse);
+			}
+			// --, 161021 bwk
 			Buzzer_Off();
 
 			//	POWER OFF Code를 3msec 마다 2번 Exynos로 보낸다. 
@@ -796,6 +832,8 @@ void Srand()
 
 void GetRandValue(u8 random)
 {
+	// ++, 161021 bwk
+	#if 0
 	if(random == GET_VMC)	
 	{
 		// ++, 150710 bwk
@@ -813,11 +851,18 @@ void GetRandValue(u8 random)
 		rand_value.rand_vmc = (rand() % 64255);
 		rand_value.rand_cpk = (rand() % 0xfaffffff);
 	}	
+	#else
+	if((random == GET_VMC) || (random == GET_VMC_CPK))
+		rand_value.rand_vmc = (rand() % 64255);	
+	#endif
+	// --, 161021 bwk
 }
 
 void RequestFirstAuthentication(void)
 {
 	unsigned int temp;
+	
+	gRetryCheck = 0;				// ++, --, 161021 bwk
 	
 	SetTagLevel(TAG_LEVEL_NORMAL);
 	SetTagCmd(TAG_CMD_COMM_AUTHENTICATION);
@@ -846,6 +891,8 @@ void RequestSecondAuthentication(void)
 {
 	unsigned short upper_cpk, lower_cpk;
 	unsigned int temp;
+
+	gRetryCheck = 0;				// ++, --, 161021 bwk
 
 	upper_cpk = (rand_value.rand_cpk & 0xffff0000) >> 16;
 	lower_cpk = rand_value.rand_cpk & 0x0000ffff;
@@ -1134,6 +1181,7 @@ void SmartKeyAuthentication(void)
 				{
 					if(++gAuthentication_Cnt >= TIME_OUT_COUNT)
 					{
+						gAuthentication_Cnt = 0;
 						//AuthResult = 2;
 						AuthResult = 1;
 						smk_flag_data.recv_resp_packet = RESPONSE_TIME_OUT;
@@ -1150,11 +1198,53 @@ void SmartKeyAuthentication(void)
 			}
 			else if(smk_flag_data.recv_resp_packet == (REQUEST_FIRST_AUTHENTICATION | RESPONSE_WAIT))
 			{
+				// ++, 161021 bwk
+				#if 0
 				//RequestFirstAuthentication();
+				#else
+				if(gRetryCheck < 5)
+				{
+					if(++gAuthentication_Cnt >= 2)
+					{
+						gAuthentication_Cnt = 0;
+						struct st_CAN_Message1 Send_Message;
+						memcpy(&Send_Message.Data,&send_smartkey,8);	
+						Send_Message.Priority= 0x18;
+						Send_Message.PDU_Format= 0xFF;
+						Send_Message.PDU_Specific= 0xE7;
+						Send_Message.Source_Address= 0x28;
+						Write_CAN_Single(Send_Message);
+
+						gRetryCheck++;
+					}
+				}
+				#endif
+				// --, 161021 bwk
 			}
 			else if(smk_flag_data.recv_resp_packet == (REQUEST_SECOND_AUTHENTICATION | RESPONSE_WAIT))
 			{
+				// ++, 161021 bwk
+				#if 0
 				//RequestSecondAuthentication();
+				#else
+				if(gRetryCheck < 5)
+				{
+					if(++gAuthentication_Cnt >= 2)
+					{
+						gAuthentication_Cnt = 0;
+						struct st_CAN_Message1 Send_Message;
+						memcpy(&Send_Message.Data,&send_smartkey,8);	
+						Send_Message.Priority= 0x18;
+						Send_Message.PDU_Format= 0xFF;
+						Send_Message.PDU_Specific= 0xE7;
+						Send_Message.Source_Address= 0x28;
+						Write_CAN_Single(Send_Message);
+
+						gRetryCheck++;
+					}
+				}
+				#endif
+				// --, 161021 bwk
 			}
 		}
 	}
@@ -1530,9 +1620,9 @@ void WL9FM_System_Init_Start(void)
 	SmartKeyUse = LoadSMKUseToEEPROM();
 	#else
 	if(Hardware_Revision >= REVH)
-		SmartKeyUse = LoadSMKUseToFlash();
+		SaveSmartKeyUse = SmartKeyUse = LoadSMKUseToFlash();		// ++, --, 161021 bwk SaveSmartKeyUse 추가 
 	else
-		SmartKeyUse = LoadSMKUseToEEPROM();
+		SaveSmartKeyUse = SmartKeyUse = LoadSMKUseToEEPROM();	// ++, --, 161021 bwk SaveSmartKeyUse 추가 
 	#endif
 	// --, 160511 bwk
 	M25P32_Init();
