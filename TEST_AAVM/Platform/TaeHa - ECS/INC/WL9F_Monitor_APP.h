@@ -141,7 +141,7 @@
 #define RESPONSE_SUCCESS						0x00010000
 #define RESPONSE_TIME_OUT						0x00100000
 
-#define TIME_OUT_COUNT							20
+#define TIME_OUT_COUNT							5		// ++, --, 161021 bwk 20 -> 5 
 
 
 #define SMK_SUCCESS				0xA5
@@ -194,7 +194,7 @@
 #define	VERSION_HIGH			1
 #define	VERSION_LOW			4
 #define	VERSION_SUB_HIGH		0
-#define	VERSION_SUB_LOW		0
+#define	VERSION_SUB_LOW		3
 #define	VERSION_HIDDEN		0
 ///////////////////////////////////////////////////
 ////1.0.1.0 (1.0.0.9에서 250kpbs로 CAN2 수정)
@@ -294,8 +294,22 @@
 // 4. WATCH DOG 추가
 
 //// 1.4.0.00 - 160830
-// 1. SmartKey Rx 무응답 시 200ms 5회 Retry 추가 
-// 2. cpk 최초 1회 생성 후 변경하지 않음
+// 1. AAVM 사양 추가 
+// 2. SmartKey Rx 무응답 시 200ms 5회 Retry 추가 
+// 3. cpk 최초 1회 생성 후 변경하지 않음
+
+
+//// 1.4.0.10 - 161012
+// 1. AAVM 관련 이미지 폰트 변경
+
+//// 1.4.0.20 - 161017
+// 1. AAVM 관련 카메라 깜박임 현상 수정
+// 2. AAVM 관련 CH4로 고정
+
+//// 1.4.0.30 - 161027
+// 1. NO SiGNAL 현상 수정
+// 2. SMARKEY 에러 수정 : Serial Flash 관련
+// 3. AAVM ICON 깜박임 OSD 추가
 ///////////////////////////////////////////////////
 
 //=================================================================

@@ -238,7 +238,7 @@ extern uint16_t ADC3ConvertedValue;
 extern u16 pWriteBufPos;
 
 extern unsigned char Hardware_Revision;			// ++, --, 160511 bwk
-
+extern u8 SaveSmartKeyUse;						// ++, --, 161021 bwk
 
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
@@ -962,6 +962,12 @@ void UART4_Receive_CMD(void)
                                         AAVM_Camera_Icon_Index = WL9FM_USART_DATA.COM4_RxBuf[4];                                        
                                         
                                         AAVM_Menu_Flag = WL9FM_USART_DATA.COM4_RxBuf[5];
+                                        
+                                        AAVM_Warning_Front = WL9FM_USART_DATA.COM4_RxBuf[6];
+                                        AAVM_Warning_Rear = WL9FM_USART_DATA.COM4_RxBuf[7];
+                                        AAVM_Warning_Left = WL9FM_USART_DATA.COM4_RxBuf[8];
+                                        AAVM_Warning_Right = WL9FM_USART_DATA.COM4_RxBuf[9];
+                                        
                                   }
                                         break;
                           
@@ -1016,7 +1022,13 @@ void UART4_Receive_CMD(void)
 						#else
 						if(Hardware_Revision >= REVH)
 						{
+							// ++, 161021 bwk
+							#if 0
 							SaveSMKUseToFlash(WL9FM_USART_DATA.COM4_RxBuf[3]);
+							#else
+							SaveSmartKeyUse = WL9FM_USART_DATA.COM4_RxBuf[3];
+							#endif
+							// --, 161021 bwk
 						}
 						else
 						{

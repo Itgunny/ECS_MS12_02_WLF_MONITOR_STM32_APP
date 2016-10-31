@@ -64,7 +64,10 @@ extern unsigned char AAVM_Camera_Icon_Index = 0xFF;
 unsigned char AAVM_CheckFlag = 1;
 unsigned char AAVM_CheckCnt = 0;
 extern unsigned char AAVM_Menu_Flag = 0xFF;
-
+extern unsigned char AAVM_Warning_Front = 0xFF;
+extern unsigned char AAVM_Warning_Rear = 0xFF;
+extern unsigned char AAVM_Warning_Left = 0xFF;
+extern unsigned char AAVM_Warning_Right = 0xFF;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 

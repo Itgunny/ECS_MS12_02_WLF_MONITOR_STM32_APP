@@ -74,6 +74,10 @@ extern unsigned char AAVM_CheckCnt;
 extern unsigned char AAVM_Icon_Index;
 extern unsigned char AAVM_Camera_Icon_Index;
 extern unsigned char AAVM_Menu_Flag;
+extern unsigned char AAVM_Warning_Front;
+extern unsigned char AAVM_Warning_Rear;
+extern unsigned char AAVM_Warning_Left;
+extern unsigned char AAVM_Warning_Right;
 
 /* Exported functions ------------------------------------------------------- */
 extern void LCD_Control_Init(void);
