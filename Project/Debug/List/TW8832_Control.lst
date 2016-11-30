@@ -1,0 +1,846 @@
+###############################################################################
+#                                                                             #
+# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      21/Oct/2016  14:30:36 #
+# Copyright 1999-2012 IAR Systems AB.                                         #
+#                                                                             #
+#    Cpu mode     =  thumb                                                    #
+#    Endian       =  little                                                   #
+#    Source file  =  D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -            #
+#                    STM32_APP\[MASS]\Platform\TaeHa -                        #
+#                    ECS\SRC\TW8832_Control.c                                 #
+#    Command line =  "D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -           #
+#                    STM32_APP\[MASS]\Platform\TaeHa -                        #
+#                    ECS\SRC\TW8832_Control.c" -D USE_STDPERIPH_DRIVER -D     #
+#                    STM32F4XX -D USE_STM324xG_EVAL -D USE_FULL_ASSERT -lcN   #
+#                    "D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -           #
+#                    STM32_APP\[MASS]\Project\Debug\List\" -o                 #
+#                    "D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -           #
+#                    STM32_APP\[MASS]\Project\Debug\Obj\" --debug             #
+#                    --endian=little --cpu=Cortex-M4 -e --fpu=VFPv4_sp        #
+#                    --dlib_config "C:\Program Files (x86)\IAR                #
+#                    Systems\Embedded Workbench 6.5\arm\INC\c\DLib_Config_Ful #
+#                    l.h" -I "D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -   #
+#                    STM32_APP\[MASS]\Project\..\Platform\COMMON\INC\" -I     #
+#                    "D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -           #
+#                    STM32_APP\[MASS]\Project\..\Platform\TaeHa - ECS\INC\"   #
+#                    -I "D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -        #
+#                    STM32_APP\[MASS]\Project\..\Libraries\CMSIS\Device\ST\ST #
+#                    M32F4xx\Include\" -I "D:\Project\[SVN] ECS-RD12-16 -     #
+#                    WL9F Monitor - STM32_APP\[MASS]\Project\..\Libraries\STM #
+#                    32F4xx_StdPeriph_Driver\inc\" -Oh --use_c++_inline -I    #
+#                    "C:\Program Files (x86)\IAR Systems\Embedded Workbench   #
+#                    6.5\arm\CMSIS\Include\"                                  #
+#    List file    =  D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -            #
+#                    STM32_APP\[MASS]\Project\Debug\List\TW8832_Control.lst   #
+#    Object file  =  D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -            #
+#                    STM32_APP\[MASS]\Project\Debug\Obj\TW8832_Control.o      #
+#                                                                             #
+#                                                                             #
+###############################################################################
+
+D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor - STM32_APP\[MASS]\Platform\TaeHa - ECS\SRC\TW8832_Control.c
+      1          /**
+      2            ******************************************************************************
+      3            * @file    TW8832_Control.c 
+      4            * @author  kutelf (kutelf@taeha.co.kr)
+      5            * @version V1.0.0
+      6            * @date    02/22/2013
+      7            * @brief   TW8832_Control.c module
+      8            *
+      9            * Project Name       : WL9F Monitor APP
+     10            * Project Enviroment : IAREmbedded Workbench for ARM 6.5x 
+     11            *                      STM32F407ZGT6 Firmware Library
+     12            * Project Workspace  : WL9F_Monitor_APP
+     13            * MCU Type           : STM32F407ZGT6
+     14            *
+     15            * TAEHA MECHATRONICS Co., Ltd (http://www.taeha.co.kr)				
+     16            * ECS Division R&D Center. / Author by Young-Min Han (kutelf@taeha.co.kr)
+     17            * 
+     18            ******************************************************************************
+     19            */ 
+     20          
+     21          /* Includes ------------------------------------------------------------------*/
+     22          #include "WL9F_Monitor_APP.h"	
+     23          
+     24          /* Private typedef -----------------------------------------------------------*/
+     25          /* Private define ------------------------------------------------------------*/
+     26          /* Private macro -------------------------------------------------------------*/
+     27          /* Private variables ---------------------------------------------------------*/
+     28          u8 InitCVBSAll[] = 
+     29          {
+     30          	0x8a,0x00,	//	TW88I2CAddress,0,	
+     31          	0xFF,0x00,	//	Page 00
+     32          	0x02,0x20,
+     33          	0x03,0xFF,
+     34          	0x06,0x26,
+     35          	0x07,0x02,
+     36          	0x08,0x86,	// 	CVBS INPUT
+     37          	0x09,0x00,
+     38          	0x40,0x32,	//	BT.656 INPUT
+     39          	0x41,0x00,
+     40          	0x42,0x02,
+     41          	0x43,0x10,
+     42          	0x44,0xF0,
+     43          	0x45,0x82,
+     44          	0x46,0xD0,
+     45          	0x47,0x00,	//	BT.656 INPUT
+     46          	0x48,0x00,
+     47          	0x49,0x41,
+     48          	0x4A,0x04,
+     49          	0xDB,0x05,
+     50          	0xDC,0x00,
+     51          	0xDD,0x80,
+     52          	0xDE,0x00,
+     53          	0xDF,0x80,
+     54          	0xE0,0xF2,
+     55          	0xE1,0x77,
+     56          	0xE2,0x04,
+     57          	0xE3,0x40,
+     58          	0xE4,0x84,
+     59          	0xE5,0x00,
+     60          	0xE6,0x20,
+     61          	0xE7,0x00,
+     62          	0xE8,0xF2,
+     63          	0xE9,0x06,
+     64          	0xEA,0x04,
+     65          	0xEB,0x5F,
+     66          	0xEC,0x20,
+     67          	0xED,0x40,
+     68          	0xEE,0x20,
+     69          	0xF6,0x81,
+     70          	0xF7,0x16,
+     71          	0xF8,0x01,
+     72          	0xF9,0x2C,
+     73          	0xFA,0x00,
+     74          	0xFB,0x40,
+     75          	0xFC,0x30,
+     76          	0xFD,0x21,
+     77          	
+     78          	0xFF,0x01,	//	Page01
+     79          	0x02,0x40,
+     80          	0x04,0x00,
+     81          	0x05,0x01,
+     82          	0x06,0x00,
+     83          	0x07,0x02,
+     84          	0x08,0x01,  //0x15 --> 0x05
+     85          	0x09,0xF0,
+     86          	0x0A,0x2F,
+     87          	0x0B,0xD0,
+     88          	0x0C,0xCC,
+     89          	0x10,0x00,
+     90          	0x11,0x5C,
+     91          	0x12,0x11,
+     92          	0x13,0x80,
+     93          	0x14,0x80,
+     94          	0x15,0x00,
+     95          	0x17,0x80,
+     96          	0x18,0x44,
+     97          	0x1C,0x0F,
+     98          	0x1D,0x7F,
+     99          	0x1E,0x00,
+    100          	0x20,0x50,
+    101          	0x21,0x22,
+    102          	0x22,0xF0,
+    103          	0x23,0xD8,
+    104          	0x24,0xBC,
+    105          	0x25,0xB8,
+    106          	0x26,0x44,
+    107          	0x27,0x38,
+    108          	0x28,0x00,
+    109          	0x29,0x00,
+    110          	0x2A,0x78,
+    111          	0x2B,0x44,
+    112          	0x2C,0x30,
+    113          	0x2D,0x14,
+    114          	0x2E,0xA5,
+    115          	0x2F,0xE0,
+    116          	0x30,0x00,
+    117          	0x33,0x05,
+    118          	0x35,0x00,
+    119          	0xC0,0x01,
+    120          	0xC1,0xC7,
+    121          	0xC2,0x01,
+    122          	0xC3,0x03,
+    123          	0xC4,0x5A,
+    124          	0xC5,0x00,
+    125          	0xC6,0x20,
+    126          	0xC7,0x04,
+    127          	0xC8,0x00,
+    128          	0xC9,0x06,
+    129          	0xCA,0x06,
+    130          	0xCB,0x10,
+    131          	0xCC,0x00,
+    132          	0xCD,0x54,
+    133          	0xD0,0x00,
+    134          	0xD1,0xF0,
+    135          	0xD2,0xF0,
+    136          	0xD3,0xF0,
+    137          	0xD4,0x00,
+    138          	0xD5,0x00,
+    139          	0xD6,0x10,
+    140          	0xD7,0x70,
+    141          	0xD8,0x00,
+    142          	0xD9,0x04,
+    143          	0xDA,0x80,
+    144          	0xDB,0x80,
+    145          	0xDC,0x20,
+    146          	
+    147          	0xFF,0x02,	//	Page02
+    148          	0x01,0x00,
+    149          	0x02,0x20,
+    150          	
+    151          	0x03,0x00,
+    152          
+    153          	// ++, 150323 sys
+    154          	// origin image 
+    155          	// X_SCALE value = 0x20
+    156          	//0x04,0x1c,     // 0x1c -->0x1d
+    157          	0x04,0x20,
+    158          	// , ++ 150323 sys
+    159          	
+    160          	0x05,0x7f,     // 0x00 --> 0x7f
+    161          	0x06,0x0f,	// 0x0F -> 0x10
+    162          
+    163          	0x07,0xBF,
+    164          	0x08,0x8F,
+    165          	0x09,0x00,
+    166          	0x0A,0x01, 
+    167          	
+    168          	// ++, 150323 sys     
+    169          	//0x0B,0x63,
+    170          	0x0B,0x93,
+    171          	// --, 150323 sys	
+    172          	0x0C,0xD0,
+    173          	0x0D,0x80,
+    174          	0x0E,0x00,
+    175          	0x0F,0x02,
+    176          	0x10,0x88,   // 0x84 --> 0x88  H
+    177          	0x11,0x20,   // 800 resolution H
+    178          	0x12,0x03,
+    179          	0x13,0x00,
+    180          	0x14,0x04,
+    181          	0x15,0x2C,
+    182          	0x16,0xE0,  // 480 resolution V
+    183          	0x17,0x01,
+    184          	0x18,0x62,
+    185          	0x19,0x00,
+    186          	0x1A,0x00,
+    187          	0x1B,0x00,
+    188          	0x40,0x11,
+    189          	0x41,0x0A,
+    190          	0x42,0x05,
+    191          	0x43,0x01,
+    192          	0x44,0x64,
+    193          	0x45,0xF4,
+    194          	0x46,0x00,
+    195          	0x47,0x0A,
+    196          	0x48,0x36,
+    197          	0x49,0x10,
+    198          	0x4A,0x00,
+    199          	0x4B,0x00,
+    200          	0x4C,0x00,
+    201          	0x4D,0x84,
+    202          	0x4E,0x24,
+    203          	0x80,0x20,	//	0x00,	HUE
+    204          	0x81,0x80,
+    205          	0x82,0x80,
+    206          	0x83,0x80,
+    207          	0x84,0x80,
+    208          	0x85,0x80,
+    209          	0x86,0x80,
+    210          	0x87,0x80,
+    211          	0x88,0x80,
+    212          	0x89,0x80,
+    213          	0x8A,0x80,
+    214          	0x8B,0xDF,
+    215          	0x8C,0x00,
+    216          	0xB0,0x10,
+    217          	0xB1,0x40,
+    218          	0xB2,0x40,
+    219          	0xB6,0x67,
+    220          	0xB7,0x94,
+    221          	0xBF,0x0E,	//	Souce Output
+    222          	//0xBF,0x83,
+    223          	0xE0,0x00,
+    224          	0xE4,0x21,
+    225          	0xF8,0x00,
+    226          	0xF9,0x80,
+    227          	
+    228          	0xff, 0x04, //	Page 04
+    229          	0x80, 0x15,
+    230          	0xff, 0xff
+    231          };
+    232          
+    233          /* Private function prototypes -----------------------------------------------*/
+    234          /* Private functions ---------------------------------------------------------*/
+    235          
+    236          void NOP_TW8832(void)
+    237          {
+    238          	TimeDelay_usec(1);	
+    239          }
+    240          
+    241          void TW8832_PortChange(unsigned char dir)
+    242          {
+    243          	unsigned short temp;
+    244          	
+    245          	GPIO_InitTypeDef GPIO_InitStructure;
+    246          	
+    247          	if (dir)// Output
+    248          	{
+    249          		temp = TW8832_I2C2_PORT->IDR;			//	GPIO_ReadInputData
+    250          		temp = ((~(TW8832_I2C2_SDA)) & temp);
+    251          		TW8832_I2C2_PORT->ODR = (temp);			//	GPIO_Write
+    252          		
+    253          		GPIO_InitStructure.GPIO_Pin   = TW8832_I2C2_SDA;
+    254          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;
+    255          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_25MHz;
+    256          		GPIO_Init(TW8832_I2C2_PORT, &GPIO_InitStructure);	
+    257          	}
+    258          	else	// Input
+    259          	{	
+    260          		temp = TW8832_I2C2_PORT->IDR;			//	GPIO_ReadInputData
+    261          		temp = ((~(TW8832_I2C2_SDA)) & temp);
+    262          		TW8832_I2C2_PORT->ODR = (temp);			//	GPIO_Write
+    263          		
+    264          		GPIO_InitStructure.GPIO_Pin  = TW8832_I2C2_SDA;
+    265          		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+    266          		GPIO_Init(TW8832_I2C2_PORT, &GPIO_InitStructure);	
+    267          	}
+    268          }
+    269          
+    270          void I2C2_Write(u8 WData)
+    271          {
+    272          	u8 i, j;
+    273          
+    274          	NOP_TW8832();
+    275          
+    276          	for (i = 0; i < 8; i++)
+    277          	{
+    278          		j = ( WData & 0x80 ) ? 1 : 0;
+    279          		(j) ? GPIO_SetBits(TW8832_I2C2_PORT, TW8832_I2C2_SDA) : GPIO_ResetBits(TW8832_I2C2_PORT, TW8832_I2C2_SDA);
+    280          		NOP_TW8832();
+    281          		TW8832_SCL1;
+    282          		NOP_TW8832();		
+    283          		WData <<= 1;
+    284          		TW8832_SCL0;
+    285          		NOP_TW8832();
+    286          	}
+    287          
+    288          	GPIO_ResetBits(TW8832_I2C2_PORT, TW8832_I2C2_SDA);
+    289          	NOP_TW8832();
+    290          	TW8832_SCL1;
+    291          	NOP_TW8832();
+    292          	TW8832_SCL0;
+    293          }
+    294          
+    295          void I2C2_ByteWrite(u16 in_AddrVal, u8 in_DataVal)
+    296          {
+    297          	u16 tmp_index;
+    298          
+    299          	GPIO_SetBits(TW8832_I2C2_PORT, TW8832_I2C2_SDA);
+    300          	TW8832_SDAOUT;
+    301          	// START
+    302          	GPIO_SetBits(TW8832_I2C2_PORT, TW8832_I2C2_SDA);
+    303          	TW8832_SCL1;
+    304          	NOP_TW8832();
+    305          	GPIO_ResetBits(TW8832_I2C2_PORT, TW8832_I2C2_SDA);
+    306          	NOP_TW8832();
+    307          	TW8832_SCL0;
+    308          	// END
+    309          
+    310          	I2C2_Write(TW8832_I2C_Addr);
+    311          	I2C2_Write((u8)in_AddrVal);
+    312          	I2C2_Write(in_DataVal);
+    313          
+    314          	GPIO_ResetBits(TW8832_I2C2_PORT, TW8832_I2C2_SDA);
+    315          	NOP_TW8832();
+    316          	TW8832_SCL1;
+    317          	NOP_TW8832();
+    318          	GPIO_SetBits(TW8832_I2C2_PORT, TW8832_I2C2_SDA);
+    319          
+    320          	for (tmp_index = 0; tmp_index < 15000; tmp_index++);
+    321          }
+    322          u8 I2C2_Read(void)
+    323          {
+    324          	u8 i;
+    325          	u8 RData;
+    326          
+    327          	NOP_TW8832();
+    328          	TW8832_SCL0;
+    329          	NOP_TW8832();
+    330          	GPIO_SetBits(TW8832_I2C2_PORT, TW8832_I2C2_SDA);
+    331          	TW8832_SDAIN;
+    332          
+    333          	for ( i = 0; i < 8; i++ )
+    334          	{
+    335          		TW8832_SCL1;
+    336          		NOP_TW8832();
+    337          		NOP_TW8832();
+    338          		RData = (RData << 1) | TW8832_SDA_READ;
+    339          		TW8832_SCL0;
+    340          		NOP_TW8832();
+    341          		NOP_TW8832();
+    342          	}
+    343          	GPIO_ResetBits(TW8832_I2C2_PORT, GPIO_Pin_7);
+    344          	TW8832_SDAOUT;
+    345          	return (RData );
+    346          }
+    347          
+    348          u8 I2C2_ByteRead(u16 in_AddrVal)
+    349          {
+    350          	u8 RData = 0;
+    351          	u16 tmp_index;
+    352          
+    353          	GPIO_SetBits(TW8832_I2C2_PORT, TW8832_I2C2_SDA);
+    354          	TW8832_SDAOUT;
+    355          	GPIO_SetBits(TW8832_I2C2_PORT, TW8832_I2C2_SDA);
+    356          	TW8832_SCL1;
+    357          	NOP_TW8832();
+    358          	GPIO_ResetBits(TW8832_I2C2_PORT, TW8832_I2C2_SDA);
+    359          	NOP_TW8832();
+    360          	TW8832_SCL0;
+    361          
+    362          	I2C2_Write(TW8832_I2C_Addr);
+    363          	I2C2_Write((u8)in_AddrVal);
+    364          
+    365          	NOP_TW8832();
+    366          	NOP_TW8832();
+    367          
+    368          	GPIO_SetBits(TW8832_I2C2_PORT, TW8832_I2C2_SDA);
+    369          	NOP_TW8832();
+    370          	TW8832_SCL1;
+    371          	NOP_TW8832();
+    372          
+    373          	GPIO_ResetBits(TW8832_I2C2_PORT, TW8832_I2C2_SDA);
+    374          	NOP_TW8832();
+    375          	TW8832_SCL0;
+    376          
+    377          	I2C2_Write(0x8b);
+    378          
+    379          	RData = I2C2_Read();
+    380          
+    381          	// NAK
+    382          	GPIO_SetBits(TW8832_I2C2_PORT, TW8832_I2C2_SDA);
+    383          	NOP_TW8832();
+    384          	TW8832_SCL1;
+    385          	NOP_TW8832();
+    386          	TW8832_SCL0;
+    387          	NOP_TW8832();
+    388          
+    389          	// STOP
+    390          	GPIO_ResetBits(TW8832_I2C2_PORT, TW8832_I2C2_SDA);
+    391          	NOP_TW8832();
+    392          	TW8832_SCL1;
+    393          	NOP_TW8832();
+    394          	GPIO_SetBits(TW8832_I2C2_PORT, TW8832_I2C2_SDA);
+    395          
+    396          	for (tmp_index = 0; tmp_index < 15000; tmp_index++);
+    397          	return (RData);
+    398          }
+    399          
+    400          void WriteTW8832(u8 in_AddrVal, u8 in_DataVal)
+    401          {
+    402          	I2C2_ByteWrite(in_AddrVal, in_DataVal);
+    403          	TimeDelay_usec(500);
+    404          }
+    405          
+    406          u8 ReadTW8832(u8 in_AddrVal)
+    407          {
+    408          	u8 val;
+    409          
+    410          	val = I2C2_ByteRead(in_AddrVal);
+    411          
+    412          	return(val);
+    413          }
+    414          
+    415          //=============================================================================
+    416          //		WORD SetYCbCrContrast(WORD val)
+    417          //=============================================================================
+    418          u16 SetYCbCrContrast(u16 val)
+    419          {
+    420          	WriteTW8832( 0xff, SCALER_PAGE );
+    421          	val *= 255;
+    422          	val += 50;
+    423          	val /= 100;
+    424          	WriteTW8832( ContrastY, val );
+    425          	val = ReadTW8832( ContrastY );
+    426          	val *= 100;
+    427          	val += 128;
+    428          	val /= 255;
+    429          
+    430          	return (val);
+    431          }
+    432          
+    433          //=============================================================================
+    434          //		WORD SetYCbCrBright(WORD val)
+    435          //=============================================================================
+    436          u16 SetYCbCrBright(u16 val)
+    437          {
+    438          	WriteTW8832( 0xff, SCALER_PAGE );
+    439          	val *= 255;
+    440          	val += 50;
+    441          	val /= 100;
+    442          	WriteTW8832( BrightnessY, val );
+    443          	val = ReadTW8832( BrightnessY );
+    444          	val *= 100;
+    445          	val += 128;
+    446          	val /= 255;
+    447          
+    448          	return (val);
+    449          }
+    450          
+    451          //=============================================================================
+    452          //		WORD SetYCbCrSaturation(WORD val)
+    453          //=============================================================================
+    454          u16 SetYCbCrSaturation(u16 val)
+    455          {
+    456          	WriteTW8832( 0xff, SCALER_PAGE );
+    457          	val *= 255;
+    458          	val += 50;
+    459          	val /= 100;
+    460          	WriteTW8832( SaturationY, val );
+    461          	WriteTW8832( SaturationY+1, val );
+    462          	val = ReadTW8832( SaturationY );
+    463          	val *= 100;
+    464          	val += 128;
+    465          	val /= 255;
+    466          
+    467          	return (val);
+    468          }
+    469          
+    470          //=============================================================================
+    471          //		BYTE	ChangeCVBS( void )
+    472          //=============================================================================
+    473          u8	ChangeCVBS( void )
+    474          {
+    475          #if 0
+    476          	if ( InputMain == INPUT_CVBS ) return(0);
+    477          	InputMain = INPUT_CVBS;
+    478          
+    479          	//SaveInputEE( InputMain );
+    480          	//Freerun( 0 );
+    481          
+    482          	InitCVBSRegister( );
+    483          
+    484          	WriteTW8832( 0xff, DECODER_PAGE );
+    485          	WriteTW8832( 0x02, 0x40 );
+    486          
+    487          	// Get Image control register value
+    488          	SetYCbCrContrast( GetVideoDatafromEE( 0 ) );
+    489          	SetYCbCrBright( GetVideoDatafromEE( 1 ) );
+    490          	SetYCbCrSaturation( GetVideoDatafromEE( 2 ) );
+    491          	//SetDecoderContrast( GetVideoDatafromEE( 3 ) );
+    492          	SetYCbCrHUE( GetVideoDatafromEE( 4 ) );
+    493          	SetYCbCrSharp( GetVideoDatafromEE( 5 ) );
+    494          
+    495          	TimeDelay_msec(10);
+    496          
+    497          	return( CheckAndSetDecoderScaler() );
+    498          #endif
+    499          
+    500          	return 0;
+    501          }
+    502          
+    503          //=============================================================================
+    504          //		BYTE	CheckDecoderVDLOSS( BYTE n )
+    505          //=============================================================================
+    506          u8	CheckDecoderVDLOSS( u8 n )
+    507          {
+    508              u8	mode;
+    509          
+    510          	WriteTW8832( 0xff, DECODER_PAGE );		// set Decoder page
+    511          	while (n--) 
+    512          	{
+    513          		mode = ReadTW8832( 0x01 );
+    514          		if (( mode & 0x80 ) == 0 ) return ( 0 );
+    515          		TimeDelay_msec(1);
+    516          	}
+    517          
+    518          	return ( 1 );
+    519          }
+    520          
+    521          //=============================================================================
+    522          //		BYTE	CheckDecoderSTD( BYTE n )
+    523          //=============================================================================
+    524          u8	CheckDecoderSTD( u8 n )
+    525          {
+    526              u8	mode;
+    527          
+    528          	WriteTW8832( 0xff, DECODER_PAGE );		// set Decoder page
+    529          	while (n--) 
+    530          	{
+    531          		mode = ReadTW8832( 0x1C );
+    532          		if (( mode & 0x80 ) == 0 ) return ( mode );
+    533          		TimeDelay_msec(1);
+    534          	}
+    535          
+    536          	return ( 0x80 );
+    537          }
+    538          
+    539          //=============================================================================
+    540          //		BYTE	CheckAndSetDecoderScaler( void )
+    541          //=============================================================================
+    542          u8	CheckAndSetDecoderScaler( void )
+    543          {
+    544              u8	mode;
+    545              //u32	vPeriod=0; 
+    546              u32 vDelay=0;
+    547          
+    548          	if ( CheckDecoderVDLOSS(100) ) 
+    549          	{
+    550          		//Puts("\nCVBS VDLOSS");
+    551          		//Freerun( 1 );
+    552          		return( 1 );
+    553          	}
+    554          
+    555          	if ( CheckDecoderSTD(100) == 0x80 ) return( 2 );
+    556          
+    557          	TimeDelay_msec(10);
+    558          
+    559          	WriteTW8832( 0xff, DECODER_PAGE );	// Set Decoder page
+    560          	mode = ReadTW8832( 0x1c );
+    561          	
+    562          	//DebugMsg_printf( "\nInput mode %02bx", mode );
+    563          
+    564          	mode >>= 4;
+    565          	if ( mode == 0 )		 //	NTSC
+    566          	{				
+    567          		//DebugMsg_printf( "\nInput Mode(NTSC) vScale:%02bx, vBack:%bd", ReadTW8832( 0x06 ), ReadTW8832( 0x15 ) );
+    568          	}
+    569          	else if ( mode == 1 )	//	PAL
+    570          	{			 
+    571          		WriteTW8832( 0x07, ( ReadTW8832( 0x07 ) | 0x10 ) );
+    572          		WriteTW8832( 0x09, 32 );
+    573          		WriteTW8832( 0x0a, 0x18 );					// change H-delay
+    574          		//vPeriod = 275;							// NTSC line number
+    575          		vDelay += 7; 		// 6 = ( 288-275 ) / 2
+    576          		WriteTW8832( 0xff, SCALER_PAGE );
+    577          		WriteTW8832( 0x06, 0x12 );					// set V scale
+    578          		WriteTW8832( 0x05, 0xA2 );					// set V scale
+    579          		WriteTW8832( 0x15, 0x30);					// set output V delay
+    580          		//DebugMsg_printf( "\nInput Mode(PAL) vScale:%02bx, vBack:%bd", ReadTW8832( 0x06 ), ReadTW8832( 0x15 ) );
+    581          	}
+    582          	else {
+    583          		//DebugMsg_printf( "\nInput Mode %bd does not support now", mode );
+    584          		return(1);
+    585          	}
+    586          	
+    587          	return(0);
+    588          }
+    589          
+    590          //=============================================================================
+    591          //		WORD SetYCbCrSharp(WORD val)
+    592          //=============================================================================
+    593          u16 SetYCbCrSharp(u16 val)
+    594          {
+    595              u8	i;
+    596          
+    597          	WriteTW8832( 0xff, SCALER_PAGE );
+    598          
+    599          	for (i=0; i<16; i++) 
+    600          	{
+    601          		if ( val == (Sharpness[i]+1) )
+    602          		{
+    603          			val = i+1;
+    604          			break;
+    605          		}
+    606          		if ( Sharpness[i] == (val+1) )
+    607          		{
+    608          			val = i-1;
+    609          			break;
+    610          		}
+    611          	}
+    612          	WriteTW8832( SharpnessY, ((ReadTW8832( SharpnessY ) & 0xf0) + val) );
+    613          	val = Sharpness[i];
+    614          
+    615          	return (val);
+    616          }
+    617          
+    618          //=============================================================================
+    619          //		WORD SetYCbCrHUE(WORD val)
+    620          //=============================================================================
+    621          u16 SetYCbCrHUE(u16 val)
+    622          {
+    623          	WriteTW8832( 0xff, SCALER_PAGE );
+    624          	val *= 63;
+    625          	val += 50;
+    626          	val /= 100;
+    627          	val += 0x20;
+    628          	val &= 0x3F;
+    629          	WriteTW8832( HueY, val );
+    630          	val = ReadTW8832( HueY );
+    631          	val += 0x20;
+    632          	val &= 0x3F;
+    633          	val *= 100;
+    634          	val += 32;
+    635          	val /= 63;
+    636          
+    637          	return (val);
+    638          }
+    639          
+    640          //=============================================================================
+    641          //				                                               
+    642          //=============================================================================
+    643          void I2C2DeviceInitialize(u8 *RegSet)
+    644          {
+    645          	u8 Addr, val;
+    646                 
+    647          	RegSet += 2;
+    648          	
+    649          	// 0xff, 0xff is end of data
+    650          	while (( RegSet[0] != 0xFF ) || ( RegSet[1]!= 0xFF )) 
+    651          	{			
+    652          		Addr = *RegSet;
+    653          		val = *(RegSet+1);
+    654          		I2C2_ByteWrite(Addr, val);
+    655          		RegSet+=2;
+    656          	}
+    657          
+    658          	WriteTW8832(0xff, 0x00);	// Set page 0
+    659          }
+    660          
+    661          
+    662          void InitCVBSRegister( void )
+    663          {
+    664          	I2C2DeviceInitialize( InitCVBSAll );
+    665          }
+    666          
+    667          
+    668          /**\
+    669            * @brief  None
+    670            * @param  None
+    671            * @retval None
+    672            */
+    673          void TW8832_Control_Init(void)
+    674          {
+    675          	DebugMsg_printf("++ TW8832_Control_Init (I2C2 & SPI2), ADC Initialize START\r\n");
+    676          
+    677          	InitCVBSRegister();
+    678          
+    679          	DebugMsg_printf("-- TW8832_Control_Init (I2C2 & SPI2), ADC Initialize END\r\n");
+    680          }
+    681          
+    682          /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       0   ChangeCVBS
+       8   CheckAndSetDecoderScaler
+         8   -> CheckDecoderSTD
+         8   -> CheckDecoderVDLOSS
+         8   -> I2C2_ByteRead
+         8   -> TimeDelay_msec
+         8   -> WriteTW8832
+       8   CheckDecoderSTD
+         8   -> I2C2_ByteRead
+         8   -> TimeDelay_msec
+         8   -> WriteTW8832
+       8   CheckDecoderVDLOSS
+         8   -> I2C2_ByteRead
+         8   -> TimeDelay_msec
+         8   -> WriteTW8832
+       8   I2C2DeviceInitialize
+         8   -> I2C2_ByteWrite
+         0   -> TimeDelay_usec
+      16   I2C2_ByteRead
+        16   -> GPIO_ResetBits
+        16   -> GPIO_SetBits
+        16   -> I2C2_Read
+        16   -> I2C2_Write
+        16   -> TW8832_PortChange
+        16   -> TimeDelay_usec
+      16   I2C2_ByteWrite
+        16   -> GPIO_ResetBits
+         0   -> GPIO_SetBits
+        16   -> GPIO_SetBits
+        16   -> I2C2_Write
+        16   -> TW8832_PortChange
+        16   -> TimeDelay_usec
+      16   I2C2_Read
+        16   -> GPIO_ReadInputDataBit
+        16   -> GPIO_ResetBits
+        16   -> GPIO_SetBits
+        16   -> TW8832_PortChange
+        16   -> TimeDelay_usec
+      16   I2C2_Write
+         0   -> GPIO_ResetBits
+        16   -> GPIO_ResetBits
+        16   -> GPIO_SetBits
+        16   -> TimeDelay_usec
+       0   InitCVBSRegister
+         0   -> I2C2DeviceInitialize
+       0   NOP_TW8832
+         0   -> TimeDelay_usec
+       0   ReadTW8832
+         0   -> I2C2_ByteRead
+       8   SetYCbCrBright
+         8   -> I2C2_ByteRead
+         8   -> WriteTW8832
+       8   SetYCbCrContrast
+         8   -> I2C2_ByteRead
+         8   -> WriteTW8832
+       8   SetYCbCrHUE
+         8   -> I2C2_ByteRead
+         8   -> I2C2_ByteWrite
+         8   -> TimeDelay_usec
+       8   SetYCbCrSaturation
+         8   -> I2C2_ByteRead
+         8   -> WriteTW8832
+      16   SetYCbCrSharp
+        16   -> I2C2_ByteRead
+        16   -> I2C2_ByteWrite
+        16   -> TimeDelay_usec
+        16   -> WriteTW8832
+       0   TW8832_Control_Init
+         0   -> I2C2DeviceInitialize
+      16   TW8832_PortChange
+        16   -> GPIO_Init
+       8   WriteTW8832
+         8   -> I2C2_ByteWrite
+         0   -> TimeDelay_usec
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable6
+       4  ??DataTable6_1
+       4  ??DataTable6_2
+       8  ??Subroutine3_0
+       8  ?Subroutine0
+      16  ?Subroutine1
+       4  ?Subroutine2
+       4  ChangeCVBS
+     124  CheckAndSetDecoderScaler
+      42  CheckDecoderSTD
+      44  CheckDecoderVDLOSS
+      34  I2C2DeviceInitialize
+     262  I2C2_ByteRead
+     142  I2C2_ByteWrite
+     128  I2C2_Read
+     128  I2C2_Write
+     368  InitCVBSAll
+       2  InitCVBSRegister
+       6  NOP_TW8832
+       2  ReadTW8832
+      36  SetYCbCrBright
+      38  SetYCbCrContrast
+      80  SetYCbCrHUE
+      46  SetYCbCrSaturation
+     104  SetYCbCrSharp
+       2  TW8832_Control_Init
+      62  TW8832_PortChange
+      12  WriteTW8832
+
+ 
+   368 bytes in section .data
+ 1 346 bytes in section .text
+ 
+ 1 346 bytes of CODE memory
+   368 bytes of DATA memory
+
+Errors: none
+Warnings: none

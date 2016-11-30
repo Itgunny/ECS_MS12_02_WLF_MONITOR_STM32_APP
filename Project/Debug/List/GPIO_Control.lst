@@ -1,0 +1,199 @@
+###############################################################################
+#                                                                             #
+# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      21/Oct/2016  14:30:32 #
+# Copyright 1999-2012 IAR Systems AB.                                         #
+#                                                                             #
+#    Cpu mode     =  thumb                                                    #
+#    Endian       =  little                                                   #
+#    Source file  =  D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -            #
+#                    STM32_APP\[MASS]\Platform\TaeHa - ECS\SRC\GPIO_Control.c #
+#    Command line =  "D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -           #
+#                    STM32_APP\[MASS]\Platform\TaeHa -                        #
+#                    ECS\SRC\GPIO_Control.c" -D USE_STDPERIPH_DRIVER -D       #
+#                    STM32F4XX -D USE_STM324xG_EVAL -D USE_FULL_ASSERT -lcN   #
+#                    "D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -           #
+#                    STM32_APP\[MASS]\Project\Debug\List\" -o                 #
+#                    "D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -           #
+#                    STM32_APP\[MASS]\Project\Debug\Obj\" --debug             #
+#                    --endian=little --cpu=Cortex-M4 -e --fpu=VFPv4_sp        #
+#                    --dlib_config "C:\Program Files (x86)\IAR                #
+#                    Systems\Embedded Workbench 6.5\arm\INC\c\DLib_Config_Ful #
+#                    l.h" -I "D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -   #
+#                    STM32_APP\[MASS]\Project\..\Platform\COMMON\INC\" -I     #
+#                    "D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -           #
+#                    STM32_APP\[MASS]\Project\..\Platform\TaeHa - ECS\INC\"   #
+#                    -I "D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -        #
+#                    STM32_APP\[MASS]\Project\..\Libraries\CMSIS\Device\ST\ST #
+#                    M32F4xx\Include\" -I "D:\Project\[SVN] ECS-RD12-16 -     #
+#                    WL9F Monitor - STM32_APP\[MASS]\Project\..\Libraries\STM #
+#                    32F4xx_StdPeriph_Driver\inc\" -Oh --use_c++_inline -I    #
+#                    "C:\Program Files (x86)\IAR Systems\Embedded Workbench   #
+#                    6.5\arm\CMSIS\Include\"                                  #
+#    List file    =  D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -            #
+#                    STM32_APP\[MASS]\Project\Debug\List\GPIO_Control.lst     #
+#    Object file  =  D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -            #
+#                    STM32_APP\[MASS]\Project\Debug\Obj\GPIO_Control.o        #
+#                                                                             #
+#                                                                             #
+###############################################################################
+
+D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor - STM32_APP\[MASS]\Platform\TaeHa - ECS\SRC\GPIO_Control.c
+      1          /**
+      2            ******************************************************************************
+      3            * @file    GPIO_Control.c 
+      4            * @author  kutelf (kutelf@taeha.co.kr)
+      5            * @version V1.0.0
+      6            * @date    02/22/2013
+      7            * @brief   GPIO_Control.c module
+      8            *
+      9            * Project Name       : WL9F Monitor APP
+     10            * Project Enviroment : IAREmbedded Workbench for ARM 6.5x 
+     11            *                      STM32F407ZGT6 Firmware Library
+     12            * Project Workspace  : WL9F_Monitor_APP
+     13            * MCU Type           : STM32F407ZGT6
+     14            *
+     15            * TAEHA MECHATRONICS Co., Ltd (http://www.taeha.co.kr)				
+     16            * ECS Division R&D Center. / Author by Young-Min Han (kutelf@taeha.co.kr)
+     17            * 
+     18            ******************************************************************************
+     19            */ 
+     20          
+     21          /* Includes ------------------------------------------------------------------*/
+     22          #include "WL9F_Monitor_APP.h"	
+     23          
+     24          /* Private typedef -----------------------------------------------------------*/
+     25          /* Private define ------------------------------------------------------------*/
+     26          /* Private macro -------------------------------------------------------------*/
+     27          /* Private variables ---------------------------------------------------------*/
+     28          /* Private function prototypes -----------------------------------------------*/
+     29          /* Private functions ---------------------------------------------------------*/
+     30          
+     31          void WL9FM_EXYNOS_POWER_ONOFF(uint8_t BitData)
+     32          {
+     33          	GPIO_WriteBit(EXYNOS_PWR_CTRL_PORT, EXYNOS_PWR_CTRL, (BitAction) BitData);
+     34          }
+     35          
+     36          //	이 함수를 실행시키면, 안드로이드에서 전원 팝업이 실행
+     37          //		=> 500msec 이상 Set을 유지 시켜야 정상 동작..
+     38          void WL9FM_EXYNOS_PMIC_PWRON(void)
+     39          {
+     40          	GPIO_WriteBit(EXYNOS_PMIC_CTRL_PORT, EXYNOS_PMIC_CTRL, Bit_SET);
+     41          	TimeDelay_msec(1000);
+     42          	GPIO_WriteBit(EXYNOS_PMIC_CTRL_PORT, EXYNOS_PMIC_CTRL, Bit_RESET);
+     43          }
+     44          
+     45          //	++, kutelf, 140801
+     46          //	RevD.01.01
+     47          //	함수 추가
+     48          void WL9FM_EXYNOS_PMIC_PWROFF(void)
+     49          {
+     50          	GPIO_WriteBit(EXYNOS_PMIC_nRESET_PORT, EXYNOS_PMIC_nRESET, Bit_SET);
+     51          	GPIO_WriteBit(EXYNOS_PMIC_CTRL_PORT, EXYNOS_PMIC_CTRL, Bit_SET);
+     52          	TimeDelay_msec(1000);
+     53          	GPIO_WriteBit(EXYNOS_PMIC_CTRL_PORT, EXYNOS_PMIC_CTRL, Bit_RESET);
+     54          	GPIO_WriteBit(EXYNOS_PMIC_nRESET_PORT, EXYNOS_PMIC_nRESET, Bit_RESET);
+     55          }
+     56          //	--, kutelf, 140801
+     57          
+     58          //	++, kutelf, 140801
+     59          //	RevD.01.01
+     60          //	함수 변경 
+     61          void WL9FM_EXYNOS_PMIC_PWRONOFF(uint8_t BitData)
+     62          {
+     63          	GPIO_WriteBit(EXYNOS_PMIC_CTRL_PORT, EXYNOS_PMIC_CTRL, (BitAction) BitData);
+     64          }
+     65          //	--, kutelf, 140801
+     66          
+     67          //	++, kutelf, 140801
+     68          //	RevD.01.01 
+     69          //	PMIC nRESET 추가 
+     70          void WL9FM_EXYNOS_PMIC_nRESET(void)
+     71          {
+     72          	GPIO_WriteBit(EXYNOS_PMIC_nRESET_PORT, EXYNOS_PMIC_nRESET, Bit_SET);
+     73          	TimeDelay_msec(500);
+     74          	GPIO_WriteBit(EXYNOS_PMIC_nRESET_PORT, EXYNOS_PMIC_nRESET, Bit_RESET);
+     75          }
+     76          
+     77          void WL9FM_EXYNOS_PMIC_nRESET_ONOFF(uint8_t BitData)
+     78          {
+     79          	GPIO_WriteBit(EXYNOS_PMIC_nRESET_PORT, EXYNOS_PMIC_nRESET, (BitAction) BitData);
+     80          }
+     81          //	--, kutelf, 140801
+     82          
+     83          void WL9FM_CAMERA_nRESET(void)
+     84          {
+     85          	GPIO_WriteBit(CAMERA_nRESET_PORT, CAMERA_nRESET, Bit_RESET);
+     86          	TimeDelay_msec(100);
+     87          	GPIO_WriteBit(CAMERA_nRESET_PORT, CAMERA_nRESET, Bit_SET);
+     88          }
+     89          
+     90          void WL9FM_PowerIG(uint8_t BitData)
+     91          {
+     92              GPIO_WriteBit(PWR_CTRL_PORT, PWR_CTRL, (BitAction) BitData);
+     93          }
+     94          
+     95          uint8_t WL9FM_GetPowerIG(void)
+     96          {
+     97              return GPIO_ReadInputDataBit(PWR_IGMON_PORT, PWR_IGMON);
+     98          }
+     99          
+    100          /*********(C) COPYRIGHT 2013 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       8   WL9FM_CAMERA_nRESET
+         0   -> GPIO_WriteBit
+         8   -> GPIO_WriteBit
+         8   -> TimeDelay_msec
+      16   WL9FM_EXYNOS_PMIC_PWROFF
+         0   -> GPIO_WriteBit
+        16   -> GPIO_WriteBit
+        16   -> TimeDelay_msec
+       8   WL9FM_EXYNOS_PMIC_PWRON
+         0   -> GPIO_WriteBit
+         8   -> GPIO_WriteBit
+         8   -> TimeDelay_msec
+       0   WL9FM_EXYNOS_PMIC_PWRONOFF
+         0   -> GPIO_WriteBit
+       8   WL9FM_EXYNOS_PMIC_nRESET
+         0   -> GPIO_WriteBit
+         8   -> GPIO_WriteBit
+         8   -> TimeDelay_msec
+       0   WL9FM_EXYNOS_PMIC_nRESET_ONOFF
+         0   -> GPIO_WriteBit
+       0   WL9FM_EXYNOS_POWER_ONOFF
+         0   -> GPIO_WriteBit
+       0   WL9FM_GetPowerIG
+         0   -> GPIO_ReadInputDataBit
+       0   WL9FM_PowerIG
+         0   -> GPIO_WriteBit
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable6
+       4  ??DataTable6_1
+       4  ??DataTable6_2
+      10  ?Subroutine0
+       6  ?Subroutine1
+      38  WL9FM_CAMERA_nRESET
+      54  WL9FM_EXYNOS_PMIC_PWROFF
+      36  WL9FM_EXYNOS_PMIC_PWRON
+      10  WL9FM_EXYNOS_PMIC_PWRONOFF
+      30  WL9FM_EXYNOS_PMIC_nRESET
+       6  WL9FM_EXYNOS_PMIC_nRESET_ONOFF
+       8  WL9FM_EXYNOS_POWER_ONOFF
+       8  WL9FM_GetPowerIG
+      10  WL9FM_PowerIG
+
+ 
+ 228 bytes in section .text
+ 
+ 228 bytes of CODE memory
+
+Errors: none
+Warnings: none

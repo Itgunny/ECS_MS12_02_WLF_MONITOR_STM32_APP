@@ -1,0 +1,283 @@
+###############################################################################
+#                                                                             #
+# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      21/Oct/2016  14:30:30 #
+# Copyright 1999-2012 IAR Systems AB.                                         #
+#                                                                             #
+#    Cpu mode     =  thumb                                                    #
+#    Endian       =  little                                                   #
+#    Source file  =  D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -            #
+#                    STM32_APP\[MASS]\Platform\TaeHa - ECS\SRC\Buzzer.c       #
+#    Command line =  "D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -           #
+#                    STM32_APP\[MASS]\Platform\TaeHa - ECS\SRC\Buzzer.c" -D   #
+#                    USE_STDPERIPH_DRIVER -D STM32F4XX -D USE_STM324xG_EVAL   #
+#                    -D USE_FULL_ASSERT -lcN "D:\Project\[SVN] ECS-RD12-16 -  #
+#                    WL9F Monitor - STM32_APP\[MASS]\Project\Debug\List\" -o  #
+#                    "D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -           #
+#                    STM32_APP\[MASS]\Project\Debug\Obj\" --debug             #
+#                    --endian=little --cpu=Cortex-M4 -e --fpu=VFPv4_sp        #
+#                    --dlib_config "C:\Program Files (x86)\IAR                #
+#                    Systems\Embedded Workbench 6.5\arm\INC\c\DLib_Config_Ful #
+#                    l.h" -I "D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -   #
+#                    STM32_APP\[MASS]\Project\..\Platform\COMMON\INC\" -I     #
+#                    "D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -           #
+#                    STM32_APP\[MASS]\Project\..\Platform\TaeHa - ECS\INC\"   #
+#                    -I "D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -        #
+#                    STM32_APP\[MASS]\Project\..\Libraries\CMSIS\Device\ST\ST #
+#                    M32F4xx\Include\" -I "D:\Project\[SVN] ECS-RD12-16 -     #
+#                    WL9F Monitor - STM32_APP\[MASS]\Project\..\Libraries\STM #
+#                    32F4xx_StdPeriph_Driver\inc\" -Oh --use_c++_inline -I    #
+#                    "C:\Program Files (x86)\IAR Systems\Embedded Workbench   #
+#                    6.5\arm\CMSIS\Include\"                                  #
+#    List file    =  D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -            #
+#                    STM32_APP\[MASS]\Project\Debug\List\Buzzer.lst           #
+#    Object file  =  D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor -            #
+#                    STM32_APP\[MASS]\Project\Debug\Obj\Buzzer.o              #
+#                                                                             #
+#                                                                             #
+###############################################################################
+
+D:\Project\[SVN] ECS-RD12-16 - WL9F Monitor - STM32_APP\[MASS]\Platform\TaeHa - ECS\SRC\Buzzer.c
+      1          /**
+      2            ******************************************************************************
+      3            * @file    Buzzer.c 
+      4            * @author  kutelf (kutelf@taeha.co.kr)
+      5            * @version V1.0.0
+      6            * @date    02/22/2013
+      7            * @brief   Buzzer.c module
+      8            *
+      9            * Project Name       : WL9F Monitor APP
+     10            * Project Enviroment : IAREmbedded Workbench for ARM 6.5x 
+     11            *                      STM32F407ZGT6 Firmware Library
+     12            * Project Workspace  : WL9F_Monitor_APP
+     13            * MCU Type           : STM32F407ZGT6
+     14            *
+     15            * TAEHA MECHATRONICS Co., Ltd (http://www.taeha.co.kr)				
+     16            * ECS Division R&D Center. / Author by Young-Min Han (kutelf@taeha.co.kr)
+     17            * 
+     18            ******************************************************************************
+     19            */ 
+     20          
+     21          /* Includes ------------------------------------------------------------------*/
+     22          #include "WL9F_Monitor_APP.h"	
+     23          
+     24          /* Private typedef -----------------------------------------------------------*/
+     25          /* Private define ------------------------------------------------------------*/
+     26          /* Private macro -------------------------------------------------------------*/
+     27          /* Private variables ---------------------------------------------------------*/
+     28          
+     29          uint8_t Buzzer_SendCnt, Buzzer_SendFlag;
+     30          
+     31          /* Private function prototypes -----------------------------------------------*/
+     32          /* Private functions ---------------------------------------------------------*/
+     33          
+     34          /**\
+     35            * @brief  None
+     36            * @param  None
+     37            * @retval None
+     38            */
+     39          void Buzzer_Init(void)
+     40          {
+     41              TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
+     42              NVIC_InitTypeDef        NVIC_InitStructure;
+     43              
+     44              DebugMsg_printf("++ BUZZER (TIM4 : 10msec), TIM4_IRQn Initialize START\r\n");
+     45          
+     46              //  Buzzer GPIO는 System_Init.c 에서 설정
+     47              #if 0
+     48          
+     49              GPIO_InitTypeDef    GPIO_InitStructure;
+     50          
+     51          	//  BUZZER_CTRL -> GPIO Output
+     52              GPIO_InitStructure.GPIO_Pin   = BUZZER_CTRL;
+     53              GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+     54            	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+     55            	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+     56              GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+     57              GPIO_Init(BUZZER_PORT, &GPIO_InitStructure);
+     58          	
+     59              #endif
+     60              
+     61              TIM_TimeBaseStructure.TIM_Period        = 0x2710;   //  (1 / 1MHz) * 10000 -> 10msec
+     62              TIM_TimeBaseStructure.TIM_Prescaler     = 0xA8;     //  168 MHz / 168 = 1MHz
+     63              TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
+     64              TIM_TimeBaseStructure.TIM_CounterMode   = TIM_CounterMode_Up;
+     65              TIM_TimeBaseInit(TIM4, &TIM_TimeBaseStructure);
+     66              
+     67              //  TIM4 Enable counter
+     68              TIM_Cmd(TIM4, ENABLE);
+     69              
+     70              //  Enable TIM4 Update Interrupt
+     71              TIM_ITConfig(TIM4, TIM_IT_Update, ENABLE);
+     72          
+     73              //  Enable the TIM4 Interrupt, BUZZER
+     74              NVIC_InitStructure.NVIC_IRQChannel                   = TIM4_IRQn;
+     75              NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+     76              NVIC_InitStructure.NVIC_IRQChannelSubPriority        = 0;
+     77              NVIC_InitStructure.NVIC_IRQChannelCmd                = ENABLE;
+     78              NVIC_Init(&NVIC_InitStructure);
+     79          
+     80          	WL9FM_BUZZER.Status = 0;
+     81          	WL9FM_BUZZER.OnTime = 0;
+     82          	WL9FM_BUZZER.OnCnt  = 0;
+     83          	WL9FM_BUZZER.Current_Status = 0;
+     84          
+     85          	DebugMsg_printf("-- BUZZER (TIM4 : 10msec), TIM4_IRQn Initialize END\r\n");
+     86          
+     87          	//	Buzzer SendtoEXYNOS 변수
+     88          	Buzzer_SendCnt = Buzzer_SendFlag = 0;
+     89          }
+     90          
+     91          /**
+     92            * @brief  None
+     93            * @param  None
+     94            * @retval None
+     95            */
+     96          void Buzzer_Set(uint16_t OnTime)
+     97          {
+     98          	WL9FM_BUZZER.Status = 2;
+     99          	WL9FM_BUZZER.OnTime = OnTime;        
+    100          	WL9FM_BUZZER.OnCnt  = 0;
+    101          }
+    102          
+    103          /**
+    104            * @brief  None
+    105            * @param  None
+    106            * @retval None
+    107            */
+    108          void Buzzer_On(void)
+    109          {
+    110              GPIO_SetBits(BUZZER_PORT, BUZZER_CTRL); 
+    111          }
+    112          
+    113          /**
+    114            * @brief  None
+    115            * @param  None
+    116            * @retval None
+    117            */
+    118          void Buzzer_UnLimitOn(void)
+    119          {
+    120              WL9FM_BUZZER.Status = 1;
+    121          }
+    122          
+    123          /**
+    124            * @brief  None
+    125            * @param  None
+    126            * @retval None
+    127            */
+    128          void Buzzer_Off(void)
+    129          {
+    130              GPIO_ResetBits(BUZZER_PORT, BUZZER_CTRL);  
+    131          }
+    132          
+    133          /**
+    134            * @brief  None
+    135            * @param  None
+    136            * @retval None
+    137            */
+    138          void Buzzer_UnLimitOff(void)
+    139          {
+    140              WL9FM_BUZZER.Status = 0;	
+    141          }
+    142          
+    143          void Buzzer_SendToEXYNOS(uint8_t BuzzerValue)
+    144          {
+    145          	uint8_t BuzzerValueBuffer[Serial_COM2_TxSize];
+    146          
+    147          
+    148          	//	현재 BUZZER 상태와, 변경하고자 하는 상태가 같으면.. 처음 2번은 무조건 보낸다.
+    149          	//	현재 상태와 다르면, 무조건 보낸다. 
+    150          	if (WL9FM_BUZZER.Status != BuzzerValue)
+    151          	{
+    152          		Buzzer_SendFlag = 1;
+    153          		Buzzer_SendCnt  = 0;
+    154          	}
+    155          	else
+    156          	{
+    157          		//	항상 그 값으로 고정시켜서, 보내지 못하도록 한다. 
+    158          		if (Buzzer_SendCnt++ >= 1) 
+    159          		{
+    160          			Buzzer_SendFlag = 0;
+    161          			Buzzer_SendCnt  = 3;
+    162          		}		
+    163          		//	Buzzer_SendCnt < 2 => 이전 상태와 같은 값일 때는 무조건 2번은 보낸다.
+    164          		else
+    165          		{
+    166          			Buzzer_SendFlag = 1;
+    167          		}
+    168          	}
+    169          	
+    170          	if ((Buzzer_SendFlag == 1) || (Buzzer_SendCnt < 1))
+    171          	{
+    172          		Buzzer_SendFlag = 0;
+    173          		
+    174          		BuzzerValueBuffer[0] = 0x02;				//	STX
+    175          		BuzzerValueBuffer[1] = BUZZERCMD;			//	BUZZER Command, 0x42
+    176          		BuzzerValueBuffer[2] = BuzzerValue +0x10;	//	Buzzer Value HexCode, 
+    177          		BuzzerValueBuffer[3] = 0x03;				//	ETX
+    178          
+    179          		if(Change_UART4_for_Download==0)
+    180          			USARTx_EXYNOS(COM4, (char *)BuzzerValueBuffer);	
+    181          
+    182          	    DebugMsg_printf("BuzzerValueBuffer %x\r\n", BuzzerValueBuffer[2]);
+    183          	}	
+    184          	
+    185          	if (BuzzerValue == 0)	//	Buzzer Off
+    186          	{
+    187          		Buzzer_UnLimitOff();
+    188          	}
+    189          	else 					//	Buzzer On
+    190          	{
+    191          		Buzzer_UnLimitOn();
+    192          	}
+    193          }
+    194          
+    195          /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+      24   Buzzer_Init
+        24   -> NVIC_Init
+        24   -> TIM_Cmd
+        24   -> TIM_ITConfig
+        24   -> TIM_TimeBaseInit
+       0   Buzzer_Off
+         0   -> GPIO_ResetBits
+       0   Buzzer_On
+         0   -> GPIO_SetBits
+     272   Buzzer_SendToEXYNOS
+       272   -> USARTx_EXYNOS
+       0   Buzzer_Set
+       0   Buzzer_UnLimitOff
+       0   Buzzer_UnLimitOn
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable6
+       4  ??DataTable6_1
+       4  ??DataTable6_2
+       4  ??DataTable6_3
+       4  ??DataTable6_4
+     104  Buzzer_Init
+      10  Buzzer_Off
+      10  Buzzer_On
+       2  Buzzer_SendCnt
+          Buzzer_SendFlag
+     110  Buzzer_SendToEXYNOS
+      14  Buzzer_Set
+       8  Buzzer_UnLimitOff
+       8  Buzzer_UnLimitOn
+
+ 
+   2 bytes in section .bss
+ 284 bytes in section .text
+ 
+ 284 bytes of CODE memory
+   2 bytes of DATA memory
+
+Errors: none
+Warnings: none
