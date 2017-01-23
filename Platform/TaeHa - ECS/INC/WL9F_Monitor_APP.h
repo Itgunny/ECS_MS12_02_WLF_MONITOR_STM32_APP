@@ -193,7 +193,7 @@
 
 #define	VERSION_HIGH			1
 #define	VERSION_LOW			3
-#define	VERSION_SUB_HIGH		1
+#define	VERSION_SUB_HIGH		2
 #define	VERSION_SUB_LOW		0
 #define	VERSION_HIDDEN		0
 ///////////////////////////////////////////////////
@@ -296,6 +296,9 @@
 //// 1.3.1.00 - 161021
 // 1. 스마트키 retry 인증 추가
 // 2. SMART KEY 값 내부 FLASH에 저장(h보드)
+
+//// 1.3.2.00 - 170123
+// 1. H보드 대비 소프트웨어 버전 변경
 
 ///////////////////////////////////////////////////
 
