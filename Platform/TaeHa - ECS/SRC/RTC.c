@@ -356,7 +356,21 @@ void READ_RTC(WL9FM_DATA_RTC *RTC_Data)
 
 void PCA2119_Delay(void)
 {
-	NOP () ;
+	NOP(); NOP(); NOP(); NOP(); NOP(); NOP();
+        NOP(); NOP(); NOP(); NOP(); NOP(); NOP();
+        NOP(); NOP(); NOP(); NOP(); NOP(); NOP();
+        NOP(); NOP(); NOP(); NOP(); NOP(); NOP();
+        NOP(); NOP(); NOP(); NOP(); NOP(); NOP();
+        NOP(); NOP(); NOP(); NOP(); NOP(); NOP();
+        NOP(); NOP(); NOP(); NOP(); NOP(); NOP();
+        NOP(); NOP(); NOP(); NOP(); NOP(); NOP();
+        NOP(); NOP(); NOP(); NOP(); NOP(); NOP();
+        NOP(); NOP(); NOP(); NOP(); NOP(); NOP();
+        NOP(); NOP(); NOP(); NOP(); NOP(); NOP();
+        NOP(); NOP(); NOP(); NOP(); NOP(); NOP();
+        NOP(); NOP(); NOP(); NOP(); NOP(); NOP();
+        NOP(); NOP(); NOP(); NOP(); NOP(); NOP();
+        NOP(); NOP(); NOP(); NOP(); NOP(); NOP();
 }
 
 void PCA2119_START(void)

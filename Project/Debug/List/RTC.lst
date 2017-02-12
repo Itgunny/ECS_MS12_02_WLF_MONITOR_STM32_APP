@@ -1,6 +1,6 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      23/Jan/2017  15:08:49 #
+# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      02/Feb/2017  16:42:39 #
 # Copyright 1999-2012 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
@@ -393,224 +393,238 @@ D:\GIT\WLF_MONITOR\ECS_MS12_02_WLF_MONITOR_STM32_APP\Platform\TaeHa - ECS\SRC\RT
     356          
     357          void PCA2119_Delay(void)
     358          {
-    359          	NOP () ;
-    360          }
-    361          
-    362          void PCA2119_START(void)
-    363          {
-    364          	PCA2119_SDAOUT();
-    365          	PCA2119_SDA(Bit_SET);
-    366          	
-    367          	// start
-    368          	PCA2119_SDA(Bit_SET);
-    369          	PCA2119_SCL(Bit_SET);
-    370          	PCA2119_Delay();
-    371          	PCA2119_SDA(Bit_RESET);
-    372          	PCA2119_Delay();
-    373          	PCA2119_SCL(Bit_RESET);
-    374          	// start end 
-    375          }
-    376          
-    377          void PCA2119_STOP(void)
-    378          {
-    379          	PCA2119_SDAOUT();
+    359          	NOP(); NOP(); NOP(); NOP(); NOP(); NOP();
+    360                  NOP(); NOP(); NOP(); NOP(); NOP(); NOP();
+    361                  NOP(); NOP(); NOP(); NOP(); NOP(); NOP();
+    362                  NOP(); NOP(); NOP(); NOP(); NOP(); NOP();
+    363                  NOP(); NOP(); NOP(); NOP(); NOP(); NOP();
+    364                  NOP(); NOP(); NOP(); NOP(); NOP(); NOP();
+    365                  NOP(); NOP(); NOP(); NOP(); NOP(); NOP();
+    366                  NOP(); NOP(); NOP(); NOP(); NOP(); NOP();
+    367                  NOP(); NOP(); NOP(); NOP(); NOP(); NOP();
+    368                  NOP(); NOP(); NOP(); NOP(); NOP(); NOP();
+    369                  NOP(); NOP(); NOP(); NOP(); NOP(); NOP();
+    370                  NOP(); NOP(); NOP(); NOP(); NOP(); NOP();
+    371                  NOP(); NOP(); NOP(); NOP(); NOP(); NOP();
+    372                  NOP(); NOP(); NOP(); NOP(); NOP(); NOP();
+    373                  NOP(); NOP(); NOP(); NOP(); NOP(); NOP();
+    374          }
+    375          
+    376          void PCA2119_START(void)
+    377          {
+    378          	PCA2119_SDAOUT();
+    379          	PCA2119_SDA(Bit_SET);
     380          	
-    381          	PCA2119_SDA(Bit_RESET);
-    382          	PCA2119_Delay();
+    381          	// start
+    382          	PCA2119_SDA(Bit_SET);
     383          	PCA2119_SCL(Bit_SET);
     384          	PCA2119_Delay();
-    385          	PCA2119_SDA(Bit_SET);
-    386          }
-    387          
-    388          
-    389          void PCA2119_BIT_WRITE(unsigned char bit)
-    390          {
-    391          	#if 1
-    392          	PCA2119_SDAOUT();
-    393          	
-    394          	PCA2119_SDA((bit) ? Bit_SET: Bit_RESET);
-    395          
+    385          	PCA2119_SDA(Bit_RESET);
+    386          	PCA2119_Delay();
+    387          	PCA2119_SCL(Bit_RESET);
+    388          	// start end 
+    389          }
+    390          
+    391          void PCA2119_STOP(void)
+    392          {
+    393          	PCA2119_SDAOUT();
+    394          	
+    395          	PCA2119_SDA(Bit_RESET);
     396          	PCA2119_Delay();
-    397          
-    398          	PCA2119_SCL(Bit_SET);
-    399          
-    400          	PCA2119_Delay();
+    397          	PCA2119_SCL(Bit_SET);
+    398          	PCA2119_Delay();
+    399          	PCA2119_SDA(Bit_SET);
+    400          }
     401          
-    402          	PCA2119_SCL(Bit_RESET);
-    403          
-    404          	PCA2119_Delay();
-    405          	#else
+    402          
+    403          void PCA2119_BIT_WRITE(unsigned char bit)
+    404          {
+    405          	#if 1
     406          	PCA2119_SDAOUT();
-    407          
-    408          	PCA2119_SCL(Bit_SET);
+    407          	
+    408          	PCA2119_SDA((bit) ? Bit_SET: Bit_RESET);
     409          
     410          	PCA2119_Delay();
-    411          	
-    412          	PCA2119_SDA((bit) ? Bit_SET: Bit_RESET);
+    411          
+    412          	PCA2119_SCL(Bit_SET);
     413          
     414          	PCA2119_Delay();
     415          
     416          	PCA2119_SCL(Bit_RESET);
     417          
     418          	PCA2119_Delay();
-    419          	#endif
-    420          	
-    421          }
-    422          
-    423          unsigned char PCA2119_BIT_READ(void)
-    424          {
-    425          	unsigned char bit;
-    426          
-    427          	PCA2119_SDAIN();
-    428          
-    429          	PCA2119_SCL(Bit_SET);
-    430          
-    431          	PCA2119_Delay();
-    432          
-    433          	bit = PCA2119_SDA_READ();   
-    434          
-    435          	PCA2119_Delay();
+    419          	#else
+    420          	PCA2119_SDAOUT();
+    421          
+    422          	PCA2119_SCL(Bit_SET);
+    423          
+    424          	PCA2119_Delay();
+    425          	
+    426          	PCA2119_SDA((bit) ? Bit_SET: Bit_RESET);
+    427          
+    428          	PCA2119_Delay();
+    429          
+    430          	PCA2119_SCL(Bit_RESET);
+    431          
+    432          	PCA2119_Delay();
+    433          	#endif
+    434          	
+    435          }
     436          
-    437          	PCA2119_SCL(Bit_RESET);
-    438          
-    439          	PCA2119_Delay();
+    437          unsigned char PCA2119_BIT_READ(void)
+    438          {
+    439          	unsigned char bit;
     440          
-    441          	
-    442          	return bit;
-    443          }
+    441          	PCA2119_SDAIN();
+    442          
+    443          	PCA2119_SCL(Bit_SET);
     444          
-    445          void PCA2119_BYTE_WRITE(unsigned char byte)
-    446          {
-    447          	unsigned char i;
+    445          	PCA2119_Delay();
+    446          
+    447          	bit = PCA2119_SDA_READ();   
     448          
-    449          	for (i = 0; i < 8; i++)
-    450          	{
-    451          		PCA2119_BIT_WRITE((byte & (1 << (7 - i))) ? 1 : 0);      
-    452          	}
-    453          
-    454          	PCA2119_BIT_READ();
-    455          }
-    456          
-    457          unsigned char PCA2119_BYTE_READ(void)
-    458          {
-    459          	unsigned char byte;    
-    460          	unsigned char i;
-    461          
-    462          	byte = 0;
-    463          
-    464          	for (i = 0; i < 8; i++)
-    465          	{
-    466          		byte <<= 1;
-    467          		byte |= PCA2119_BIT_READ();      
-    468          	}  
-    469          
-    470          	return byte;
-    471          }
-    472          
-    473          void write_RTC_Companion(unsigned char address, unsigned char data)
-    474          {
-    475          	PCA2119_START();    
-    476          	PCA2119_BYTE_WRITE(RTC_WRITE_COMMAND);
-    477          	PCA2119_BYTE_WRITE(address);
-    478          	PCA2119_BYTE_WRITE(data);    
-    479          	PCA2119_STOP();
-    480          }
-    481          
-    482          
-    483          void write_PCA2129_TimewSet(unsigned char address, unsigned char *data)
-    484          {
-    485          	unsigned char temp;
-    486          	
-    487          	PCA2119_START();    
-    488          	PCA2119_BYTE_WRITE(RTC_WRITE_COMMAND);
-    489          	PCA2119_BYTE_WRITE(address);
-    490          
-    491          	temp = 0;
-    492          	temp += (data[6] / 10) << 4;
-    493          	temp += data[6] % 10;
-    494          	
-    495          	PCA2119_BYTE_WRITE(temp);  // second
+    449          	PCA2119_Delay();
+    450          
+    451          	PCA2119_SCL(Bit_RESET);
+    452          
+    453          	PCA2119_Delay();
+    454          
+    455          	
+    456          	return bit;
+    457          }
+    458          
+    459          void PCA2119_BYTE_WRITE(unsigned char byte)
+    460          {
+    461          	unsigned char i;
+    462          
+    463          	for (i = 0; i < 8; i++)
+    464          	{
+    465          		PCA2119_BIT_WRITE((byte & (1 << (7 - i))) ? 1 : 0);      
+    466          	}
+    467          
+    468          	PCA2119_BIT_READ();
+    469          }
+    470          
+    471          unsigned char PCA2119_BYTE_READ(void)
+    472          {
+    473          	unsigned char byte;    
+    474          	unsigned char i;
+    475          
+    476          	byte = 0;
+    477          
+    478          	for (i = 0; i < 8; i++)
+    479          	{
+    480          		byte <<= 1;
+    481          		byte |= PCA2119_BIT_READ();      
+    482          	}  
+    483          
+    484          	return byte;
+    485          }
+    486          
+    487          void write_RTC_Companion(unsigned char address, unsigned char data)
+    488          {
+    489          	PCA2119_START();    
+    490          	PCA2119_BYTE_WRITE(RTC_WRITE_COMMAND);
+    491          	PCA2119_BYTE_WRITE(address);
+    492          	PCA2119_BYTE_WRITE(data);    
+    493          	PCA2119_STOP();
+    494          }
+    495          
     496          
-    497          	temp = 0;
-    498          	temp += (data[5] / 10) << 4;
-    499          	temp += data[5] % 10;
+    497          void write_PCA2129_TimewSet(unsigned char address, unsigned char *data)
+    498          {
+    499          	unsigned char temp;
     500          	
-    501          	PCA2119_BYTE_WRITE(temp);  // min
-    502          
-    503          	temp = 0;
-    504          	temp += (data[4] / 10) << 4;
-    505          	temp += data[4] % 10;
-    506          	
-    507          	PCA2119_BYTE_WRITE(temp);  // hour
-    508          
-    509          	temp = 0;
-    510          	temp += (data[2] / 10) << 4;
-    511          	temp += data[2] % 10;
-    512          	
-    513          	PCA2119_BYTE_WRITE(temp);  // days
-    514          
-    515          	temp = data[3];
-    516          	
-    517          	PCA2119_BYTE_WRITE(temp); // weekdays
-    518          	
-    519          	temp = 0;
-    520          	temp += (data[1] / 10) << 4;
-    521          	temp += data[1] % 10;
-    522          	
-    523          	PCA2119_BYTE_WRITE(temp); // month
-    524          
-    525          	temp = 0;
-    526          	temp += (data[0] / 10) << 4;
-    527          	temp += data[0] % 10;
-    528          	PCA2119_BYTE_WRITE(temp);  // year
-    529          	
-    530          	PCA2119_STOP();
-    531          }
-    532          
-    533          
-    534          unsigned char pca2129_get_time(unsigned char address)
-    535          {
-    536          	unsigned char data[3];
-    537          	
-    538          	PCA2119_START();    
-    539          	PCA2119_BYTE_WRITE(RTC_WRITE_COMMAND);
-    540          	PCA2119_BYTE_WRITE(address);
-    541          	PCA2119_STOP();
-    542          	
-    543          	PCA2119_START();
-    544          	PCA2119_BYTE_WRITE(RTC_READ_COMMAND);    
-    545          	data[0]= PCA2119_BYTE_READ();
-    546          	PCA2119_ACK;
-    547          	data[1]= PCA2119_BYTE_READ();
-    548          	PCA2119_ACK;
-    549          	data[2]= PCA2119_BYTE_READ();
-    550          	PCA2119_NACK;
-    551          	PCA2119_STOP();
-    552          	
-    553          	return data[0];
-    554          }
-    555          	
-    556          unsigned char read_RTC_Companion(unsigned char address)
-    557          {
-    558          	unsigned char data;
-    559          	
-    560          	PCA2119_START();    
-    561          	PCA2119_BYTE_WRITE(RTC_WRITE_COMMAND);
-    562          	PCA2119_BYTE_WRITE(address);
-    563          	PCA2119_STOP();
-    564          	
-    565          	PCA2119_START();
-    566          	PCA2119_BYTE_WRITE(RTC_READ_COMMAND);    
-    567          	data= PCA2119_BYTE_READ();
-    568          	PCA2119_NACK;
-    569          	PCA2119_STOP();
-    570          	
-    571          	return data;
-    572          }
-    573          
-    574          
-    575          
-    576          
+    501          	PCA2119_START();    
+    502          	PCA2119_BYTE_WRITE(RTC_WRITE_COMMAND);
+    503          	PCA2119_BYTE_WRITE(address);
+    504          
+    505          	temp = 0;
+    506          	temp += (data[6] / 10) << 4;
+    507          	temp += data[6] % 10;
+    508          	
+    509          	PCA2119_BYTE_WRITE(temp);  // second
+    510          
+    511          	temp = 0;
+    512          	temp += (data[5] / 10) << 4;
+    513          	temp += data[5] % 10;
+    514          	
+    515          	PCA2119_BYTE_WRITE(temp);  // min
+    516          
+    517          	temp = 0;
+    518          	temp += (data[4] / 10) << 4;
+    519          	temp += data[4] % 10;
+    520          	
+    521          	PCA2119_BYTE_WRITE(temp);  // hour
+    522          
+    523          	temp = 0;
+    524          	temp += (data[2] / 10) << 4;
+    525          	temp += data[2] % 10;
+    526          	
+    527          	PCA2119_BYTE_WRITE(temp);  // days
+    528          
+    529          	temp = data[3];
+    530          	
+    531          	PCA2119_BYTE_WRITE(temp); // weekdays
+    532          	
+    533          	temp = 0;
+    534          	temp += (data[1] / 10) << 4;
+    535          	temp += data[1] % 10;
+    536          	
+    537          	PCA2119_BYTE_WRITE(temp); // month
+    538          
+    539          	temp = 0;
+    540          	temp += (data[0] / 10) << 4;
+    541          	temp += data[0] % 10;
+    542          	PCA2119_BYTE_WRITE(temp);  // year
+    543          	
+    544          	PCA2119_STOP();
+    545          }
+    546          
+    547          
+    548          unsigned char pca2129_get_time(unsigned char address)
+    549          {
+    550          	unsigned char data[3];
+    551          	
+    552          	PCA2119_START();    
+    553          	PCA2119_BYTE_WRITE(RTC_WRITE_COMMAND);
+    554          	PCA2119_BYTE_WRITE(address);
+    555          	PCA2119_STOP();
+    556          	
+    557          	PCA2119_START();
+    558          	PCA2119_BYTE_WRITE(RTC_READ_COMMAND);    
+    559          	data[0]= PCA2119_BYTE_READ();
+    560          	PCA2119_ACK;
+    561          	data[1]= PCA2119_BYTE_READ();
+    562          	PCA2119_ACK;
+    563          	data[2]= PCA2119_BYTE_READ();
+    564          	PCA2119_NACK;
+    565          	PCA2119_STOP();
+    566          	
+    567          	return data[0];
+    568          }
+    569          	
+    570          unsigned char read_RTC_Companion(unsigned char address)
+    571          {
+    572          	unsigned char data;
+    573          	
+    574          	PCA2119_START();    
+    575          	PCA2119_BYTE_WRITE(RTC_WRITE_COMMAND);
+    576          	PCA2119_BYTE_WRITE(address);
+    577          	PCA2119_STOP();
+    578          	
+    579          	PCA2119_START();
+    580          	PCA2119_BYTE_WRITE(RTC_READ_COMMAND);    
+    581          	data= PCA2119_BYTE_READ();
+    582          	PCA2119_NACK;
+    583          	PCA2119_STOP();
+    584          	
+    585          	return data;
+    586          }
+    587          
+    588          
+    589          
+    590          
 
    Maximum stack usage in bytes:
 
@@ -619,40 +633,42 @@ D:\GIT\WLF_MONITOR\ECS_MS12_02_WLF_MONITOR_STM32_APP\Platform\TaeHa - ECS\SRC\RT
       16   PCA2119_BIT_READ
         16   -> GPIO_ReadInputDataBit
         16   -> GPIO_WriteBit
-        16   -> NOP
+        16   -> PCA2119_Delay
         16   -> RTC_PortChange
        8   PCA2119_BIT_WRITE
          8   -> GPIO_WriteBit
-         0   -> NOP
-         8   -> NOP
+         0   -> PCA2119_Delay
+         8   -> PCA2119_Delay
          8   -> RTC_PortChange
       32   PCA2119_BYTE_READ
         32   -> PCA2119_BIT_READ
       16   PCA2119_BYTE_WRITE
          0   -> PCA2119_BIT_READ
         16   -> PCA2119_BIT_WRITE
-       0   PCA2119_Delay
+       8   PCA2119_Delay
          0   -> NOP
+         8   -> NOP
        8   PCA2119_START
          0   -> GPIO_WriteBit
          8   -> GPIO_WriteBit
-         8   -> NOP
+         8   -> PCA2119_Delay
          8   -> RTC_PortChange
        8   PCA2119_STOP
          0   -> GPIO_WriteBit
          8   -> GPIO_WriteBit
-         8   -> NOP
+         8   -> PCA2119_Delay
          8   -> RTC_PortChange
-       8   READ_RTC
-         8   -> READ_RTC_Date
-         8   -> READ_RTC_Day
-         8   -> READ_RTC_Hour
-         8   -> READ_RTC_Minute
-         8   -> READ_RTC_Month
-         8   -> READ_RTC_Second
-         8   -> READ_RTC_Year
+      16   READ_RTC
+        16   -> READ_FM31xx_RTC_Companion
+        16   -> READ_RTC_Date
+        16   -> READ_RTC_Hour
+        16   -> READ_RTC_Minute
+        16   -> READ_RTC_Month
+        16   -> READ_RTC_Second
+        16   -> READ_RTC_Year
          0   -> WRITE_FM31xx_RTC_Companion
-         8   -> WRITE_FM31xx_RTC_Companion
+        16   -> WRITE_FM31xx_RTC_Companion
+        16   -> read_RTC_Companion
        8   READ_RTC_Date
          8   -> READ_FM31xx_RTC_Companion
          8   -> read_RTC_Companion
@@ -756,28 +772,28 @@ D:\GIT\WLF_MONITOR\ECS_MS12_02_WLF_MONITOR_STM32_APP\Platform\TaeHa - ECS\SRC\RT
       10  ?Subroutine2
       20  ?Subroutine3
       62  PCA2119_BIT_READ
-      70  PCA2119_BIT_WRITE
+      68  PCA2119_BIT_WRITE
       82  PCA2119_BYTE_READ
       44  PCA2119_BYTE_WRITE
-       4  PCA2119_Delay
+     366  PCA2119_Delay
       82  PCA2119_START
       58  PCA2119_STOP
-     118  READ_RTC
+     158  READ_RTC
       28  READ_RTC_Date
-      30  READ_RTC_Day
-      24  READ_RTC_Hour
-      30  READ_RTC_Minute
+      32  READ_RTC_Day
+      26  READ_RTC_Hour
+      32  READ_RTC_Minute
       32  READ_RTC_Month
-      30  READ_RTC_Second
+      32  READ_RTC_Second
       30  READ_RTC_Year
       52  RTC_PortChange
      160  WRITE_RTC
       70  WRITE_RTC_Date
       54  WRITE_RTC_Day
-      62  WRITE_RTC_Hour
-      62  WRITE_RTC_Minute
+      64  WRITE_RTC_Hour
+      64  WRITE_RTC_Minute
       70  WRITE_RTC_Month
-      62  WRITE_RTC_Second
+      64  WRITE_RTC_Second
       64  WRITE_RTC_Year
       62  pca2129_get_time
       40  read_RTC_Companion
@@ -785,9 +801,9 @@ D:\GIT\WLF_MONITOR\ECS_MS12_02_WLF_MONITOR_STM32_APP\Platform\TaeHa - ECS\SRC\RT
       26  write_RTC_Companion
 
  
- 1 768 bytes in section .text
+ 2 182 bytes in section .text
  
- 1 768 bytes of CODE memory
+ 2 182 bytes of CODE memory
 
 Errors: none
 Warnings: 1
