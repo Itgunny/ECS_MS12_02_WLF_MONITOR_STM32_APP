@@ -1516,10 +1516,10 @@ void TW8816_CameraMode(u8 Mode, u8 OSD)
 		WriteTW8816(0xff, 0x01);
 		WriteTW8816(0xf3, 0xe9);
 		WriteTW8816(0xff, 0x00);
-		WriteTW8816(0x02, 0x40);
+		WriteTW8816(0x02, 0x4c);
 		//SetDisplayWarning();
                 SetDisplayCH1();
-		TimeDelay(200);
+                TimeDelay(200);
 		WriteTW8816(0xff, 0x01);
 		WriteTW8816(0xf3, 0x19);
 	}
@@ -1549,25 +1549,27 @@ void TW8816_CameraMode(u8 Mode, u8 OSD)
 	}
 	else if(Mode == 0x03)
 	{
-		WriteTW8816(0xff, 0x01);
+          	WriteTW8816(0xff, 0x01);
 		WriteTW8816(0xf3, 0xe9);
 		WriteTW8816(0xff, 0x00);
-		WriteTW8816(0x02, 0x4c);
-		//SetDisplayWarning();
+		WriteTW8816(0x02, 0x40);
+                //SetDisplayWarning();
                 SetDisplayCH4();
-                TimeDelay(200);
+		TimeDelay(200);
 		WriteTW8816(0xff, 0x01);
 		WriteTW8816(0xf3, 0x19);
+                
+
 	}
 	else
 	{
 		WriteTW8816(0xff, 0x01);
 		WriteTW8816(0xf3, 0xe9);
 		WriteTW8816(0xff, 0x00);
-		WriteTW8816(0x02, 0x40);
-                //SetDisplayWarning();
+		WriteTW8816(0x02, 0x4c);
+		//SetDisplayWarning();
                 SetDisplayCH1();
-		TimeDelay(200);
+                TimeDelay(200);
 		WriteTW8816(0xff, 0x01);
 		WriteTW8816(0xf3, 0x19);
 	}

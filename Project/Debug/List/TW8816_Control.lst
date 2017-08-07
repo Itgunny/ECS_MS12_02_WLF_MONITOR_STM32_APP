@@ -1,6 +1,6 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      10/Apr/2017  09:09:53 #
+# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      15/May/2017  17:13:08 #
 # Copyright 1999-2012 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
@@ -1554,10 +1554,10 @@ D:\GIT\WLF_MONITOR\ECS_MS12_02_WLF_MONITOR_STM32_APP\Platform\TaeHa - ECS\SRC\TW
    1516          		WriteTW8816(0xff, 0x01);
    1517          		WriteTW8816(0xf3, 0xe9);
    1518          		WriteTW8816(0xff, 0x00);
-   1519          		WriteTW8816(0x02, 0x40);
+   1519          		WriteTW8816(0x02, 0x4c);
    1520          		//SetDisplayWarning();
    1521                          SetDisplayCH1();
-   1522          		TimeDelay(200);
+   1522                          TimeDelay(200);
    1523          		WriteTW8816(0xff, 0x01);
    1524          		WriteTW8816(0xf3, 0x19);
    1525          	}
@@ -1587,74 +1587,76 @@ D:\GIT\WLF_MONITOR\ECS_MS12_02_WLF_MONITOR_STM32_APP\Platform\TaeHa - ECS\SRC\TW
    1549          	}
    1550          	else if(Mode == 0x03)
    1551          	{
-   1552          		WriteTW8816(0xff, 0x01);
+   1552                    	WriteTW8816(0xff, 0x01);
    1553          		WriteTW8816(0xf3, 0xe9);
    1554          		WriteTW8816(0xff, 0x00);
-   1555          		WriteTW8816(0x02, 0x4c);
-   1556          		//SetDisplayWarning();
+   1555          		WriteTW8816(0x02, 0x40);
+   1556                          //SetDisplayWarning();
    1557                          SetDisplayCH4();
-   1558                          TimeDelay(200);
+   1558          		TimeDelay(200);
    1559          		WriteTW8816(0xff, 0x01);
    1560          		WriteTW8816(0xf3, 0x19);
-   1561          	}
-   1562          	else
-   1563          	{
-   1564          		WriteTW8816(0xff, 0x01);
-   1565          		WriteTW8816(0xf3, 0xe9);
-   1566          		WriteTW8816(0xff, 0x00);
-   1567          		WriteTW8816(0x02, 0x40);
-   1568                          //SetDisplayWarning();
-   1569                          SetDisplayCH1();
-   1570          		TimeDelay(200);
-   1571          		WriteTW8816(0xff, 0x01);
-   1572          		WriteTW8816(0xf3, 0x19);
-   1573          	}
-   1574          
-   1575          }
-   1576          void DownloadUDFont(void)
-   1577          {
-   1578          	u8 i, j;
-   1579          
-   1580          	WriteTW8816(0x9b, 0xff); // Set Color Font Start Address. 
+   1561                          
+   1562          
+   1563          	}
+   1564          	else
+   1565          	{
+   1566          		WriteTW8816(0xff, 0x01);
+   1567          		WriteTW8816(0xf3, 0xe9);
+   1568          		WriteTW8816(0xff, 0x00);
+   1569          		WriteTW8816(0x02, 0x4c);
+   1570          		//SetDisplayWarning();
+   1571                          SetDisplayCH1();
+   1572                          TimeDelay(200);
+   1573          		WriteTW8816(0xff, 0x01);
+   1574          		WriteTW8816(0xf3, 0x19);
+   1575          	}
+   1576          
+   1577          }
+   1578          void DownloadUDFont(void)
+   1579          {
+   1580          	u8 i, j;
    1581          
-   1582          	for(i=0; (i< 226) && (i<= 0xe4) ; i++) {
-   1583          		WriteTW8816(0x94, ReadTW8816(0x94) | 0x01);		// Font RAM access mode ON
-   1584          		WriteTW8816(0x99, i);
-   1585          
-   1586          		for ( j = 0; j<27; j++ ) {
-   1587          			WriteTW8816(0x9a, ROMFONTDATA[i][j]);
-   1588          		}
-   1589          
-   1590          		WriteTW8816(0x94, (ReadTW8816(0x94) & 0xfe));		// OSD RAM access mode OFF
-   1591          	}
-   1592          }
-   1593          void TW8816_Control_Init(void)
-   1594          {
-   1595          	DebugMsg_printf("++ TW8816_Control_Init (I2C2 & SPI2), ADC Initialize START\r\n");
-   1596          
-   1597          	InitCVBSRegister_8816();
+   1582          	WriteTW8816(0x9b, 0xff); // Set Color Font Start Address. 
+   1583          
+   1584          	for(i=0; (i< 226) && (i<= 0xe4) ; i++) {
+   1585          		WriteTW8816(0x94, ReadTW8816(0x94) | 0x01);		// Font RAM access mode ON
+   1586          		WriteTW8816(0x99, i);
+   1587          
+   1588          		for ( j = 0; j<27; j++ ) {
+   1589          			WriteTW8816(0x9a, ROMFONTDATA[i][j]);
+   1590          		}
+   1591          
+   1592          		WriteTW8816(0x94, (ReadTW8816(0x94) & 0xfe));		// OSD RAM access mode OFF
+   1593          	}
+   1594          }
+   1595          void TW8816_Control_Init(void)
+   1596          {
+   1597          	DebugMsg_printf("++ TW8816_Control_Init (I2C2 & SPI2), ADC Initialize START\r\n");
    1598          
-   1599          	DebugMsg_printf("-- TW8816_Control_Init (I2C2 & SPI2), ADC Initialize END\r\n");
-   1600          }
-   1601          
-   1602          // ++, sys3215, 141211
-   1603          void WL9F_CAMERA_Init(void)
-   1604          {
-   1605          	if(Hardware_Revision==REVB)
-   1606          	{
-   1607          		TW8832_Control_Init();						//	-> 	TW8832_Control.c (LCD Interface)
-   1608          		TW2835_Control_Init();	
-   1609          	}
-   1610          	else
-   1611          	{
-   1612          		TW8816_Control_Init();
-   1613          	}
-   1614          }
-   1615          // --, sys3215, 141211
-   1616          
-   1617          
-   1618          /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
+   1599          	InitCVBSRegister_8816();
+   1600          
+   1601          	DebugMsg_printf("-- TW8816_Control_Init (I2C2 & SPI2), ADC Initialize END\r\n");
+   1602          }
+   1603          
+   1604          // ++, sys3215, 141211
+   1605          void WL9F_CAMERA_Init(void)
+   1606          {
+   1607          	if(Hardware_Revision==REVB)
+   1608          	{
+   1609          		TW8832_Control_Init();						//	-> 	TW8832_Control.c (LCD Interface)
+   1610          		TW2835_Control_Init();	
+   1611          	}
+   1612          	else
+   1613          	{
+   1614          		TW8816_Control_Init();
+   1615          	}
+   1616          }
+   1617          // --, sys3215, 141211
+   1618          
    1619          
+   1620          /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
+   1621          
 
    Maximum stack usage in bytes:
 
