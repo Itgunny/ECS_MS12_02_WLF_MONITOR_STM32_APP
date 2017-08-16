@@ -65,6 +65,10 @@ extern void I2C2DeviceInitialize_8816(u8 *RegSet);
 extern void TW8816_Control_Init(void);
 extern void TW8816_CameraMode(u8 Mode, u8 OSD);
 extern void TW8816_CheckCamera_Input(u8 Mode);
+// ++, 160812 cjg
+extern void TW8816_AAVMMode(u8 Mode, u8 OSD);
+extern void TW8816_CheckAAVM_Input(u8 Mode);
+// --, 160812 cjg
 
 // ++, sys3215 141211
 extern void WL9F_CAMERA_Init(void);

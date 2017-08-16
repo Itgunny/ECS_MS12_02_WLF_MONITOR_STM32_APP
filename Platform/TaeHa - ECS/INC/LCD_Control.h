@@ -43,11 +43,11 @@ typedef struct
 #define     LCDBL_ON                  		0           //  LCDBL On
 #define     LCDBL_OFF                 		1           //  LCDBL Off
 
-#define 	MaxBackLightLEVEL				9			//	LEVEL¿∫ 1 ~ 7 º≥¡§. LEVEL0¿∫ BackLight Off
+#define 	MaxBackLightLEVEL				9			//	LEVELÏùÄ 1 ~ 7 ÏÑ§Ï†ï. LEVEL0ÏùÄ BackLight Off
 #define 	DefaultLCDBLLEVEL				6			//	Default LCD BackLight LEVEL
 
-#define 	LCDBLCMD    	  				0x01   		//	LCD BackLight CMD	- ≈ÎΩ≈ Command Data
-#define 	LCDBLRES    	  				0x81   		//	LCD BackLight CMD	- ≈ÎΩ≈ Command Data
+#define 	LCDBLCMD    	  				0x01   		//	LCD BackLight CMD	- ÌÜµÏã† Command Data
+#define 	LCDBLRES    	  				0x81   		//	LCD BackLight CMD	- ÌÜµÏã† Command Data
 
 
 #define 	STM32F4_DISPLAY					1			
@@ -68,6 +68,17 @@ extern unsigned char Camera_Mode;
 extern unsigned char Camera_CheckFlag;
 extern unsigned char Camera_CheckCnt;
 
+extern unsigned char AAVM_Mode;
+extern unsigned char AAVM_CheckFlag;
+extern unsigned char AAVM_CheckCnt;
+extern unsigned char AAVM_Icon_Index;
+extern unsigned char AAVM_Camera_Icon_Index;
+extern unsigned char AAVM_Menu_Flag;
+extern unsigned char AAVM_Warning_Front;
+extern unsigned char AAVM_Warning_Rear;
+extern unsigned char AAVM_Warning_Left;
+extern unsigned char AAVM_Warning_Right;
+
 /* Exported functions ------------------------------------------------------- */
 extern void LCD_Control_Init(void);
 extern void LCD_POWER_ONOFF(uint8_t BitData);
@@ -79,6 +90,10 @@ extern void LCDBL_PWM_CONTROL(uint16_t PWM_VALUE);
 extern void LCD_Display_Change(uint8_t BitData);
 extern void cam_mode_change(u8 Mode);
 extern void cam_mode_check(void);
+// ++, 160812 cjg
+extern void aavm_mode_change(u8 Mode);
+extern void aavm_mode_check(void);
+// --, 160812 cjg
 #endif /* __LCD_Control_H */
 
 /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/

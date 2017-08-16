@@ -1,6 +1,6 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      15/May/2017  17:13:09 #
+# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      07/Aug/2017  15:25:54 #
 # Copyright 1999-2012 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
@@ -92,7 +92,7 @@ D:\GIT\WLF_MONITOR\ECS_MS12_02_WLF_MONITOR_STM32_APP\Platform\TaeHa - ECS\SRC\TW
      54          */
      55          	
      56          	WriteTW8816(0x94, 0x02);
-     57                  WriteTW8816(0x94, 0x80);
+     57            WriteTW8816(0x94, 0x00);
      58          	
      59          }
      60          
@@ -100,459 +100,2563 @@ D:\GIT\WLF_MONITOR\ECS_MS12_02_WLF_MONITOR_STM32_APP\Platform\TaeHa - ECS\SRC\TW
      62          {
      63          	WriteTW8816(0xff, 0x00);
      64                  
-     65          	WriteTW8816(0x95, 0x80);
-     66          	WriteTW8816(0x96, 0x1C);
-     67          	WriteTW8816(0x97, 0x43);
-     68          	WriteTW8816(0x98, 0x06);
-     69          
-     70          	WriteTW8816(0x95, 0x80);
-     71          	WriteTW8816(0x96, 0x1D);
-     72          	WriteTW8816(0x97, 0x48);
-     73          	WriteTW8816(0x98, 0x06);
-     74          
-     75          	WriteTW8816(0x95, 0x80);
-     76          	WriteTW8816(0x96, 0x1E);
-     77          	WriteTW8816(0x97, 0x31);
-     78          	WriteTW8816(0x98, 0x06);
-     79          }
-     80          
-     81          void SetDisplayCH2(void)
-     82          {
-     83          	WriteTW8816(0xff, 0x00);
-     84          
-     85          	WriteTW8816(0x95, 0x80);
-     86          	WriteTW8816(0x96, 0x1c);
-     87          	WriteTW8816(0x97, 0x43);
-     88          	WriteTW8816(0x98, 0x06);
-     89          
-     90          	WriteTW8816(0x95, 0x80);
-     91          	WriteTW8816(0x96, 0x1d);
-     92          	WriteTW8816(0x97, 0x48);
-     93          	WriteTW8816(0x98, 0x06);
-     94          
+     65            WriteTW8816(0x94, 0x00);
+     66          	WriteTW8816(0x95, 0x80);
+     67          	WriteTW8816(0x96, 0x1C);
+     68          	WriteTW8816(0x97, 0x43);
+     69          	WriteTW8816(0x98, 0x06);
+     70          
+     71            WriteTW8816(0x94, 0x00);
+     72          	WriteTW8816(0x95, 0x80);
+     73          	WriteTW8816(0x96, 0x1D);
+     74          	WriteTW8816(0x97, 0x48);
+     75          	WriteTW8816(0x98, 0x06);
+     76          
+     77            WriteTW8816(0x94, 0x00);
+     78          	WriteTW8816(0x95, 0x80);
+     79          	WriteTW8816(0x96, 0x1E);
+     80          	WriteTW8816(0x97, 0x31);
+     81          	WriteTW8816(0x98, 0x06);
+     82          }
+     83          
+     84          void SetDisplayCH2(void)
+     85          {
+     86          	WriteTW8816(0xff, 0x00);
+     87          
+     88            WriteTW8816(0x94, 0x00);
+     89          	WriteTW8816(0x95, 0x80);
+     90          	WriteTW8816(0x96, 0x1c);
+     91          	WriteTW8816(0x97, 0x43);
+     92          	WriteTW8816(0x98, 0x06);
+     93          
+     94            WriteTW8816(0x94, 0x00);
      95          	WriteTW8816(0x95, 0x80);
-     96          	WriteTW8816(0x96, 0x1e);
-     97          	WriteTW8816(0x97, 0x32);
+     96          	WriteTW8816(0x96, 0x1d);
+     97          	WriteTW8816(0x97, 0x48);
      98          	WriteTW8816(0x98, 0x06);
-     99          }
-    100          
-    101          void SetDisplayCH3(void)
-    102          {
-    103          	WriteTW8816(0xff, 0x00);
-    104          
-    105          	WriteTW8816(0x95, 0x80);
-    106          	WriteTW8816(0x96, 0x1c);
-    107          	WriteTW8816(0x97, 0x43);
-    108          	WriteTW8816(0x98, 0x06);
-    109          
-    110          	WriteTW8816(0x95, 0x80);
-    111          	WriteTW8816(0x96, 0x1d);
-    112          	WriteTW8816(0x97, 0x48);
-    113          	WriteTW8816(0x98, 0x06);
-    114          
-    115          	WriteTW8816(0x95, 0x80);
-    116          	WriteTW8816(0x96, 0x1e);
-    117          	WriteTW8816(0x97, 0x33);
-    118          	WriteTW8816(0x98, 0x06);
-    119          }
-    120          
-    121          void SetDisplayCH4(void)
-    122          {
-    123          	WriteTW8816(0xff, 0x00);
-    124          
-    125          	WriteTW8816(0x95, 0x80);
-    126          	WriteTW8816(0x96, 0x1c);
-    127          	WriteTW8816(0x97, 0x43);
-    128          	WriteTW8816(0x98, 0x06);
+     99          
+    100            WriteTW8816(0x94, 0x00);
+    101          	WriteTW8816(0x95, 0x80);
+    102          	WriteTW8816(0x96, 0x1e);
+    103          	WriteTW8816(0x97, 0x32);
+    104          	WriteTW8816(0x98, 0x06);
+    105          }
+    106          
+    107          void SetDisplayCH3(void)
+    108          {
+    109          	WriteTW8816(0xff, 0x00);
+    110          
+    111            WriteTW8816(0x94, 0x00);
+    112          	WriteTW8816(0x95, 0x80);
+    113          	WriteTW8816(0x96, 0x1c);
+    114          	WriteTW8816(0x97, 0x43);
+    115          	WriteTW8816(0x98, 0x06);
+    116          
+    117            WriteTW8816(0x94, 0x00);
+    118          	WriteTW8816(0x95, 0x80);
+    119          	WriteTW8816(0x96, 0x1d);
+    120          	WriteTW8816(0x97, 0x48);
+    121          	WriteTW8816(0x98, 0x06);
+    122          
+    123            WriteTW8816(0x94, 0x00);
+    124          	WriteTW8816(0x95, 0x80);
+    125          	WriteTW8816(0x96, 0x1e);
+    126          	WriteTW8816(0x97, 0x33);
+    127          	WriteTW8816(0x98, 0x06);
+    128          }
     129          
-    130          	WriteTW8816(0x95, 0x80);
-    131          	WriteTW8816(0x96, 0x1d);
-    132          	WriteTW8816(0x97, 0x48);
-    133          	WriteTW8816(0x98, 0x06);
-    134          
+    130          void SetDisplayCH4(void)
+    131          {
+    132          	WriteTW8816(0xff, 0x00);
+    133          
+    134            WriteTW8816(0x94, 0x00);
     135          	WriteTW8816(0x95, 0x80);
-    136          	WriteTW8816(0x96, 0x1e);
-    137          	WriteTW8816(0x97, 0x34);
+    136          	WriteTW8816(0x96, 0x1c);
+    137          	WriteTW8816(0x97, 0x43);
     138          	WriteTW8816(0x98, 0x06);
-    139          }
-    140          
-    141          void SetDisplayCHBlank(void)
-    142          {
-    143          	WriteTW8816(0xff, 0x00);
-    144          
-    145          	WriteTW8816(0x95, 0x80);
-    146          	WriteTW8816(0x96, 0x1c);
-    147          	WriteTW8816(0x97, 0x20);
-    148          	WriteTW8816(0x98, 0x06);
-    149          
-    150          	WriteTW8816(0x95, 0x80);
-    151          	WriteTW8816(0x96, 0x1d);
-    152          	WriteTW8816(0x97, 0x20);
-    153          	WriteTW8816(0x98, 0x06);
-    154          
-    155          	WriteTW8816(0x95, 0x80);
-    156          	WriteTW8816(0x96, 0x1e);
-    157          	WriteTW8816(0x97, 0x20);
-    158          	WriteTW8816(0x98, 0x06);
-    159          }
-    160          
-    161          void SetDisplayNosignal(void)
-    162          {
-    163          	WriteTW8816(0xff, 0x00);
-    164          
-    165          	WriteTW8816(0x95, 0x80);
-    166          	WriteTW8816(0x96, 0xd8);
-    167          	WriteTW8816(0x97, 0x4e);
-    168          	WriteTW8816(0x98, 0x06);
-    169          
+    139          
+    140            WriteTW8816(0x94, 0x00);
+    141          	WriteTW8816(0x95, 0x80);
+    142          	WriteTW8816(0x96, 0x1d);
+    143          	WriteTW8816(0x97, 0x48);
+    144          	WriteTW8816(0x98, 0x06);
+    145          
+    146            WriteTW8816(0x94, 0x00);
+    147          	WriteTW8816(0x95, 0x80);
+    148          	WriteTW8816(0x96, 0x1e);
+    149          	WriteTW8816(0x97, 0x34);
+    150          	WriteTW8816(0x98, 0x06);
+    151          }
+    152          
+    153          void SetDisplayCHBlank(void)
+    154          {
+    155          	WriteTW8816(0xff, 0x00);
+    156          
+    157            WriteTW8816(0x94, 0x00);
+    158          	WriteTW8816(0x95, 0x80);
+    159          	WriteTW8816(0x96, 0x1c);
+    160          	WriteTW8816(0x97, 0x20);
+    161          	WriteTW8816(0x98, 0x06);
+    162          
+    163            WriteTW8816(0x94, 0x00);
+    164          	WriteTW8816(0x95, 0x80);
+    165          	WriteTW8816(0x96, 0x1d);
+    166          	WriteTW8816(0x97, 0x20);
+    167          	WriteTW8816(0x98, 0x06);
+    168          
+    169            WriteTW8816(0x94, 0x00);
     170          	WriteTW8816(0x95, 0x80);
-    171          	WriteTW8816(0x96, 0xd9);
-    172          	WriteTW8816(0x97, 0x4f);
+    171          	WriteTW8816(0x96, 0x1e);
+    172          	WriteTW8816(0x97, 0x20);
     173          	WriteTW8816(0x98, 0x06);
-    174          
-    175          	WriteTW8816(0x95, 0x80);
-    176          	WriteTW8816(0x96, 0xda);
-    177          	WriteTW8816(0x97, 0x20);
-    178          	WriteTW8816(0x98, 0x06);
+    174          }
+    175          
+    176          void SetDisplayNosignal(void)
+    177          {
+    178          	WriteTW8816(0xff, 0x00);
     179          
-    180          	WriteTW8816(0x95, 0x80);
-    181          	WriteTW8816(0x96, 0xdb);
-    182          	WriteTW8816(0x97, 0x53);
-    183          	WriteTW8816(0x98, 0x06);
-    184          
-    185          	WriteTW8816(0x95, 0x80);
-    186          	WriteTW8816(0x96, 0xdc);
-    187          	WriteTW8816(0x97, 0x49);
-    188          	WriteTW8816(0x98, 0x06);
-    189          
-    190          	WriteTW8816(0x95, 0x80);
-    191          	WriteTW8816(0x96, 0xdd);
-    192          	WriteTW8816(0x97, 0x47);
-    193          	WriteTW8816(0x98, 0x06);
-    194          
-    195          	WriteTW8816(0x95, 0x80);
-    196          	WriteTW8816(0x96, 0xde);
-    197          	WriteTW8816(0x97, 0x4e);
-    198          	WriteTW8816(0x98, 0x06);
-    199          
-    200          	WriteTW8816(0x95, 0x80);
-    201          	WriteTW8816(0x96, 0xdf);
-    202          	WriteTW8816(0x97, 0x41);
-    203          	WriteTW8816(0x98, 0x06);
-    204          
+    180            WriteTW8816(0x94, 0x00);
+    181          	WriteTW8816(0x95, 0x80);
+    182          	WriteTW8816(0x96, 0xd8);
+    183          	WriteTW8816(0x97, 0x4e);
+    184          	WriteTW8816(0x98, 0x06);
+    185          
+    186            WriteTW8816(0x94, 0x00);
+    187          	WriteTW8816(0x95, 0x80);
+    188          	WriteTW8816(0x96, 0xd9);
+    189          	WriteTW8816(0x97, 0x4f);
+    190          	WriteTW8816(0x98, 0x06);
+    191          
+    192            WriteTW8816(0x94, 0x00);
+    193          	WriteTW8816(0x95, 0x80);
+    194          	WriteTW8816(0x96, 0xda);
+    195          	WriteTW8816(0x97, 0x20);
+    196          	WriteTW8816(0x98, 0x06);
+    197          
+    198            WriteTW8816(0x94, 0x00);
+    199          	WriteTW8816(0x95, 0x80);
+    200          	WriteTW8816(0x96, 0xdb);
+    201          	WriteTW8816(0x97, 0x53);
+    202          	WriteTW8816(0x98, 0x06);
+    203          
+    204            WriteTW8816(0x94, 0x00);
     205          	WriteTW8816(0x95, 0x80);
-    206          	WriteTW8816(0x96, 0xe0);
-    207          	WriteTW8816(0x97, 0x4c);
+    206          	WriteTW8816(0x96, 0xdc);
+    207          	WriteTW8816(0x97, 0x49);
     208          	WriteTW8816(0x98, 0x06);
-    209          	
-    210          }
-    211          
-    212          void SetDisplayNosignalBlank(void)
-    213          {
-    214          	WriteTW8816(0xff, 0x00);
+    209          
+    210            WriteTW8816(0x94, 0x00);
+    211          	WriteTW8816(0x95, 0x80);
+    212          	WriteTW8816(0x96, 0xdd);
+    213          	WriteTW8816(0x97, 0x47);
+    214          	WriteTW8816(0x98, 0x06);
     215          
-    216          	WriteTW8816(0x95, 0x80);
-    217          	WriteTW8816(0x96, 0xd8);
-    218          	WriteTW8816(0x97, 0x20);
-    219          	WriteTW8816(0x98, 0x06);
-    220          
-    221          	WriteTW8816(0x95, 0x80);
-    222          	WriteTW8816(0x96, 0xd9);
-    223          	WriteTW8816(0x97, 0x20);
-    224          	WriteTW8816(0x98, 0x06);
-    225          
-    226          	WriteTW8816(0x95, 0x80);
-    227          	WriteTW8816(0x96, 0xda);
-    228          	WriteTW8816(0x97, 0x20);
-    229          	WriteTW8816(0x98, 0x06);
-    230          
-    231          	WriteTW8816(0x95, 0x80);
-    232          	WriteTW8816(0x96, 0xdb);
-    233          	WriteTW8816(0x97, 0x20);
-    234          	WriteTW8816(0x98, 0x06);
+    216            WriteTW8816(0x94, 0x00);
+    217          	WriteTW8816(0x95, 0x80);
+    218          	WriteTW8816(0x96, 0xde);
+    219          	WriteTW8816(0x97, 0x4e);
+    220          	WriteTW8816(0x98, 0x06);
+    221          
+    222            WriteTW8816(0x94, 0x00);
+    223          	WriteTW8816(0x95, 0x80);
+    224          	WriteTW8816(0x96, 0xdf);
+    225          	WriteTW8816(0x97, 0x41);
+    226          	WriteTW8816(0x98, 0x06);
+    227          
+    228            WriteTW8816(0x94, 0x00);
+    229          	WriteTW8816(0x95, 0x80);
+    230          	WriteTW8816(0x96, 0xe0);
+    231          	WriteTW8816(0x97, 0x4c);
+    232          	WriteTW8816(0x98, 0x06);
+    233          	
+    234          }
     235          
-    236          	WriteTW8816(0x95, 0x80);
-    237          	WriteTW8816(0x96, 0xdc);
-    238          	WriteTW8816(0x97, 0x20);
-    239          	WriteTW8816(0x98, 0x06);
-    240          
+    236          void SetDisplayNosignalBlank(void)
+    237          {
+    238          	WriteTW8816(0xff, 0x00);
+    239          
+    240            WriteTW8816(0x94, 0x00);
     241          	WriteTW8816(0x95, 0x80);
-    242          	WriteTW8816(0x96, 0xdd);
+    242          	WriteTW8816(0x96, 0xd8);
     243          	WriteTW8816(0x97, 0x20);
     244          	WriteTW8816(0x98, 0x06);
     245          
-    246          	WriteTW8816(0x95, 0x80);
-    247          	WriteTW8816(0x96, 0xde);
-    248          	WriteTW8816(0x97, 0x20);
-    249          	WriteTW8816(0x98, 0x06);
-    250          
-    251          	WriteTW8816(0x95, 0x80);
-    252          	WriteTW8816(0x96, 0xdf);
-    253          	WriteTW8816(0x97, 0x20);
-    254          	WriteTW8816(0x98, 0x06);
-    255          
-    256          	WriteTW8816(0x95, 0x80);
-    257          	WriteTW8816(0x96, 0xe0);
-    258          	WriteTW8816(0x97, 0x20);
-    259          	WriteTW8816(0x98, 0x06);
-    260          	
-    261          }
-    262          
-    263          void SetDisplayWarning(void)
-    264          {
-    265                  u8 i;
-    266                  WriteTW8816(0x94, 0x02);
-    267                  for(i = 0; i < 27; i++){
-    268                      WriteTW8816(0x94, 0x80);
-    269                      WriteTW8816(0x95, 0x81);
-    270                      WriteTW8816(0x96, (i + 0x9b));
-    271                      WriteTW8816(0x97, (i + 0x7B));
-    272                      WriteTW8816(0x98, 0x06);    
-    273                  }
-    274          }
-    275          #else
-    276          
-    277          
-    278          void SetFontOSDWindow(void)
-    279          {
-    280          	I2C2_ByteWrite_8816(0xff, 0x00);
+    246            WriteTW8816(0x94, 0x00);
+    247          	WriteTW8816(0x95, 0x80);
+    248          	WriteTW8816(0x96, 0xd9);
+    249          	WriteTW8816(0x97, 0x20);
+    250          	WriteTW8816(0x98, 0x06);
+    251          
+    252            WriteTW8816(0x94, 0x00);
+    253          	WriteTW8816(0x95, 0x80);
+    254          	WriteTW8816(0x96, 0xda);
+    255          	WriteTW8816(0x97, 0x20);
+    256          	WriteTW8816(0x98, 0x06);
+    257          
+    258            WriteTW8816(0x94, 0x00);
+    259          	WriteTW8816(0x95, 0x80);
+    260          	WriteTW8816(0x96, 0xdb);
+    261          	WriteTW8816(0x97, 0x20);
+    262          	WriteTW8816(0x98, 0x06);
+    263          
+    264            WriteTW8816(0x94, 0x00);
+    265          	WriteTW8816(0x95, 0x80);
+    266          	WriteTW8816(0x96, 0xdc);
+    267          	WriteTW8816(0x97, 0x20);
+    268          	WriteTW8816(0x98, 0x06);
+    269          
+    270            WriteTW8816(0x94, 0x00);
+    271          	WriteTW8816(0x95, 0x80);
+    272          	WriteTW8816(0x96, 0xdd);
+    273          	WriteTW8816(0x97, 0x20);
+    274          	WriteTW8816(0x98, 0x06);
+    275          
+    276            WriteTW8816(0x94, 0x00);
+    277          	WriteTW8816(0x95, 0x80);
+    278          	WriteTW8816(0x96, 0xde);
+    279          	WriteTW8816(0x97, 0x20);
+    280          	WriteTW8816(0x98, 0x06);
     281          
-    282          	I2C2_ByteWrite_8816(0x94, 0x00);
-    283          	I2C2_ByteWrite_8816(0x9e, 0x00);
-    284          	I2C2_ByteWrite_8816(0x9f, 0x01);
-    285          	I2C2_ByteWrite_8816(0xa0, 0x00);
-    286          	I2C2_ByteWrite_8816(0xa1, 0x00);
-    287          	I2C2_ByteWrite_8816(0xa2, 0x00);
-    288          	I2C2_ByteWrite_8816(0xa3, 0x22);
-    289          	I2C2_ByteWrite_8816(0xa4, 0x0e);
-    290          	I2C2_ByteWrite_8816(0xa5, 0x32);
-    291          	I2C2_ByteWrite_8816(0xa6, 0x00);
-    292          	I2C2_ByteWrite_8816(0xa7, 0x00);
-    293          	I2C2_ByteWrite_8816(0xa8, 0x00);
-    294          	I2C2_ByteWrite_8816(0xa9, 0x50);
-    295          	I2C2_ByteWrite_8816(0xaa, 0x00);
-    296          	I2C2_ByteWrite_8816(0xab, 0x55);
-    297          	I2C2_ByteWrite_8816(0xac, 0x0f);
-    298          	I2C2_ByteWrite_8816(0xad, 0x00);
-    299          	I2C2_ByteWrite_8816(0xae, 0x00);
-    300          
-    301          	I2C2_ByteWrite_8816(0x94, 0x11);
-    302          	I2C2_ByteWrite_8816(0x94, 0x02);
-    303          	
-    304          }
-    305          
-    306          void SetDisplayCH1(void)
-    307          {
-    308          	I2C2_ByteWrite_8816(0xff, 0x00);
-    309          
-    310          	I2C2_ByteWrite_8816(0x95, 0x80);
-    311          	I2C2_ByteWrite_8816(0x96, 0x1d);
-    312          	I2C2_ByteWrite_8816(0x97, 0x43);
-    313          	I2C2_ByteWrite_8816(0x98, 0x06);
-    314          
-    315          	I2C2_ByteWrite_8816(0x95, 0x80);
-    316          	I2C2_ByteWrite_8816(0x96, 0x1e);
-    317          	I2C2_ByteWrite_8816(0x97, 0x48);
-    318          	I2C2_ByteWrite_8816(0x98, 0x06);
-    319          
-    320          	I2C2_ByteWrite_8816(0x95, 0x80);
-    321          	I2C2_ByteWrite_8816(0x96, 0x1f);
-    322          	I2C2_ByteWrite_8816(0x97, 0x31);
-    323          	I2C2_ByteWrite_8816(0x98, 0x06);
-    324          }
-    325          
-    326          void SetDisplayCH2(void)
-    327          {
-    328          	I2C2_ByteWrite_8816(0xff, 0x00);
-    329          
-    330          	I2C2_ByteWrite_8816(0x95, 0x80);
-    331          	I2C2_ByteWrite_8816(0x96, 0x1d);
-    332          	I2C2_ByteWrite_8816(0x97, 0x43);
-    333          	I2C2_ByteWrite_8816(0x98, 0x06);
-    334          
-    335          	I2C2_ByteWrite_8816(0x95, 0x80);
-    336          	I2C2_ByteWrite_8816(0x96, 0x1e);
-    337          	I2C2_ByteWrite_8816(0x97, 0x48);
-    338          	I2C2_ByteWrite_8816(0x98, 0x06);
+    282            WriteTW8816(0x94, 0x00);
+    283          	WriteTW8816(0x95, 0x80);
+    284          	WriteTW8816(0x96, 0xdf);
+    285          	WriteTW8816(0x97, 0x20);
+    286          	WriteTW8816(0x98, 0x06);
+    287          
+    288            WriteTW8816(0x94, 0x00);
+    289          	WriteTW8816(0x95, 0x80);
+    290          	WriteTW8816(0x96, 0xe0);
+    291          	WriteTW8816(0x97, 0x20);
+    292          	WriteTW8816(0x98, 0x06);
+    293          	
+    294          }
+    295          
+    296          void SetDisplayWarning(void)
+    297          {
+    298                  u8 i;
+    299                  WriteTW8816(0x94, 0x02);
+    300                  for(i = 0; i < 27; i++){
+    301                      WriteTW8816(0x94, 0x80);
+    302                      WriteTW8816(0x95, 0x81);
+    303                      WriteTW8816(0x96, (i + 0x9b));
+    304                      WriteTW8816(0x97, (i + 0x7B));
+    305                      WriteTW8816(0x98, 0x06);    
+    306                  }
+    307          }
+    308          
+    309          void SetDisplayIcon(void){  
+    310            // X
+    311            // 0x094[7] == 1 RAM / OX094[7] == 0 ROM
+    312            SetDisplayCHBlank();
+    313            
+    314            SetChangeXIcon();
+    315            // SPEAKER
+    316            SetChangeSpeakerIcon();
+    317            
+    318            SetChange4ChannelView();
+    319            
+    320            SetChangeFrontView();
+    321            
+    322            SetChangeLeftView();
+    323            
+    324            SetChangeBackView();
+    325            
+    326            SetChangeRightView();
+    327            
+    328            SetChange3DBirdView();
+    329            
+    330            SetChange3DRearView();
+    331            
+    332            SetChange2DBirdView();
+    333            
+    334            SetChange3DLeftView();
+    335            
+    336            SetChange3DRightView();
+    337            
+    338          }
     339          
-    340          	I2C2_ByteWrite_8816(0x95, 0x80);
-    341          	I2C2_ByteWrite_8816(0x96, 0x1f);
-    342          	I2C2_ByteWrite_8816(0x97, 0x32);
-    343          	I2C2_ByteWrite_8816(0x98, 0x06);
-    344          }
-    345          
-    346          void SetDisplayCH3(void)
-    347          {
-    348          	I2C2_ByteWrite_8816(0xff, 0x00);
-    349          
-    350          	I2C2_ByteWrite_8816(0x95, 0x80);
-    351          	I2C2_ByteWrite_8816(0x96, 0x1d);
-    352          	I2C2_ByteWrite_8816(0x97, 0x43);
-    353          	I2C2_ByteWrite_8816(0x98, 0x06);
-    354          
-    355          	I2C2_ByteWrite_8816(0x95, 0x80);
-    356          	I2C2_ByteWrite_8816(0x96, 0x1e);
-    357          	I2C2_ByteWrite_8816(0x97, 0x48);
-    358          	I2C2_ByteWrite_8816(0x98, 0x06);
-    359          
-    360          	I2C2_ByteWrite_8816(0x95, 0x80);
-    361          	I2C2_ByteWrite_8816(0x96, 0x1f);
-    362          	I2C2_ByteWrite_8816(0x97, 0x33);
-    363          	I2C2_ByteWrite_8816(0x98, 0x06);
-    364          }
-    365          
-    366          void SetDisplayCH4(void)
-    367          {
-    368          	I2C2_ByteWrite_8816(0xff, 0x00);
-    369          
-    370          	I2C2_ByteWrite_8816(0x95, 0x80);
-    371          	I2C2_ByteWrite_8816(0x96, 0x1d);
-    372          	I2C2_ByteWrite_8816(0x97, 0x43);
-    373          	I2C2_ByteWrite_8816(0x98, 0x06);
-    374          
-    375          	I2C2_ByteWrite_8816(0x95, 0x80);
-    376          	I2C2_ByteWrite_8816(0x96, 0x1e);
-    377          	I2C2_ByteWrite_8816(0x97, 0x48);
-    378          	I2C2_ByteWrite_8816(0x98, 0x06);
-    379          
-    380          	I2C2_ByteWrite_8816(0x95, 0x80);
-    381          	I2C2_ByteWrite_8816(0x96, 0x1f);
-    382          	I2C2_ByteWrite_8816(0x97, 0x34);
-    383          	I2C2_ByteWrite_8816(0x98, 0x06);
-    384          }
-    385          
-    386          void SetDisplayCHBlank(void)
-    387          {
-    388          	I2C2_ByteWrite_8816(0xff, 0x00);
-    389          
-    390          	I2C2_ByteWrite_8816(0x95, 0x80);
-    391          	I2C2_ByteWrite_8816(0x96, 0x1d);
-    392          	I2C2_ByteWrite_8816(0x97, 0x20);
-    393          	I2C2_ByteWrite_8816(0x98, 0x06);
-    394          
-    395          	I2C2_ByteWrite_8816(0x95, 0x80);
-    396          	I2C2_ByteWrite_8816(0x96, 0x1e);
-    397          	I2C2_ByteWrite_8816(0x97, 0x20);
-    398          	I2C2_ByteWrite_8816(0x98, 0x06);
-    399          
-    400          	I2C2_ByteWrite_8816(0x95, 0x80);
-    401          	I2C2_ByteWrite_8816(0x96, 0x1f);
-    402          	I2C2_ByteWrite_8816(0x97, 0x20);
-    403          	I2C2_ByteWrite_8816(0x98, 0x06);
-    404          }
-    405          
-    406          void SetDisplayNosignal(void)
-    407          {
-    408          	I2C2_ByteWrite_8816(0xff, 0x00);
-    409          
-    410          	I2C2_ByteWrite_8816(0x95, 0x80);
-    411          	I2C2_ByteWrite_8816(0x96, 0xd8);
-    412          	I2C2_ByteWrite_8816(0x97, 0x4e);
-    413          	I2C2_ByteWrite_8816(0x98, 0x06);
-    414          
-    415          	I2C2_ByteWrite_8816(0x95, 0x80);
-    416          	I2C2_ByteWrite_8816(0x96, 0xd9);
-    417          	I2C2_ByteWrite_8816(0x97, 0x4f);
-    418          	I2C2_ByteWrite_8816(0x98, 0x06);
-    419          
-    420          	I2C2_ByteWrite_8816(0x95, 0x80);
-    421          	I2C2_ByteWrite_8816(0x96, 0xda);
-    422          	I2C2_ByteWrite_8816(0x97, 0x20);
-    423          	I2C2_ByteWrite_8816(0x98, 0x06);
-    424          
-    425          	I2C2_ByteWrite_8816(0x95, 0x80);
-    426          	I2C2_ByteWrite_8816(0x96, 0xdb);
-    427          	I2C2_ByteWrite_8816(0x97, 0x53);
-    428          	I2C2_ByteWrite_8816(0x98, 0x06);
-    429          
-    430          	I2C2_ByteWrite_8816(0x95, 0x80);
-    431          	I2C2_ByteWrite_8816(0x96, 0xdc);
-    432          	I2C2_ByteWrite_8816(0x97, 0x49);
-    433          	I2C2_ByteWrite_8816(0x98, 0x06);
-    434          
-    435          	I2C2_ByteWrite_8816(0x95, 0x80);
-    436          	I2C2_ByteWrite_8816(0x96, 0xdd);
-    437          	I2C2_ByteWrite_8816(0x97, 0x47);
-    438          	I2C2_ByteWrite_8816(0x98, 0x06);
-    439          
-    440          	I2C2_ByteWrite_8816(0x95, 0x80);
-    441          	I2C2_ByteWrite_8816(0x96, 0xde);
-    442          	I2C2_ByteWrite_8816(0x97, 0x4e);
-    443          	I2C2_ByteWrite_8816(0x98, 0x06);
-    444          
-    445          	I2C2_ByteWrite_8816(0x95, 0x80);
-    446          	I2C2_ByteWrite_8816(0x96, 0xdf);
-    447          	I2C2_ByteWrite_8816(0x97, 0x41);
-    448          	I2C2_ByteWrite_8816(0x98, 0x06);
-    449          
-    450          	I2C2_ByteWrite_8816(0x95, 0x80);
-    451          	I2C2_ByteWrite_8816(0x96, 0xe0);
-    452          	I2C2_ByteWrite_8816(0x97, 0x4c);
-    453          	I2C2_ByteWrite_8816(0x98, 0x06);
-    454          	
-    455          }
-    456          
-    457          void SetDisplayNosignalBlank(void)
-    458          {
-    459          	I2C2_ByteWrite_8816(0xff, 0x00);
-    460          
-    461          	I2C2_ByteWrite_8816(0x95, 0x80);
-    462          	I2C2_ByteWrite_8816(0x96, 0xd8);
-    463          	I2C2_ByteWrite_8816(0x97, 0x20);
-    464          	I2C2_ByteWrite_8816(0x98, 0x06);
-    465          
-    466          	I2C2_ByteWrite_8816(0x95, 0x80);
-    467          	I2C2_ByteWrite_8816(0x96, 0xd9);
-    468          	I2C2_ByteWrite_8816(0x97, 0x20);
-    469          	I2C2_ByteWrite_8816(0x98, 0x06);
-    470          
-    471          	I2C2_ByteWrite_8816(0x95, 0x80);
-    472          	I2C2_ByteWrite_8816(0x96, 0xda);
-    473          	I2C2_ByteWrite_8816(0x97, 0x20);
-    474          	I2C2_ByteWrite_8816(0x98, 0x06);
-    475          
-    476          	I2C2_ByteWrite_8816(0x95, 0x80);
-    477          	I2C2_ByteWrite_8816(0x96, 0xdb);
-    478          	I2C2_ByteWrite_8816(0x97, 0x20);
-    479          	I2C2_ByteWrite_8816(0x98, 0x06);
-    480          
-    481          	I2C2_ByteWrite_8816(0x95, 0x80);
-    482          	I2C2_ByteWrite_8816(0x96, 0xdc);
-    483          	I2C2_ByteWrite_8816(0x97, 0x20);
-    484          	I2C2_ByteWrite_8816(0x98, 0x06);
-    485          
-    486          	I2C2_ByteWrite_8816(0x95, 0x80);
-    487          	I2C2_ByteWrite_8816(0x96, 0xdd);
-    488          	I2C2_ByteWrite_8816(0x97, 0x20);
-    489          	I2C2_ByteWrite_8816(0x98, 0x06);
-    490          
-    491          	I2C2_ByteWrite_8816(0x95, 0x80);
-    492          	I2C2_ByteWrite_8816(0x96, 0xde);
-    493          	I2C2_ByteWrite_8816(0x97, 0x20);
-    494          	I2C2_ByteWrite_8816(0x98, 0x06);
-    495          
-    496          	I2C2_ByteWrite_8816(0x95, 0x80);
-    497          	I2C2_ByteWrite_8816(0x96, 0xdf);
-    498          	I2C2_ByteWrite_8816(0x97, 0x20);
-    499          	I2C2_ByteWrite_8816(0x98, 0x06);
-    500          
-    501          	I2C2_ByteWrite_8816(0x95, 0x80);
-    502          	I2C2_ByteWrite_8816(0x96, 0xe0);
-    503          	I2C2_ByteWrite_8816(0x97, 0x20);
-    504          	I2C2_ByteWrite_8816(0x98, 0x06);
-    505          	
-    506          }
-    507          
-    508          
-    509          #endif
-    510          
-    511          
-    512          /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
+    340          void SetChangeXIcon(void){
+    341            if(AAVM_Menu_Flag == 0) {
+    342              WriteTW8816(0x94, 0x80);
+    343              WriteTW8816(0x95, 0x80);
+    344              WriteTW8816(0x96, 0x01);
+    345              WriteTW8816(0x97, 0x00);
+    346              WriteTW8816(0x98, 0x06);
+    347              
+    348              WriteTW8816(0x94, 0x80);
+    349              WriteTW8816(0x95, 0x80);
+    350              WriteTW8816(0x96, 0x02);
+    351              WriteTW8816(0x97, 0x01);
+    352              WriteTW8816(0x98, 0x06);
+    353              
+    354              WriteTW8816(0x94, 0x80);
+    355              WriteTW8816(0x95, 0x80);
+    356              WriteTW8816(0x96, 0x23);
+    357              WriteTW8816(0x97, 0x02);
+    358              WriteTW8816(0x98, 0x06);
+    359              
+    360              WriteTW8816(0x94, 0x80);
+    361              WriteTW8816(0x95, 0x80);
+    362              WriteTW8816(0x96, 0x24);
+    363              WriteTW8816(0x97, 0x03);
+    364              WriteTW8816(0x98, 0x06);
+    365            } else {
+    366              WriteTW8816(0x94, 0x00);
+    367              WriteTW8816(0x95, 0x80);
+    368              WriteTW8816(0x96, 0x01);
+    369              WriteTW8816(0x97, 0x20);
+    370              WriteTW8816(0x98, 0x06);
+    371              
+    372              WriteTW8816(0x94, 0x00);
+    373              WriteTW8816(0x95, 0x80);
+    374              WriteTW8816(0x96, 0x02);
+    375              WriteTW8816(0x97, 0x20);
+    376              WriteTW8816(0x98, 0x06);
+    377              
+    378              WriteTW8816(0x94, 0x00);
+    379              WriteTW8816(0x95, 0x80);
+    380              WriteTW8816(0x96, 0x23);
+    381              WriteTW8816(0x97, 0x20);
+    382              WriteTW8816(0x98, 0x06);
+    383              
+    384              WriteTW8816(0x94, 0x00);
+    385              WriteTW8816(0x95, 0x80);
+    386              WriteTW8816(0x96, 0x24);
+    387              WriteTW8816(0x97, 0x20);
+    388              WriteTW8816(0x98, 0x06);
+    389            }
+    390          }
+    391          void SetChangeFrontView(void){
+    392            if(AAVM_Menu_Flag == 0) {
+    393              if(AAVM_Camera_Icon_Index == 4){
+    394                if(AAVM_Warning_Front == 1){
+    395                  WriteTW8816(0x94, 0x80);
+    396                  WriteTW8816(0x95, 0x80);
+    397                  WriteTW8816(0x96, 0x1E);
+    398                  WriteTW8816(0x97, 0x78);
+    399                  WriteTW8816(0x98, 0x04);
+    400                  
+    401                  WriteTW8816(0x94, 0x80);
+    402                  WriteTW8816(0x95, 0x80);
+    403                  WriteTW8816(0x96, 0x1F);
+    404                  WriteTW8816(0x97, 0x79);
+    405                  WriteTW8816(0x98, 0x04);
+    406                  
+    407                  WriteTW8816(0x94, 0x80);
+    408                  WriteTW8816(0x95, 0x80);
+    409                  WriteTW8816(0x96, 0x20);
+    410                  WriteTW8816(0x97, 0x7A);
+    411                  WriteTW8816(0x98, 0x04);
+    412                  
+    413                  WriteTW8816(0x94, 0x80);
+    414                  WriteTW8816(0x95, 0x80);
+    415                  WriteTW8816(0x96, 0x40);
+    416                  WriteTW8816(0x97, 0x7B);
+    417                  WriteTW8816(0x98, 0x04);
+    418                  
+    419                  WriteTW8816(0x94, 0x80);
+    420                  WriteTW8816(0x95, 0x80);
+    421                  WriteTW8816(0x96, 0x41);
+    422                  WriteTW8816(0x97, 0x7C);
+    423                  WriteTW8816(0x98, 0x04);
+    424                  
+    425                  WriteTW8816(0x94, 0x80);
+    426                  WriteTW8816(0x95, 0x80);
+    427                  WriteTW8816(0x96, 0x42);
+    428                  WriteTW8816(0x97, 0x7D);
+    429                  WriteTW8816(0x98, 0x04);
+    430                }else {
+    431                  WriteTW8816(0x94, 0x80);
+    432                  WriteTW8816(0x95, 0x80);
+    433                  WriteTW8816(0x96, 0x1E);
+    434                  WriteTW8816(0x97, 0x78);
+    435                  WriteTW8816(0x98, 0x06);
+    436                  
+    437                  WriteTW8816(0x94, 0x80);
+    438                  WriteTW8816(0x95, 0x80);
+    439                  WriteTW8816(0x96, 0x1F);
+    440                  WriteTW8816(0x97, 0x79);
+    441                  WriteTW8816(0x98, 0x06);
+    442                  
+    443                  WriteTW8816(0x94, 0x80);
+    444                  WriteTW8816(0x95, 0x80);
+    445                  WriteTW8816(0x96, 0x20);
+    446                  WriteTW8816(0x97, 0x7A);
+    447                  WriteTW8816(0x98, 0x06);
+    448                  
+    449                  WriteTW8816(0x94, 0x80);
+    450                  WriteTW8816(0x95, 0x80);
+    451                  WriteTW8816(0x96, 0x40);
+    452                  WriteTW8816(0x97, 0x7B);
+    453                  WriteTW8816(0x98, 0x06);
+    454                  
+    455                  WriteTW8816(0x94, 0x80);
+    456                  WriteTW8816(0x95, 0x80);
+    457                  WriteTW8816(0x96, 0x41);
+    458                  WriteTW8816(0x97, 0x7C);
+    459                  WriteTW8816(0x98, 0x06);
+    460                  
+    461                  WriteTW8816(0x94, 0x80);
+    462                  WriteTW8816(0x95, 0x80);
+    463                  WriteTW8816(0x96, 0x42);
+    464                  WriteTW8816(0x97, 0x7D);
+    465                  WriteTW8816(0x98, 0x06);
+    466                }
+    467              } else {
+    468                if(AAVM_Warning_Front == 1){
+    469                  WriteTW8816(0x94, 0x80);
+    470                  WriteTW8816(0x95, 0x80);
+    471                  WriteTW8816(0x96, 0x1E);
+    472                  WriteTW8816(0x97, 0x0C);
+    473                  WriteTW8816(0x98, 0x04);
+    474                  
+    475                  WriteTW8816(0x94, 0x80);
+    476                  WriteTW8816(0x95, 0x80);
+    477                  WriteTW8816(0x96, 0x1F);
+    478                  WriteTW8816(0x97, 0x0D);
+    479                  WriteTW8816(0x98, 0x04);
+    480                  
+    481                  WriteTW8816(0x94, 0x80);
+    482                  WriteTW8816(0x95, 0x80);
+    483                  WriteTW8816(0x96, 0x20);
+    484                  WriteTW8816(0x97, 0x0E);
+    485                  WriteTW8816(0x98, 0x04);
+    486                  
+    487                  WriteTW8816(0x94, 0x80);
+    488                  WriteTW8816(0x95, 0x80);
+    489                  WriteTW8816(0x96, 0x40);
+    490                  WriteTW8816(0x97, 0x0F);
+    491                  WriteTW8816(0x98, 0x04);
+    492                  
+    493                  WriteTW8816(0x94, 0x80);
+    494                  WriteTW8816(0x95, 0x80);
+    495                  WriteTW8816(0x96, 0x41);
+    496                  WriteTW8816(0x97, 0x10);
+    497                  WriteTW8816(0x98, 0x04);
+    498                  
+    499                  WriteTW8816(0x94, 0x80);
+    500                  WriteTW8816(0x95, 0x80);
+    501                  WriteTW8816(0x96, 0x42);
+    502                  WriteTW8816(0x97, 0x11);
+    503                  WriteTW8816(0x98, 0x04);
+    504                } else {
+    505                  WriteTW8816(0x94, 0x80);
+    506                  WriteTW8816(0x95, 0x80);
+    507                  WriteTW8816(0x96, 0x1E);
+    508                  WriteTW8816(0x97, 0x0C);
+    509                  WriteTW8816(0x98, 0x06);
+    510                  
+    511                  WriteTW8816(0x94, 0x80);
+    512                  WriteTW8816(0x95, 0x80);
+    513                  WriteTW8816(0x96, 0x1F);
+    514                  WriteTW8816(0x97, 0x0D);
+    515                  WriteTW8816(0x98, 0x06);
+    516                  
+    517                  WriteTW8816(0x94, 0x80);
+    518                  WriteTW8816(0x95, 0x80);
+    519                  WriteTW8816(0x96, 0x20);
+    520                  WriteTW8816(0x97, 0x0E);
+    521                  WriteTW8816(0x98, 0x06);
+    522                  
+    523                  WriteTW8816(0x94, 0x80);
+    524                  WriteTW8816(0x95, 0x80);
+    525                  WriteTW8816(0x96, 0x40);
+    526                  WriteTW8816(0x97, 0x0F);
+    527                  WriteTW8816(0x98, 0x06);
+    528                  
+    529                  WriteTW8816(0x94, 0x80);
+    530                  WriteTW8816(0x95, 0x80);
+    531                  WriteTW8816(0x96, 0x41);
+    532                  WriteTW8816(0x97, 0x10);
+    533                  WriteTW8816(0x98, 0x06);
+    534                  
+    535                  WriteTW8816(0x94, 0x80);
+    536                  WriteTW8816(0x95, 0x80);
+    537                  WriteTW8816(0x96, 0x42);
+    538                  WriteTW8816(0x97, 0x11);
+    539                  WriteTW8816(0x98, 0x06);     
+    540                }
+    541              }
+    542            } else {
+    543              WriteTW8816(0x94, 0x00);
+    544              WriteTW8816(0x95, 0x80);
+    545              WriteTW8816(0x96, 0x1E);
+    546              WriteTW8816(0x97, 0x20);
+    547              WriteTW8816(0x98, 0x06);
+    548              
+    549              WriteTW8816(0x94, 0x00);
+    550              WriteTW8816(0x95, 0x80);
+    551              WriteTW8816(0x96, 0x1F);
+    552              WriteTW8816(0x97, 0x20);
+    553              WriteTW8816(0x98, 0x06);
+    554              
+    555              WriteTW8816(0x94, 0x00);
+    556              WriteTW8816(0x95, 0x80);
+    557              WriteTW8816(0x96, 0x20);
+    558              WriteTW8816(0x97, 0x20);
+    559              WriteTW8816(0x98, 0x06);
+    560              
+    561              WriteTW8816(0x94, 0x00);
+    562              WriteTW8816(0x95, 0x80);
+    563              WriteTW8816(0x96, 0x40);
+    564              WriteTW8816(0x97, 0x20);
+    565              WriteTW8816(0x98, 0x06);
+    566              
+    567              WriteTW8816(0x94, 0x00);
+    568              WriteTW8816(0x95, 0x80);
+    569              WriteTW8816(0x96, 0x41);
+    570              WriteTW8816(0x97, 0x20);
+    571              WriteTW8816(0x98, 0x06);
+    572              
+    573              WriteTW8816(0x94, 0x00);
+    574              WriteTW8816(0x95, 0x80);
+    575              WriteTW8816(0x96, 0x42);
+    576              WriteTW8816(0x97, 0x20);
+    577              WriteTW8816(0x98, 0x06);
+    578              
+    579            }
+    580          }
+    581          void SetChangeBackView(void){
+    582            if(AAVM_Menu_Flag == 0) {
+    583              if(AAVM_Camera_Icon_Index == 5){
+    584                if(AAVM_Warning_Rear == 1){
+    585                  WriteTW8816(0x94, 0x80);
+    586                  WriteTW8816(0x95, 0x80);
+    587                  WriteTW8816(0x96, 0x84);
+    588                  WriteTW8816(0x97, 0x84);
+    589                  WriteTW8816(0x98, 0x04);
+    590                  
+    591                  WriteTW8816(0x94, 0x80);
+    592                  WriteTW8816(0x95, 0x80);
+    593                  WriteTW8816(0x96, 0x85);
+    594                  WriteTW8816(0x97, 0x85);
+    595                  WriteTW8816(0x98, 0x04);
+    596                  
+    597                  WriteTW8816(0x94, 0x80);
+    598                  WriteTW8816(0x95, 0x80);
+    599                  WriteTW8816(0x96, 0x86);
+    600                  WriteTW8816(0x97, 0x86);
+    601                  WriteTW8816(0x98, 0x04);
+    602                  
+    603                  WriteTW8816(0x94, 0x80);
+    604                  WriteTW8816(0x95, 0x80);
+    605                  WriteTW8816(0x96, 0xA6);
+    606                  WriteTW8816(0x97, 0x87);
+    607                  WriteTW8816(0x98, 0x04);
+    608                  
+    609                  WriteTW8816(0x94, 0x80);
+    610                  WriteTW8816(0x95, 0x80);
+    611                  WriteTW8816(0x96, 0xA7);
+    612                  WriteTW8816(0x97, 0x88);
+    613                  WriteTW8816(0x98, 0x04);
+    614                  
+    615                  WriteTW8816(0x94, 0x80);
+    616                  WriteTW8816(0x95, 0x80);
+    617                  WriteTW8816(0x96, 0xA8);
+    618                  WriteTW8816(0x97, 0x89);
+    619                  WriteTW8816(0x98, 0x04);
+    620                } else {
+    621                  WriteTW8816(0x94, 0x80);
+    622                  WriteTW8816(0x95, 0x80);
+    623                  WriteTW8816(0x96, 0x84);
+    624                  WriteTW8816(0x97, 0x84);
+    625                  WriteTW8816(0x98, 0x06);
+    626                  
+    627                  WriteTW8816(0x94, 0x80);
+    628                  WriteTW8816(0x95, 0x80);
+    629                  WriteTW8816(0x96, 0x85);
+    630                  WriteTW8816(0x97, 0x85);
+    631                  WriteTW8816(0x98, 0x06);
+    632                  
+    633                  WriteTW8816(0x94, 0x80);
+    634                  WriteTW8816(0x95, 0x80);
+    635                  WriteTW8816(0x96, 0x86);
+    636                  WriteTW8816(0x97, 0x86);
+    637                  WriteTW8816(0x98, 0x06);
+    638                  
+    639                  WriteTW8816(0x94, 0x80);
+    640                  WriteTW8816(0x95, 0x80);
+    641                  WriteTW8816(0x96, 0xA6);
+    642                  WriteTW8816(0x97, 0x87);
+    643                  WriteTW8816(0x98, 0x06);
+    644                  
+    645                  WriteTW8816(0x94, 0x80);
+    646                  WriteTW8816(0x95, 0x80);
+    647                  WriteTW8816(0x96, 0xA7);
+    648                  WriteTW8816(0x97, 0x88);
+    649                  WriteTW8816(0x98, 0x06);
+    650                  
+    651                  WriteTW8816(0x94, 0x80);
+    652                  WriteTW8816(0x95, 0x80);
+    653                  WriteTW8816(0x96, 0xA8);
+    654                  WriteTW8816(0x97, 0x89);
+    655                  WriteTW8816(0x98, 0x06);
+    656                }
+    657              } else {
+    658                if(AAVM_Warning_Rear == 1){
+    659                  WriteTW8816(0x94, 0x80);
+    660                  WriteTW8816(0x95, 0x80);
+    661                  WriteTW8816(0x96, 0x84);
+    662                  WriteTW8816(0x97, 0x18);
+    663                  WriteTW8816(0x98, 0x04);
+    664                
+    665                  WriteTW8816(0x94, 0x80);
+    666                  WriteTW8816(0x95, 0x80);
+    667                  WriteTW8816(0x96, 0x85);
+    668                  WriteTW8816(0x97, 0x19);
+    669                  WriteTW8816(0x98, 0x04);
+    670                
+    671                  WriteTW8816(0x94, 0x80);
+    672                  WriteTW8816(0x95, 0x80);
+    673                  WriteTW8816(0x96, 0x86);
+    674                  WriteTW8816(0x97, 0x1A);
+    675                  WriteTW8816(0x98, 0x04);
+    676                  
+    677                  WriteTW8816(0x94, 0x80);
+    678                  WriteTW8816(0x95, 0x80);
+    679                  WriteTW8816(0x96, 0xA6);
+    680                  WriteTW8816(0x97, 0x1B);
+    681                  WriteTW8816(0x98, 0x04);
+    682                
+    683                  WriteTW8816(0x94, 0x80);
+    684                  WriteTW8816(0x95, 0x80);
+    685                  WriteTW8816(0x96, 0xA7);
+    686                  WriteTW8816(0x97, 0x1C);
+    687                  WriteTW8816(0x98, 0x04);
+    688                
+    689                  WriteTW8816(0x94, 0x80);
+    690                  WriteTW8816(0x95, 0x80);
+    691                  WriteTW8816(0x96, 0xA8);
+    692                  WriteTW8816(0x97, 0x1D);
+    693                  WriteTW8816(0x98, 0x04);
+    694                }else {
+    695                  WriteTW8816(0x94, 0x80);
+    696                  WriteTW8816(0x95, 0x80);
+    697                  WriteTW8816(0x96, 0x84);
+    698                  WriteTW8816(0x97, 0x18);
+    699                  WriteTW8816(0x98, 0x06);
+    700                
+    701                  WriteTW8816(0x94, 0x80);
+    702                  WriteTW8816(0x95, 0x80);
+    703                  WriteTW8816(0x96, 0x85);
+    704                  WriteTW8816(0x97, 0x19);
+    705                  WriteTW8816(0x98, 0x06);
+    706                
+    707                  WriteTW8816(0x94, 0x80);
+    708                  WriteTW8816(0x95, 0x80);
+    709                  WriteTW8816(0x96, 0x86);
+    710                  WriteTW8816(0x97, 0x1A);
+    711                  WriteTW8816(0x98, 0x06);
+    712                  
+    713                  WriteTW8816(0x94, 0x80);
+    714                  WriteTW8816(0x95, 0x80);
+    715                  WriteTW8816(0x96, 0xA6);
+    716                  WriteTW8816(0x97, 0x1B);
+    717                  WriteTW8816(0x98, 0x06);
+    718                
+    719                  WriteTW8816(0x94, 0x80);
+    720                  WriteTW8816(0x95, 0x80);
+    721                  WriteTW8816(0x96, 0xA7);
+    722                  WriteTW8816(0x97, 0x1C);
+    723                  WriteTW8816(0x98, 0x06);
+    724                
+    725                  WriteTW8816(0x94, 0x80);
+    726                  WriteTW8816(0x95, 0x80);
+    727                  WriteTW8816(0x96, 0xA8);
+    728                  WriteTW8816(0x97, 0x1D);
+    729                  WriteTW8816(0x98, 0x06);
+    730                }
+    731              }
+    732            } else {
+    733              WriteTW8816(0x94, 0x00);
+    734              WriteTW8816(0x95, 0x80);
+    735              WriteTW8816(0x96, 0x84);
+    736              WriteTW8816(0x97, 0x20);
+    737              WriteTW8816(0x98, 0x06);
+    738              
+    739              WriteTW8816(0x94, 0x00);
+    740              WriteTW8816(0x95, 0x80);
+    741              WriteTW8816(0x96, 0x85);
+    742              WriteTW8816(0x97, 0x20);
+    743              WriteTW8816(0x98, 0x06);
+    744              
+    745              WriteTW8816(0x94, 0x00);
+    746              WriteTW8816(0x95, 0x80);
+    747              WriteTW8816(0x96, 0x86);
+    748              WriteTW8816(0x97, 0x20);
+    749              WriteTW8816(0x98, 0x06);
+    750              
+    751              WriteTW8816(0x94, 0x00);
+    752              WriteTW8816(0x95, 0x80);
+    753              WriteTW8816(0x96, 0xA6);
+    754              WriteTW8816(0x97, 0x20);
+    755              WriteTW8816(0x98, 0x06);
+    756              
+    757              WriteTW8816(0x94, 0x00);
+    758              WriteTW8816(0x95, 0x80);
+    759              WriteTW8816(0x96, 0xA7);
+    760              WriteTW8816(0x97, 0x20);
+    761              WriteTW8816(0x98, 0x06);
+    762              
+    763              WriteTW8816(0x94, 0x00);
+    764              WriteTW8816(0x95, 0x80);
+    765              WriteTW8816(0x96, 0xA8);
+    766              WriteTW8816(0x97, 0x20);
+    767              WriteTW8816(0x98, 0x06);  
+    768            }
+    769          }
+    770          
+    771          void SetChangeLeftView(void){
+    772            if(AAVM_Menu_Flag == 0) {
+    773              if(AAVM_Camera_Icon_Index == 6){
+    774                if(AAVM_Warning_Left == 1){
+    775                  WriteTW8816(0x94, 0x80);
+    776                  WriteTW8816(0x95, 0x80);
+    777                  WriteTW8816(0x96, 0xEA);
+    778                  WriteTW8816(0x97, 0x7E);
+    779                  WriteTW8816(0x98, 0x04);
+    780                
+    781                  WriteTW8816(0x94, 0x80);
+    782                  WriteTW8816(0x95, 0x80);
+    783                  WriteTW8816(0x96, 0xEB);
+    784                  WriteTW8816(0x97, 0x7F);
+    785                  WriteTW8816(0x98, 0x04);
+    786                
+    787                  WriteTW8816(0x94, 0x80);
+    788                  WriteTW8816(0x95, 0x80);
+    789                  WriteTW8816(0x96, 0xEC);
+    790                  WriteTW8816(0x97, 0x80);
+    791                  WriteTW8816(0x98, 0x04);
+    792                
+    793                  WriteTW8816(0x94, 0x80);
+    794                  WriteTW8816(0x95, 0x81);
+    795                  WriteTW8816(0x96, 0x0C);
+    796                  WriteTW8816(0x97, 0x81);
+    797                  WriteTW8816(0x98, 0x04);
+    798                
+    799                  WriteTW8816(0x94, 0x80);
+    800                  WriteTW8816(0x95, 0x81);
+    801                  WriteTW8816(0x96, 0x0D);
+    802                  WriteTW8816(0x97, 0x82);
+    803                  WriteTW8816(0x98, 0x04);
+    804                
+    805                  WriteTW8816(0x94, 0x80);
+    806                  WriteTW8816(0x95, 0x81);
+    807                  WriteTW8816(0x96, 0x0E);
+    808                  WriteTW8816(0x97, 0x83);
+    809                  WriteTW8816(0x98, 0x04);
+    810                }else {
+    811                  WriteTW8816(0x94, 0x80);
+    812                  WriteTW8816(0x95, 0x80);
+    813                  WriteTW8816(0x96, 0xEA);
+    814                  WriteTW8816(0x97, 0x7E);
+    815                  WriteTW8816(0x98, 0x06);
+    816                
+    817                  WriteTW8816(0x94, 0x80);
+    818                  WriteTW8816(0x95, 0x80);
+    819                  WriteTW8816(0x96, 0xEB);
+    820                  WriteTW8816(0x97, 0x7F);
+    821                  WriteTW8816(0x98, 0x06);
+    822                
+    823                  WriteTW8816(0x94, 0x80);
+    824                  WriteTW8816(0x95, 0x80);
+    825                  WriteTW8816(0x96, 0xEC);
+    826                  WriteTW8816(0x97, 0x80);
+    827                  WriteTW8816(0x98, 0x06);
+    828                
+    829                  WriteTW8816(0x94, 0x80);
+    830                  WriteTW8816(0x95, 0x81);
+    831                  WriteTW8816(0x96, 0x0C);
+    832                  WriteTW8816(0x97, 0x81);
+    833                  WriteTW8816(0x98, 0x06);
+    834                
+    835                  WriteTW8816(0x94, 0x80);
+    836                  WriteTW8816(0x95, 0x81);
+    837                  WriteTW8816(0x96, 0x0D);
+    838                  WriteTW8816(0x97, 0x82);
+    839                  WriteTW8816(0x98, 0x06);
+    840                
+    841                  WriteTW8816(0x94, 0x80);
+    842                  WriteTW8816(0x95, 0x81);
+    843                  WriteTW8816(0x96, 0x0E);
+    844                  WriteTW8816(0x97, 0x83);
+    845                  WriteTW8816(0x98, 0x06);        
+    846                }
+    847              } else{
+    848                if(AAVM_Warning_Left == 1){
+    849                  WriteTW8816(0x94, 0x80);
+    850                  WriteTW8816(0x95, 0x80);
+    851                  WriteTW8816(0x96, 0xEA);
+    852                  WriteTW8816(0x97, 0x12);
+    853                  WriteTW8816(0x98, 0x04);
+    854                  
+    855                  WriteTW8816(0x94, 0x80);
+    856                  WriteTW8816(0x95, 0x80);
+    857                  WriteTW8816(0x96, 0xEB);
+    858                  WriteTW8816(0x97, 0x13);
+    859                  WriteTW8816(0x98, 0x04);
+    860                  
+    861                  WriteTW8816(0x94, 0x80);
+    862                  WriteTW8816(0x95, 0x80);
+    863                  WriteTW8816(0x96, 0xEC);
+    864                  WriteTW8816(0x97, 0x14);
+    865                  WriteTW8816(0x98, 0x04);
+    866                  
+    867                  WriteTW8816(0x94, 0x80);
+    868                  WriteTW8816(0x95, 0x81);
+    869                  WriteTW8816(0x96, 0x0C);
+    870                  WriteTW8816(0x97, 0x15);
+    871                  WriteTW8816(0x98, 0x04);
+    872                  
+    873                  WriteTW8816(0x94, 0x80);
+    874                  WriteTW8816(0x95, 0x81);
+    875                  WriteTW8816(0x96, 0x0D);
+    876                  WriteTW8816(0x97, 0x16);
+    877                  WriteTW8816(0x98, 0x04);
+    878                  
+    879                  WriteTW8816(0x94, 0x80);
+    880                  WriteTW8816(0x95, 0x81);
+    881                  WriteTW8816(0x96, 0x0E);
+    882                  WriteTW8816(0x97, 0x17);
+    883                  WriteTW8816(0x98, 0x04);
+    884                } else {
+    885                  WriteTW8816(0x94, 0x80);
+    886                  WriteTW8816(0x95, 0x80);
+    887                  WriteTW8816(0x96, 0xEA);
+    888                  WriteTW8816(0x97, 0x12);
+    889                  WriteTW8816(0x98, 0x06);
+    890                  
+    891                  WriteTW8816(0x94, 0x80);
+    892                  WriteTW8816(0x95, 0x80);
+    893                  WriteTW8816(0x96, 0xEB);
+    894                  WriteTW8816(0x97, 0x13);
+    895                  WriteTW8816(0x98, 0x06);
+    896                  
+    897                  WriteTW8816(0x94, 0x80);
+    898                  WriteTW8816(0x95, 0x80);
+    899                  WriteTW8816(0x96, 0xEC);
+    900                  WriteTW8816(0x97, 0x14);
+    901                  WriteTW8816(0x98, 0x06);
+    902                  
+    903                  WriteTW8816(0x94, 0x80);
+    904                  WriteTW8816(0x95, 0x81);
+    905                  WriteTW8816(0x96, 0x0C);
+    906                  WriteTW8816(0x97, 0x15);
+    907                  WriteTW8816(0x98, 0x06);
+    908                  
+    909                  WriteTW8816(0x94, 0x80);
+    910                  WriteTW8816(0x95, 0x81);
+    911                  WriteTW8816(0x96, 0x0D);
+    912                  WriteTW8816(0x97, 0x16);
+    913                  WriteTW8816(0x98, 0x06);
+    914                  
+    915                  WriteTW8816(0x94, 0x80);
+    916                  WriteTW8816(0x95, 0x81);
+    917                  WriteTW8816(0x96, 0x0E);
+    918                  WriteTW8816(0x97, 0x17);
+    919                  WriteTW8816(0x98, 0x06);        
+    920                }
+    921              } 
+    922            } else {
+    923              WriteTW8816(0x94, 0x00);
+    924              WriteTW8816(0x95, 0x80);
+    925              WriteTW8816(0x96, 0xEA);
+    926              WriteTW8816(0x97, 0x20);
+    927              WriteTW8816(0x98, 0x06);
+    928              
+    929              WriteTW8816(0x94, 0x00);
+    930              WriteTW8816(0x95, 0x80);
+    931              WriteTW8816(0x96, 0xEB);
+    932              WriteTW8816(0x97, 0x20);
+    933              WriteTW8816(0x98, 0x06);
+    934              
+    935              WriteTW8816(0x94, 0x00);
+    936              WriteTW8816(0x95, 0x80);
+    937              WriteTW8816(0x96, 0xEC);
+    938              WriteTW8816(0x97, 0x20);
+    939              WriteTW8816(0x98, 0x06);
+    940              
+    941              WriteTW8816(0x94, 0x00);
+    942              WriteTW8816(0x95, 0x81);
+    943              WriteTW8816(0x96, 0x0C);
+    944              WriteTW8816(0x97, 0x20);
+    945              WriteTW8816(0x98, 0x06);
+    946              
+    947              WriteTW8816(0x94, 0x00);
+    948              WriteTW8816(0x95, 0x81);
+    949              WriteTW8816(0x96, 0x0D);
+    950              WriteTW8816(0x97, 0x20);
+    951              WriteTW8816(0x98, 0x06);
+    952              
+    953              WriteTW8816(0x94, 0x00);
+    954              WriteTW8816(0x95, 0x81);
+    955              WriteTW8816(0x96, 0x0E);
+    956              WriteTW8816(0x97, 0x20);
+    957              WriteTW8816(0x98, 0x06);
+    958            }
+    959          }
+    960          
+    961          
+    962          
+    963          
+    964          void SetChangeRightView(void){
+    965            if(AAVM_Menu_Flag == 0) {
+    966              if(AAVM_Camera_Icon_Index == 7){
+    967                if(AAVM_Warning_Right == 1){
+    968                  WriteTW8816(0x94, 0x80);
+    969                  WriteTW8816(0x95, 0x81);
+    970                  WriteTW8816(0x96, 0x50);
+    971                  WriteTW8816(0x97, 0x8A);
+    972                  WriteTW8816(0x98, 0x04);
+    973                  
+    974                  WriteTW8816(0x94, 0x80);
+    975                  WriteTW8816(0x95, 0x81);
+    976                  WriteTW8816(0x96, 0x51);
+    977                  WriteTW8816(0x97, 0x8B);
+    978                  WriteTW8816(0x98, 0x04);
+    979                  
+    980                  WriteTW8816(0x94, 0x80);
+    981                  WriteTW8816(0x95, 0x81);
+    982                  WriteTW8816(0x96, 0x52);
+    983                  WriteTW8816(0x97, 0x8C);
+    984                  WriteTW8816(0x98, 0x04);
+    985                  
+    986                  WriteTW8816(0x94, 0x80);
+    987                  WriteTW8816(0x95, 0x81);
+    988                  WriteTW8816(0x96, 0x72);
+    989                  WriteTW8816(0x97, 0x8D);
+    990                  WriteTW8816(0x98, 0x04);
+    991                  
+    992                  WriteTW8816(0x94, 0x80);
+    993                  WriteTW8816(0x95, 0x81);
+    994                  WriteTW8816(0x96, 0x73);
+    995                  WriteTW8816(0x97, 0x8E);
+    996                  WriteTW8816(0x98, 0x04);
+    997                  
+    998                  WriteTW8816(0x94, 0x80);
+    999                  WriteTW8816(0x95, 0x81);
+   1000                  WriteTW8816(0x96, 0x74);
+   1001                  WriteTW8816(0x97, 0x8F);
+   1002                  WriteTW8816(0x98, 0x04);
+   1003                } else {
+   1004                  WriteTW8816(0x94, 0x80);
+   1005                  WriteTW8816(0x95, 0x81);
+   1006                  WriteTW8816(0x96, 0x50);
+   1007                  WriteTW8816(0x97, 0x8A);
+   1008                  WriteTW8816(0x98, 0x06);
+   1009                  
+   1010                  WriteTW8816(0x94, 0x80);
+   1011                  WriteTW8816(0x95, 0x81);
+   1012                  WriteTW8816(0x96, 0x51);
+   1013                  WriteTW8816(0x97, 0x8B);
+   1014                  WriteTW8816(0x98, 0x06);
+   1015                  
+   1016                  WriteTW8816(0x94, 0x80);
+   1017                  WriteTW8816(0x95, 0x81);
+   1018                  WriteTW8816(0x96, 0x52);
+   1019                  WriteTW8816(0x97, 0x8C);
+   1020                  WriteTW8816(0x98, 0x06);
+   1021                  
+   1022                  WriteTW8816(0x94, 0x80);
+   1023                  WriteTW8816(0x95, 0x81);
+   1024                  WriteTW8816(0x96, 0x72);
+   1025                  WriteTW8816(0x97, 0x8D);
+   1026                  WriteTW8816(0x98, 0x06);
+   1027                  
+   1028                  WriteTW8816(0x94, 0x80);
+   1029                  WriteTW8816(0x95, 0x81);
+   1030                  WriteTW8816(0x96, 0x73);
+   1031                  WriteTW8816(0x97, 0x8E);
+   1032                  WriteTW8816(0x98, 0x06);
+   1033                  
+   1034                  WriteTW8816(0x94, 0x80);
+   1035                  WriteTW8816(0x95, 0x81);
+   1036                  WriteTW8816(0x96, 0x74);
+   1037                  WriteTW8816(0x97, 0x8F);
+   1038                  WriteTW8816(0x98, 0x06);        
+   1039                }
+   1040              } else {
+   1041                if(AAVM_Warning_Right == 1){
+   1042                  WriteTW8816(0x94, 0x80);
+   1043                  WriteTW8816(0x95, 0x81);
+   1044                  WriteTW8816(0x96, 0x50);
+   1045                  WriteTW8816(0x97, 0x1E);
+   1046                  WriteTW8816(0x98, 0x04);
+   1047                  
+   1048                  WriteTW8816(0x94, 0x80);
+   1049                  WriteTW8816(0x95, 0x81);
+   1050                  WriteTW8816(0x96, 0x51);
+   1051                  WriteTW8816(0x97, 0x1F);
+   1052                  WriteTW8816(0x98, 0x04);
+   1053                  
+   1054                  WriteTW8816(0x94, 0x80);
+   1055                  WriteTW8816(0x95, 0x81);
+   1056                  WriteTW8816(0x96, 0x52);
+   1057                  WriteTW8816(0x97, 0x20);
+   1058                  WriteTW8816(0x98, 0x04);
+   1059                  
+   1060                  WriteTW8816(0x94, 0x80);
+   1061                  WriteTW8816(0x95, 0x81);
+   1062                  WriteTW8816(0x96, 0x72);
+   1063                  WriteTW8816(0x97, 0x21);
+   1064                  WriteTW8816(0x98, 0x04);
+   1065                  
+   1066                  WriteTW8816(0x94, 0x80);
+   1067                  WriteTW8816(0x95, 0x81);
+   1068                  WriteTW8816(0x96, 0x73);
+   1069                  WriteTW8816(0x97, 0x22);
+   1070                  WriteTW8816(0x98, 0x04);
+   1071                  
+   1072                  WriteTW8816(0x94, 0x80);
+   1073                  WriteTW8816(0x95, 0x81);
+   1074                  WriteTW8816(0x96, 0x74);
+   1075                  WriteTW8816(0x97, 0x23);
+   1076                  WriteTW8816(0x98, 0x04);
+   1077                } else {
+   1078                  WriteTW8816(0x94, 0x80);
+   1079                  WriteTW8816(0x95, 0x81);
+   1080                  WriteTW8816(0x96, 0x50);
+   1081                  WriteTW8816(0x97, 0x1E);
+   1082                  WriteTW8816(0x98, 0x06);
+   1083                  
+   1084                  WriteTW8816(0x94, 0x80);
+   1085                  WriteTW8816(0x95, 0x81);
+   1086                  WriteTW8816(0x96, 0x51);
+   1087                  WriteTW8816(0x97, 0x1F);
+   1088                  WriteTW8816(0x98, 0x06);
+   1089                  
+   1090                  WriteTW8816(0x94, 0x80);
+   1091                  WriteTW8816(0x95, 0x81);
+   1092                  WriteTW8816(0x96, 0x52);
+   1093                  WriteTW8816(0x97, 0x20);
+   1094                  WriteTW8816(0x98, 0x06);
+   1095                  
+   1096                  WriteTW8816(0x94, 0x80);
+   1097                  WriteTW8816(0x95, 0x81);
+   1098                  WriteTW8816(0x96, 0x72);
+   1099                  WriteTW8816(0x97, 0x21);
+   1100                  WriteTW8816(0x98, 0x06);
+   1101                  
+   1102                  WriteTW8816(0x94, 0x80);
+   1103                  WriteTW8816(0x95, 0x81);
+   1104                  WriteTW8816(0x96, 0x73);
+   1105                  WriteTW8816(0x97, 0x22);
+   1106                  WriteTW8816(0x98, 0x06);
+   1107                  
+   1108                  WriteTW8816(0x94, 0x80);
+   1109                  WriteTW8816(0x95, 0x81);
+   1110                  WriteTW8816(0x96, 0x74);
+   1111                  WriteTW8816(0x97, 0x23);
+   1112                  WriteTW8816(0x98, 0x06);
+   1113                }
+   1114              }
+   1115            } else {
+   1116              WriteTW8816(0x94, 0x00);
+   1117              WriteTW8816(0x95, 0x81);
+   1118              WriteTW8816(0x96, 0x50);
+   1119              WriteTW8816(0x97, 0x20);
+   1120              WriteTW8816(0x98, 0x06);
+   1121              
+   1122              WriteTW8816(0x94, 0x00);
+   1123              WriteTW8816(0x95, 0x81);
+   1124              WriteTW8816(0x96, 0x51);
+   1125              WriteTW8816(0x97, 0x20);
+   1126              WriteTW8816(0x98, 0x06);
+   1127              
+   1128              WriteTW8816(0x94, 0x00);
+   1129              WriteTW8816(0x95, 0x81);
+   1130              WriteTW8816(0x96, 0x52);
+   1131              WriteTW8816(0x97, 0x20);
+   1132              WriteTW8816(0x98, 0x06);
+   1133              
+   1134              WriteTW8816(0x94, 0x00);
+   1135              WriteTW8816(0x95, 0x81);
+   1136              WriteTW8816(0x96, 0x72);
+   1137              WriteTW8816(0x97, 0x20);
+   1138              WriteTW8816(0x98, 0x06);
+   1139              
+   1140              WriteTW8816(0x94, 0x00);
+   1141              WriteTW8816(0x95, 0x81);
+   1142              WriteTW8816(0x96, 0x73);
+   1143              WriteTW8816(0x97, 0x20);
+   1144              WriteTW8816(0x98, 0x06);
+   1145              
+   1146              WriteTW8816(0x94, 0x00);
+   1147              WriteTW8816(0x95, 0x81);
+   1148              WriteTW8816(0x96, 0x74);
+   1149              WriteTW8816(0x97, 0x20);
+   1150              WriteTW8816(0x98, 0x06);    
+   1151            }
+   1152          }
+   1153          
+   1154          void SetChange4ChannelView(void){
+   1155            if(AAVM_Menu_Flag == 0) {  
+   1156              if(AAVM_Camera_Icon_Index == 3){
+   1157                WriteTW8816(0x94, 0x80);
+   1158                WriteTW8816(0x95, 0x81);
+   1159                WriteTW8816(0x96, 0x94);
+   1160                WriteTW8816(0x97, 0x90);
+   1161                WriteTW8816(0x98, 0x06);
+   1162                
+   1163                WriteTW8816(0x94, 0x80);
+   1164                WriteTW8816(0x95, 0x81);
+   1165                WriteTW8816(0x96, 0x95);
+   1166                WriteTW8816(0x97, 0x91);
+   1167                WriteTW8816(0x98, 0x06);
+   1168                
+   1169                WriteTW8816(0x94, 0x80);
+   1170                WriteTW8816(0x95, 0x81);
+   1171                WriteTW8816(0x96, 0x96);
+   1172                WriteTW8816(0x97, 0x92);
+   1173                WriteTW8816(0x98, 0x06);
+   1174                
+   1175                WriteTW8816(0x94, 0x80);
+   1176                WriteTW8816(0x95, 0x81);
+   1177                WriteTW8816(0x96, 0xB6);
+   1178                WriteTW8816(0x97, 0x93);
+   1179                WriteTW8816(0x98, 0x06);
+   1180                
+   1181                WriteTW8816(0x94, 0x80);
+   1182                WriteTW8816(0x95, 0x81);
+   1183                WriteTW8816(0x96, 0xB7);
+   1184                WriteTW8816(0x97, 0x94);
+   1185                WriteTW8816(0x98, 0x06);
+   1186                
+   1187                WriteTW8816(0x94, 0x80);
+   1188                WriteTW8816(0x95, 0x81);
+   1189                WriteTW8816(0x96, 0xB8);
+   1190                WriteTW8816(0x97, 0x95);
+   1191                WriteTW8816(0x98, 0x06);
+   1192              } else {
+   1193                WriteTW8816(0x94, 0x80);
+   1194                WriteTW8816(0x95, 0x81);
+   1195                WriteTW8816(0x96, 0x94);
+   1196                WriteTW8816(0x97, 0x24);
+   1197                WriteTW8816(0x98, 0x06);
+   1198                
+   1199                WriteTW8816(0x94, 0x80);
+   1200                WriteTW8816(0x95, 0x81);
+   1201                WriteTW8816(0x96, 0x95);
+   1202                WriteTW8816(0x97, 0x25);
+   1203                WriteTW8816(0x98, 0x06);
+   1204                
+   1205                WriteTW8816(0x94, 0x80);
+   1206                WriteTW8816(0x95, 0x81);
+   1207                WriteTW8816(0x96, 0x96);
+   1208                WriteTW8816(0x97, 0x26);
+   1209                WriteTW8816(0x98, 0x06);
+   1210                
+   1211                WriteTW8816(0x94, 0x80);
+   1212                WriteTW8816(0x95, 0x81);
+   1213                WriteTW8816(0x96, 0xB6);
+   1214                WriteTW8816(0x97, 0x27);
+   1215                WriteTW8816(0x98, 0x06);
+   1216                
+   1217                WriteTW8816(0x94, 0x80);
+   1218                WriteTW8816(0x95, 0x81);
+   1219                WriteTW8816(0x96, 0xB7);
+   1220                WriteTW8816(0x97, 0x28);
+   1221                WriteTW8816(0x98, 0x06);
+   1222                
+   1223                WriteTW8816(0x94, 0x80);
+   1224                WriteTW8816(0x95, 0x81);
+   1225                WriteTW8816(0x96, 0xB8);
+   1226                WriteTW8816(0x97, 0x29);
+   1227                WriteTW8816(0x98, 0x06);
+   1228              }
+   1229            } else {
+   1230              WriteTW8816(0x94, 0x00);
+   1231              WriteTW8816(0x95, 0x81);
+   1232              WriteTW8816(0x96, 0x94);
+   1233              WriteTW8816(0x97, 0x20);
+   1234              WriteTW8816(0x98, 0x06);
+   1235              
+   1236              WriteTW8816(0x94, 0x00);
+   1237              WriteTW8816(0x95, 0x81);
+   1238              WriteTW8816(0x96, 0x95);
+   1239              WriteTW8816(0x97, 0x20);
+   1240              WriteTW8816(0x98, 0x06);
+   1241              
+   1242              WriteTW8816(0x94, 0x00);
+   1243              WriteTW8816(0x95, 0x81);
+   1244              WriteTW8816(0x96, 0x96);
+   1245              WriteTW8816(0x97, 0x20);
+   1246              WriteTW8816(0x98, 0x06);
+   1247              
+   1248              WriteTW8816(0x94, 0x00);
+   1249              WriteTW8816(0x95, 0x81);
+   1250              WriteTW8816(0x96, 0xB6);
+   1251              WriteTW8816(0x97, 0x20);
+   1252              WriteTW8816(0x98, 0x06);
+   1253              
+   1254              WriteTW8816(0x94, 0x00);
+   1255              WriteTW8816(0x95, 0x81);
+   1256              WriteTW8816(0x96, 0xB7);
+   1257              WriteTW8816(0x97, 0x20);
+   1258              WriteTW8816(0x98, 0x06);
+   1259              
+   1260              WriteTW8816(0x94, 0x00);
+   1261              WriteTW8816(0x95, 0x81);
+   1262              WriteTW8816(0x96, 0xB8);
+   1263              WriteTW8816(0x97, 0x20);
+   1264              WriteTW8816(0x98, 0x06);    
+   1265            }
+   1266          }
+   1267          void SetChange3DBirdView(void){
+   1268            if(AAVM_Menu_Flag == 0) {    
+   1269              if(AAVM_Camera_Icon_Index == 0){
+   1270                WriteTW8816(0x94, 0x80);
+   1271                WriteTW8816(0x95, 0x81);
+   1272                WriteTW8816(0x96, 0x76);
+   1273                WriteTW8816(0x97, 0x96);
+   1274                WriteTW8816(0x98, 0x06);
+   1275                
+   1276                WriteTW8816(0x94, 0x80);
+   1277                WriteTW8816(0x95, 0x81);
+   1278                WriteTW8816(0x96, 0x77);
+   1279                WriteTW8816(0x97, 0x97);
+   1280                WriteTW8816(0x98, 0x06);
+   1281                
+   1282                WriteTW8816(0x94, 0x80);
+   1283                WriteTW8816(0x95, 0x81);
+   1284                WriteTW8816(0x96, 0x78);
+   1285                WriteTW8816(0x97, 0x98);
+   1286                WriteTW8816(0x98, 0x06);
+   1287                
+   1288                WriteTW8816(0x94, 0x80);
+   1289                WriteTW8816(0x95, 0x81);
+   1290                WriteTW8816(0x96, 0x98);
+   1291                WriteTW8816(0x97, 0x99);
+   1292                WriteTW8816(0x98, 0x06);
+   1293                
+   1294                WriteTW8816(0x94, 0x80);
+   1295                WriteTW8816(0x95, 0x81);
+   1296                WriteTW8816(0x96, 0x99);
+   1297                WriteTW8816(0x97, 0x9A);
+   1298                WriteTW8816(0x98, 0x06);
+   1299                
+   1300                WriteTW8816(0x94, 0x80);
+   1301                WriteTW8816(0x95, 0x81);
+   1302                WriteTW8816(0x96, 0x9A);
+   1303                WriteTW8816(0x97, 0x9B);
+   1304                WriteTW8816(0x98, 0x06);
+   1305              } else {
+   1306                WriteTW8816(0x94, 0x80);
+   1307                WriteTW8816(0x95, 0x81);
+   1308                WriteTW8816(0x96, 0x76);
+   1309                WriteTW8816(0x97, 0x72);
+   1310                WriteTW8816(0x98, 0x06);
+   1311                
+   1312                WriteTW8816(0x94, 0x80);
+   1313                WriteTW8816(0x95, 0x81);
+   1314                WriteTW8816(0x96, 0x77);
+   1315                WriteTW8816(0x97, 0x73);
+   1316                WriteTW8816(0x98, 0x06);
+   1317                
+   1318                WriteTW8816(0x94, 0x80);
+   1319                WriteTW8816(0x95, 0x81);
+   1320                WriteTW8816(0x96, 0x78);
+   1321                WriteTW8816(0x97, 0x74);
+   1322                WriteTW8816(0x98, 0x06);
+   1323                
+   1324                WriteTW8816(0x94, 0x80);
+   1325                WriteTW8816(0x95, 0x81);
+   1326                WriteTW8816(0x96, 0x98);
+   1327                WriteTW8816(0x97, 0x75);
+   1328                WriteTW8816(0x98, 0x06);
+   1329                
+   1330                WriteTW8816(0x94, 0x80);
+   1331                WriteTW8816(0x95, 0x81);
+   1332                WriteTW8816(0x96, 0x99);
+   1333                WriteTW8816(0x97, 0x76);
+   1334                WriteTW8816(0x98, 0x06);
+   1335                
+   1336                WriteTW8816(0x94, 0x80);
+   1337                WriteTW8816(0x95, 0x81);
+   1338                WriteTW8816(0x96, 0x9A);
+   1339                WriteTW8816(0x97, 0x77);
+   1340                WriteTW8816(0x98, 0x06);
+   1341              }
+   1342            } else {
+   1343              WriteTW8816(0x94, 0x00);
+   1344              WriteTW8816(0x95, 0x81);
+   1345              WriteTW8816(0x96, 0x76);
+   1346              WriteTW8816(0x97, 0x20);
+   1347              WriteTW8816(0x98, 0x06);
+   1348              
+   1349              WriteTW8816(0x94, 0x00);
+   1350              WriteTW8816(0x95, 0x81);
+   1351              WriteTW8816(0x96, 0x77);
+   1352              WriteTW8816(0x97, 0x20);
+   1353              WriteTW8816(0x98, 0x06);
+   1354              
+   1355              WriteTW8816(0x94, 0x00);
+   1356              WriteTW8816(0x95, 0x81);
+   1357              WriteTW8816(0x96, 0x78);
+   1358              WriteTW8816(0x97, 0x20);
+   1359              WriteTW8816(0x98, 0x06);
+   1360              
+   1361              WriteTW8816(0x94, 0x00);
+   1362              WriteTW8816(0x95, 0x81);
+   1363              WriteTW8816(0x96, 0x98);
+   1364              WriteTW8816(0x97, 0x20);
+   1365              WriteTW8816(0x98, 0x06);
+   1366              
+   1367              WriteTW8816(0x94, 0x00);
+   1368              WriteTW8816(0x95, 0x81);
+   1369              WriteTW8816(0x96, 0x99);
+   1370              WriteTW8816(0x97, 0x20);
+   1371              WriteTW8816(0x98, 0x06);
+   1372              
+   1373              WriteTW8816(0x94, 0x00);
+   1374              WriteTW8816(0x95, 0x81);
+   1375              WriteTW8816(0x96, 0x9A);
+   1376              WriteTW8816(0x97, 0x20);
+   1377              WriteTW8816(0x98, 0x06);    
+   1378            }
+   1379          }
+   1380          
+   1381          void SetChange3DRearView(void){
+   1382            if(AAVM_Menu_Flag == 0) {    
+   1383              if(AAVM_Camera_Icon_Index == 1){
+   1384                WriteTW8816(0x94, 0x80);
+   1385                WriteTW8816(0x95, 0x81);
+   1386                WriteTW8816(0x96, 0x7C);
+   1387                WriteTW8816(0x97, 0x9C);
+   1388                WriteTW8816(0x98, 0x06);
+   1389                
+   1390                WriteTW8816(0x94, 0x80);
+   1391                WriteTW8816(0x95, 0x81);
+   1392                WriteTW8816(0x96, 0x7D);
+   1393                WriteTW8816(0x97, 0x9D);
+   1394                WriteTW8816(0x98, 0x06);
+   1395                
+   1396                WriteTW8816(0x94, 0x80);
+   1397                WriteTW8816(0x95, 0x81);
+   1398                WriteTW8816(0x96, 0x7E);
+   1399                WriteTW8816(0x97, 0x9E);
+   1400                WriteTW8816(0x98, 0x06);
+   1401                
+   1402                WriteTW8816(0x94, 0x80);
+   1403                WriteTW8816(0x95, 0x81);
+   1404                WriteTW8816(0x96, 0x9E);
+   1405                WriteTW8816(0x97, 0x9F);
+   1406                WriteTW8816(0x98, 0x06);
+   1407                
+   1408                WriteTW8816(0x94, 0x80);
+   1409                WriteTW8816(0x95, 0x81);
+   1410                WriteTW8816(0x96, 0x9F);
+   1411                WriteTW8816(0x97, 0xA0);
+   1412                WriteTW8816(0x98, 0x06);
+   1413                
+   1414                WriteTW8816(0x94, 0x80);
+   1415                WriteTW8816(0x95, 0x81);
+   1416                WriteTW8816(0x96, 0xA0);
+   1417                WriteTW8816(0x97, 0xA1);
+   1418                WriteTW8816(0x98, 0x06);
+   1419              } else {
+   1420                WriteTW8816(0x94, 0x80);
+   1421                WriteTW8816(0x95, 0x81);
+   1422                WriteTW8816(0x96, 0x7C);
+   1423                WriteTW8816(0x97, 0x66);
+   1424                WriteTW8816(0x98, 0x06);
+   1425                
+   1426                WriteTW8816(0x94, 0x80);
+   1427                WriteTW8816(0x95, 0x81);
+   1428                WriteTW8816(0x96, 0x7D);
+   1429                WriteTW8816(0x97, 0x67);
+   1430                WriteTW8816(0x98, 0x06);
+   1431                
+   1432                WriteTW8816(0x94, 0x80);
+   1433                WriteTW8816(0x95, 0x81);
+   1434                WriteTW8816(0x96, 0x7E);
+   1435                WriteTW8816(0x97, 0x68);
+   1436                WriteTW8816(0x98, 0x06);
+   1437                
+   1438                WriteTW8816(0x94, 0x80);
+   1439                WriteTW8816(0x95, 0x81);
+   1440                WriteTW8816(0x96, 0x9E);
+   1441                WriteTW8816(0x97, 0x69);
+   1442                WriteTW8816(0x98, 0x06);
+   1443                
+   1444                WriteTW8816(0x94, 0x80);
+   1445                WriteTW8816(0x95, 0x81);
+   1446                WriteTW8816(0x96, 0x9F);
+   1447                WriteTW8816(0x97, 0x6A);
+   1448                WriteTW8816(0x98, 0x06);
+   1449                
+   1450                WriteTW8816(0x94, 0x80);
+   1451                WriteTW8816(0x95, 0x81);
+   1452                WriteTW8816(0x96, 0xA0);
+   1453                WriteTW8816(0x97, 0x6B);
+   1454                WriteTW8816(0x98, 0x06);
+   1455              }
+   1456            } else {
+   1457              WriteTW8816(0x94, 0x00);
+   1458              WriteTW8816(0x95, 0x81);
+   1459              WriteTW8816(0x96, 0x7C);
+   1460              WriteTW8816(0x97, 0x20);
+   1461              WriteTW8816(0x98, 0x06);
+   1462              
+   1463              WriteTW8816(0x94, 0x00);
+   1464              WriteTW8816(0x95, 0x81);
+   1465              WriteTW8816(0x96, 0x7D);
+   1466              WriteTW8816(0x97, 0x20);
+   1467              WriteTW8816(0x98, 0x06);
+   1468              
+   1469              WriteTW8816(0x94, 0x00);
+   1470              WriteTW8816(0x95, 0x81);
+   1471              WriteTW8816(0x96, 0x7E);
+   1472              WriteTW8816(0x97, 0x20);
+   1473              WriteTW8816(0x98, 0x06);
+   1474              
+   1475              WriteTW8816(0x94, 0x00);
+   1476              WriteTW8816(0x95, 0x81);
+   1477              WriteTW8816(0x96, 0x9E);
+   1478              WriteTW8816(0x97, 0x20);
+   1479              WriteTW8816(0x98, 0x06);
+   1480              
+   1481              WriteTW8816(0x94, 0x00);
+   1482              WriteTW8816(0x95, 0x81);
+   1483              WriteTW8816(0x96, 0x9F);
+   1484              WriteTW8816(0x97, 0x20);
+   1485              WriteTW8816(0x98, 0x06);
+   1486              
+   1487              WriteTW8816(0x94, 0x00);
+   1488              WriteTW8816(0x95, 0x81);
+   1489              WriteTW8816(0x96, 0xA0);
+   1490              WriteTW8816(0x97, 0x20);
+   1491              WriteTW8816(0x98, 0x06);
+   1492            }
+   1493          }
+   1494          
+   1495          void SetChange2DBirdView(void){
+   1496            if(AAVM_Menu_Flag == 0) {    
+   1497              if(AAVM_Camera_Icon_Index == 2){
+   1498                WriteTW8816(0x94, 0x80);
+   1499                WriteTW8816(0x95, 0x81);
+   1500                WriteTW8816(0x96, 0x82);
+   1501                WriteTW8816(0x97, 0xA2);
+   1502                WriteTW8816(0x98, 0x06);
+   1503                
+   1504                WriteTW8816(0x94, 0x80);
+   1505                WriteTW8816(0x95, 0x81);
+   1506                WriteTW8816(0x96, 0x83);
+   1507                WriteTW8816(0x97, 0xA3);
+   1508                WriteTW8816(0x98, 0x06);
+   1509                
+   1510                WriteTW8816(0x94, 0x80);
+   1511                WriteTW8816(0x95, 0x81);
+   1512                WriteTW8816(0x96, 0x84);
+   1513                WriteTW8816(0x97, 0xA4);
+   1514                WriteTW8816(0x98, 0x06);
+   1515                
+   1516                WriteTW8816(0x94, 0x80);
+   1517                WriteTW8816(0x95, 0x81);
+   1518                WriteTW8816(0x96, 0xA4);
+   1519                WriteTW8816(0x97, 0xA5);
+   1520                WriteTW8816(0x98, 0x06);
+   1521                
+   1522                WriteTW8816(0x94, 0x80);
+   1523                WriteTW8816(0x95, 0x81);
+   1524                WriteTW8816(0x96, 0xA5);
+   1525                WriteTW8816(0x97, 0xA6);
+   1526                WriteTW8816(0x98, 0x06);
+   1527                
+   1528                WriteTW8816(0x94, 0x80);
+   1529                WriteTW8816(0x95, 0x81);
+   1530                WriteTW8816(0x96, 0xA6);
+   1531                WriteTW8816(0x97, 0xA7);
+   1532                WriteTW8816(0x98, 0x06);
+   1533              } else {
+   1534                WriteTW8816(0x94, 0x80);
+   1535                WriteTW8816(0x95, 0x81);
+   1536                WriteTW8816(0x96, 0x82);
+   1537                WriteTW8816(0x97, 0x5A);
+   1538                WriteTW8816(0x98, 0x06);
+   1539                
+   1540                WriteTW8816(0x94, 0x80);
+   1541                WriteTW8816(0x95, 0x81);
+   1542                WriteTW8816(0x96, 0x83);
+   1543                WriteTW8816(0x97, 0x5B);
+   1544                WriteTW8816(0x98, 0x06);
+   1545                
+   1546                WriteTW8816(0x94, 0x80);
+   1547                WriteTW8816(0x95, 0x81);
+   1548                WriteTW8816(0x96, 0x84);
+   1549                WriteTW8816(0x97, 0x5C);
+   1550                WriteTW8816(0x98, 0x06);
+   1551                
+   1552                WriteTW8816(0x94, 0x80);
+   1553                WriteTW8816(0x95, 0x81);
+   1554                WriteTW8816(0x96, 0xA4);
+   1555                WriteTW8816(0x97, 0x5D);
+   1556                WriteTW8816(0x98, 0x06);
+   1557                
+   1558                WriteTW8816(0x94, 0x80);
+   1559                WriteTW8816(0x95, 0x81);
+   1560                WriteTW8816(0x96, 0xA5);
+   1561                WriteTW8816(0x97, 0x5E);
+   1562                WriteTW8816(0x98, 0x06);
+   1563                
+   1564                WriteTW8816(0x94, 0x80);
+   1565                WriteTW8816(0x95, 0x81);
+   1566                WriteTW8816(0x96, 0xA6);
+   1567                WriteTW8816(0x97, 0x5F);
+   1568                WriteTW8816(0x98, 0x06);
+   1569              }
+   1570            } else{
+   1571              WriteTW8816(0x94, 0x00);
+   1572              WriteTW8816(0x95, 0x81);
+   1573              WriteTW8816(0x96, 0x82);
+   1574              WriteTW8816(0x97, 0x20);
+   1575              WriteTW8816(0x98, 0x06);
+   1576              
+   1577              WriteTW8816(0x94, 0x00);
+   1578              WriteTW8816(0x95, 0x81);
+   1579              WriteTW8816(0x96, 0x83);
+   1580              WriteTW8816(0x97, 0x20);
+   1581              WriteTW8816(0x98, 0x06);
+   1582              
+   1583              WriteTW8816(0x94, 0x00);
+   1584              WriteTW8816(0x95, 0x81);
+   1585              WriteTW8816(0x96, 0x84);
+   1586              WriteTW8816(0x97, 0x20);
+   1587              WriteTW8816(0x98, 0x06);
+   1588              
+   1589              WriteTW8816(0x94, 0x00);
+   1590              WriteTW8816(0x95, 0x81);
+   1591              WriteTW8816(0x96, 0xA4);
+   1592              WriteTW8816(0x97, 0x20);
+   1593              WriteTW8816(0x98, 0x06);
+   1594              
+   1595              WriteTW8816(0x94, 0x00);
+   1596              WriteTW8816(0x95, 0x81);
+   1597              WriteTW8816(0x96, 0xA5);
+   1598              WriteTW8816(0x97, 0x20);
+   1599              WriteTW8816(0x98, 0x06);
+   1600              
+   1601              WriteTW8816(0x94, 0x00);
+   1602              WriteTW8816(0x95, 0x81);
+   1603              WriteTW8816(0x96, 0xA6);
+   1604              WriteTW8816(0x97, 0x20);
+   1605              WriteTW8816(0x98, 0x06);     
+   1606            }
+   1607          }
+   1608          
+   1609          void SetChange3DLeftView(void){
+   1610            if(AAVM_Menu_Flag == 0) {    
+   1611              if(AAVM_Camera_Icon_Index == 8){
+   1612                WriteTW8816(0x94, 0x80);
+   1613                WriteTW8816(0x95, 0x81);
+   1614                WriteTW8816(0x96, 0x88);
+   1615                WriteTW8816(0x97, 0xA8);
+   1616                WriteTW8816(0x98, 0x06);
+   1617                
+   1618                WriteTW8816(0x94, 0x80);
+   1619                WriteTW8816(0x95, 0x81);
+   1620                WriteTW8816(0x96, 0x89);
+   1621                WriteTW8816(0x97, 0xA9);
+   1622                WriteTW8816(0x98, 0x06);
+   1623                
+   1624                WriteTW8816(0x94, 0x80);
+   1625                WriteTW8816(0x95, 0x81);
+   1626                WriteTW8816(0x96, 0x8A);
+   1627                WriteTW8816(0x97, 0xAA);
+   1628                WriteTW8816(0x98, 0x06);
+   1629                
+   1630                WriteTW8816(0x94, 0x80);
+   1631                WriteTW8816(0x95, 0x81);
+   1632                WriteTW8816(0x96, 0xAA);
+   1633                WriteTW8816(0x97, 0xAB);
+   1634                WriteTW8816(0x98, 0x06);
+   1635                
+   1636                WriteTW8816(0x94, 0x80);
+   1637                WriteTW8816(0x95, 0x81);
+   1638                WriteTW8816(0x96, 0xAB);
+   1639                WriteTW8816(0x97, 0xAC);
+   1640                WriteTW8816(0x98, 0x06);
+   1641                
+   1642                WriteTW8816(0x94, 0x80);
+   1643                WriteTW8816(0x95, 0x81);
+   1644                WriteTW8816(0x96, 0xAC);
+   1645                WriteTW8816(0x97, 0xAD);
+   1646                WriteTW8816(0x98, 0x06);
+   1647              } else {
+   1648                WriteTW8816(0x94, 0x80);
+   1649                WriteTW8816(0x95, 0x81);
+   1650                WriteTW8816(0x96, 0x88);
+   1651                WriteTW8816(0x97, 0x60);
+   1652                WriteTW8816(0x98, 0x06);
+   1653                
+   1654                WriteTW8816(0x94, 0x80);
+   1655                WriteTW8816(0x95, 0x81);
+   1656                WriteTW8816(0x96, 0x89);
+   1657                WriteTW8816(0x97, 0x61);
+   1658                WriteTW8816(0x98, 0x06);
+   1659                
+   1660                WriteTW8816(0x94, 0x80);
+   1661                WriteTW8816(0x95, 0x81);
+   1662                WriteTW8816(0x96, 0x8A);
+   1663                WriteTW8816(0x97, 0x62);
+   1664                WriteTW8816(0x98, 0x06);
+   1665                
+   1666                WriteTW8816(0x94, 0x80);
+   1667                WriteTW8816(0x95, 0x81);
+   1668                WriteTW8816(0x96, 0xAA);
+   1669                WriteTW8816(0x97, 0x63);
+   1670                WriteTW8816(0x98, 0x06);
+   1671                
+   1672                WriteTW8816(0x94, 0x80);
+   1673                WriteTW8816(0x95, 0x81);
+   1674                WriteTW8816(0x96, 0xAB);
+   1675                WriteTW8816(0x97, 0x64);
+   1676                WriteTW8816(0x98, 0x06);
+   1677                
+   1678                WriteTW8816(0x94, 0x80);
+   1679                WriteTW8816(0x95, 0x81);
+   1680                WriteTW8816(0x96, 0xAC);
+   1681                WriteTW8816(0x97, 0x65);
+   1682                WriteTW8816(0x98, 0x06);  
+   1683              }
+   1684            } else {
+   1685              WriteTW8816(0x94, 0x00);
+   1686              WriteTW8816(0x95, 0x81);
+   1687              WriteTW8816(0x96, 0x88);
+   1688              WriteTW8816(0x97, 0x20);
+   1689              WriteTW8816(0x98, 0x06);
+   1690              
+   1691              WriteTW8816(0x94, 0x00);
+   1692              WriteTW8816(0x95, 0x81);
+   1693              WriteTW8816(0x96, 0x89);
+   1694              WriteTW8816(0x97, 0x20);
+   1695              WriteTW8816(0x98, 0x06);
+   1696              
+   1697              WriteTW8816(0x94, 0x00);
+   1698              WriteTW8816(0x95, 0x81);
+   1699              WriteTW8816(0x96, 0x8A);
+   1700              WriteTW8816(0x97, 0x20);
+   1701              WriteTW8816(0x98, 0x06);
+   1702              
+   1703              WriteTW8816(0x94, 0x00);
+   1704              WriteTW8816(0x95, 0x81);
+   1705              WriteTW8816(0x96, 0xAA);
+   1706              WriteTW8816(0x97, 0x20);
+   1707              WriteTW8816(0x98, 0x06);
+   1708              
+   1709              WriteTW8816(0x94, 0x00);
+   1710              WriteTW8816(0x95, 0x81);
+   1711              WriteTW8816(0x96, 0xAB);
+   1712              WriteTW8816(0x97, 0x20);
+   1713              WriteTW8816(0x98, 0x06);
+   1714              
+   1715              WriteTW8816(0x94, 0x00);
+   1716              WriteTW8816(0x95, 0x81);
+   1717              WriteTW8816(0x96, 0xAC);
+   1718              WriteTW8816(0x97, 0x20);
+   1719              WriteTW8816(0x98, 0x06); 
+   1720            }
+   1721          }
+   1722          
+   1723          void SetChange3DRightView(void){
+   1724            if(AAVM_Menu_Flag == 0) {    
+   1725              if(AAVM_Camera_Icon_Index == 9){
+   1726                WriteTW8816(0x94, 0x80);
+   1727                WriteTW8816(0x95, 0x81);
+   1728                WriteTW8816(0x96, 0x8E);
+   1729                WriteTW8816(0x97, 0xAE);
+   1730                WriteTW8816(0x98, 0x06);
+   1731                
+   1732                WriteTW8816(0x94, 0x80);
+   1733                WriteTW8816(0x95, 0x81);
+   1734                WriteTW8816(0x96, 0x8F);
+   1735                WriteTW8816(0x97, 0xAF);
+   1736                WriteTW8816(0x98, 0x06);
+   1737                
+   1738                WriteTW8816(0x94, 0x80);
+   1739                WriteTW8816(0x95, 0x81);
+   1740                WriteTW8816(0x96, 0x90);
+   1741                WriteTW8816(0x97, 0xB0);
+   1742                WriteTW8816(0x98, 0x06);
+   1743                
+   1744                WriteTW8816(0x94, 0x80);
+   1745                WriteTW8816(0x95, 0x81);
+   1746                WriteTW8816(0x96, 0xB0);
+   1747                WriteTW8816(0x97, 0xB1);
+   1748                WriteTW8816(0x98, 0x06);
+   1749                
+   1750                WriteTW8816(0x94, 0x80);
+   1751                WriteTW8816(0x95, 0x81);
+   1752                WriteTW8816(0x96, 0xB1);
+   1753                WriteTW8816(0x97, 0xB2);
+   1754                WriteTW8816(0x98, 0x06);
+   1755                
+   1756                WriteTW8816(0x94, 0x80);
+   1757                WriteTW8816(0x95, 0x81);
+   1758                WriteTW8816(0x96, 0xB2);
+   1759                WriteTW8816(0x97, 0xB3);
+   1760                WriteTW8816(0x98, 0x06);
+   1761              } else {
+   1762                WriteTW8816(0x94, 0x80);
+   1763                WriteTW8816(0x95, 0x81);
+   1764                WriteTW8816(0x96, 0x8E);
+   1765                WriteTW8816(0x97, 0x6C);
+   1766                WriteTW8816(0x98, 0x06);
+   1767                
+   1768                WriteTW8816(0x94, 0x80);
+   1769                WriteTW8816(0x95, 0x81);
+   1770                WriteTW8816(0x96, 0x8F);
+   1771                WriteTW8816(0x97, 0x6D);
+   1772                WriteTW8816(0x98, 0x06);
+   1773                
+   1774                WriteTW8816(0x94, 0x80);
+   1775                WriteTW8816(0x95, 0x81);
+   1776                WriteTW8816(0x96, 0x90);
+   1777                WriteTW8816(0x97, 0x6E);
+   1778                WriteTW8816(0x98, 0x06);
+   1779                
+   1780                WriteTW8816(0x94, 0x80);
+   1781                WriteTW8816(0x95, 0x81);
+   1782                WriteTW8816(0x96, 0xB0);
+   1783                WriteTW8816(0x97, 0x6F);
+   1784                WriteTW8816(0x98, 0x06);
+   1785                
+   1786                WriteTW8816(0x94, 0x80);
+   1787                WriteTW8816(0x95, 0x81);
+   1788                WriteTW8816(0x96, 0xB1);
+   1789                WriteTW8816(0x97, 0x70);
+   1790                WriteTW8816(0x98, 0x06);
+   1791                
+   1792                WriteTW8816(0x94, 0x80);
+   1793                WriteTW8816(0x95, 0x81);
+   1794                WriteTW8816(0x96, 0xB2);
+   1795                WriteTW8816(0x97, 0x71);
+   1796                WriteTW8816(0x98, 0x06); 
+   1797              }
+   1798            } else {
+   1799              WriteTW8816(0x94, 0x00);
+   1800              WriteTW8816(0x95, 0x81);
+   1801              WriteTW8816(0x96, 0x8E);
+   1802              WriteTW8816(0x97, 0x20);
+   1803              WriteTW8816(0x98, 0x06);
+   1804              
+   1805              WriteTW8816(0x94, 0x00);
+   1806              WriteTW8816(0x95, 0x81);
+   1807              WriteTW8816(0x96, 0x8F);
+   1808              WriteTW8816(0x97, 0x20);
+   1809              WriteTW8816(0x98, 0x06);
+   1810              
+   1811              WriteTW8816(0x94, 0x00);
+   1812              WriteTW8816(0x95, 0x81);
+   1813              WriteTW8816(0x96, 0x90);
+   1814              WriteTW8816(0x97, 0x20);
+   1815              WriteTW8816(0x98, 0x06);
+   1816              
+   1817              WriteTW8816(0x94, 0x00);
+   1818              WriteTW8816(0x95, 0x81);
+   1819              WriteTW8816(0x96, 0xB0);
+   1820              WriteTW8816(0x97, 0x20);
+   1821              WriteTW8816(0x98, 0x06);
+   1822              
+   1823              WriteTW8816(0x94, 0x00);
+   1824              WriteTW8816(0x95, 0x81);
+   1825              WriteTW8816(0x96, 0xB1);
+   1826              WriteTW8816(0x97, 0x20);
+   1827              WriteTW8816(0x98, 0x06);
+   1828              
+   1829              WriteTW8816(0x94, 0x00);
+   1830              WriteTW8816(0x95, 0x81);
+   1831              WriteTW8816(0x96, 0xB2);
+   1832              WriteTW8816(0x97, 0x20);
+   1833              WriteTW8816(0x98, 0x06);  
+   1834            }
+   1835          }
+   1836          
+   1837          void SetChangeSpeakerIcon(void){
+   1838            // SPEAKER
+   1839            if(AAVM_Menu_Flag == 0) {
+   1840              if(AAVM_Icon_Index == 0){
+   1841                WriteTW8816(0x94, 0x80);
+   1842                WriteTW8816(0x95, 0x80);
+   1843                WriteTW8816(0x96, 0x04);
+   1844                WriteTW8816(0x97, 0x08);
+   1845                WriteTW8816(0x98, 0x06);
+   1846                
+   1847                WriteTW8816(0x94, 0x80);
+   1848                WriteTW8816(0x95, 0x80);
+   1849                WriteTW8816(0x96, 0x05);
+   1850                WriteTW8816(0x97, 0x09);
+   1851                WriteTW8816(0x98, 0x06);
+   1852                
+   1853                WriteTW8816(0x94, 0x80);
+   1854                WriteTW8816(0x95, 0x80);
+   1855                WriteTW8816(0x96, 0x26);
+   1856                WriteTW8816(0x97, 0x0A);
+   1857                WriteTW8816(0x98, 0x06);
+   1858                
+   1859                WriteTW8816(0x94, 0x80);
+   1860                WriteTW8816(0x95, 0x80);
+   1861                WriteTW8816(0x96, 0x27);
+   1862                WriteTW8816(0x97, 0x0B);
+   1863                WriteTW8816(0x98, 0x06);
+   1864                
+   1865              } else {
+   1866                WriteTW8816(0x94, 0x80);
+   1867                WriteTW8816(0x95, 0x80);
+   1868                WriteTW8816(0x96, 0x04);
+   1869                WriteTW8816(0x97, 0x04);
+   1870                WriteTW8816(0x98, 0x06);
+   1871                
+   1872                WriteTW8816(0x94, 0x80);
+   1873                WriteTW8816(0x95, 0x80);
+   1874                WriteTW8816(0x96, 0x05);
+   1875                WriteTW8816(0x97, 0x05);
+   1876                WriteTW8816(0x98, 0x06);
+   1877                
+   1878                WriteTW8816(0x94, 0x80);
+   1879                WriteTW8816(0x95, 0x80);
+   1880                WriteTW8816(0x96, 0x26);
+   1881                WriteTW8816(0x97, 0x06);
+   1882                WriteTW8816(0x98, 0x06);
+   1883                
+   1884                WriteTW8816(0x94, 0x80);
+   1885                WriteTW8816(0x95, 0x80);
+   1886                WriteTW8816(0x96, 0x27);
+   1887                WriteTW8816(0x97, 0x07);
+   1888                WriteTW8816(0x98, 0x06);
+   1889              }
+   1890            } else {
+   1891              WriteTW8816(0x94, 0x00);
+   1892              WriteTW8816(0x95, 0x80);
+   1893              WriteTW8816(0x96, 0x04);
+   1894              WriteTW8816(0x97, 0x20);
+   1895              WriteTW8816(0x98, 0x06);
+   1896              
+   1897              WriteTW8816(0x94, 0x00);
+   1898              WriteTW8816(0x95, 0x80);
+   1899              WriteTW8816(0x96, 0x05);
+   1900              WriteTW8816(0x97, 0x20);
+   1901              WriteTW8816(0x98, 0x06);
+   1902              
+   1903              WriteTW8816(0x94, 0x00);
+   1904              WriteTW8816(0x95, 0x80);
+   1905              WriteTW8816(0x96, 0x26);
+   1906              WriteTW8816(0x97, 0x20);
+   1907              WriteTW8816(0x98, 0x06);
+   1908              
+   1909              WriteTW8816(0x94, 0x00);
+   1910              WriteTW8816(0x95, 0x80);
+   1911              WriteTW8816(0x96, 0x27);
+   1912              WriteTW8816(0x97, 0x20);
+   1913              WriteTW8816(0x98, 0x06);
+   1914            }
+   1915          }
+   1916          
+   1917          void SetBlankIcon(){ 
+   1918            
+   1919            //SPEARKER
+   1920            WriteTW8816(0x94, 0x00);
+   1921            WriteTW8816(0x95, 0x80);
+   1922            WriteTW8816(0x96, 0x04);
+   1923            WriteTW8816(0x97, 0x20);
+   1924            WriteTW8816(0x98, 0x06);
+   1925            
+   1926            WriteTW8816(0x94, 0x00);
+   1927            WriteTW8816(0x95, 0x80);
+   1928            WriteTW8816(0x96, 0x05);
+   1929            WriteTW8816(0x97, 0x20);
+   1930            WriteTW8816(0x98, 0x06);
+   1931            
+   1932            WriteTW8816(0x94, 0x00);
+   1933            WriteTW8816(0x95, 0x80);
+   1934            WriteTW8816(0x96, 0x26);
+   1935            WriteTW8816(0x97, 0x20);
+   1936            WriteTW8816(0x98, 0x06);
+   1937            
+   1938            WriteTW8816(0x94, 0x00);
+   1939            WriteTW8816(0x95, 0x80);
+   1940            WriteTW8816(0x96, 0x27);
+   1941            WriteTW8816(0x97, 0x20);
+   1942            WriteTW8816(0x98, 0x06);
+   1943            // X BUTTON
+   1944            WriteTW8816(0x94, 0x00);
+   1945            WriteTW8816(0x95, 0x80);
+   1946            WriteTW8816(0x96, 0x01);
+   1947            WriteTW8816(0x97, 0x20);
+   1948            WriteTW8816(0x98, 0x06);
+   1949            
+   1950            WriteTW8816(0x94, 0x00);
+   1951            WriteTW8816(0x95, 0x80);
+   1952            WriteTW8816(0x96, 0x02);
+   1953            WriteTW8816(0x97, 0x20);
+   1954            WriteTW8816(0x98, 0x06);
+   1955            
+   1956            WriteTW8816(0x94, 0x00);
+   1957            WriteTW8816(0x95, 0x80);
+   1958            WriteTW8816(0x96, 0x23);
+   1959            WriteTW8816(0x97, 0x20);
+   1960            WriteTW8816(0x98, 0x06);
+   1961            
+   1962            WriteTW8816(0x94, 0x00);
+   1963            WriteTW8816(0x95, 0x80);
+   1964            WriteTW8816(0x96, 0x24);
+   1965            WriteTW8816(0x97, 0x20);
+   1966            WriteTW8816(0x98, 0x06);
+   1967            
+   1968            // FRONT 2D
+   1969            WriteTW8816(0x94, 0x00);
+   1970            WriteTW8816(0x95, 0x80);
+   1971            WriteTW8816(0x96, 0x1E);
+   1972            WriteTW8816(0x97, 0x20);
+   1973            WriteTW8816(0x98, 0x06);
+   1974            
+   1975            WriteTW8816(0x94, 0x00);
+   1976            WriteTW8816(0x95, 0x80);
+   1977            WriteTW8816(0x96, 0x1F);
+   1978            WriteTW8816(0x97, 0x20);
+   1979            WriteTW8816(0x98, 0x06);
+   1980            
+   1981            WriteTW8816(0x94, 0x00);
+   1982            WriteTW8816(0x95, 0x80);
+   1983            WriteTW8816(0x96, 0x20);
+   1984            WriteTW8816(0x97, 0x20);
+   1985            WriteTW8816(0x98, 0x06);
+   1986            
+   1987            WriteTW8816(0x94, 0x00);
+   1988            WriteTW8816(0x95, 0x80);
+   1989            WriteTW8816(0x96, 0x40);
+   1990            WriteTW8816(0x97, 0x20);
+   1991            WriteTW8816(0x98, 0x06);
+   1992            
+   1993            WriteTW8816(0x94, 0x00);
+   1994            WriteTW8816(0x95, 0x80);
+   1995            WriteTW8816(0x96, 0x41);
+   1996            WriteTW8816(0x97, 0x20);
+   1997            WriteTW8816(0x98, 0x06);
+   1998            
+   1999            WriteTW8816(0x94, 0x00);
+   2000            WriteTW8816(0x95, 0x80);
+   2001            WriteTW8816(0x96, 0x42);
+   2002            WriteTW8816(0x97, 0x20);
+   2003            WriteTW8816(0x98, 0x06);
+   2004            
+   2005            //LEFT
+   2006            WriteTW8816(0x94, 0x00);
+   2007            WriteTW8816(0x95, 0x80);
+   2008            WriteTW8816(0x96, 0x84);
+   2009            WriteTW8816(0x97, 0x20);
+   2010            WriteTW8816(0x98, 0x06);
+   2011            
+   2012            WriteTW8816(0x94, 0x00);
+   2013            WriteTW8816(0x95, 0x80);
+   2014            WriteTW8816(0x96, 0x85);
+   2015            WriteTW8816(0x97, 0x20);
+   2016            WriteTW8816(0x98, 0x06);
+   2017            
+   2018            WriteTW8816(0x94, 0x00);
+   2019            WriteTW8816(0x95, 0x80);
+   2020            WriteTW8816(0x96, 0x86);
+   2021            WriteTW8816(0x97, 0x20);
+   2022            WriteTW8816(0x98, 0x06);
+   2023            
+   2024            WriteTW8816(0x94, 0x00);
+   2025            WriteTW8816(0x95, 0x80);
+   2026            WriteTW8816(0x96, 0xA6);
+   2027            WriteTW8816(0x97, 0x20);
+   2028            WriteTW8816(0x98, 0x06);
+   2029            
+   2030            WriteTW8816(0x94, 0x00);
+   2031            WriteTW8816(0x95, 0x80);
+   2032            WriteTW8816(0x96, 0xA7);
+   2033            WriteTW8816(0x97, 0x20);
+   2034            WriteTW8816(0x98, 0x06);
+   2035            
+   2036            WriteTW8816(0x94, 0x00);
+   2037            WriteTW8816(0x95, 0x80);
+   2038            WriteTW8816(0x96, 0xA8);
+   2039            WriteTW8816(0x97, 0x20);
+   2040            WriteTW8816(0x98, 0x06);        
+   2041            
+   2042            
+   2043            //BACK
+   2044            WriteTW8816(0x94, 0x00);
+   2045            WriteTW8816(0x95, 0x80);
+   2046            WriteTW8816(0x96, 0xEA);
+   2047            WriteTW8816(0x97, 0x20);
+   2048            WriteTW8816(0x98, 0x06);
+   2049            
+   2050            WriteTW8816(0x94, 0x00);
+   2051            WriteTW8816(0x95, 0x80);
+   2052            WriteTW8816(0x96, 0xEB);
+   2053            WriteTW8816(0x97, 0x20);
+   2054            WriteTW8816(0x98, 0x06);
+   2055            
+   2056            WriteTW8816(0x94, 0x00);
+   2057            WriteTW8816(0x95, 0x80);
+   2058            WriteTW8816(0x96, 0xEC);
+   2059            WriteTW8816(0x97, 0x20);
+   2060            WriteTW8816(0x98, 0x06);
+   2061            
+   2062            WriteTW8816(0x94, 0x00);
+   2063            WriteTW8816(0x95, 0x81);
+   2064            WriteTW8816(0x96, 0x0C);
+   2065            WriteTW8816(0x97, 0x20);
+   2066            WriteTW8816(0x98, 0x06);
+   2067            
+   2068            WriteTW8816(0x94, 0x00);
+   2069            WriteTW8816(0x95, 0x81);
+   2070            WriteTW8816(0x96, 0x0D);
+   2071            WriteTW8816(0x97, 0x20);
+   2072            WriteTW8816(0x98, 0x06);
+   2073            
+   2074            WriteTW8816(0x94, 0x00);
+   2075            WriteTW8816(0x95, 0x81);
+   2076            WriteTW8816(0x96, 0x0E);
+   2077            WriteTW8816(0x97, 0x20);
+   2078            WriteTW8816(0x98, 0x06);  
+   2079            
+   2080            // RIGHT
+   2081            WriteTW8816(0x94, 0x00);
+   2082            WriteTW8816(0x95, 0x81);
+   2083            WriteTW8816(0x96, 0x50);
+   2084            WriteTW8816(0x97, 0x20);
+   2085            WriteTW8816(0x98, 0x06);
+   2086            
+   2087            WriteTW8816(0x94, 0x00);
+   2088            WriteTW8816(0x95, 0x81);
+   2089            WriteTW8816(0x96, 0x51);
+   2090            WriteTW8816(0x97, 0x20);
+   2091            WriteTW8816(0x98, 0x06);
+   2092            
+   2093            WriteTW8816(0x94, 0x00);
+   2094            WriteTW8816(0x95, 0x81);
+   2095            WriteTW8816(0x96, 0x52);
+   2096            WriteTW8816(0x97, 0x20);
+   2097            WriteTW8816(0x98, 0x06);
+   2098            
+   2099            WriteTW8816(0x94, 0x00);
+   2100            WriteTW8816(0x95, 0x81);
+   2101            WriteTW8816(0x96, 0x72);
+   2102            WriteTW8816(0x97, 0x20);
+   2103            WriteTW8816(0x98, 0x06);
+   2104            
+   2105            WriteTW8816(0x94, 0x00);
+   2106            WriteTW8816(0x95, 0x81);
+   2107            WriteTW8816(0x96, 0x73);
+   2108            WriteTW8816(0x97, 0x20);
+   2109            WriteTW8816(0x98, 0x06);
+   2110            
+   2111            WriteTW8816(0x94, 0x00);
+   2112            WriteTW8816(0x95, 0x81);
+   2113            WriteTW8816(0x96, 0x74);
+   2114            WriteTW8816(0x97, 0x20);
+   2115            WriteTW8816(0x98, 0x06);     
+   2116            
+   2117            //4CHANNEL
+   2118            
+   2119            WriteTW8816(0x94, 0x00);
+   2120            WriteTW8816(0x95, 0x81);
+   2121            WriteTW8816(0x96, 0x94);
+   2122            WriteTW8816(0x97, 0x20);
+   2123            WriteTW8816(0x98, 0x06);
+   2124            
+   2125            WriteTW8816(0x94, 0x00);
+   2126            WriteTW8816(0x95, 0x81);
+   2127            WriteTW8816(0x96, 0x95);
+   2128            WriteTW8816(0x97, 0x20);
+   2129            WriteTW8816(0x98, 0x06);
+   2130            
+   2131            WriteTW8816(0x94, 0x00);
+   2132            WriteTW8816(0x95, 0x81);
+   2133            WriteTW8816(0x96, 0x96);
+   2134            WriteTW8816(0x97, 0x20);
+   2135            WriteTW8816(0x98, 0x06);
+   2136            
+   2137            WriteTW8816(0x94, 0x00);
+   2138            WriteTW8816(0x95, 0x81);
+   2139            WriteTW8816(0x96, 0xB6);
+   2140            WriteTW8816(0x97, 0x20);
+   2141            WriteTW8816(0x98, 0x06);
+   2142            
+   2143            WriteTW8816(0x94, 0x00);
+   2144            WriteTW8816(0x95, 0x81);
+   2145            WriteTW8816(0x96, 0xB7);
+   2146            WriteTW8816(0x97, 0x20);
+   2147            WriteTW8816(0x98, 0x06);
+   2148            
+   2149            WriteTW8816(0x94, 0x00);
+   2150            WriteTW8816(0x95, 0x81);
+   2151            WriteTW8816(0x96, 0xB8);
+   2152            WriteTW8816(0x97, 0x20);
+   2153            WriteTW8816(0x98, 0x06);  
+   2154            
+   2155            //3D BIRD
+   2156            WriteTW8816(0x94, 0x00);
+   2157            WriteTW8816(0x95, 0x81);
+   2158            WriteTW8816(0x96, 0x76);
+   2159            WriteTW8816(0x97, 0x20);
+   2160            WriteTW8816(0x98, 0x06);
+   2161            
+   2162            WriteTW8816(0x94, 0x00);
+   2163            WriteTW8816(0x95, 0x81);
+   2164            WriteTW8816(0x96, 0x77);
+   2165            WriteTW8816(0x97, 0x20);
+   2166            WriteTW8816(0x98, 0x06);
+   2167            
+   2168            WriteTW8816(0x94, 0x00);
+   2169            WriteTW8816(0x95, 0x81);
+   2170            WriteTW8816(0x96, 0x78);
+   2171            WriteTW8816(0x97, 0x20);
+   2172            WriteTW8816(0x98, 0x06);
+   2173            
+   2174            WriteTW8816(0x94, 0x00);
+   2175            WriteTW8816(0x95, 0x81);
+   2176            WriteTW8816(0x96, 0x98);
+   2177            WriteTW8816(0x97, 0x20);
+   2178            WriteTW8816(0x98, 0x06);
+   2179            
+   2180            WriteTW8816(0x94, 0x00);
+   2181            WriteTW8816(0x95, 0x81);
+   2182            WriteTW8816(0x96, 0x99);
+   2183            WriteTW8816(0x97, 0x20);
+   2184            WriteTW8816(0x98, 0x06);
+   2185            
+   2186            WriteTW8816(0x94, 0x00);
+   2187            WriteTW8816(0x95, 0x81);
+   2188            WriteTW8816(0x96, 0x9A);
+   2189            WriteTW8816(0x97, 0x20);
+   2190            WriteTW8816(0x98, 0x06);
+   2191            
+   2192            // 3D REAR
+   2193            WriteTW8816(0x94, 0x00);
+   2194            WriteTW8816(0x95, 0x81);
+   2195            WriteTW8816(0x96, 0x7C);
+   2196            WriteTW8816(0x97, 0x20);
+   2197            WriteTW8816(0x98, 0x06);
+   2198            
+   2199            WriteTW8816(0x94, 0x00);
+   2200            WriteTW8816(0x95, 0x81);
+   2201            WriteTW8816(0x96, 0x7D);
+   2202            WriteTW8816(0x97, 0x20);
+   2203            WriteTW8816(0x98, 0x06);
+   2204            
+   2205            WriteTW8816(0x94, 0x00);
+   2206            WriteTW8816(0x95, 0x81);
+   2207            WriteTW8816(0x96, 0x7E);
+   2208            WriteTW8816(0x97, 0x20);
+   2209            WriteTW8816(0x98, 0x06);
+   2210            
+   2211            WriteTW8816(0x94, 0x00);
+   2212            WriteTW8816(0x95, 0x81);
+   2213            WriteTW8816(0x96, 0x9E);
+   2214            WriteTW8816(0x97, 0x20);
+   2215            WriteTW8816(0x98, 0x06);
+   2216            
+   2217            WriteTW8816(0x94, 0x00);
+   2218            WriteTW8816(0x95, 0x81);
+   2219            WriteTW8816(0x96, 0x9F);
+   2220            WriteTW8816(0x97, 0x20);
+   2221            WriteTW8816(0x98, 0x06);
+   2222            
+   2223            WriteTW8816(0x94, 0x00);
+   2224            WriteTW8816(0x95, 0x81);
+   2225            WriteTW8816(0x96, 0xA0);
+   2226            WriteTW8816(0x97, 0x20);
+   2227            WriteTW8816(0x98, 0x06);
+   2228            
+   2229            // 2D BIRD
+   2230            WriteTW8816(0x94, 0x00);
+   2231            WriteTW8816(0x95, 0x81);
+   2232            WriteTW8816(0x96, 0x82);
+   2233            WriteTW8816(0x97, 0x20);
+   2234            WriteTW8816(0x98, 0x06);
+   2235            
+   2236            WriteTW8816(0x94, 0x00);
+   2237            WriteTW8816(0x95, 0x81);
+   2238            WriteTW8816(0x96, 0x83);
+   2239            WriteTW8816(0x97, 0x20);
+   2240            WriteTW8816(0x98, 0x06);
+   2241            
+   2242            WriteTW8816(0x94, 0x00);
+   2243            WriteTW8816(0x95, 0x81);
+   2244            WriteTW8816(0x96, 0x84);
+   2245            WriteTW8816(0x97, 0x20);
+   2246            WriteTW8816(0x98, 0x06);
+   2247            
+   2248            WriteTW8816(0x94, 0x00);
+   2249            WriteTW8816(0x95, 0x81);
+   2250            WriteTW8816(0x96, 0xA4);
+   2251            WriteTW8816(0x97, 0x20);
+   2252            WriteTW8816(0x98, 0x06);
+   2253            
+   2254            WriteTW8816(0x94, 0x00);
+   2255            WriteTW8816(0x95, 0x81);
+   2256            WriteTW8816(0x96, 0xA5);
+   2257            WriteTW8816(0x97, 0x20);
+   2258            WriteTW8816(0x98, 0x06);
+   2259            
+   2260            WriteTW8816(0x94, 0x00);
+   2261            WriteTW8816(0x95, 0x81);
+   2262            WriteTW8816(0x96, 0xA6);
+   2263            WriteTW8816(0x97, 0x20);
+   2264            WriteTW8816(0x98, 0x06);     
+   2265            
+   2266            //3D LEFT
+   2267            WriteTW8816(0x94, 0x00);
+   2268            WriteTW8816(0x95, 0x81);
+   2269            WriteTW8816(0x96, 0x88);
+   2270            WriteTW8816(0x97, 0x20);
+   2271            WriteTW8816(0x98, 0x06);
+   2272            
+   2273            WriteTW8816(0x94, 0x00);
+   2274            WriteTW8816(0x95, 0x81);
+   2275            WriteTW8816(0x96, 0x89);
+   2276            WriteTW8816(0x97, 0x20);
+   2277            WriteTW8816(0x98, 0x06);
+   2278            
+   2279            WriteTW8816(0x94, 0x00);
+   2280            WriteTW8816(0x95, 0x81);
+   2281            WriteTW8816(0x96, 0x8A);
+   2282            WriteTW8816(0x97, 0x20);
+   2283            WriteTW8816(0x98, 0x06);
+   2284            
+   2285            WriteTW8816(0x94, 0x00);
+   2286            WriteTW8816(0x95, 0x81);
+   2287            WriteTW8816(0x96, 0xAA);
+   2288            WriteTW8816(0x97, 0x20);
+   2289            WriteTW8816(0x98, 0x06);
+   2290            
+   2291            WriteTW8816(0x94, 0x00);
+   2292            WriteTW8816(0x95, 0x81);
+   2293            WriteTW8816(0x96, 0xAB);
+   2294            WriteTW8816(0x97, 0x20);
+   2295            WriteTW8816(0x98, 0x06);
+   2296            
+   2297            WriteTW8816(0x94, 0x00);
+   2298            WriteTW8816(0x95, 0x81);
+   2299            WriteTW8816(0x96, 0xAC);
+   2300            WriteTW8816(0x97, 0x20);
+   2301            WriteTW8816(0x98, 0x06); 
+   2302            
+   2303            //3D RIGHT
+   2304            WriteTW8816(0x94, 0x00);
+   2305            WriteTW8816(0x95, 0x81);
+   2306            WriteTW8816(0x96, 0x8E);
+   2307            WriteTW8816(0x97, 0x20);
+   2308            WriteTW8816(0x98, 0x06);
+   2309            
+   2310            WriteTW8816(0x94, 0x00);
+   2311            WriteTW8816(0x95, 0x81);
+   2312            WriteTW8816(0x96, 0x8F);
+   2313            WriteTW8816(0x97, 0x20);
+   2314            WriteTW8816(0x98, 0x06);
+   2315            
+   2316            WriteTW8816(0x94, 0x00);
+   2317            WriteTW8816(0x95, 0x81);
+   2318            WriteTW8816(0x96, 0x90);
+   2319            WriteTW8816(0x97, 0x20);
+   2320            WriteTW8816(0x98, 0x06);
+   2321            
+   2322            WriteTW8816(0x94, 0x00);
+   2323            WriteTW8816(0x95, 0x81);
+   2324            WriteTW8816(0x96, 0xB0);
+   2325            WriteTW8816(0x97, 0x20);
+   2326            WriteTW8816(0x98, 0x06);
+   2327            
+   2328            WriteTW8816(0x94, 0x00);
+   2329            WriteTW8816(0x95, 0x81);
+   2330            WriteTW8816(0x96, 0xB1);
+   2331            WriteTW8816(0x97, 0x20);
+   2332            WriteTW8816(0x98, 0x06);
+   2333            
+   2334            WriteTW8816(0x94, 0x00);
+   2335            WriteTW8816(0x95, 0x81);
+   2336            WriteTW8816(0x96, 0xB2);
+   2337            WriteTW8816(0x97, 0x20);
+   2338            WriteTW8816(0x98, 0x06);  
+   2339          }
+   2340          #else
+   2341          
+   2342          
+   2343          void SetFontOSDWindow(void)
+   2344          {
+   2345          	I2C2_ByteWrite_8816(0xff, 0x00);
+   2346          
+   2347          	I2C2_ByteWrite_8816(0x94, 0x00);
+   2348          	I2C2_ByteWrite_8816(0x9e, 0x00);
+   2349          	I2C2_ByteWrite_8816(0x9f, 0x01);
+   2350          	I2C2_ByteWrite_8816(0xa0, 0x00);
+   2351          	I2C2_ByteWrite_8816(0xa1, 0x00);
+   2352          	I2C2_ByteWrite_8816(0xa2, 0x00);
+   2353          	I2C2_ByteWrite_8816(0xa3, 0x22);
+   2354          	I2C2_ByteWrite_8816(0xa4, 0x0e);
+   2355          	I2C2_ByteWrite_8816(0xa5, 0x32);
+   2356          	I2C2_ByteWrite_8816(0xa6, 0x00);
+   2357          	I2C2_ByteWrite_8816(0xa7, 0x00);
+   2358          	I2C2_ByteWrite_8816(0xa8, 0x00);
+   2359          	I2C2_ByteWrite_8816(0xa9, 0x50);
+   2360          	I2C2_ByteWrite_8816(0xaa, 0x00);
+   2361          	I2C2_ByteWrite_8816(0xab, 0x55);
+   2362          	I2C2_ByteWrite_8816(0xac, 0x0f);
+   2363          	I2C2_ByteWrite_8816(0xad, 0x00);
+   2364          	I2C2_ByteWrite_8816(0xae, 0x00);
+   2365          
+   2366          	I2C2_ByteWrite_8816(0x94, 0x11);
+   2367          	I2C2_ByteWrite_8816(0x94, 0x02);
+   2368          	
+   2369          }
+   2370          
+   2371          void SetDisplayCH1(void)
+   2372          {
+   2373          	I2C2_ByteWrite_8816(0xff, 0x00);
+   2374          
+   2375          	I2C2_ByteWrite_8816(0x95, 0x80);
+   2376          	I2C2_ByteWrite_8816(0x96, 0x1d);
+   2377          	I2C2_ByteWrite_8816(0x97, 0x43);
+   2378          	I2C2_ByteWrite_8816(0x98, 0x06);
+   2379          
+   2380          	I2C2_ByteWrite_8816(0x95, 0x80);
+   2381          	I2C2_ByteWrite_8816(0x96, 0x1e);
+   2382          	I2C2_ByteWrite_8816(0x97, 0x48);
+   2383          	I2C2_ByteWrite_8816(0x98, 0x06);
+   2384          
+   2385          	I2C2_ByteWrite_8816(0x95, 0x80);
+   2386          	I2C2_ByteWrite_8816(0x96, 0x1f);
+   2387          	I2C2_ByteWrite_8816(0x97, 0x31);
+   2388          	I2C2_ByteWrite_8816(0x98, 0x06);
+   2389          }
+   2390          
+   2391          void SetDisplayCH2(void)
+   2392          {
+   2393          	I2C2_ByteWrite_8816(0xff, 0x00);
+   2394          
+   2395          	I2C2_ByteWrite_8816(0x95, 0x80);
+   2396          	I2C2_ByteWrite_8816(0x96, 0x1d);
+   2397          	I2C2_ByteWrite_8816(0x97, 0x43);
+   2398          	I2C2_ByteWrite_8816(0x98, 0x06);
+   2399          
+   2400          	I2C2_ByteWrite_8816(0x95, 0x80);
+   2401          	I2C2_ByteWrite_8816(0x96, 0x1e);
+   2402          	I2C2_ByteWrite_8816(0x97, 0x48);
+   2403          	I2C2_ByteWrite_8816(0x98, 0x06);
+   2404          
+   2405          	I2C2_ByteWrite_8816(0x95, 0x80);
+   2406          	I2C2_ByteWrite_8816(0x96, 0x1f);
+   2407          	I2C2_ByteWrite_8816(0x97, 0x32);
+   2408          	I2C2_ByteWrite_8816(0x98, 0x06);
+   2409          }
+   2410          
+   2411          void SetDisplayCH3(void)
+   2412          {
+   2413          	I2C2_ByteWrite_8816(0xff, 0x00);
+   2414          
+   2415          	I2C2_ByteWrite_8816(0x95, 0x80);
+   2416          	I2C2_ByteWrite_8816(0x96, 0x1d);
+   2417          	I2C2_ByteWrite_8816(0x97, 0x43);
+   2418          	I2C2_ByteWrite_8816(0x98, 0x06);
+   2419          
+   2420          	I2C2_ByteWrite_8816(0x95, 0x80);
+   2421          	I2C2_ByteWrite_8816(0x96, 0x1e);
+   2422          	I2C2_ByteWrite_8816(0x97, 0x48);
+   2423          	I2C2_ByteWrite_8816(0x98, 0x06);
+   2424          
+   2425          	I2C2_ByteWrite_8816(0x95, 0x80);
+   2426          	I2C2_ByteWrite_8816(0x96, 0x1f);
+   2427          	I2C2_ByteWrite_8816(0x97, 0x33);
+   2428          	I2C2_ByteWrite_8816(0x98, 0x06);
+   2429          }
+   2430          
+   2431          void SetDisplayCH4(void)
+   2432          {
+   2433          	I2C2_ByteWrite_8816(0xff, 0x00);
+   2434          
+   2435          	I2C2_ByteWrite_8816(0x95, 0x80);
+   2436          	I2C2_ByteWrite_8816(0x96, 0x1d);
+   2437          	I2C2_ByteWrite_8816(0x97, 0x43);
+   2438          	I2C2_ByteWrite_8816(0x98, 0x06);
+   2439          
+   2440          	I2C2_ByteWrite_8816(0x95, 0x80);
+   2441          	I2C2_ByteWrite_8816(0x96, 0x1e);
+   2442          	I2C2_ByteWrite_8816(0x97, 0x48);
+   2443          	I2C2_ByteWrite_8816(0x98, 0x06);
+   2444          
+   2445          	I2C2_ByteWrite_8816(0x95, 0x80);
+   2446          	I2C2_ByteWrite_8816(0x96, 0x1f);
+   2447          	I2C2_ByteWrite_8816(0x97, 0x34);
+   2448          	I2C2_ByteWrite_8816(0x98, 0x06);
+   2449          }
+   2450          
+   2451          void SetDisplayCHBlank(void)
+   2452          {
+   2453          	I2C2_ByteWrite_8816(0xff, 0x00);
+   2454          
+   2455          	I2C2_ByteWrite_8816(0x95, 0x80);
+   2456          	I2C2_ByteWrite_8816(0x96, 0x1d);
+   2457          	I2C2_ByteWrite_8816(0x97, 0x20);
+   2458          	I2C2_ByteWrite_8816(0x98, 0x06);
+   2459          
+   2460          	I2C2_ByteWrite_8816(0x95, 0x80);
+   2461          	I2C2_ByteWrite_8816(0x96, 0x1e);
+   2462          	I2C2_ByteWrite_8816(0x97, 0x20);
+   2463          	I2C2_ByteWrite_8816(0x98, 0x06);
+   2464          
+   2465          	I2C2_ByteWrite_8816(0x95, 0x80);
+   2466          	I2C2_ByteWrite_8816(0x96, 0x1f);
+   2467          	I2C2_ByteWrite_8816(0x97, 0x20);
+   2468          	I2C2_ByteWrite_8816(0x98, 0x06);
+   2469          }
+   2470          
+   2471          void SetDisplayNosignal(void)
+   2472          {
+   2473          	I2C2_ByteWrite_8816(0xff, 0x00);
+   2474          
+   2475          	I2C2_ByteWrite_8816(0x95, 0x80);
+   2476          	I2C2_ByteWrite_8816(0x96, 0xd8);
+   2477          	I2C2_ByteWrite_8816(0x97, 0x4e);
+   2478          	I2C2_ByteWrite_8816(0x98, 0x06);
+   2479          
+   2480          	I2C2_ByteWrite_8816(0x95, 0x80);
+   2481          	I2C2_ByteWrite_8816(0x96, 0xd9);
+   2482          	I2C2_ByteWrite_8816(0x97, 0x4f);
+   2483          	I2C2_ByteWrite_8816(0x98, 0x06);
+   2484          
+   2485          	I2C2_ByteWrite_8816(0x95, 0x80);
+   2486          	I2C2_ByteWrite_8816(0x96, 0xda);
+   2487          	I2C2_ByteWrite_8816(0x97, 0x20);
+   2488          	I2C2_ByteWrite_8816(0x98, 0x06);
+   2489          
+   2490          	I2C2_ByteWrite_8816(0x95, 0x80);
+   2491          	I2C2_ByteWrite_8816(0x96, 0xdb);
+   2492          	I2C2_ByteWrite_8816(0x97, 0x53);
+   2493          	I2C2_ByteWrite_8816(0x98, 0x06);
+   2494          
+   2495          	I2C2_ByteWrite_8816(0x95, 0x80);
+   2496          	I2C2_ByteWrite_8816(0x96, 0xdc);
+   2497          	I2C2_ByteWrite_8816(0x97, 0x49);
+   2498          	I2C2_ByteWrite_8816(0x98, 0x06);
+   2499          
+   2500          	I2C2_ByteWrite_8816(0x95, 0x80);
+   2501          	I2C2_ByteWrite_8816(0x96, 0xdd);
+   2502          	I2C2_ByteWrite_8816(0x97, 0x47);
+   2503          	I2C2_ByteWrite_8816(0x98, 0x06);
+   2504          
+   2505          	I2C2_ByteWrite_8816(0x95, 0x80);
+   2506          	I2C2_ByteWrite_8816(0x96, 0xde);
+   2507          	I2C2_ByteWrite_8816(0x97, 0x4e);
+   2508          	I2C2_ByteWrite_8816(0x98, 0x06);
+   2509          
+   2510          	I2C2_ByteWrite_8816(0x95, 0x80);
+   2511          	I2C2_ByteWrite_8816(0x96, 0xdf);
+   2512          	I2C2_ByteWrite_8816(0x97, 0x41);
+   2513          	I2C2_ByteWrite_8816(0x98, 0x06);
+   2514          
+   2515          	I2C2_ByteWrite_8816(0x95, 0x80);
+   2516          	I2C2_ByteWrite_8816(0x96, 0xe0);
+   2517          	I2C2_ByteWrite_8816(0x97, 0x4c);
+   2518          	I2C2_ByteWrite_8816(0x98, 0x06);
+   2519          	
+   2520          }
+   2521          
+   2522          void SetDisplayNosignalBlank(void)
+   2523          {
+   2524          	I2C2_ByteWrite_8816(0xff, 0x00);
+   2525          
+   2526          	I2C2_ByteWrite_8816(0x95, 0x80);
+   2527          	I2C2_ByteWrite_8816(0x96, 0xd8);
+   2528          	I2C2_ByteWrite_8816(0x97, 0x20);
+   2529          	I2C2_ByteWrite_8816(0x98, 0x06);
+   2530          
+   2531          	I2C2_ByteWrite_8816(0x95, 0x80);
+   2532          	I2C2_ByteWrite_8816(0x96, 0xd9);
+   2533          	I2C2_ByteWrite_8816(0x97, 0x20);
+   2534          	I2C2_ByteWrite_8816(0x98, 0x06);
+   2535          
+   2536          	I2C2_ByteWrite_8816(0x95, 0x80);
+   2537          	I2C2_ByteWrite_8816(0x96, 0xda);
+   2538          	I2C2_ByteWrite_8816(0x97, 0x20);
+   2539          	I2C2_ByteWrite_8816(0x98, 0x06);
+   2540          
+   2541          	I2C2_ByteWrite_8816(0x95, 0x80);
+   2542          	I2C2_ByteWrite_8816(0x96, 0xdb);
+   2543          	I2C2_ByteWrite_8816(0x97, 0x20);
+   2544          	I2C2_ByteWrite_8816(0x98, 0x06);
+   2545          
+   2546          	I2C2_ByteWrite_8816(0x95, 0x80);
+   2547          	I2C2_ByteWrite_8816(0x96, 0xdc);
+   2548          	I2C2_ByteWrite_8816(0x97, 0x20);
+   2549          	I2C2_ByteWrite_8816(0x98, 0x06);
+   2550          
+   2551          	I2C2_ByteWrite_8816(0x95, 0x80);
+   2552          	I2C2_ByteWrite_8816(0x96, 0xdd);
+   2553          	I2C2_ByteWrite_8816(0x97, 0x20);
+   2554          	I2C2_ByteWrite_8816(0x98, 0x06);
+   2555          
+   2556          	I2C2_ByteWrite_8816(0x95, 0x80);
+   2557          	I2C2_ByteWrite_8816(0x96, 0xde);
+   2558          	I2C2_ByteWrite_8816(0x97, 0x20);
+   2559          	I2C2_ByteWrite_8816(0x98, 0x06);
+   2560          
+   2561          	I2C2_ByteWrite_8816(0x95, 0x80);
+   2562          	I2C2_ByteWrite_8816(0x96, 0xdf);
+   2563          	I2C2_ByteWrite_8816(0x97, 0x20);
+   2564          	I2C2_ByteWrite_8816(0x98, 0x06);
+   2565          
+   2566          	I2C2_ByteWrite_8816(0x95, 0x80);
+   2567          	I2C2_ByteWrite_8816(0x96, 0xe0);
+   2568          	I2C2_ByteWrite_8816(0x97, 0x20);
+   2569          	I2C2_ByteWrite_8816(0x98, 0x06);
+   2570          	
+   2571          }
+   2572          
+   2573          
+   2574          #endif
+   2575          
+   2576          
+   2577          /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
 
    Maximum stack usage in bytes:
 
    .cstack Function
    ------- --------
+       8   SetBlankIcon
+         0   -> WriteTW8816
+         8   -> WriteTW8816
+       8   SetChange2DBirdView
+         0   -> WriteTW8816
+         8   -> WriteTW8816
+       8   SetChange3DBirdView
+         0   -> WriteTW8816
+         8   -> WriteTW8816
+       8   SetChange3DLeftView
+         0   -> WriteTW8816
+         8   -> WriteTW8816
+       8   SetChange3DRearView
+         0   -> WriteTW8816
+         8   -> WriteTW8816
+       8   SetChange3DRightView
+         0   -> WriteTW8816
+         8   -> WriteTW8816
+       8   SetChange4ChannelView
+         0   -> WriteTW8816
+         8   -> WriteTW8816
+       8   SetChangeBackView
+         0   -> WriteTW8816
+         8   -> WriteTW8816
+       8   SetChangeFrontView
+         0   -> WriteTW8816
+         8   -> WriteTW8816
+       8   SetChangeLeftView
+         0   -> WriteTW8816
+         8   -> WriteTW8816
+       8   SetChangeRightView
+         0   -> WriteTW8816
+         8   -> WriteTW8816
+       8   SetChangeSpeakerIcon
+         0   -> WriteTW8816
+         8   -> WriteTW8816
+       8   SetChangeXIcon
+         0   -> WriteTW8816
+         8   -> WriteTW8816
        8   SetDisplayCH1
          0   -> WriteTW8816
          8   -> WriteTW8816
@@ -568,6 +2672,20 @@ D:\GIT\WLF_MONITOR\ECS_MS12_02_WLF_MONITOR_STM32_APP\Platform\TaeHa - ECS\SRC\TW
        8   SetDisplayCHBlank
          0   -> WriteTW8816
          8   -> WriteTW8816
+       8   SetDisplayIcon
+         8   -> SetChange2DBirdView
+         8   -> SetChange3DBirdView
+         8   -> SetChange3DLeftView
+         8   -> SetChange3DRearView
+         0   -> SetChange3DRightView
+         8   -> SetChange4ChannelView
+         8   -> SetChangeBackView
+         8   -> SetChangeFrontView
+         8   -> SetChangeLeftView
+         8   -> SetChangeRightView
+         8   -> SetChangeSpeakerIcon
+         8   -> SetChangeXIcon
+         8   -> SetDisplayCHBlank
        8   SetDisplayNosignal
          0   -> WriteTW8816
          8   -> WriteTW8816
@@ -586,22 +2704,49 @@ D:\GIT\WLF_MONITOR\ECS_MS12_02_WLF_MONITOR_STM32_APP\Platform\TaeHa - ECS\SRC\TW
 
    Bytes  Function/Label
    -----  --------------
-      18  ??Subroutine1_0
+       4  ??DataTable11
+       4  ??DataTable11_1
+       4  ??DataTable11_2
+       4  ??DataTable2
+       4  ??DataTable3
+       4  ??DataTable3_1
+       4  ??DataTable3_2
+       4  ??DataTable4
+       4  ??DataTable6
+       4  ??DataTable7
+       4  ??DataTable7_1
+       4  ??DataTable7_2
+      12  ??Subroutine1_0
+       6  ??Subroutine2_0
        8  ?Subroutine0
-      94  SetDisplayCH1
-      94  SetDisplayCH2
-      94  SetDisplayCH3
-      94  SetDisplayCH4
-      86  SetDisplayCHBlank
-     286  SetDisplayNosignal
-     276  SetDisplayNosignalBlank
+    2704  SetBlankIcon
+     710  SetChange2DBirdView
+     710  SetChange3DBirdView
+     710  SetChange3DLeftView
+     706  SetChange3DRearView
+     710  SetChange3DRightView
+     710  SetChange4ChannelView
+    1210  SetChangeBackView
+    1208  SetChangeFrontView
+    1210  SetChangeLeftView
+    1210  SetChangeRightView
+     466  SetChangeSpeakerIcon
+     308  SetChangeXIcon
+     118  SetDisplayCH1
+     118  SetDisplayCH2
+     118  SetDisplayCH3
+     118  SetDisplayCH4
+     110  SetDisplayCHBlank
+      58  SetDisplayIcon
+     358  SetDisplayNosignal
+     348  SetDisplayNosignalBlank
       68  SetDisplayWarning
       34  SetFontOSDWindow
 
  
- 1 152 bytes in section .text
+ 14 094 bytes in section .text
  
- 1 152 bytes of CODE memory
+ 14 094 bytes of CODE memory
 
 Errors: none
 Warnings: none

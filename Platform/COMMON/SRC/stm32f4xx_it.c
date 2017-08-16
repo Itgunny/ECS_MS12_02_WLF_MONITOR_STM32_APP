@@ -230,6 +230,8 @@ extern u8 SmartKeyUse;
 
 extern u8 CameraCommFlag;
 
+extern u8 AAVMCommFlag;
+
 extern uint16_t ADC3ConvertedValue;
 
 
@@ -304,12 +306,12 @@ void RTCSend(void)
 void SendTo_E2PROM(void)
 {
 #if 1
-	if (SendEEPROMDataCnt < 2)	//	2¹ø º¸³½´Ù.
+	if (SendEEPROMDataCnt < 2)	//	2ë²ˆ ë³´ë‚¸ë‹¤.
 	{
 		memcpy(&Uart2_SerialTxMsg[7], &eepRomReadData1[0], 8);
 		Uart2_SerialTxMsg[15] = 0xE1;
 	}	
-	else if (SendEEPROMDataCnt < 4)	//	2¹ø º¸³½´Ù.
+	else if (SendEEPROMDataCnt < 4)	//	2ë²ˆ ë³´ë‚¸ë‹¤.
 	{
 		memcpy(&Uart2_SerialTxMsg[7], &eepRomReadData1[8], 8);
 		Uart2_SerialTxMsg[15] = 0xE2;
@@ -508,7 +510,7 @@ void CAN1_RX0_IRQHandler(void)
 	if((Iden.Source_Address == 0x47) || (Iden.Source_Address == 0x17) || (Iden.Source_Address == 0x29) || 
 		(Iden.Source_Address == 0xE4) || (Iden.Source_Address == 0xDD)|| (Iden.Source_Address == 0x4a)|| (Iden.Source_Address == 0xf4)
 		|| (Iden.Source_Address == 0x00)|| (Iden.Source_Address == 0x03) || (Iden.Source_Address == 0x02) || (Iden.Source_Address == 0x19)
-		|| (Iden.Source_Address == 0x34))
+		|| (Iden.Source_Address == 0x34) || (Iden.Source_Address == 0xDE))
 		{
 		#if 1
 			
@@ -570,7 +572,6 @@ void CAN1_RX0_IRQHandler(void)
 					if(PGN == 0xFFFA || PGN == 0xFE34){
 						CAN_RX(RxMsg);
 						}
-				
 				}
 			}
 		#else
@@ -610,7 +611,7 @@ void TIM4_IRQHandler(void)  //  10msec Timer / TimeBase UP Counter
 {
     TIM_ClearITPendingBit(TIM4, TIM_IT_Update);
     
-    //  BUZZER Status°¡ "2" ÀÏ °æ¿ì BUZZER OnTime ¸¸Å­ BUZZER On
+    //  BUZZER Statusê°€ "2" ì¼ ê²½ìš° BUZZER OnTime ë§Œí¼ BUZZER On
     if (WL9FM_BUZZER.Status == 2)
     {
         if (WL9FM_BUZZER.OnCnt++ < WL9FM_BUZZER.OnTime)
@@ -622,7 +623,7 @@ void TIM4_IRQHandler(void)  //  10msec Timer / TimeBase UP Counter
             WL9FM_BUZZER.Status = 0;               
         }
     }        
-    //  BUZZER Status°¡ "1" ÀÏ °æ¿ì UnLimit BUZZER On
+    //  BUZZER Statusê°€ "1" ì¼ ê²½ìš° UnLimit BUZZER On
     else if (WL9FM_BUZZER.Status == 1)
     {
         Buzzer_On();    
@@ -673,7 +674,7 @@ void USART2_IRQHandler(void)
 	{
 		Uart2_SerialRxMsg[Uart2_SerialRxCnt] = (u8)USART_ReceiveData(USART2);
 
-		  //  µð¹ö±ëÇÒ ¶§¸¸ »ç¿ëÇÒ °Í
+		  //  ë””ë²„ê¹…í•  ë•Œë§Œ ì‚¬ìš©í•  ê²ƒ
 		#ifdef DEBUG_CAN_RX
 		DebugMsg_printf("%2x ", Uart2_SerialRxMsg[Uart2_SerialRxCnt]);
 		#endif
@@ -694,7 +695,7 @@ void USART2_IRQHandler(void)
 				}
 				else
 				{
-					//  µð¹ö±ëÇÒ ¶§¸¸ »ç¿ëÇÒ °Í
+					//  ë””ë²„ê¹…í•  ë•Œë§Œ ì‚¬ìš©í•  ê²ƒ
 					//DebugMsg_printf("Protocol Fail\r\n");
 				}
 
@@ -741,15 +742,15 @@ void USART2_IRQHandler(void)
 
 			if(Flag_TxE2pRomData == 0)
 			{
-                //  º¸³»´Â È½¼ö Áß¿äÇÏ´Ù. ÃÊ±â¿¡ ¹ö±×°¡ »ý½Ç ¼ö ÀÖÀ¸´Ï, Å×½ºÆ® ÇÊ¿äÇÔ!!!
-				//	EEPROM Data¸¦ 6¹ø º¸³½´Ù.
+                //  ë³´ë‚´ëŠ” íšŸìˆ˜ ì¤‘ìš”í•˜ë‹¤. ì´ˆê¸°ì— ë²„ê·¸ê°€ ìƒì‹¤ ìˆ˜ ìžˆìœ¼ë‹ˆ, í…ŒìŠ¤íŠ¸ í•„ìš”í•¨!!!
+				//	EEPROM Dataë¥¼ 6ë²ˆ ë³´ë‚¸ë‹¤.
 				if(SendEEPROMDataCnt > 5)	
 				{
 					Uart2_SerialTxCnt = 0;	
 					Uart2_SerialTxMsg[15] = 0;
 					Flag_TxE2pRomData = 1;
 						
-					//	EEPROM Data¸¦ ±×¸¸ º¸³»°í CAN Data¸¦ º¸³½´Ù. 
+					//	EEPROM Dataë¥¼ ê·¸ë§Œ ë³´ë‚´ê³  CAN Dataë¥¼ ë³´ë‚¸ë‹¤. 
 					Flag_UartTxStart = 0;
 					
 					//  Enable the USART2 Transmit interrupt
@@ -778,7 +779,7 @@ void USART2_IRQHandler(void)
 				Uart2_SerialTxMsg[15] = 0;
 				Flag_TxE2pRomData = 1;
 					
-				//	EEPROM Data¸¦ ±×¸¸ º¸³»°í CAN Data¸¦ º¸³½´Ù. 
+				//	EEPROM Dataë¥¼ ê·¸ë§Œ ë³´ë‚´ê³  CAN Dataë¥¼ ë³´ë‚¸ë‹¤. 
 				Flag_UartTxStart = 0;
 				
 				//  Enable the USART2 Transmit interrupt
@@ -855,7 +856,7 @@ void UART4_Receive_CMD(void)
 	WL9FM_USART_DATA.COM4_RxBuf[WL9FM_USART_INDEX.COM4_RxCnt] = USART_ReceiveData(UART4);
 
 	
-    	//  µð¹ö±ëÇÒ ¶§¸¸ »ç¿ëÇÒ °Í
+    	//  ë””ë²„ê¹…í•  ë•Œë§Œ ì‚¬ìš©í•  ê²ƒ
 	#ifdef DEBUG_CMD_RX
 	DebugMsg_printf("%2x ", WL9FM_USART_DATA.COM4_RxBuf[WL9FM_USART_INDEX.COM4_RxCnt]);
 	#endif
@@ -889,6 +890,7 @@ void UART4_Receive_CMD(void)
 				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == OSUPDATECMD) WL9FM_USART_INDEX.COM4_RxCnt++;
 				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == EEPROMTESTCMD) WL9FM_USART_INDEX.COM4_RxCnt++;
 				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == FLASHTESTCMD) WL9FM_USART_INDEX.COM4_RxCnt++;
+                                else if (WL9FM_USART_DATA.COM4_RxBuf[1] == AAVMCMD) WL9FM_USART_INDEX.COM4_RxCnt++;
 
                 else
                 {
@@ -899,7 +901,7 @@ void UART4_Receive_CMD(void)
 		case Serial_COM4_RxSize-1: 
 				WL9FM_USART_INDEX.COM4_RxCnt = 0;
 				
-				//  µð¹ö±ëÇÒ ¶§¸¸ »ç¿ëÇÒ °Í
+				//  ë””ë²„ê¹…í•  ë•Œë§Œ ì‚¬ìš©í•  ê²ƒ
 				#ifdef DEBUG_CMD_RX
 				DebugMsg_printf("\r\n");
 				#endif
@@ -914,7 +916,7 @@ void UART4_Receive_CMD(void)
 							
 				case LCDBLCMD :		//	LCD BackLight Command
 
-					//	LCD BackLight Level Á¶Àý.. Level0 ~ Level8
+					//	LCD BackLight Level ì¡°ì ˆ.. Level0 ~ Level8
 					if (WL9FM_USART_DATA.COM4_RxBuf[2] < MaxBackLightLEVEL && (WL9FM_USART_DATA.COM4_RxBuf[2] > 0)) 												
 					{
 						LCDBL_PWM_LEVEL(WL9FM_USART_DATA.COM4_RxBuf[2]);
@@ -949,6 +951,26 @@ void UART4_Receive_CMD(void)
 					}					
 					break;
 
+                                case AAVMCMD:
+                                  if(AAVMCommFlag == 0){
+                                        AAVMCommFlag = 1;
+                                        
+                                        AAVM_Mode = WL9FM_USART_DATA.COM4_RxBuf[2];
+                                        
+                                        AAVM_Icon_Index = WL9FM_USART_DATA.COM4_RxBuf[3];
+                                        
+                                        AAVM_Camera_Icon_Index = WL9FM_USART_DATA.COM4_RxBuf[4];                                        
+                                        
+                                        AAVM_Menu_Flag = WL9FM_USART_DATA.COM4_RxBuf[5];
+                                        
+                                        AAVM_Warning_Front = WL9FM_USART_DATA.COM4_RxBuf[6];
+                                        AAVM_Warning_Rear = WL9FM_USART_DATA.COM4_RxBuf[7];
+                                        AAVM_Warning_Left = WL9FM_USART_DATA.COM4_RxBuf[8];
+                                        AAVM_Warning_Right = WL9FM_USART_DATA.COM4_RxBuf[9];
+                                        
+                                  }
+                                        break;
+                          
 				case DOWNCMD:
 					Stm32_Update_CMD = WL9FM_USART_DATA.COM4_RxBuf[2];
 					FatoryInit_Flag = WL9FM_USART_DATA.COM4_RxBuf[3];

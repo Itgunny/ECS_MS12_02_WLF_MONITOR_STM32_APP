@@ -58,6 +58,16 @@ unsigned char Camera_CheckFlag = 1;
 unsigned char Camera_CheckCnt = 0;
 //  --, kutelf, 131007
 
+unsigned char AAVM_Mode = 0xFF;
+extern unsigned char AAVM_Icon_Index = 0xFF;
+extern unsigned char AAVM_Camera_Icon_Index = 0xFF;
+unsigned char AAVM_CheckFlag = 1;
+unsigned char AAVM_CheckCnt = 0;
+extern unsigned char AAVM_Menu_Flag = 0xFF;
+extern unsigned char AAVM_Warning_Front = 0xFF;
+extern unsigned char AAVM_Warning_Rear = 0xFF;
+extern unsigned char AAVM_Warning_Left = 0xFF;
+extern unsigned char AAVM_Warning_Right = 0xFF;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
@@ -266,6 +276,29 @@ void cam_mode_change(u8 Mode)
 	
 	
 }
+// ++, 160812 cjg
+void aavm_mode_check(void)
+{
+          CheckAAVM_Input(AAVM_Mode);
+}
+void aavm_mode_change(u8 Mode)
+{
+          if(Mode == 0xFF)
+          {
+                  LCD_Display_Change(EXYNOS_DISPLAY);
+          }
+          else
+          {
+                  AAVMMode(Mode, 1);
+                  LCD_Display_Change(STM32F4_DISPLAY);
+          }
+}
+
+// --, 160812 cjg
+
+
+
+
 //  --, kutelf, 131007
 
 /**\

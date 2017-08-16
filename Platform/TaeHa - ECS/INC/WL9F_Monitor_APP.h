@@ -36,7 +36,7 @@
 #include "System_Debug.h"
 //	++, kutelf, 140801
 //	RevD.01.01 
-//	DPRAM »èÁ¦ - FSMS »ç¿ë ¾ÈÇÔ. 
+//	DPRAM ì‚­ì œ - FSMS ì‚¬ìš© ì•ˆí•¨. 
 #if 0
 #include "DPRAM_Control.h"
 #endif
@@ -52,12 +52,12 @@
 
 //	++, kutelf, 140801
 //	RevD.01.01 
-//	Camera Input, LCD Controller º¯°æ
+//	Camera Input, LCD Controller ë³€ê²½
 //		=> TW2835 + TW8832 -> TW8816
 #include "TW8816_Control.h"
 #include "TW8816_OSD.h"
 
-//	RevD ÀÌÇÏ ¹öÁ¯¿¡¼­ »ç¿ë 
+//	RevD ì´í•˜ ë²„ì ¼ì—ì„œ ì‚¬ìš© 
 #include "TW2835_Control.h"
 #include "TW2835_OSD.h"
 #include "TW8832_Control.h"
@@ -82,14 +82,14 @@
 
 //	++, kutelf, 140801
 //	RevD.01.01
-//	RevD ºÎÅÍ ÀÌ·± ±â´ÉÀ» Ãß°¡..
-//	TW2835, TW8816 È£È¯ÇÏ±â À§ÇÏ¿© ¼öÁ¤. 
+//	RevD ë¶€í„° ì´ëŸ° ê¸°ëŠ¥ì„ ì¶”ê°€..
+//	TW2835, TW8816 í˜¸í™˜í•˜ê¸° ìœ„í•˜ì—¬ ìˆ˜ì •. 
 //#define BoardVersion_RevA
 //#define BoardVersion_RevB
 //#define BoardVersion_RevC
 
 // ++ , sys3215 141211
-// revision ÀúÇ× Ãß°¡·Î ÀÎÇÑ »èÁ¦ 
+// revision ì €í•­ ì¶”ê°€ë¡œ ì¸í•œ ì‚­ì œ 
 //#define BoardVersion_RevD
 // -- , sys3215 141211
 
@@ -192,45 +192,45 @@
 
 
 #define	VERSION_HIGH			1
-#define	VERSION_LOW			3
-#define	VERSION_SUB_HIGH		2
-#define	VERSION_SUB_LOW		1
+#define	VERSION_LOW			4
+#define	VERSION_SUB_HIGH		0
+#define	VERSION_SUB_LOW		0
 #define	VERSION_HIDDEN		0
 ///////////////////////////////////////////////////
-////1.0.1.0 (1.0.0.9¿¡¼­ 250kpbs·Î CAN2 ¼öÁ¤)
-////1.0.1.1 (1.0.0.9¿¡¼­ ¼öÁ¤, 500kbps) 2014.10.08
-//Power Off½Ã Illumination Lamp Reset ¾ÈµÇ´Â ¹®Á¦ ¼öÁ¤ 2014.10.02
-//Key Off/On ¼ø°£ ¹İº¹ ½Ã CAN ÀÎÅÍ·´Æ® Á×´Â Çö»ó ¼öÁ¤ 2014.10.02
-//OS Update CMD Ãß°¡, OS Update CMD ¼ö½Å ½Ã 3ÃÊ°£ LCD OFF 2014.10.06
-//Key Off ÈÄ Outro¿¡¼­ Key On½Ã Å°¹öÆ° µ¿ÀÛ ¾ÈµÇ´Â ¹®Á¦ ¼öÁ¤ 2014.10.06
-//OS Update ½Ã 20ÃÊ°£ Key IG Check ¾ÈÇÔ (OS Boot Update½Ã Àü¿øÀÌ ³ª°¡¸é ¾ÈµÊ) 	2014.10.06
+////1.0.1.0 (1.0.0.9ì—ì„œ 250kpbsë¡œ CAN2 ìˆ˜ì •)
+////1.0.1.1 (1.0.0.9ì—ì„œ ìˆ˜ì •, 500kbps) 2014.10.08
+//Power Offì‹œ Illumination Lamp Reset ì•ˆë˜ëŠ” ë¬¸ì œ ìˆ˜ì • 2014.10.02
+//Key Off/On ìˆœê°„ ë°˜ë³µ ì‹œ CAN ì¸í„°ëŸ½íŠ¸ ì£½ëŠ” í˜„ìƒ ìˆ˜ì • 2014.10.02
+//OS Update CMD ì¶”ê°€, OS Update CMD ìˆ˜ì‹  ì‹œ 3ì´ˆê°„ LCD OFF 2014.10.06
+//Key Off í›„ Outroì—ì„œ Key Onì‹œ í‚¤ë²„íŠ¼ ë™ì‘ ì•ˆë˜ëŠ” ë¬¸ì œ ìˆ˜ì • 2014.10.06
+//OS Update ì‹œ 20ì´ˆê°„ Key IG Check ì•ˆí•¨ (OS Boot Updateì‹œ ì „ì›ì´ ë‚˜ê°€ë©´ ì•ˆë¨) 	2014.10.06
 ////1.0.1.2
-//KeyButton ¿¬¼Ó ÀÔ·Â µô·¹ÀÌ 250ms Ãß°¡ (Keybutton ÀÔ·Â ÈÄ 250ms µ¿¾È Keybutton µ¥ÀÌÅÍ ³ª°¡Áö ¾ÊÀ½ 2014.10.16
+//KeyButton ì—°ì† ì…ë ¥ ë”œë ˆì´ 250ms ì¶”ê°€ (Keybutton ì…ë ¥ í›„ 250ms ë™ì•ˆ Keybutton ë°ì´í„° ë‚˜ê°€ì§€ ì•ŠìŒ 2014.10.16
 ////1.0.1.3 2014.11.21
-//Hardware RevD ¿Í È£È¯ÄÚµå·Î ¼öÁ¤ !!!!!!!!!!!!!!!!!!!
-//SmartKey ÀÎÁõ(MCU Åë½Å) ¾îÇÃ¸®ÄÉÀÌ¼Ç¿¡¼­ Æß¿ş¾î·Î ÀÌµ¿ 2014.11.18
-//SmartKey Use EEPROM¿¡ ÀúÀå ¹× ·Îµù Ãß°¡ 2014.11.18
+//Hardware RevD ì™€ í˜¸í™˜ì½”ë“œë¡œ ìˆ˜ì • !!!!!!!!!!!!!!!!!!!
+//SmartKey ì¸ì¦(MCU í†µì‹ ) ì–´í”Œë¦¬ì¼€ì´ì…˜ì—ì„œ íŒì›¨ì–´ë¡œ ì´ë™ 2014.11.18
+//SmartKey Use EEPROMì— ì €ì¥ ë° ë¡œë”© ì¶”ê°€ 2014.11.18
 ////1.0.1.4
-// Camera Mode ChangeÇÔ¼ö Interrupt ·çÆ¾¿¡¼­ Main¹®À¸·Î ÀÌµ¿ 2014.12.05
-// Source Address Ãß°¡ (ACU, 0x19)
+// Camera Mode Changeí•¨ìˆ˜ Interrupt ë£¨í‹´ì—ì„œ Mainë¬¸ìœ¼ë¡œ ì´ë™ 2014.12.05
+// Source Address ì¶”ê°€ (ACU, 0x19)
 ////1.0.1.5
-// Revision ÀúÇ× ADC Ãß°¡ 2014.12.12
-// HardwareVersion Ç¥½Ã¸¦ À§ÇÑ Revision ÀúÇ× ADC °ª ¾îÇÃ¸®ÄÉÀÌ¼ÇÀ¸·Î º¸³»´Â ºÎºĞ  Ãß°¡2014.12.12
+// Revision ì €í•­ ADC ì¶”ê°€ 2014.12.12
+// HardwareVersion í‘œì‹œë¥¼ ìœ„í•œ Revision ì €í•­ ADC ê°’ ì–´í”Œë¦¬ì¼€ì´ì…˜ìœ¼ë¡œ ë³´ë‚´ëŠ” ë¶€ë¶„  ì¶”ê°€2014.12.12
 ////1.0.1.6
-// Rear Wiper Long Key ½Ã°£ ´ÜÃà (±âÁ¸ 4.5s -> 1.5s) 2014.12.31
-// BKCU Source Address Ãß°¡ 2015.01.07
-// SmartKey Tag °¹¼ö 5°³·Î Áõ°¡ 2014.01.07
+// Rear Wiper Long Key ì‹œê°„ ë‹¨ì¶• (ê¸°ì¡´ 4.5s -> 1.5s) 2014.12.31
+// BKCU Source Address ì¶”ê°€ 2015.01.07
+// SmartKey Tag ê°¯ìˆ˜ 5ê°œë¡œ ì¦ê°€ 2014.01.07
 ////1.0.1.7
-// Smart Key Response Flag 1 ÀÎ °æ¿ì µî·Ï ½ÇÆĞ Ãß°¡ 2015.01.14
-// Power Off ·ÎÁ÷ Lamp Off ¹× ºÎÀú Off Ãß°¡ 2015.01.14
+// Smart Key Response Flag 1 ì¸ ê²½ìš° ë“±ë¡ ì‹¤íŒ¨ ì¶”ê°€ 2015.01.14
+// Power Off ë¡œì§ Lamp Off ë° ë¶€ì € Off ì¶”ê°€ 2015.01.14
 //// 1.0.1.8
-// Hardware Test ¿ë CMD Ãß°¡ (EEPROM, Serial Flash Test) 2015.01.20
+// Hardware Test ìš© CMD ì¶”ê°€ (EEPROM, Serial Flash Test) 2015.01.20
 
 //// 1.0.1.9
-// RMCU Åë½Å °ü·Ã key value add
+// RMCU í†µì‹  ê´€ë ¨ key value add
 
 //// 1.0.2.0
-// can error reset ±â´É Ãß°¡ 
+// can error reset ê¸°ëŠ¥ ì¶”ê°€ 
 // CAM original view
 
 //// 1.0.2.1 - 150407
@@ -243,70 +243,87 @@
 // Rear wiper up key event 
 
 //// 1.0.2.4 - 150609
-// CAM ÀüÈ¯ ½Ã black -> Color ¼öÁ¤ 
-// CAM ÀüÈ¯ ½Ã È­¸é down -> up ¼öÁ¤ 
+// CAM ì „í™˜ ì‹œ black -> Color ìˆ˜ì • 
+// CAM ì „í™˜ ì‹œ í™”ë©´ down -> up ìˆ˜ì • 
 
 //// 1.0.2.5 - 150625
-// st update ÈÄ, system reset ½Ã, jump_iap Ãß°¡ 
+// st update í›„, system reset ì‹œ, jump_iap ì¶”ê°€ 
 
-//// 1.0.2.41 - 150630(Test¿ë)
-// FW Hidden Version Ãß°¡
+//// 1.0.2.41 - 150630(Testìš©)
+// FW Hidden Version ì¶”ê°€
 // SmartKey -> Key Data Logging
 
-//// 1.0.2.42 - 150630(¾ç»êÀû¿ë)
-// 1.0.2.5¿¡´Ù°¡ FW Hidden Version Ãß°¡
+//// 1.0.2.42 - 150630(ì–‘ì‚°ì ìš©)
+// 1.0.2.5ì—ë‹¤ê°€ FW Hidden Version ì¶”ê°€
 
 //// 1.0.2.50 - 150707
-// smart key ÀÎÁõ ¿ä±¸ Ãß°¡
-// CMD ring buffer ±¸Çö 
+// smart key ì¸ì¦ ìš”êµ¬ ì¶”ê°€
+// CMD ring buffer êµ¬í˜„ 
 
 //// 1.0.2.51 - 150710 
-// smart key ÀÎÁõ ¿ä±¸ ÀÀ´ä ±¸Çö(½ÇÂ÷ È®ÀÎ ÇÊ¿ä)
-//  -> ÅÂ±× ÀÎÁõ ½Ã°¡ ¾Æ´Ï¶ó ÃÊ±â Åë½ÅÀÎÁõ ½Ã ½º¸¶Æ® ÅÂ±× °³¼ö¸¦ ¹Ş¾Æ¾ß ÇÔ(°æ¿ì)
-// -> ½ÇÂ÷ È®ÀÎ ¿Ï·á -> ¹ÌÀû¿ë SendSMKCountResult
-// CMD SMK ¾ÏÈ£È­ Ç®¸° ÄÚµå Ãß°¡(µğ¹ö±ë¿ë) 
+// smart key ì¸ì¦ ìš”êµ¬ ì‘ë‹µ êµ¬í˜„(ì‹¤ì°¨ í™•ì¸ í•„ìš”)
+//  -> íƒœê·¸ ì¸ì¦ ì‹œê°€ ì•„ë‹ˆë¼ ì´ˆê¸° í†µì‹ ì¸ì¦ ì‹œ ìŠ¤ë§ˆíŠ¸ íƒœê·¸ ê°œìˆ˜ë¥¼ ë°›ì•„ì•¼ í•¨(ê²½ìš°)
+// -> ì‹¤ì°¨ í™•ì¸ ì™„ë£Œ -> ë¯¸ì ìš© SendSMKCountResult
+// CMD SMK ì•”í˜¸í™” í’€ë¦° ì½”ë“œ ì¶”ê°€(ë””ë²„ê¹…ìš©) 
 
 //// 1.0.2.60 - 150713
-// smart key Åë½ÅÀÎÁõ ½Ã ½º¸¶Æ®Å° ÅÂ±× °³¼ö ¹Ş¾Æ¿È
+// smart key í†µì‹ ì¸ì¦ ì‹œ ìŠ¤ë§ˆíŠ¸í‚¤ íƒœê·¸ ê°œìˆ˜ ë°›ì•„ì˜´
 
 //// 1.0.2.61 - 150715
-// 1. Ä«¸Ş¶ó ¿µ»ó³ª¿Ã ¶§ Ã¤³Î º¯°æ ½Ã No signal Ç¥½Ã ´Ê°Ô »ç¶óÁö´Â Çö»ó °³¼±
-// 2. Ä«¸Ş¶ó On->Off ºü¸£°Ô ÁÙ °æ¿ì ¹İ¿µ¾ÈµÇ´Â Çö»ó °³¼±
+// 1. ì¹´ë©”ë¼ ì˜ìƒë‚˜ì˜¬ ë•Œ ì±„ë„ ë³€ê²½ ì‹œ No signal í‘œì‹œ ëŠ¦ê²Œ ì‚¬ë¼ì§€ëŠ” í˜„ìƒ ê°œì„ 
+// 2. ì¹´ë©”ë¼ On->Off ë¹ ë¥´ê²Œ ì¤„ ê²½ìš° ë°˜ì˜ì•ˆë˜ëŠ” í˜„ìƒ ê°œì„ 
 
 //// 1.0.2.62 - 150812
-// 1. HW º¯°æ - 1.8V ºĞ¸® , IAP ¼öÁ¤ 
-// 2. power off logic º¯°æ 
+// 1. HW ë³€ê²½ - 1.8V ë¶„ë¦¬ , IAP ìˆ˜ì • 
+// 2. power off logic ë³€ê²½ 
 
 //// 1.1.0.00 - 151013
-// 1. CAN Update ½Ã ÀÚµ¿Á¤Áö ÇÁ·ÎÅäÄİ ¼ÛºÎ
+// 1. CAN Update ì‹œ ìë™ì •ì§€ í”„ë¡œí† ì½œ ì†¡ë¶€
 
 //// 1.1.0.00 - 151231
-// 1. Camera OSD Ç¥½Ã ¹®±¸ Ãß°¡
+// 1. Camera OSD í‘œì‹œ ë¬¸êµ¬ ì¶”ê°€
 
 //// 1.2.0.00 - 160406
 // 1. CAN BITTIMING 
-// 2. BKCU ¾÷µ¥ÀÌÆ® °ü·Ã CAN RX ºÎºĞ ¼öÁ¤ 
+// 2. BKCU ì—…ë°ì´íŠ¸ ê´€ë ¨ CAN RX ë¶€ë¶„ ìˆ˜ì • 
 
 //// 1.3.0.00 - 160406
-// 1. REV.H.01.01 Àû¿ë
-// 2. RTC º¯°æ, EEPROM »èÁ¦
-// 3. SMART KEY °ª FLASH¿¡ ÀúÀå
-// 4. WATCH DOG Ãß°¡
+// 1. REV.H.01.01 ì ìš©
+// 2. RTC ë³€ê²½, EEPROM ì‚­ì œ
+// 3. SMART KEY ê°’ FLASHì— ì €ì¥
+// 4. WATCH DOG ì¶”ê°€
 
 //// 1.3.1.00 - 161021
-// 1. ½º¸¶Æ®Å° retry ÀÎÁõ Ãß°¡
-// 2. SMART KEY °ª ³»ºÎ FLASH¿¡ ÀúÀå(hº¸µå)
+// 1. ï¿½ï¿½ï¿½ï¿½Æ®Å° retry ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½
+// 2. SMART KEY ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ FLASHï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(hï¿½ï¿½ï¿½ï¿½)
 
 //// 1.3.2.0 - 170123
-// 1. Hº¸µå ´ëºñ ¼ÒÇÁÆ®¿ş¾î ¹öÀü º¯°æ
+// 1. Hï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
 //// 1.3.2.0.1 - 170410
-// 1. RTC : ½Ã°£ ÃÊ±âÈ­ ÈÄ Èå¸£Áö ¾Ê´Â Çö»ó °³¼±(ADC Value : 1087 -> 1050)
+// 1. RTC : ï¿½Ã°ï¿½ ï¿½Ê±ï¿½È­ ï¿½ï¿½ ï¿½å¸£ï¿½ï¿½ ï¿½Ê´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(ADC Value : 1087 -> 1050)
 
 
 //// 1.3.2.1 - 170515
-// 1. Ä«¸Ş¶ó CH4 <-> CH1 º¯°æ(Çö´ë Diff Camera ¿äÃ» °Ç)
+// 1. Ä«ï¿½Ş¶ï¿½ CH4 <-> CH1 ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ Diff Camera ï¿½ï¿½Ã» ï¿½ï¿½)
 
+//// 1.4.0.00 - 160830
+// 1. AAVM ì‚¬ì–‘ ì¶”ê°€ 
+// 2. SmartKey Rx ë¬´ì‘ë‹µ ì‹œ 200ms 5íšŒ Retry ì¶”ê°€ 
+// 3. cpk ìµœì´ˆ 1íšŒ ìƒì„± í›„ ë³€ê²½í•˜ì§€ ì•ŠìŒ
+
+
+//// 1.4.0.10 - 161012
+// 1. AAVM ê´€ë ¨ ì´ë¯¸ì§€ í°íŠ¸ ë³€ê²½
+
+//// 1.4.0.20 - 161017
+// 1. AAVM ê´€ë ¨ ì¹´ë©”ë¼ ê¹œë°•ì„ í˜„ìƒ ìˆ˜ì •
+// 2. AAVM ê´€ë ¨ CH4ë¡œ ê³ ì •
+
+//// 1.4.0.30 - 161027
+// 1. NO SiGNAL í˜„ìƒ ìˆ˜ì •
+// 2. SMARKEY ì—ëŸ¬ ìˆ˜ì • : Serial Flash ê´€ë ¨
+// 3. AAVM ICON ê¹œë°•ì„ OSD ì¶”ê°€
 ///////////////////////////////////////////////////
 
 //=================================================================
@@ -480,10 +497,14 @@ extern void RTCSend(void);
 
 //	++, kutelf, 140801
 //	RevD.01.01
-//	RevD º¸µå¿Í È£È¯¼ºÀ» À§ÇÏ¿© ÇÔ¼ö Ãß°¡ ¹× ÀÌ¸§ º¯°æ
+//	RevD ë³´ë“œì™€ í˜¸í™˜ì„±ì„ ìœ„í•˜ì—¬ í•¨ìˆ˜ ì¶”ê°€ ë° ì´ë¦„ ë³€ê²½
 extern void CameraMode(u8 Mode, u8 OSD);
 extern void CheckCamera_Input(u8 Mode);
 //	--, kutelf, 140801
+
+extern void AAVMMode(u8 Mode, u8 OSD);
+extern void CheckAAVM_Input(u8 Mode);
+
 
 extern void Init_Smart_Key_valuable(void);
 

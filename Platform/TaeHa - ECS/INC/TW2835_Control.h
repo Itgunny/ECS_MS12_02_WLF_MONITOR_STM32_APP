@@ -67,7 +67,7 @@
 
 //==================================================================================
 #define	DLY_FOR(x)				for(_dly_=0;_dly_<(x);_dly_++)
-#define	DLY_I2C					60		//... SCL : 80 kHz at 4.7 k¥Ø
+#define	DLY_I2C					60		//... SCL : 80 kHz at 4.7 kÎ©
 #define	DLY_PRLL_TBL			50
 #define	DLY_IO					5
 #define	DLY_SW_STRB				20000//10
@@ -111,6 +111,7 @@
 #define I2C_PUBLICS
 
 #define CAMCMD 				0x04
+#define AAVMCMD                         0x0E
 #define CAMRES 				0x84
 
 //==================================================================================
@@ -226,7 +227,7 @@ extern u8	cmn_bot;
 
 extern u8	cmn_cnt_vs;
 extern u8	cmn_cnt_vs_sub;
-extern u8 	cmn_vga_det;			//... __WTH_VGA__ÀÏ¶§ idata ¾ø¾Ö¸é compile½Ã error ¹ß»ý.
+extern u8 	cmn_vga_det;			//... __WTH_VGA__ì¼ë•Œ idata ì—†ì• ë©´ compileì‹œ error ë°œìƒ.
 
 extern u8	cmn_dvc;
 extern u8	cmn_lst_slvr_x;
@@ -256,7 +257,7 @@ extern void Port_Change(u8 in_Dir);
 extern void Write_TW2835(u8 Data);
 extern u8 Read_TW2835();
 //	++, kutelf, 140801
-//	RevD º¸µå¿Í È£È¯¼ºÀ» À§ÇÏ¿© ÇÔ¼ö ÀÌ¸§ º¯°æ
+//	RevD ë³´ë“œì™€ í˜¸í™˜ì„±ì„ ìœ„í•˜ì—¬ í•¨ìˆ˜ ì´ë¦„ ë³€ê²½
 extern void TW2835_CameraMode(u8 Mode, u8 OSD);
 //  ++, kutelf, 131007
 extern void TW2835_CheckCamera_Input(u8 Mode);
