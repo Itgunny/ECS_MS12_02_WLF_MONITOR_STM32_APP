@@ -1,6 +1,6 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      28/Aug/2017  14:48:33 #
+# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      21/Sep/2017  16:26:59 #
 # Copyright 1999-2012 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
@@ -166,15 +166,18 @@ D:\GIT\WLF_MONITOR\ECS_MS12_02_WLF_MONITOR_STM32_APP\Platform\TaeHa - ECS\SRC\Ha
     128          	DebugMsg_printf("++ Hardware_Version (ADC : IN13), ADC Initialize START\r\n");
     129          
     130          	ADC_Configuration();
-    131          
-    132          	// ++, sys3215, 141211
-    133          	Check_Hardware_Revision();
-    134          	// --, sys3215, 141211
-    135          	
-    136          	DebugMsg_printf("-- Hardware_Version (ADC : IN13), ADC Initialize END\r\n");
-    137          }
-    138          
-    139          /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
+    131                  
+    132                  int i = 0;
+    133          	// ++, sys3215, 141211
+    134                  for(i = 0; i < 5; i++){
+    135                    Check_Hardware_Revision();
+    136                  }
+    137          	// --, sys3215, 141211
+    138          	
+    139          	DebugMsg_printf("-- Hardware_Version (ADC : IN13), ADC Initialize END\r\n");
+    140          }
+    141          
+    142          /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
 
    Maximum stack usage in bytes:
 
@@ -196,6 +199,7 @@ D:\GIT\WLF_MONITOR\ECS_MS12_02_WLF_MONITOR_STM32_APP\Platform\TaeHa - ECS\SRC\Ha
        8   Hardware_Version_Init
          8   -> ADC_Configuration
          0   -> Check_Hardware_Revision
+         8   -> Check_Hardware_Revision
 
 
    Section sizes:
@@ -208,13 +212,13 @@ D:\GIT\WLF_MONITOR\ECS_MS12_02_WLF_MONITOR_STM32_APP\Platform\TaeHa - ECS\SRC\Ha
       72  Check_Hardware_Revision
        4  Hardware_Revision
           ADC3ConvertedValue
-      12  Hardware_Version_Init
+      28  Hardware_Version_Init
 
  
    4 bytes in section .bss
- 196 bytes in section .text
+ 212 bytes in section .text
  
- 196 bytes of CODE memory
+ 212 bytes of CODE memory
    4 bytes of DATA memory
 
 Errors: none

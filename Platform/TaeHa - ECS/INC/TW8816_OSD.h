@@ -61,6 +61,10 @@ extern void SetChange3DLeftView(void);
 extern void SetChange3DRightView(void);
 extern void SetBlankIcon(void);
 extern void SetChangeXIcon(void);
+extern void SetDisplayGreenGuideLine(void);
+extern void SetDisplayRedGuideLine(void);
+extern void SetDisplayBlankGreenGuideLine(void);
+extern void SetDisplayBlankRedGuideLine(void);
 
 #endif /* __TW8816_OSD_H */
 

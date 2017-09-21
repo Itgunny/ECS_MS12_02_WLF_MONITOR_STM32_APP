@@ -232,6 +232,8 @@ extern u8 CameraCommFlag;
 
 extern u8 AAVMCommFlag;
 
+extern u8 AAVMEquipFlag;
+
 extern uint16_t ADC3ConvertedValue;
 
 
@@ -954,6 +956,8 @@ void UART4_Receive_CMD(void)
                                 case AAVMCMD:
                                   if(AAVMCommFlag == 0){
                                         AAVMCommFlag = 1;
+                                        
+                                        AAVMEquipFlag = 1;
                                         
                                         AAVM_Mode = WL9FM_USART_DATA.COM4_RxBuf[2];
                                         

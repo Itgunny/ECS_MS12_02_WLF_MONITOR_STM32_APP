@@ -49,7 +49,7 @@ extern unsigned char warning_values[][162];
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 /* Exported variables --------------------------------------------------------*/
-
+extern u8 AAVMEquipFlag;
 /* Exported functions ------------------------------------------------------- */
 extern void I2C2_Write_8816(u8 WData);
 extern u8 I2C2_Read_8816(void);

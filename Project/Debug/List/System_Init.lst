@@ -1,6 +1,6 @@
 ###############################################################################
 #                                                                             #
-# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      28/Aug/2017  14:48:29 #
+# IAR ANSI C/C++ Compiler V6.50.1.4415/W32 for ARM      21/Sep/2017  16:27:06 #
 # Copyright 1999-2012 IAR Systems AB.                                         #
 #                                                                             #
 #    Cpu mode     =  thumb                                                    #
@@ -68,7 +68,7 @@ D:\GIT\WLF_MONITOR\ECS_MS12_02_WLF_MONITOR_STM32_APP\Platform\TaeHa - ECS\SRC\Sy
      30          extern u16 OSUpdateCount;
      31          extern u8 CameraCommFlag;
      32          extern u8 AAVMCommFlag;
-     33          
+     33          extern u8 AAVMEquipFlag;
      34          // ++, sys3215, 141211
      35          extern u8 Hardware_Revision;
      36          // --, sys3215, 141211
@@ -1170,70 +1170,71 @@ D:\GIT\WLF_MONITOR\ECS_MS12_02_WLF_MONITOR_STM32_APP\Platform\TaeHa - ECS\SRC\Sy
    1132          	OSUpdateCount = 200;
    1133          	CameraCommFlag = 0;
    1134                  AAVMCommFlag = 0;
-   1135          }
-   1136          
+   1135                  AAVMEquipFlag = 0;
+   1136          }
    1137          
-   1138          // ++, sys3215, 141211
-   1139          void Camera_IO_Init(void)
-   1140          {
-   1141          	GPIO_InitTypeDef GPIO_InitStructure;
-   1142          
-   1143          	if(Hardware_Revision==REVB)
-   1144          	{
-   1145          		GPIO_InitStructure.GPIO_Pin   = TW8832_I2C2_SCL | TW8832_I2C2_SDA;
-   1146          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
-   1147          		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-   1148          		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-   1149          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-   1150          		GPIO_Init(TW8832_I2C2_PORT, &GPIO_InitStructure);
-   1151          
-   1152          		//  FW_UPDATE -> GPIO Input
-   1153          		GPIO_InitStructure.GPIO_Pin   = FW_UPDATE;
-   1154          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_IN;   
-   1155          		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-   1156          		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-   1157          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-   1158          		GPIO_Init(FW_UPDATE_PORT, &GPIO_InitStructure);
-   1159          
-   1160          		//  TW2835 -> GPIO Output
-   1161          		GPIO_InitStructure.GPIO_Pin   = TW2835_IRQ| TW2835_HALE | TW2835_HSPB;
-   1162          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
-   1163          		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-   1164          		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-   1165          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-   1166          		GPIO_Init(TW2835_CTRLPORT, &GPIO_InitStructure);
-   1167          
-   1168          		GPIO_InitStructure.GPIO_Pin   = TW2835_D0 | TW2835_D1 | TW2835_D2 | TW2835_D3 | TW2835_D4 | TW2835_D5 | TW2835_D6 | TW2835_D7;
-   1169          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
-   1170          		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-   1171          		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-   1172          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-   1173          		GPIO_Init(TW2835_DATAPORT, &GPIO_InitStructure);	
-   1174          
-   1175          		GPIO_InitStructure.GPIO_Pin   = TW2835_CSB0 | TW2835_CSB1 | TW2835_nWE | TW2835_nOE;
-   1176          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
-   1177          		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-   1178          		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-   1179          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-   1180          		GPIO_Init(TW2835_DATAPORT, &GPIO_InitStructure);
-   1181          	}
-   1182          	else
-   1183          	{
-   1184          		GPIO_InitStructure.GPIO_Pin   = TW8816_I2C2_SCL | TW8816_I2C2_SDA;
-   1185          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
-   1186          		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-   1187          		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
-   1188          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-   1189          		GPIO_Init(TW8816_I2C2_PORT, &GPIO_InitStructure);
-   1190          	}
-   1191          
-   1192          	GPIO_Configuration_NotUsed();
-   1193          }
-   1194          // -- , sys3215, 141211
-   1195          
-   1196          /*********(C) COPYRIGHT 2013 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
-   1197          
+   1138          
+   1139          // ++, sys3215, 141211
+   1140          void Camera_IO_Init(void)
+   1141          {
+   1142          	GPIO_InitTypeDef GPIO_InitStructure;
+   1143          
+   1144          	if(Hardware_Revision==REVB)
+   1145          	{
+   1146          		GPIO_InitStructure.GPIO_Pin   = TW8832_I2C2_SCL | TW8832_I2C2_SDA;
+   1147          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+   1148          		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+   1149          		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+   1150          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+   1151          		GPIO_Init(TW8832_I2C2_PORT, &GPIO_InitStructure);
+   1152          
+   1153          		//  FW_UPDATE -> GPIO Input
+   1154          		GPIO_InitStructure.GPIO_Pin   = FW_UPDATE;
+   1155          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_IN;   
+   1156          		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+   1157          		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+   1158          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+   1159          		GPIO_Init(FW_UPDATE_PORT, &GPIO_InitStructure);
+   1160          
+   1161          		//  TW2835 -> GPIO Output
+   1162          		GPIO_InitStructure.GPIO_Pin   = TW2835_IRQ| TW2835_HALE | TW2835_HSPB;
+   1163          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+   1164          		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+   1165          		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+   1166          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+   1167          		GPIO_Init(TW2835_CTRLPORT, &GPIO_InitStructure);
+   1168          
+   1169          		GPIO_InitStructure.GPIO_Pin   = TW2835_D0 | TW2835_D1 | TW2835_D2 | TW2835_D3 | TW2835_D4 | TW2835_D5 | TW2835_D6 | TW2835_D7;
+   1170          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+   1171          		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+   1172          		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+   1173          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+   1174          		GPIO_Init(TW2835_DATAPORT, &GPIO_InitStructure);	
+   1175          
+   1176          		GPIO_InitStructure.GPIO_Pin   = TW2835_CSB0 | TW2835_CSB1 | TW2835_nWE | TW2835_nOE;
+   1177          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+   1178          		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+   1179          		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+   1180          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+   1181          		GPIO_Init(TW2835_DATAPORT, &GPIO_InitStructure);
+   1182          	}
+   1183          	else
+   1184          	{
+   1185          		GPIO_InitStructure.GPIO_Pin   = TW8816_I2C2_SCL | TW8816_I2C2_SDA;
+   1186          		GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;   
+   1187          		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+   1188          		GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+   1189          		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+   1190          		GPIO_Init(TW8816_I2C2_PORT, &GPIO_InitStructure);
+   1191          	}
+   1192          
+   1193          	GPIO_Configuration_NotUsed();
+   1194          }
+   1195          // -- , sys3215, 141211
+   1196          
+   1197          /*********(C) COPYRIGHT 2013 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
    1198          
+   1199          
 
    Maximum stack usage in bytes:
 
@@ -1288,6 +1289,7 @@ D:\GIT\WLF_MONITOR\ECS_MS12_02_WLF_MONITOR_STM32_APP\Platform\TaeHa - ECS\SRC\Sy
        4  ??DataTable5_16
        4  ??DataTable5_17
        4  ??DataTable5_18
+       4  ??DataTable5_19
        4  ??DataTable5_2
        4  ??DataTable5_3
        4  ??DataTable5_4
@@ -1303,12 +1305,12 @@ D:\GIT\WLF_MONITOR\ECS_MS12_02_WLF_MONITOR_STM32_APP\Platform\TaeHa - ECS\SRC\Sy
      252  RCC_Configuration
       26  System_Configuration
      112  System_Initialize
-      76  System_Variable_Init
+      80  System_Variable_Init
 
  
- 2 972 bytes in section .text
+ 2 980 bytes in section .text
  
- 2 972 bytes of CODE memory
+ 2 980 bytes of CODE memory
 
 Errors: none
 Warnings: none

@@ -192,7 +192,7 @@
 
 
 #define	VERSION_HIGH			1
-#define	VERSION_LOW			4
+#define	VERSION_LOW			5
 #define	VERSION_SUB_HIGH		0
 #define	VERSION_SUB_LOW		0
 #define	VERSION_HIDDEN		0
@@ -324,6 +324,10 @@
 // 1. NO SiGNAL 현상 수정
 // 2. SMARKEY 에러 수정 : Serial Flash 관련
 // 3. AAVM ICON 깜박임 OSD 추가
+
+//// 1.5.0 - 170921
+// 1. AAVM 가이드라인 추가
+// 2. ADC VALUE 5번 체크
 ///////////////////////////////////////////////////
 
 //=================================================================

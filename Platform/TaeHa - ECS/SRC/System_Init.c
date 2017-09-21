@@ -30,7 +30,7 @@ extern u8 LCDOffCount;
 extern u16 OSUpdateCount;
 extern u8 CameraCommFlag;
 extern u8 AAVMCommFlag;
-
+extern u8 AAVMEquipFlag;
 // ++, sys3215, 141211
 extern u8 Hardware_Revision;
 // --, sys3215, 141211
@@ -1132,6 +1132,7 @@ void System_Variable_Init(void)
 	OSUpdateCount = 200;
 	CameraCommFlag = 0;
         AAVMCommFlag = 0;
+        AAVMEquipFlag = 0;
 }
 
 

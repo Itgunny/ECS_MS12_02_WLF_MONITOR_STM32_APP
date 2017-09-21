@@ -175,6 +175,7 @@ u8 SaveSmartKeyUse;		// ++, --, 161021 bwk
 u8 CameraCommFlag;
 
 u8 AAVMCommFlag;
+u8 AAVMEquipFlag;
 // ++, sys3215, 141211
 extern u8 Hardware_Revision;
 // --, sys3215, 141211

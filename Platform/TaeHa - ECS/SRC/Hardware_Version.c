@@ -128,9 +128,12 @@ void Hardware_Version_Init(void)
 	DebugMsg_printf("++ Hardware_Version (ADC : IN13), ADC Initialize START\r\n");
 
 	ADC_Configuration();
-
+        
+        int i = 0;
 	// ++, sys3215, 141211
-	Check_Hardware_Revision();
+        for(i = 0; i < 5; i++){
+          Check_Hardware_Revision();
+        }
 	// --, sys3215, 141211
 	
 	DebugMsg_printf("-- Hardware_Version (ADC : IN13), ADC Initialize END\r\n");
