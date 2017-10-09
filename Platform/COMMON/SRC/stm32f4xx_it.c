@@ -893,6 +893,7 @@ void UART4_Receive_CMD(void)
 				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == EEPROMTESTCMD) WL9FM_USART_INDEX.COM4_RxCnt++;
 				else if (WL9FM_USART_DATA.COM4_RxBuf[1] == FLASHTESTCMD) WL9FM_USART_INDEX.COM4_RxCnt++;
                                 else if (WL9FM_USART_DATA.COM4_RxBuf[1] == AAVMCMD) WL9FM_USART_INDEX.COM4_RxCnt++;
+                                else if (WL9FM_USART_DATA.COM4_RxBuf[1] == CAMLINECMD) WL9FM_USART_INDEX.COM4_RxCnt++;
 
                 else
                 {
@@ -952,7 +953,10 @@ void UART4_Receive_CMD(void)
 						Camera_Mode = WL9FM_USART_DATA.COM4_RxBuf[2];
 					}					
 					break;
-
+                                case CAMLINECMD:
+                                        
+                                        Camera_Green_Line = WL9FM_USART_DATA.COM4_RxBuf[2];
+                                        break;
                                 case AAVMCMD:
                                   if(AAVMCommFlag == 0){
                                         AAVMCommFlag = 1;

@@ -112,6 +112,7 @@
 
 #define CAMCMD 				0x04
 #define AAVMCMD                         0x0E
+#define CAMLINECMD                      0x0F
 #define CAMRES 				0x84
 
 //==================================================================================

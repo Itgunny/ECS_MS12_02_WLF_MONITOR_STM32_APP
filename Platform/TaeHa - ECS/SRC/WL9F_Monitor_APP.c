@@ -181,6 +181,7 @@ extern u8 Hardware_Revision;
 // --, sys3215, 141211
 
 extern u8 Flag_St_Update;
+extern u8 Old_CAMSig_1;
 
 
 //	++, kutelf, 150810
@@ -1337,6 +1338,11 @@ u8 flag_reset=0;
 void WL9FM_10mSecOperationFunc(void)
 {
 	//Lamp_Update_State();	//	LAMP Update 상태를 체크한다.
+  if(Old_Camera_Green_Line != Camera_Green_Line) {
+      Old_Camera_Green_Line = Camera_Green_Line;
+      Old_CAMSig_1 = 0xf;
+      CheckCamera_Input(Camera_Mode);	
+  }
 	
 }
 

@@ -67,6 +67,9 @@ extern WL9FM_LCDBL_DATA	WL9FM_LCDBL;
 extern unsigned char Camera_Mode;
 extern unsigned char Camera_CheckFlag;
 extern unsigned char Camera_CheckCnt;
+extern unsigned char Camera_Green_Line;
+extern unsigned char Old_Camera_Green_Line;
+
 
 extern unsigned char AAVM_Mode;
 extern unsigned char AAVM_CheckFlag;

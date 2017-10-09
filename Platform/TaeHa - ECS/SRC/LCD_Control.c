@@ -56,6 +56,8 @@ const uint16_t LCDBL_PWMLEVEL[MaxBackLightLEVEL] =
 unsigned char Camera_Mode = 0xFF;
 unsigned char Camera_CheckFlag = 1;
 unsigned char Camera_CheckCnt = 0;
+extern unsigned char Camera_Green_Line = 0x0;
+extern unsigned char Old_Camera_Green_Line = 0x0;
 //  --, kutelf, 131007
 
 unsigned char AAVM_Mode = 0xFF;

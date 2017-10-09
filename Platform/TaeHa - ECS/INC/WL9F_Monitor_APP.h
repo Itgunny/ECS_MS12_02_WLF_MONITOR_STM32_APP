@@ -192,7 +192,7 @@
 
 
 #define	VERSION_HIGH			1
-#define	VERSION_LOW			5
+#define	VERSION_LOW			4
 #define	VERSION_SUB_HIGH		0
 #define	VERSION_SUB_LOW		0
 #define	VERSION_HIDDEN		0
@@ -328,6 +328,9 @@
 //// 1.5.0 - 170921
 // 1. AAVM 가이드라인 추가
 // 2. ADC VALUE 5번 체크
+
+//// 1.5.1 - 170922
+// 1. AAVM 가이드라인 버튼 추가
 ///////////////////////////////////////////////////
 
 //=================================================================

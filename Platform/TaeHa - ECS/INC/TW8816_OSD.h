@@ -65,7 +65,8 @@ extern void SetDisplayGreenGuideLine(void);
 extern void SetDisplayRedGuideLine(void);
 extern void SetDisplayBlankGreenGuideLine(void);
 extern void SetDisplayBlankRedGuideLine(void);
-
+extern void SetGreenLineIcon(void);
+extern void SetGreenBlankLineIcon(void);
 #endif /* __TW8816_OSD_H */
 
 /*********(C) COPYRIGHT 2010 TaeHa Mechatronics Co., Ltd. *****END OF FILE****/
