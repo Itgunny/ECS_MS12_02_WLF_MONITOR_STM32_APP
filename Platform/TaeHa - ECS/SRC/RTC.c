@@ -375,6 +375,8 @@ void PCA2119_Delay(void)
 
 void PCA2119_START(void)
 {
+#if 0
+        // 다름.
 	PCA2119_SDAOUT();
 	PCA2119_SDA(Bit_SET);
 	
@@ -386,36 +388,49 @@ void PCA2119_START(void)
 	PCA2119_Delay();
 	PCA2119_SCL(Bit_RESET);
 	// start end 
+#else
+        PCA2119_SDA(Bit_SET);
+        PCA2119_SDAOUT();
+	PCA2119_SCL(Bit_SET);
+	PCA2119_Delay();
+	PCA2119_SDA(Bit_RESET);
+	PCA2119_Delay();
+	PCA2119_SCL(Bit_RESET);
+        PCA2119_Delay();
+#endif
 }
 
 void PCA2119_STOP(void)
 {
+#if 0
 	PCA2119_SDAOUT();
-	
 	PCA2119_SDA(Bit_RESET);
 	PCA2119_Delay();
 	PCA2119_SCL(Bit_SET);
 	PCA2119_Delay();
 	PCA2119_SDA(Bit_SET);
+#else
+        PCA2119_SDA(Bit_RESET);
+        PCA2119_SDAOUT();
+	PCA2119_SCL(Bit_SET);
+        PCA2119_Delay();
+	PCA2119_SDA(Bit_SET);
+        PCA2119_Delay();
+#endif
 }
 
 
 void PCA2119_BIT_WRITE(unsigned char bit)
 {
 	#if 1
-	PCA2119_SDAOUT();
-	
-	PCA2119_SDA((bit) ? Bit_SET: Bit_RESET);
-
+	//다름.
+        PCA2119_SDA((bit) ? Bit_SET: Bit_RESET);      
+        PCA2119_SDAOUT();
 	PCA2119_Delay();
-
 	PCA2119_SCL(Bit_SET);
-
 	PCA2119_Delay();
-
 	PCA2119_SCL(Bit_RESET);
-
-	PCA2119_Delay();
+	PCA2119_Delay();  
 	#else
 	PCA2119_SDAOUT();
 
