@@ -194,8 +194,8 @@
 #define	VERSION_HIGH			1
 #define	VERSION_LOW			4
 #define	VERSION_SUB_HIGH		0
-#define	VERSION_SUB_LOW		0
-#define	VERSION_HIDDEN		1
+#define	VERSION_SUB_LOW		1
+#define	VERSION_HIDDEN		0
 ///////////////////////////////////////////////////
 ////1.0.1.0 (1.0.0.9에서 250kpbs로 CAN2 수정)
 ////1.0.1.1 (1.0.0.9에서 수정, 500kbps) 2014.10.08
@@ -329,7 +329,13 @@
 // 1. AAVM 가이드라인 추가
 // 2. ADC VALUE 5번 체크
 // 3. AAVM 가이드라인 버튼 추가
-// 4. RTC 루틴 변경(F 굴삭기와 동일하게 변경
+// 4. RTC 루틴 변경(F 굴삭기와 동일하게 변경)
+
+//// 1.4.0.10 - 171211
+// 1. AAVM NOSIGNAL 현상 개선
+
+//// 1.5.0.00 - 171221
+// 1. SKCU Source Address 추가
 ///////////////////////////////////////////////////
 
 //=================================================================
